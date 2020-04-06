@@ -1,0 +1,762 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:tns="http://certificateservices.org/xsd/credmanagement2_0"
+		   xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:ds="http://www.w3.org/2000/09/xmldsig#"
+		   xmlns:cs="http://certificateservices.org/xsd/csmessages2_0"
+		   elementFormDefault="qualified"
+		   targetNamespace="http://certificateservices.org/xsd/credmanagement2_0"
+		   version="2.3">
+
+	<xs:import namespace="http://certificateservices.org/xsd/csmessages2_0"
+			   schemaLocation="csmessages_schema2_2.xsd" />
+
+	<xs:element name="IssueTokenCredentialsRequest">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="cs:CSRequest">
+					<xs:sequence>
+						<xs:element minOccurs="1" maxOccurs="1" name="tokenRequest"
+									type="cs:TokenRequest" />
+						<xs:element minOccurs="0" maxOccurs="1" name="fieldValues">
+							<xs:complexType>
+								<xs:sequence>
+									<xs:element maxOccurs="unbounded" minOccurs="0"
+												name="fieldValue" type="tns:FieldValue" />
+								</xs:sequence>
+							</xs:complexType>
+						</xs:element>
+						<xs:element minOccurs="0" maxOccurs="1" name="hardTokenData"
+									type="tns:HardTokenData" />
+						<xs:element minOccurs="0" maxOccurs="1" name="recoverableKeys">
+							<xs:complexType>
+								<xs:sequence>
+									<xs:element minOccurs="1" maxOccurs="unbounded" name="key"
+												type="tns:RecoverableKey" />
+								</xs:sequence>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+
+
+	<xs:complexType name="FieldValue">
+		<xs:sequence>
+			<xs:element minOccurs="1" maxOccurs="1" name="key"
+						type="cs:notemptystring" />
+			<xs:element minOccurs="1" maxOccurs="1" name="value" type="xs:string" />
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="HardTokenData">
+		<xs:sequence>
+			<xs:element minOccurs="1" maxOccurs="1"
+						name="relatedCredentialIssuerId" type="cs:notemptystring" />
+			<xs:element minOccurs="1" maxOccurs="1" name="encryptedData"
+						type="xs:base64Binary" />
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="RecoverableKey">
+		<xs:sequence>
+			<xs:element minOccurs="1" maxOccurs="1"
+						name="relatedCredentialRequestId" type="xs:int" />
+			<xs:element minOccurs="1" maxOccurs="1" name="encryptedData"
+						type="xs:base64Binary" />
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="Key">
+		<xs:sequence>
+			<xs:element minOccurs="1" maxOccurs="1"
+						name="relatedCredential" type="cs:Credential" />
+			<xs:element minOccurs="1" maxOccurs="1" name="encryptedData"
+						type="xs:base64Binary" />
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:element name="IssueTokenCredentialsResponse">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="cs:CSResponse">
+					<xs:sequence>
+						<xs:element minOccurs="1" maxOccurs="1" name="tokenRequest"
+									type="cs:TokenRequest" />
+						<xs:element minOccurs="1" maxOccurs="1" name="credentials">
+							<xs:complexType>
+								<xs:sequence>
+									<xs:element maxOccurs="unbounded" minOccurs="1"
+												name="credential" type="cs:Credential" />
+								</xs:sequence>
+							</xs:complexType>
+						</xs:element>
+						<xs:element minOccurs="0" maxOccurs="1"
+									name="revokedCredentials">
+							<xs:complexType>
+								<xs:sequence>
+									<xs:element maxOccurs="unbounded" minOccurs="1"
+												name="credential" type="cs:Credential" />
+								</xs:sequence>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="ChangeUserStatusRequest">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="cs:CSRequest">
+					<xs:sequence>
+						<xs:element minOccurs="1" maxOccurs="1" name="userUniqueId"
+									type="cs:notemptystring" />
+						<xs:element minOccurs="0" maxOccurs="1" name="tokenFilter" type="tns:TokenFilter"/>
+						<xs:element minOccurs="0" maxOccurs="1" name="credentialFilter" type="tns:CredentialFilter"/>
+						<xs:element minOccurs="1" maxOccurs="1"
+									name="newCredentialStatus" type="xs:int" />
+						<xs:element minOccurs="1" maxOccurs="1" name="reasonInformation"
+									type="xs:string" />
+					</xs:sequence>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="ChangeUserStatusResponse">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="cs:CSResponse">
+					<xs:sequence>
+						<xs:sequence>
+							<xs:element maxOccurs="1" minOccurs="0"
+										name="user" type="cs:User" />
+						</xs:sequence>
+					</xs:sequence>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="ChangeTokenStatusRequest">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="cs:CSRequest">
+					<xs:sequence>
+						<xs:element minOccurs="1" maxOccurs="1" name="tokenSerialNumber"
+									type="cs:notemptystring" />
+						<xs:element minOccurs="0" maxOccurs="1" name="credentialFilter" type="tns:CredentialFilter"/>
+						<xs:element minOccurs="1" maxOccurs="1"
+									name="newCredentialStatus" type="xs:int" />
+						<xs:element minOccurs="1" maxOccurs="1" name="reasonInformation"
+									type="xs:string" />
+					</xs:sequence>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="ChangeTokenStatusResponse">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="cs:CSResponse">
+					<xs:sequence>
+						<xs:sequence>
+							<xs:element maxOccurs="1" minOccurs="0"
+										name="token" type="cs:Token" />
+						</xs:sequence>
+					</xs:sequence>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:complexType name="TokenFilter">
+			<xs:choice>
+			<xs:element name="tokenTypes" minOccurs="0" maxOccurs="1">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element minOccurs="0" maxOccurs="unbounded"
+									name="tokenType" type="cs:notemptystring"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="tokenSerialNumbers" minOccurs="0" maxOccurs="1">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element minOccurs="0" maxOccurs="unbounded"
+									name="serialNumber" type="cs:notemptystring"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			</xs:choice>
+	</xs:complexType>
+
+	<xs:complexType name="CredentialFilter">
+			<xs:choice>
+			<xs:element name="credentialTypeFilters" minOccurs="0" maxOccurs="1">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="credentialTypeFilter" minOccurs="0" maxOccurs="unbounded">
+							<xs:complexType>
+								<xs:sequence>
+									<xs:element minOccurs="0" maxOccurs="1"
+												name="credentialType" type="cs:notemptystring"/>
+									<xs:element minOccurs="0" maxOccurs="1"
+												name="credentialSubType" type="cs:notemptystring"/>
+								</xs:sequence>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="credentialSerialNumberFilters" minOccurs="0" maxOccurs="1">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="credentialSerialNumberFilter" minOccurs="0" maxOccurs="unbounded">
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element minOccurs="1" maxOccurs="1" name="issuerId"
+													type="cs:notemptystring" />
+										<xs:element minOccurs="1" maxOccurs="1" name="serialNumber"
+													type="cs:notemptystring" />
+									</xs:sequence>
+									<xs:attribute name="isNot" type="xs:boolean" default="false"/>
+								</xs:complexType>
+							</xs:element>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+		</xs:choice>
+	</xs:complexType>
+
+	<xs:element name="ChangeCredentialStatusRequest">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="cs:CSRequest">
+					<xs:sequence>
+						<xs:element minOccurs="1" maxOccurs="1" name="issuerId"
+									type="cs:notemptystring" />
+						<xs:element minOccurs="1" maxOccurs="1" name="serialNumber"
+									type="cs:notemptystring" />
+						<xs:element minOccurs="1" maxOccurs="1"
+									name="newCredentialStatus" type="xs:int" />
+						<xs:element minOccurs="1" maxOccurs="1" name="reasonInformation"
+									type="xs:string" />
+					</xs:sequence>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="ChangeCredentialStatusResponse">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="cs:CSResponse">
+					<xs:sequence>
+						<xs:element minOccurs="1" maxOccurs="1" name="issuerId"
+									type="cs:notemptystring" />
+						<xs:element minOccurs="1" maxOccurs="1" name="serialNumber"
+									type="cs:notemptystring" />
+						<xs:element minOccurs="1" maxOccurs="1" name="credentialStatus"
+									type="xs:int" />
+						<xs:element minOccurs="0" maxOccurs="1" name="revocationDate"
+									type="xs:dateTime" />
+						<xs:element minOccurs="0" maxOccurs="1" name="reasonInformation"
+									type="xs:string" />
+					</xs:sequence>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="GetUsersRequest">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="cs:CSRequest">
+					<xs:sequence>
+						<xs:element minOccurs="1" maxOccurs="1" name="uniqueId"
+									type="cs:notemptystring" />
+						<xs:element minOccurs="1" maxOccurs="1" name="exactMatch"
+									type="xs:boolean" />
+						<xs:element minOccurs="0" maxOccurs="1" name="startIndex"
+									type="xs:int" />
+						<xs:element minOccurs="0" maxOccurs="1" name="resultSize"
+									type="xs:int" />
+					</xs:sequence>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="GetUsersResponse">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="cs:CSResponse">
+					<xs:sequence>
+						<xs:element minOccurs="1" maxOccurs="1" name="users">
+							<xs:complexType>
+								<xs:sequence>
+									<xs:element maxOccurs="unbounded" minOccurs="0"
+												name="user" type="cs:User" />
+								</xs:sequence>
+							</xs:complexType>
+						</xs:element>
+						<xs:element minOccurs="0" maxOccurs="1" name="startIndex"
+									type="xs:int" />
+						<xs:element minOccurs="0" maxOccurs="1" name="totalMatching"
+									type="xs:int" />
+					</xs:sequence>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="GetTokensRequest">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="cs:CSRequest">
+					<xs:sequence>
+						<xs:element minOccurs="1" maxOccurs="1" name="serialNumber"
+									type="cs:notemptystring" />
+						<xs:element minOccurs="1" maxOccurs="1" name="exactMatch"
+									type="xs:boolean" />
+						<xs:element minOccurs="0" maxOccurs="1" name="startIndex"
+									type="xs:int" />
+						<xs:element minOccurs="0" maxOccurs="1" name="resultSize"
+									type="xs:int" />
+					</xs:sequence>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="GetTokensResponse">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="cs:CSResponse">
+					<xs:sequence>
+						<xs:element minOccurs="1" maxOccurs="1" name="tokens">
+							<xs:complexType>
+								<xs:sequence>
+									<xs:element maxOccurs="unbounded" minOccurs="0"
+												name="token" type="cs:Token" />
+								</xs:sequence>
+							</xs:complexType>
+						</xs:element>
+						<xs:element minOccurs="0" maxOccurs="1" name="startIndex"
+									type="xs:int" />
+						<xs:element minOccurs="0" maxOccurs="1" name="totalMatching"
+									type="xs:int" />
+					</xs:sequence>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="GetCredentialRequest">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="cs:CSRequest">
+					<xs:sequence>
+						<xs:element minOccurs="1" maxOccurs="1" name="credentialSubType"
+									type="cs:notemptystring" />
+						<xs:element minOccurs="1" maxOccurs="1" name="serialNumber"
+									type="cs:notemptystring" />
+						<xs:element minOccurs="1" maxOccurs="1" name="issuerId"
+									type="cs:notemptystring" />
+					</xs:sequence>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="GetCredentialResponse">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="cs:CSResponse">
+					<xs:sequence>
+						<xs:element minOccurs="1" maxOccurs="1" name="credential"
+									type="cs:Credential" />
+					</xs:sequence>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="GetCredentialStatusListRequest">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="cs:CSRequest">
+					<xs:sequence>
+						<xs:element minOccurs="0" maxOccurs="1" name="serialNumber"
+									type="xs:long" />
+						<xs:element minOccurs="1" maxOccurs="1" name="issuerId"
+									type="cs:notemptystring" />
+						<xs:element minOccurs="1" maxOccurs="1"
+									name="credentialStatusListType" type="cs:notemptystring" />
+					</xs:sequence>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="GetCredentialStatusListResponse">
+		<xs:complexType >
+			<xs:complexContent>
+				<xs:extension base="cs:CSResponse">
+					<xs:sequence>
+						<xs:element minOccurs="1" maxOccurs="1"
+									name="credentialStatusList" type="cs:CredentialStatusList" />
+					</xs:sequence>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="GetIssuerCredentialsRequest">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="cs:CSRequest">
+					<xs:sequence>
+						<xs:element minOccurs="1" maxOccurs="1" name="issuerId"
+									type="cs:notemptystring" />
+					</xs:sequence>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="GetIssuerCredentialsResponse">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="cs:CSResponse">
+					<xs:sequence>
+						<xs:element minOccurs="1" maxOccurs="1" name="credential"
+									type="cs:Credential" />
+					</xs:sequence>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="IsIssuerRequest">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="cs:CSRequest">
+					<xs:sequence>
+						<xs:element minOccurs="1" maxOccurs="1" name="issuerId"
+									type="cs:notemptystring" />
+					</xs:sequence>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="IsIssuerResponse">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="cs:CSResponse">
+					<xs:sequence>
+						<xs:element name="isIssuer" type="xs:boolean" />
+					</xs:sequence>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="IssueCredentialStatusListRequest">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="cs:CSRequest">
+					<xs:sequence>
+						<xs:element minOccurs="1" maxOccurs="1" name="issuerId"
+									type="cs:notemptystring" />
+						<xs:element minOccurs="1" maxOccurs="1"
+									name="credentialStatusListType" type="xs:string" />
+						<xs:element name="force" type="xs:boolean" minOccurs="0"
+									maxOccurs="1" default="false" />
+						<xs:element minOccurs="0" maxOccurs="1"
+									name="requestedValidFromDate" type="xs:dateTime" />
+						<xs:element minOccurs="0" maxOccurs="1"
+									name="requestedNotAfterDate" type="xs:dateTime" />
+					</xs:sequence>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="IssueCredentialStatusListResponse">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="cs:CSResponse">
+					<xs:sequence>
+						<xs:element minOccurs="1" maxOccurs="1"
+									name="credentialStatusList" type="cs:CredentialStatusList" />
+					</xs:sequence>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="RemoveCredentialRequest">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="cs:CSRequest">
+					<xs:sequence>
+						<xs:element minOccurs="1" maxOccurs="1" name="issuerId"
+									type="cs:notemptystring" />
+						<xs:element minOccurs="1" maxOccurs="1" name="serialNumber"
+									type="cs:notemptystring" />
+					</xs:sequence>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="RemoveCredentialResponse">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="cs:CSResponse">
+					<xs:sequence />
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:complexType name="FetchHardTokenDataRequest">
+		<xs:complexContent>
+			<xs:extension base="cs:CSRequest">
+				<xs:sequence>
+					<xs:element minOccurs="1" maxOccurs="1" name="tokenSerial"
+								type="cs:notemptystring" />
+					<xs:element minOccurs="1" maxOccurs="1"
+								name="relatedCredentialIssuerId" type="xs:string" />
+					<xs:element minOccurs="1" maxOccurs="1" name="adminCredential"
+								type="cs:Credential" />
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="FetchHardTokenDataRequest" type="tns:FetchHardTokenDataRequest" />
+
+
+	<xs:complexType name="FetchHardTokenDataResponse">
+		<xs:complexContent>
+			<xs:extension base="cs:CSResponse">
+				<xs:sequence>
+					<xs:element minOccurs="1" maxOccurs="1" name="tokenSerial"
+								type="cs:notemptystring" />
+					<xs:element minOccurs="1" maxOccurs="1" name="encryptedData"
+								type="xs:base64Binary" />
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="FetchHardTokenDataResponse" type="tns:FetchHardTokenDataResponse"/>
+
+	<xs:element name="StoreHardTokenDataRequest">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="cs:CSRequest">
+					<xs:sequence>
+						<xs:element minOccurs="1" maxOccurs="1" name="tokenSerial"
+									type="cs:notemptystring" />
+						<xs:element minOccurs="1" maxOccurs="1"
+									name="relatedCredentialIssuerId" type="cs:notemptystring" />
+						<xs:element minOccurs="1" maxOccurs="1" name="encryptedData"
+									type="xs:base64Binary" />
+					</xs:sequence>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="StoreHardTokenDataResponse">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="cs:CSResponse">
+					<xs:sequence />
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="RecoverHardTokenRequest" type="tns:FetchHardTokenDataRequest"/>
+
+	<xs:element name="RecoverHardTokenResponse">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="tns:FetchHardTokenDataResponse">
+					<xs:sequence>
+						<xs:element minOccurs="1" maxOccurs="1" name="recoveredKeys">
+							<xs:complexType>
+								<xs:sequence>
+									<xs:element minOccurs="1" maxOccurs="unbounded" name="key"
+												type="tns:Key" />
+								</xs:sequence>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="RecoverKeyRequest">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="cs:CSRequest">
+					<xs:sequence>
+						<xs:element minOccurs="1" maxOccurs="1" name="adminCredential"
+									type="cs:Credential" />
+						<xs:element minOccurs="1" maxOccurs="1" name="relatedCredentials">
+							<xs:complexType>
+								<xs:sequence>
+									<xs:element minOccurs="1" maxOccurs="unbounded" name="credential"
+												type="cs:Credential" />
+								</xs:sequence>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="RecoverKeyResponse">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="cs:CSResponse">
+					<xs:sequence>
+						<xs:element minOccurs="1" maxOccurs="1" name="recoveredKeys">
+							<xs:complexType>
+								<xs:sequence>
+									<xs:element minOccurs="1" maxOccurs="unbounded" name="key"
+												type="tns:Key" />
+								</xs:sequence>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="StoreKeyRequest">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="cs:CSRequest">
+					<xs:sequence>
+						<xs:element minOccurs="1" maxOccurs="1" name="recoverableKeys">
+							<xs:complexType>
+								<xs:sequence>
+									<xs:element minOccurs="1" maxOccurs="unbounded" name="key"
+												type="tns:Key" />
+								</xs:sequence>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="StoreKeyResponse">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="cs:CSResponse">
+					<xs:sequence />
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="GetCredentialAvailableActionsRequest">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="cs:CSRequest">
+					<xs:sequence>
+						<xs:element minOccurs="1" maxOccurs="1" name="issuerId"
+									type="cs:notemptystring" />
+						<xs:element minOccurs="1" maxOccurs="1" name="serialNumber"
+									type="cs:notemptystring" />
+						<xs:element minOccurs="0" maxOccurs="1" name="locale" default="en" type="cs:notemptystring"/>
+					</xs:sequence>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="GetCredentialAvailableActionsResponse">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="cs:CSResponse">
+					<xs:sequence>
+						<xs:element minOccurs="1" maxOccurs="1" name="operations">
+							<xs:complexType>
+								<xs:sequence>
+									<xs:element minOccurs="0" maxOccurs="unbounded" name="operation"
+												type="tns:CredentialAvailableActionsOperation" />
+								</xs:sequence>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:simpleType name="CredentialAvailableActionType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="ISSUE" />
+			<xs:enumeration value="RENEW" />
+			<xs:enumeration value="REPLACE" />
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:complexType name="CredentialAvailableActionsOperation">
+		<xs:sequence>
+			<xs:element minOccurs="1" maxOccurs="1" name="type" type="tns:CredentialAvailableActionType"/>
+			<xs:element minOccurs="1" maxOccurs="1" name="available" type="xs:boolean"/>
+			<xs:element minOccurs="1" maxOccurs="1" name="message" type="cs:notemptystring"/>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:element name="AutomaticRenewCredentialRequest">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="cs:CSRequest">
+					<xs:sequence>
+						<xs:element minOccurs="0" maxOccurs="1" name="automationLevel" default="MANUAL"
+									type="cs:AutomationLevel" />
+						<xs:element minOccurs="1" maxOccurs="100" name="renewalRequestData" type="xs:base64Binary" />
+					</xs:sequence>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="AutomaticRenewCredentialResponse">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="cs:CSResponse">
+					<xs:sequence>
+						<xs:element minOccurs="1" maxOccurs="100" name="renewedCredential">
+							<xs:complexType>
+								<xs:sequence>
+									<xs:element maxOccurs="1" minOccurs="1"
+												name="originalCredentialId" type="cs:notemptystring" />
+									<xs:element maxOccurs="1" minOccurs="1"
+												name="credential" type="cs:Credential" />
+								</xs:sequence>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+
+</xs:schema>

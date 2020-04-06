@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<project name="Maven" xmlns="http://maven.apache.org/DECORATION/1.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/DECORATION/1.0.0 http://maven.apache.org/xsd/decoration-1.0.0.xsd">
+         
+    <bannerLeft>
+        <name>PKI Messages API</name>
+        <src>images/logo.png</src>
+        <href>http://www.logica.se</href>
+    </bannerLeft>
+
+    <skin>
+        <groupId>org.apache.maven.skins</groupId>
+        <artifactId>maven-fluido-skin</artifactId>
+        <version>1.2.1</version>
+    </skin>
+    <custom>
+        <fluidoSkin>
+            <sideBarEnabled>true</sideBarEnabled>
+        </fluidoSkin>
+    </custom>
+
+
+    <body>
+        <menu ref="reports"/>
+
+        <menu name="Documentation">
+            <item name="Readme" href="index.html"/>
+            <item name="LICENSE" href="LICENSE.txt"/>
+            <item name="CS Message Protocol 2.0 Specification" href="CSMessage_Protocol_Specification_2.0_Revision_1.1.doc"/>
+            <item name="CS Message Protocol 2.1 Specification" href="CSMessage_Protocol_Specification_2.1_Revision_1.0.doc"/>
+            <item name="CS Message Protocol 2.2 Specification" href="CSMessage_Protocol_Specification_2.2_Revision_1.0.doc"/>
+            <item name="Assertion Protocol 2.0 Specification" href="Assertion_Protocol_Specification_2.0_Revision_1.2.doc"/>
+            <item name="Encrypted CS Message 2.0 Specification" href="Encrypted_CS_Message_Protocol_Specification_2.0_Revision_1.0.doc"/>
+            <item name="Credential Manangement 2.0 Specification" href="Credential_Management_Protocol_Specification_2.0_Revision_1.1.doc"/>
+            <item name="Credential Manangement 2.1 Specification" href="Credential_Management_Protocol_Specification_2.1_Revision_1.2.doc"/>
+            <item name="Credential Manangement 2.2 Specification" href="Credential_Management_Protocol_Specification_2.2_Revision_1.0.doc"/>
+            <item name="Credential Manangement 2.3 Specification" href="Credential_Management_Protocol_Specification_2.3_Revision_1.0.doc"/>
+            <item name="Key Store Message 2.0 Specification" href="KeyStore_Management_Protocol_Specification_2.0_Revision_1.0.doc"/>
+            <item name="System Configuration 2.0 Specification" href="System_Configuration_Protocol_Specification_2.0_Revision_1.0.doc"/>
+            <item name="Authorization Protocol 2.0 Specification" href="Authorization_Protocol_Specification_2.0_Revision_1.1.doc"/>
+            <item name="Hard Token Protocol 2.0 Specification" href="HardToken_Protocol_Specification_2.0_Revision_1.0.doc"/>
+            <item name="CS Export Protocol 2.0 Specification" href="CS_Export_Protocol_Specification_2.0_Revision_1.0.doc"/>
+            <item name="Auto Enroll Protocol 2.0 Specification" href="AutoEnroll_Protocol_Specification_2.0_Revision_1.4.doc"/>
+            <item name="Sensitive Key Protocol 2.0 Specification" href="Sensitive_Key_Protocol_Specification_2.0_Revision_1.0.doc"/>
+            <item name="CS Agent Protocol 2.0 Specification" href="CS_Agent_Protocol_Specification_2.0_Revision_1.0.doc"/>
+            <item name="PKI Message 1.0 Specification, Rev 1.1" href="PKIMessage_Protocol_Specification_1.0_Revision_1.1.doc"/>
+        </menu>
+
+
+    </body>
+</project>

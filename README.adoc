@@ -1,0 +1,238 @@
+= Certservice-messages Project
+
+This a project containing Java code to generate and parse various messages within other certservice projects.
+
+It mainly consists of the following parts:
+
+* 
+
+CS Message 2.0 (core message format) with a set of Payload Parsers (which also are generators).
+
+** Credential Management Payload Parser
+** Key Store Managment Payload Parser
+** System Configuration Payload Parser
+** Assertion Payload Parser
+** Authorization Payload Parser
+** Encrypted CS Message Payload Parser
+* 
+
+PKI Message generator (Older core message format) containing messages for credential management. 
+
+* 
+
+Framework for generating and parsing Receipt Messages (but no actual message implementation exists in this project. See org.certificateservices.messages.receipts package for details. To implement a custom kind of receipt message used by certservice-ejbcacomponents or certservice-ejbcaproviders implement a custom RecieptParser, add the jar to the main applications classpath and use settings defined in certservice-ejbcacomponents or certservice-ejbcaproviders to specify your implementation.
+
+* 
+
+Framework for generating and parsing Heartbeat Messages (but no actual message implementation exists in this project. See org.certificateservices.messages.heartbeat package for details. To implement a custom kind of receipt message used by certservice-ejbcacomponents or certservice-ejbcaproviders implement a custom HeartBeatParser, add the jar to the main applications classpath and use settings defined in certservice-ejbcacomponents or certservice-ejbcaproviders to specify your implementation.
+
+== Message Specification Documentation
+
+For detailed documentation of each available message and its content see directory src/site/resources.
+
+== Using CS Message 2.0 Framework to generate or parse messages.
+
+Before you start generating or parsing a CS Message 2.0 you need to initialize it once using a call to org.certificateservices.messages.csmessages.initCSMessageParser(MessageSecurityProvider securityProvider, Properties config). You can later retrieve the CSMessageParser using the getCSMessageParser() metod. As security provider you can either implement your own of use the org.certificateservices.messages.SimpleMessageSecurityProvider.
+
+== Main Configuration Settings
+
+By default is the DefaultCSMessageManager returned, but a custom implementation implementing CSMessageParser can be used as well
+
+Settings for the configuration manager are:
+
+|===
+|Key |Description |Default value 
+
+|csmessage.parser.impl |Implementation of CS Message Parser that should be used. |org.certificateservices.messages.csmessages.DefaultCSMessageParser 
+|===
+
+== DefaultCSMessageParser Settings
+
+The default CS Message Parser have the following setting (pkimessage variants of the key is accepted for backward compability, see section for PKI Messages):
+
+|===
+|Key |Description |Default value 
+
+|csmessage.sourceid |Source Id system sending messages, _(Required)_ |No Default 
+|csmessage.sign |If generated messages should be signed. |true 
+|csmessage.requiresignature |If parsed message has to have a valid signature. |true 
+|csmessage.messagenamecatalogue.impl |If custom message name catalogue should be used. |See below 
+|===
+
+As default is Default Message Name Catalogue (setting the 'name' element in the message header), The default implementation takes the element name of the payload and sets it as message name. But specific organisations might have their own custom message names.
+
+== SimpleMessageSecurityProvider Settings.
+
+The simple message security provider uses a set of JKS as backend storage of its keys and have
+the following settings.
+
+|===
+|Key |Description |Default value 
+
+|simplesecurityprovider.signingkeystore.path |Setting indicating the path to the signing JKS key store _(Required)_ |No Default 
+|simplesecurityprovider.signingkeystore.password |Setting indicating the password to the signing key store _(Required)_ |No Default 
+|simplesecurityprovider.signingkeystore.alias |The alias of the certificate to use in the signing key store _(Required)_ |No Default 
+|simplesecurityprovider.decryptkeystore.path |The path to the decrypt JKS key store (optional, if not set is signing keystore used for both signing and encryption) |No Default 
+|simplesecurityprovider.decryptkeystore.password |The password to the decrypt JKS key store (optional, if not set is signing keystore used for both signing and encryption) |No Default 
+|simplesecurityprovider.decryptkeystore.defaultkey.alias |the alias of the decryption key to use if no specific key is known. (optional, if not set is same as signing keystore alias used.) |No Default 
+|simplesecurityprovider.trustkeystore.path |The path to the trust JKS key store _(Required)_ |No Default 
+|simplesecurityprovider.trustkeystore.password |The password to the trust JKS key store _(Required)_ |No Default 
+|simplesecurityprovider.signature.algorithm |Signature algorithm scheme to use, possible values are: RSAWithSHA256, RSAWithSHA512, ECDSAWithSHA256, ECDSAWithSHA512 |RSAWithSHA256 
+|simplesecurityprovider.encryption.algorithm |Encryption algorithm scheme to use, possible values are: RSA_PKCS1_5_WITH_AES128, RSA_OAEP_WITH_AES128, RSA_PKCS1_5_WITH_AES192, RSA_OAEP_WITH_AES192, RSA_PKCS1_5_WITH_AES256, RSA_OAEP_WITH_AES256 |RSA_OAEP_WITH_AES256 
+|===
+
+== PKCS11MessageSecurityProvider Settings.
+
+PKCS#11 message security provider supports the use of a hardware security module or smartcard to store cryptographic material and to perform cryptographic operations. The following settings can be used to configure the provider.
+
+|===
+|Key |Description |Default value 
+
+|pkcs11securityprovider.library.path |Path to PKCS#11 library to use when communicating with the hardware token. _(Required)_ |No default 
+|pkcs11securityprovider.slot |PKCS#11 Slot to use when connecting to the token. _(Required)_ |No default 
+|pkcs11securityprovider.slot.password |Password that is used when logging in to token. _(Required)_ |No default 
+|pkcs11securityprovider.signingkey.alias |Alias of key to use for signature operations. If not specified the first key found will be used. |No default 
+|pkcs11securityprovider.decryptkey.default.alias |Alias of default key to use for decryption operations. If not specified the signing key will be used. |_Sign key alias_ 
+|pkcs11securityprovider.truststore.path |Path to separate truststore to use when validating certificates. If not specified the PKCS#11 token is used as truststore. |No default 
+|pkcs11securityprovider.truststore.password |Password that is used when loading separate truststore. |No default 
+|pkcs11securityprovider.signature.algorithm |Signature algorithm scheme to use, possible values are: RSAWithSHA256, RSAWithSHA512, ECDSAWithSHA256, ECDSAWithSHA512 |RSAWithSHA256 
+|pkcs11securityprovider.encryption.algorithm |Encryption algorithm scheme to use, possible values are: RSA_PKCS1_5_WITH_AES128, RSA_OAEP_WITH_AES128, RSA_PKCS1_5_WITH_AES192, RSA_OAEP_WITH_AES192, RSA_PKCS1_5_WITH_AES256, RSA_OAEP_WITH_AES256 |RSA_OAEP_WITH_AES256 
+|===
+
+== Generating CS 2.0 Messages using payload parser.
+
+After initializing the CS Message Parser it is possible to generate messages using a payload parser. Payload parser can be retrived from org.certificateservices.messages.csmessages.PayloadParserRegistry using the method getParser(String namespace). It is also possible to add your own implementations of a payload parser by using the register() method.
+
+For examples on using the payload parser, especially on using it in combination with assertions. See work-flow examples in src/test/groovy/org/certificateservices/messages/csmessages/examples directory.
+
+=== Available Payload Parsers.
+
+The following build in pay load parser exists.
+
+* 
+
+Credential Management Payload Parser, to generate credential management messages, See org.certificateservices.messages.credmanagement.CredManagementPayloadParser
+
+* 
+
+Key Store Managment Payload Parser for generate key store management messages, see org.certificateservices.messages.keystoremgmt.KeystoreMgmtPayloadParser
+
+* 
+
+System Configuration Payload Parser to generate system configuration messages, see org.certificateservices.messages.sysconfig.SysConfigPayloadParser
+
+* 
+
+Assertion Payload Parser to generate assertions inserted into other payload messages, see org.certificateservices.messages.assertion.AssertionPayloadParser
+
+* 
+
+Encrypted CS Message Payload Parser, not actually a payload but encrypts an entire CS Message into an Encrypted variant, see org.certificateservices.messages.encryptedcsmessage.EncryptedCSMessagePayloadParser
+
+== Generating older PKI Messages
+
+PKI Message was the first generation messages sent between clients and CA, mainly for requesting certificates.
+
+To start generating or parsing messages create a PKI Message Parser using the org.certificateservices.messages.pkimessages.PKIMessageParserFactory
+and instansiate a parser with the method genPKIMessageParser(MessageSecurityProvider securityProvider, Properties config). The MessageSecurityProvider
+is the same as for CS Message Parser but doens't use any encryption functionality. 
+
+== Main Configuration Settings
+
+The following general setting exists for PKI Message Parsers:
+
+|===
+|Key |Description |Default value 
+
+|pkimessage.parser.impl |Implementation of PKI Message Parser that should be used. |org.certificateservices.messages.pkimessages.DefaultPKIMessageParser 
+|===
+
+== DefaultCSMessageParser Settings
+
+For the DefaultPKIMessageParser also exists the following settings:
+
+|===
+|Key |Description |Default value 
+
+|pkimessage.sourceid |Source Id system sending messages, _(Required)_ |No Default 
+|pkimessage.sign |If generated messages should be signed. |true 
+|pkimessage.requiresignature |If parsed message has to have a valid signature. |true 
+|pkimessage.messagenamecatalogue.impl |If custom message name catalogue should be used. |See below 
+|===
+
+== For Developers of this API
+
+This is a maven project, just check-it out and build with mvn 2 and java 6 +:
+
+Main command to build a binary distribution is:
+
+== Other commands:
+
+To clean:
+
+[source]
+----
+mvn clean
+----
+
+To compile:
+
+[source]
+----
+mvn compile
+----
+
+To test:
+
+[source]
+----
+mvn test
+----
+
+To package (This generates both a binary and source distribution):
+
+[source]
+----
+mvn package
+----
+
+To build site:
+
+[source]
+----
+mvn site
+----
+
+To build site with code coverage report (integration tests must have been setup first):
+
+[source]
+----
+mvn clean verify site -Pclover.report
+----
+
+== How to generate JAXB Class from XSD and Episode files
+
+All XSD and episode files is in src/main/resources, episode files is to link existing classes from imported schemas such as xmldsig without
+having to generate new classes. To generate use the following command (for multiple episode files use multible -b options)
+
+[source]
+----
+xjc -d 'outputdir' 'xsd schema file' -p 'package name' -extension -b src/main/resources/'filename' -b src/main/resources/'filename' -disableXmlSecurity
+----
+
+For example:
+
+[source]
+----
+xjc -d src/main/java src/main/resources/credmanagement_schema2_0.xsd -p org.certificateservices.messages.credmanagement.jaxb  -extension -b src/main/resources/csmessage-episode-jaxbbindings.xml -b src/main/resources/xmldsig-episode-jaxbbindings.xml -disableXmlSecurity
+----
+
+When generating jaxb code is usually not the correct xml prefixes set, this has to be configured manually in package-info.java class. Remember that when
+regenerating the code using xjc is this information overwritten.
+
+To save the result in a separate episode file for generation of dependencies add the parameter -episode 'filename'.
+
+== Eclipse notes
+
+Import the project with a eclipse supporting maven 2 and almost everything should be set-up
+automatically, only add src/test/groovy as source folder and you should be ready to go.

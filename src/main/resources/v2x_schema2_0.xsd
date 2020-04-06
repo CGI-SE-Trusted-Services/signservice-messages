@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:tns="http://certificateservices.org/xsd/v2x_2_0"
+	xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+	xmlns:cs="http://certificateservices.org/xsd/csmessages2_0"
+	elementFormDefault="qualified" targetNamespace="http://certificateservices.org/xsd/v2x_2_0"
+	version="2.0">
+
+	<xs:import namespace="http://certificateservices.org/xsd/csmessages2_0"
+		schemaLocation="csmessages_schema2_2.xsd" />
+
+	<xs:simpleType name="CanonicalIdType">
+		<xs:restriction base="xs:string">
+			<xs:minLength value="1" />
+			<xs:maxLength value="256" />
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:simpleType name="ProfileNameType">
+		<xs:restriction base="xs:string">
+			<xs:minLength value="1" />
+			<xs:maxLength value="1024" />
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:simpleType name="ITSSStatusType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="ACTIVE"/>
+			<xs:enumeration value="INACTIVE"/>
+			<xs:enumeration value="NOTYETVALID"/>
+			<xs:enumeration value="EXPIRED"/>
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:simpleType name="PermissionType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="opaque"/>
+			<xs:enumeration value="bitmap"/>
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:simpleType name="PermissionDataType">
+		<xs:restriction base="xs:string">
+			<xs:minLength value="1" />
+			<xs:maxLength value="5000" />
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:complexType name="AppPermissionsType" >
+		<xs:simpleContent>
+			<xs:extension base="tns:PermissionDataType">
+				<xs:attribute name="psId" use="required" type="xs:int"/>
+				<xs:attribute name="type" default="bitmap" type="tns:PermissionType"/>
+			</xs:extension>
+		</xs:simpleContent>
+	</xs:complexType>
+
+	<xs:complexType name="RegionsType">
+		<xs:choice>
+			<xs:element minOccurs="1" maxOccurs="1" name="identifiedRegions">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element minOccurs="0" maxOccurs="1024" name="countryOnly"
+									type="xs:int" />
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:choice>
+	</xs:complexType>
+
+	<xs:complexType name="ATAppPermissionsType">
+		<xs:sequence>
+			<xs:element minOccurs="1" maxOccurs="256" name="appPermission"
+						type="tns:AppPermissionsType" />
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="CanonicalKeyType">
+		<xs:choice>
+			<xs:element minOccurs="1" maxOccurs="1" name="publicVerificationKey" type="xs:base64Binary"/>
+		</xs:choice>
+	</xs:complexType>
+
+	<xs:complexType name="BaseRegisterRequestType">
+		<xs:complexContent>
+			<xs:extension base="cs:CSRequest">
+				<xs:sequence>
+					<xs:element minOccurs="1" maxOccurs="1" name="canonicalId" type="tns:CanonicalIdType"/>
+					<xs:element minOccurs="0" maxOccurs="1" name="ecProfile" type="tns:ProfileNameType" />
+					<xs:element minOccurs="0" maxOccurs="1" name="atProfile" type="tns:ProfileNameType" />
+					<xs:element minOccurs="0" maxOccurs="1" name="itssValidFrom" type="xs:dateTime"/>
+					<xs:element minOccurs="0" maxOccurs="1" name="itssValidTo" type="xs:dateTime"/>
+					<xs:element minOccurs="0" maxOccurs="1" name="regions" type="tns:RegionsType"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+
+	<xs:complexType name="BaseV2XResponseType">
+		<xs:complexContent>
+			<xs:extension base="cs:CSResponse">
+				<xs:sequence>
+					<xs:element minOccurs="1" maxOccurs="1" name="canonicalId" type="tns:CanonicalIdType"/>
+					<xs:element minOccurs="1" maxOccurs="1" name="ecuType"  type="cs:notemptystring" />
+					<xs:element minOccurs="1" maxOccurs="1" name="canonicalPublicKey" type="tns:CanonicalKeyType"/>
+					<xs:element minOccurs="1" maxOccurs="1" name="eaName" type="tns:ProfileNameType"/>
+					<xs:element minOccurs="0" maxOccurs="1" name="ecProfile" type="tns:ProfileNameType"/>
+					<xs:element minOccurs="0" maxOccurs="1" name="atProfile" type="tns:ProfileNameType"/>
+					<xs:element minOccurs="1" maxOccurs="1" name="atPermissions" type="tns:ATAppPermissionsType"/>
+					<xs:element minOccurs="0" maxOccurs="1" name="itssValidFrom" type="xs:dateTime"/>
+					<xs:element minOccurs="0" maxOccurs="1" name="itssValidTo" type="xs:dateTime"/>
+					<xs:element minOccurs="0" maxOccurs="1" name="regions" type="tns:RegionsType"/>
+					<xs:element minOccurs="1" maxOccurs="1" name="itssStatus" type="tns:ITSSStatusType"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+
+	<xs:element name="RegisterITSSRequest">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="tns:BaseRegisterRequestType">
+					<xs:sequence>
+						<xs:element minOccurs="1" maxOccurs="1" name="ecuType"  type="cs:notemptystring" />
+						<xs:element minOccurs="1" maxOccurs="1" name="canonicalPublicKey" type="tns:CanonicalKeyType"/>
+						<xs:element minOccurs="1" maxOccurs="1" name="eaName" type="tns:ProfileNameType"/>
+						<xs:element minOccurs="1" maxOccurs="1" name="atPermissions" type="tns:ATAppPermissionsType"/>
+					</xs:sequence>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="RegisterITSSResponse">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="tns:BaseV2XResponseType"/>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="UpdateITSSRequest">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="tns:BaseRegisterRequestType">
+					<xs:sequence>
+						<xs:element minOccurs="0" maxOccurs="1" name="canonicalPublicKey" type="tns:CanonicalKeyType"/>
+						<xs:element minOccurs="0" maxOccurs="1" name="eaName" type="tns:ProfileNameType"/>
+						<xs:element minOccurs="0" maxOccurs="1" name="atPermissions" type="tns:ATAppPermissionsType"/>
+					</xs:sequence>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="UpdateITSSResponse">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="tns:BaseV2XResponseType"/>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="GetITSSDataRequest">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="cs:CSRequest">
+					<xs:sequence>
+						<xs:element minOccurs="1" maxOccurs="1" name="canonicalId" type="tns:CanonicalIdType"/>
+					</xs:sequence>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="GetITSSDataResponse">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="tns:BaseV2XResponseType"/>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="DeactivateITSSRequest">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="cs:CSRequest">
+					<xs:sequence>
+						<xs:element minOccurs="1" maxOccurs="1" name="canonicalId" type="tns:CanonicalIdType"/>
+					</xs:sequence>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="DeactivateITSSResponse">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="tns:BaseV2XResponseType"/>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="ReactivateITSSRequest">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="cs:CSRequest">
+					<xs:sequence>
+						<xs:element minOccurs="1" maxOccurs="1" name="canonicalId" type="tns:CanonicalIdType"/>
+					</xs:sequence>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="ReactivateITSSResponse">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="tns:BaseV2XResponseType"/>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+	
+</xs:schema>

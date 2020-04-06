@@ -1,0 +1,37 @@
+task zipBin(type: Zip) {
+    String projectBaseName = rootProject.name + "-${project.ext.get('shortVersionNumber')}"
+    archiveName = projectBaseName + '-bin.zip'
+
+    from(projectDir) {
+        include('README.adoc')
+        include('LICENSE.txt')
+        into(projectBaseName)
+    }
+    from('src/main/resources/') {
+        include('requestcertificate.properties')
+        include('*.jks')
+        into(projectBaseName)
+    }
+    from('src/main/resources/') {
+        include('requestcertificate.sh')
+        fileMode = 0755
+        into(projectBaseName)
+    }
+    from('src/test/resources/') {
+        include('log4j.properties')
+        into(projectBaseName)
+    }
+    from('build/libs/') {
+        include(rootProject.name + "-${project.version}.jar")
+        into(projectBaseName)
+    }
+
+    from(configurations.runtime) {
+        exclude('*-sources.jar')
+        exclude('*-javadoc.jar')
+        into(projectBaseName + '/lib/')
+    }
+    from('build/assemblepom') {
+        into(projectBaseName + '/repository/')
+    }
+}

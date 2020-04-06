@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:tns="http://certificateservices.org/xsd/cs_export_protocol2_0"
+	xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+	xmlns:cs="http://certificateservices.org/xsd/csmessages2_0"
+	elementFormDefault="qualified" targetNamespace="http://certificateservices.org/xsd/cs_export_protocol2_0"
+	version="2.0">
+
+	<xs:import namespace="http://certificateservices.org/xsd/csmessages2_0"
+		schemaLocation="csmessages_schema2_0.xsd" />
+
+	<xs:complexType name="QueryParameter">
+		<xs:sequence>
+			<xs:element minOccurs="1" maxOccurs="1" name="type" type="cs:notemptystring" />
+			<xs:element minOccurs="0" maxOccurs="1" name="value" type="cs:notemptystring" />
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="Result">
+		<xs:sequence>
+			<xs:any namespace="##any" processContents="lax" minOccurs="1"
+					maxOccurs="1" />
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:element name="GetCSExportRequest">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="cs:CSRequest">
+					<xs:sequence>
+					  <xs:element minOccurs="0" maxOccurs="1" name="queryParameters">
+						<xs:complexType>
+							<xs:sequence>
+								<xs:element minOccurs="1" maxOccurs="unbounded" name="queryParameter"
+											type="tns:QueryParameter" />
+							</xs:sequence>
+						</xs:complexType>
+					  </xs:element>
+					</xs:sequence>
+					<xs:attribute name="exportDataVersion" type="cs:notemptystring" use="required" />
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="GetCSExportResponse">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="cs:CSResponse">
+				  <xs:sequence>
+					<xs:element minOccurs="1" maxOccurs="1" name="result" type="tns:Result"/>
+				  </xs:sequence>
+				  <xs:attribute name="exportDataVersion" type="cs:notemptystring" use="required" />
+				</xs:extension>
+            </xs:complexContent>
+        </xs:complexType>
+    </xs:element>
+
+
+	
+</xs:schema>
