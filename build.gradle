@@ -1,8 +1,6 @@
 group = 'org.certificateservices.messages'
-version = 'LATEST'
 description = 'certservice-messages'
 
-apply plugin: 'org.certificateservices.gradle.certservice-gradle-plugin'
 
 certserviceSettings {
     signjar = true
@@ -16,17 +14,6 @@ dependencies {
     testCompile 'org.eclipse.jetty:jetty-server:9.3.9.v20160517'
 }
 
-buildscript {
-    repositories {
-        maven { url "https://repo.certificateservices.se/artifactory/libs-release-local" }
-        mavenCentral()
-        jcenter()
-    }
-
-    dependencies {
-        classpath 'org.certificateservices.gradle:certservice-gradle-plugin:latest.release'
-    }
-}
 
 tasks.withType(JavaCompile) {
     options.encoding = 'UTF-8'

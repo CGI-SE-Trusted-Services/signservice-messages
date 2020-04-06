@@ -1,5 +1,5 @@
 task zipSrc(type: Zip) {
-    String projectBaseName = rootProject.name + "-${project.ext.get('shortVersionNumber')}"
+    String projectBaseName = project.name + "-${project.ext.get('shortVersionNumber')}"
     archiveName = projectBaseName + '-src.zip'
 
     from(projectDir) {

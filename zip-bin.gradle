@@ -1,5 +1,5 @@
 task zipBin(type: Zip) {
-    String projectBaseName = rootProject.name + "-${project.ext.get('shortVersionNumber')}"
+    String projectBaseName = project.name + "-${project.ext.get('shortVersionNumber')}"
     archiveName = projectBaseName + '-bin.zip'
 
     from(projectDir) {
@@ -22,7 +22,7 @@ task zipBin(type: Zip) {
         into(projectBaseName)
     }
     from('build/libs/') {
-        include(rootProject.name + "-${project.version}.jar")
+        include(project.name + "-${project.version}.jar")
         into(projectBaseName)
     }
 
