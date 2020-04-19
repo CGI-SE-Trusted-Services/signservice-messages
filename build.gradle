@@ -1,6 +1,8 @@
 group = 'org.certificateservices.messages'
 description = 'certservice-messages'
 
+sourceCompatibility = 1.7
+targetCompatibility = 1.7
 
 certserviceSettings {
     signjar = true

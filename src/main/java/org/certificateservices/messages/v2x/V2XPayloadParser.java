@@ -184,10 +184,29 @@ public class V2XPayloadParser extends BasePayloadParser {
 	}
 
 	/**
+	 * Method generate a Register ITSS Response Message from a pre-populated RegisterITSSResponse.
+	 *
+	 * @param relatedEndEntity the name of the related end entity (such as username of the related user)
+	 * @param request the related request
+	 * @param payload a pre-populated RegisterITSSResponse payload.
+	 * @return a generated and signed message.
+	 *
+	 * @throws MessageContentException if input data contained invalid format.
+	 * @throws MessageProcessingException if internal problems occurred processing the cs message.
+	 */
+	public CSMessageResponseData generateRegisterITSSResponse(String relatedEndEntity, CSMessage request,
+															  RegisterITSSResponse payload)
+			throws MessageContentException, MessageProcessingException{
+		return getCSMessageParser().generateCSResponseMessage(relatedEndEntity, request, request.getPayLoadVersion(), payload);
+	}
+
+	/**
 	 * Method generate a Update ITSS Request Message. Fields that are null will not be updated.
 	 *
 	 * @param requestId  id of request to send.
 	 * @param destinationId the destination Id to use.
+	 * @param ecuType Type of ECU used for the ITS station, used to verify against available values in profile and when
+	 *                defining assurance level.
 	 * @param canonicalId the canonical name of the ITS to register. Should be a unique identifier. (Required)
 	 * @param canonicalSignPubKey the initial ec sign public key as a COER encoded PublicVerificationKey from ETSI 103 097.
 	 * @param eaName name of EA that the ITSS should be associated with.
@@ -209,7 +228,8 @@ public class V2XPayloadParser extends BasePayloadParser {
 	 * @throws MessageContentException if input data contained invalid format.
 	 * @throws MessageProcessingException if internal problems occurred processing the cs message.
 	 */
-	public byte[] generateUpdateITSSRequest(String requestId, String destinationId, String organisation, String canonicalId,
+	public byte[] generateUpdateITSSRequest(String requestId, String destinationId, String organisation, String ecuType,
+											String canonicalId,
 										   byte[] canonicalSignPubKey, String eaName, String ecProfile,
 										   String atProfile, List<AppPermissionsType> atAppPermissions,
 										   Date itssValidFrom, Date itssValidTo, RegionsType regions,
@@ -217,6 +237,7 @@ public class V2XPayloadParser extends BasePayloadParser {
 			throws MessageContentException, MessageProcessingException{
 		UpdateITSSRequest payload = of.createUpdateITSSRequest();
 		payload.setEaName(eaName);
+		payload.setEcuType(ecuType);
 		payload.setCanonicalPublicKey(createCanonicalKeyType(canonicalSignPubKey));
 		if(atAppPermissions != null){
 			ATAppPermissionsType atAppPermissionsType = of.createATAppPermissionsType();
@@ -273,12 +294,33 @@ public class V2XPayloadParser extends BasePayloadParser {
 	}
 
 	/**
+	 * Method generate a Update ITSS Response Message from a pre-populated UpdateITSSResponse
+	 *
+	 * @param relatedEndEntity the name of the related end entity (such as username of the related user)
+	 * @param request the related request
+	 * @param relatedEndEntity the name of the related end entity (such as username of the related user)
+	 * @param request the related request
+	 * @param payload a pre-populated UpdateITSSResponse payload.
+	 * @return a generated and signed message.
+	 *
+	 * @throws MessageContentException if input data contained invalid format.
+	 * @throws MessageProcessingException if internal problems occurred processing the cs message.
+	 */
+	public CSMessageResponseData generateUpdateITSSResponse(String relatedEndEntity, CSMessage request,
+															UpdateITSSResponse payload)
+			throws MessageContentException, MessageProcessingException{
+		return getCSMessageParser().generateCSResponseMessage(relatedEndEntity, request, request.getPayLoadVersion(),
+				payload);
+	}
+
+	/**
 	 * Method generate a Get ITSS Data Request Message.
 	 *
 	 * @param requestId  id of request to send.
 	 * @param destinationId the destination Id to use.
 	 * @param organisation the related organisation (short name)
 	 * @param canonicalId the canonical name of the ITS to register. Should be a unique identifier.
+	 * @param includeEC if issued enrolment credentials should be returned in the response.
 	 * @param originator the credential of the original requester, null if this is the origin of the request.
 	 * @param assertions a list of related authorization assertions, or null if no authorization assertions is available.
 	 * @return  a generated and signed (if configured) message.
@@ -286,11 +328,15 @@ public class V2XPayloadParser extends BasePayloadParser {
 	 * @throws MessageContentException if input data contained invalid format.
 	 * @throws MessageProcessingException if internal problems occurred processing the cs message.
 	 */
-	public byte[] generateGetITSSDataRequest(String requestId, String destinationId, String organisation, String canonicalId,
+	public byte[] generateGetITSSDataRequest(String requestId, String destinationId, String organisation,
+											 String canonicalId, boolean includeEC,
 											Credential originator, List<Object> assertions)
 			throws MessageContentException, MessageProcessingException{
 		GetITSSDataRequest payload = of.createGetITSSDataRequest();
 		payload.setCanonicalId(canonicalId);
+		if(includeEC) {
+			payload.setIncludeEC(includeEC);
+		}
 
 		return getCSMessageParser().generateCSRequestMessage(requestId, destinationId, organisation, getPayloadVersion(),
 				payload, originator, assertions);
@@ -328,12 +374,36 @@ public class V2XPayloadParser extends BasePayloadParser {
 															CanonicalKeyType canonicalKeyType, String eaName,
 															String ecProfile, String atProfile,
 															List<AppPermissionsType> atAppPermissions, Date itssValidFrom,
-															Date itssValidTo, RegionsType regions, ITSSStatusType itsStatus)
+															Date itssValidTo, RegionsType regions,
+															ITSSStatusType itsStatus,
+															List<EnrolmentCredentialType> enrolmentCredentials)
 			throws MessageContentException, MessageProcessingException{
 		GetITSSDataResponse payload = of.createGetITSSDataResponse();
 
 		populateBaseV2XResponseType(payload,ecuType,canonicalId,canonicalKeyType,eaName,
 				ecProfile,atProfile,atAppPermissions,itssValidFrom,itssValidTo,regions,itsStatus);
+		if(enrolmentCredentials != null){
+			EnrolmentCredentialsType enrolmentCredentialsType = of.createEnrolmentCredentialsType();
+			enrolmentCredentialsType.getEc().addAll(enrolmentCredentials);
+			payload.setEnrolmentCredentials(enrolmentCredentialsType);
+		}
+		return getCSMessageParser().generateCSResponseMessage(relatedEndEntity, request, request.getPayLoadVersion(), payload);
+	}
+
+	/**
+	 * Method generate a Get ITSS Data Response Message from a pre-populated GetITSSDataResponse.
+	 *
+	 * @param relatedEndEntity the name of the related end entity (such as username of the related user)
+	 * @param request the related request
+	 * @param payload a pre-populated GetITSSDataResponse payload.
+	 * @return a generated and signed message.
+	 *
+	 * @throws MessageContentException if input data contained invalid format.
+	 * @throws MessageProcessingException if internal problems occurred processing the cs message.
+	 */
+	public CSMessageResponseData generateGetITSDataResponse(String relatedEndEntity, CSMessage request,
+															GetITSSDataResponse payload)
+			throws MessageContentException, MessageProcessingException{
 		return getCSMessageParser().generateCSResponseMessage(relatedEndEntity, request, request.getPayLoadVersion(), payload);
 	}
 
@@ -352,7 +422,7 @@ public class V2XPayloadParser extends BasePayloadParser {
 	 * @throws MessageProcessingException if internal problems occurred processing the cs message.
 	 */
 	public byte[] generateDeactivateITSSRequest(String requestId, String destinationId, String organisation, String canonicalId,
-											   Credential originator, List<Object> assertions)
+												Credential originator, List<Object> assertions)
 			throws MessageContentException, MessageProcessingException{
 		DeactivateITSSRequest payload = of.createDeactivateITSSRequest();
 		payload.setCanonicalId(canonicalId);
@@ -389,17 +459,36 @@ public class V2XPayloadParser extends BasePayloadParser {
 	 * @throws MessageProcessingException if internal problems occurred processing the cs message.
 	 */
 	public CSMessageResponseData generateDeactivateITSSResponse(String relatedEndEntity, CSMessage request,
-															   String ecuType, String canonicalId,
-															   CanonicalKeyType canonicalKey,
-															   String eaName,
-															   String ecProfile, String atProfile,
-															   List<AppPermissionsType> atAppPermissions, Date itssValidFrom,
-															   Date itssValidTo, RegionsType regions, ITSSStatusType itsStatus)
+																String ecuType, String canonicalId,
+																CanonicalKeyType canonicalKey,
+																String eaName,
+																String ecProfile, String atProfile,
+																List<AppPermissionsType> atAppPermissions, Date itssValidFrom,
+																Date itssValidTo, RegionsType regions,
+																ITSSStatusType itsStatus)
 			throws MessageContentException, MessageProcessingException{
 		DeactivateITSSResponse payload = of.createDeactivateITSSResponse();
 
 		populateBaseV2XResponseType(payload,ecuType,canonicalId,canonicalKey,eaName,ecProfile,atProfile,
 				atAppPermissions, itssValidFrom,itssValidTo,regions,itsStatus);
+		return getCSMessageParser().generateCSResponseMessage(relatedEndEntity, request, request.getPayLoadVersion(),
+				payload);
+	}
+
+	/**
+	 * Method generate a Deactivate ITSS Response Message from a pre-populated DeactivateITSSResponse.
+	 *
+	 * @param relatedEndEntity the name of the related end entity (such as username of the related user)
+	 * @param request the related request
+	 * @param payload a pre-populated DeactivateITSSResponse payload.
+	 * @return a generated and signed message.
+	 *
+	 * @throws MessageContentException if input data contained invalid format.
+	 * @throws MessageProcessingException if internal problems occurred processing the cs message.
+	 */
+	public CSMessageResponseData generateDeactivateITSSResponse(String relatedEndEntity, CSMessage request,
+																DeactivateITSSResponse payload)
+			throws MessageContentException, MessageProcessingException{
 		return getCSMessageParser().generateCSResponseMessage(relatedEndEntity, request, request.getPayLoadVersion(),
 				payload);
 	}
@@ -419,7 +508,7 @@ public class V2XPayloadParser extends BasePayloadParser {
 	 * @throws MessageProcessingException if internal problems occurred processing the cs message.
 	 */
 	public byte[] generateReactivateITSSRequest(String requestId, String destinationId, String organisation, String canonicalId,
-											   Credential originator, List<Object> assertions)
+												Credential originator, List<Object> assertions)
 			throws MessageContentException, MessageProcessingException{
 		ReactivateITSSRequest payload = of.createReactivateITSSRequest();
 		payload.setCanonicalId(canonicalId);
@@ -456,16 +545,34 @@ public class V2XPayloadParser extends BasePayloadParser {
 	 * @throws MessageProcessingException if internal problems occurred processing the cs message.
 	 */
 	public CSMessageResponseData generateReactivateITSSResponse(String relatedEndEntity, CSMessage request,
-															   String ecuType, String canonicalId,
-															   CanonicalKeyType canonicalKey, String eaName,
-															   String ecProfile, String atProfile,
-															   List<AppPermissionsType> atAppPermissions, Date itssValidFrom,
-															   Date itssValidTo, RegionsType regions, ITSSStatusType itsStatus)
+																String ecuType, String canonicalId,
+																CanonicalKeyType canonicalKey, String eaName,
+																String ecProfile, String atProfile,
+																List<AppPermissionsType> atAppPermissions, Date itssValidFrom,
+																Date itssValidTo, RegionsType regions, ITSSStatusType itsStatus)
 			throws MessageContentException, MessageProcessingException{
 		ReactivateITSSResponse payload = of.createReactivateITSSResponse();
 
 		populateBaseV2XResponseType(payload,ecuType,canonicalId,canonicalKey,eaName,ecProfile,atProfile,
 				atAppPermissions, itssValidFrom,itssValidTo,regions,itsStatus);
+		return getCSMessageParser().generateCSResponseMessage(relatedEndEntity, request, request.getPayLoadVersion(),
+				payload);
+	}
+
+	/**
+	 * Method generate a Reactivate ITS Response Message from a pre-populated ReactivateITSSResponse payload.
+	 *
+	 * @param relatedEndEntity the name of the related end entity (such as username of the related user)
+	 * @param request the related request
+	 * @param payload a pre-populated ReactivateITSSResponse payload.
+	 * @return a generated and signed message.
+	 *
+	 * @throws MessageContentException if input data contained invalid format.
+	 * @throws MessageProcessingException if internal problems occurred processing the cs message.
+	 */
+	public CSMessageResponseData generateReactivateITSSResponse(String relatedEndEntity, CSMessage request,
+																ReactivateITSSResponse payload)
+			throws MessageContentException, MessageProcessingException{
 		return getCSMessageParser().generateCSResponseMessage(relatedEndEntity, request, request.getPayLoadVersion(),
 				payload);
 	}

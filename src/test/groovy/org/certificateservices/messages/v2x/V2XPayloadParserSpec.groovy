@@ -21,6 +21,7 @@ import org.certificateservices.messages.csmessages.CSMessageResponseData
 import org.certificateservices.messages.csmessages.DefaultCSMessageParser
 import org.certificateservices.messages.csmessages.PayloadParserRegistry
 import org.certificateservices.messages.csmessages.jaxb.CSMessage
+import org.certificateservices.messages.utils.MessageGenerateUtils
 import org.certificateservices.messages.v2x.jaxb.*
 import spock.lang.Specification
 
@@ -123,6 +124,29 @@ class V2XPayloadParserSpec extends Specification {
         expect:
         pp.parseMessage(rd.responseData)
 
+        when: // Generate message with pre-populated payload
+        RegisterITSSResponse payload = new RegisterITSSResponse()
+        pp.populateBaseV2XResponseType(payload, "someEcuType",
+                "SomeITSId", genEcKeyType(), "someEAName","someECProfile", "someATProfile", genAppPermissions(),
+                new Date(5000L), new Date(15000L), genRegions([1,2,3]),ITSSStatusType.ACTIVE)
+        rd = pp.generateRegisterITSSResponse("SomeRelatedEndEntity", request,  payload)
+        printXML(rd.responseData)
+        xml = slurpXml(rd.responseData)
+        payloadObject = xml.payload.RegisterITSSResponse
+
+        then:
+        messageContainsPayload rd.responseData, "v2x:RegisterITSSResponse"
+
+        verifyCSMessageResponseData  rd, "SOMEREQUESTER", TEST_ID, false, "RegisterITSSResponse", "SomeRelatedEndEntity"
+        verifyCSHeaderMessage(rd.responseData, xml, "SOMESOURCEID", "SOMEREQUESTER", "someorg","RegisterITSSResponse", createOriginatorCredential(), csMessageParser)
+        verifySuccessfulBasePayload(payloadObject, TEST_ID)
+        verifyAppPermissions(payloadObject.atPermissions)
+        verifyFullResponsePayload(payloadObject)
+
+        expect:
+        pp.parseMessage(rd.responseData)
+
+
     }
 
     def "Verify that generateRegisterITSSRequest() generates a valid xml message with minimal required values and generateRegisterITSResponse() generates a valid CSMessageResponseData"(){
@@ -174,7 +198,7 @@ class V2XPayloadParserSpec extends Specification {
         when:
         csMessageParser.sourceId = "SOMEREQUESTER"
         byte[] requestMessage = pp.generateUpdateITSSRequest(TEST_ID, "SOMESOURCEID", "someorg",
-                "SomeITSId", signKeys.public.encoded, "someEAName", "someECProfile", "someATProfile", genAppPermissions(),
+                "someEcuType","SomeITSId", signKeys.public.encoded, "someEAName", "someECProfile", "someATProfile", genAppPermissions(),
                 new Date(5000L), new Date(15000L), genRegions([1,2,3]), createOriginatorCredential(), null)
         printXML(requestMessage)
         def xml = slurpXml(requestMessage)
@@ -183,6 +207,7 @@ class V2XPayloadParserSpec extends Specification {
         messageContainsPayload requestMessage, "v2x:UpdateITSSRequest"
         verifyCSHeaderMessage(requestMessage, xml, "SOMEREQUESTER", "SOMESOURCEID", "someorg","UpdateITSSRequest", createOriginatorCredential(), csMessageParser)
 
+        payloadObject.ecuType == "someEcuType"
         payloadObject.canonicalId == "SomeITSId"
         payloadObject.canonicalPublicKey.publicVerificationKey == new String(Base64.encode(signKeys.public.encoded))
         payloadObject.eaName == "someEAName"
@@ -222,12 +247,35 @@ class V2XPayloadParserSpec extends Specification {
         expect:
         pp.parseMessage(rd.responseData)
 
+        when: // Generate message with pre-populated payload
+        UpdateITSSResponse payload = new UpdateITSSResponse()
+        pp.populateBaseV2XResponseType(payload,"someEcuType", "SomeITSId",
+                genEcKeyType(), "someEAName","someECProfile", "someATProfile", genAppPermissions(),
+                new Date(5000L), new Date(15000L), genRegions([1,2,3]),ITSSStatusType.ACTIVE)
+        rd = pp.generateUpdateITSSResponse("SomeRelatedEndEntity", request,payload)
+        printXML(rd.responseData)
+        xml = slurpXml(rd.responseData)
+        payloadObject = xml.payload.UpdateITSSResponse
+
+        then:
+        messageContainsPayload rd.responseData, "v2x:UpdateITSSResponse"
+
+        verifyCSMessageResponseData  rd, "SOMEREQUESTER", TEST_ID, false,
+                "UpdateITSSResponse", "SomeRelatedEndEntity"
+        verifyCSHeaderMessage(rd.responseData, xml, "SOMESOURCEID", "SOMEREQUESTER",
+                "someorg","UpdateITSSResponse", createOriginatorCredential(), csMessageParser)
+        verifySuccessfulBasePayload(payloadObject, TEST_ID)
+
+        verifyFullResponsePayload(payloadObject)
+        verifyAppPermissions(payloadObject.atPermissions)
+        expect:
+        pp.parseMessage(rd.responseData)
     }
 
     def "Verify that generateUpdateITSSRequest() generates a valid xml message with minimal required values and generateUpdateITSResponse() generates a valid CSMessageResponseData"(){
         when:
         csMessageParser.sourceId = "SOMEREQUESTER"
-        byte[] requestMessage = pp.generateUpdateITSSRequest(TEST_ID, "SOMESOURCEID", "someorg","SomeITSId", signKeys.public.encoded,
+        byte[] requestMessage = pp.generateUpdateITSSRequest(TEST_ID, "SOMESOURCEID", "someorg","someEcuType",,"SomeITSId", signKeys.public.encoded,
                 null,null, null, null, null, null, null,null, null)
         printXML(requestMessage)
         def xml = slurpXml(requestMessage)
@@ -271,7 +319,7 @@ class V2XPayloadParserSpec extends Specification {
     def "Verify that generateGetITSSRequest() generates a valid xml message and generateGetITSResponse() generates a valid CSMessageResponseData"(){
         when:
         csMessageParser.sourceId = "SOMEREQUESTER"
-        byte[] requestMessage = pp.generateGetITSSDataRequest(TEST_ID, "SOMESOURCEID", "someorg",  "SomeITSId", createOriginatorCredential(), null)
+        byte[] requestMessage = pp.generateGetITSSDataRequest(TEST_ID, "SOMESOURCEID", "someorg",  "SomeITSId", false, createOriginatorCredential(), null)
         printXML(requestMessage)
         def xml = slurpXml(requestMessage)
         def payloadObject = xml.payload.GetITSSDataRequest
@@ -289,7 +337,7 @@ class V2XPayloadParserSpec extends Specification {
         CSMessageResponseData rd = pp.generateGetITSDataResponse("SomeRelatedEndEntity", request,
                  "someEcuType",
                 "SomeITSId", genEcKeyType(), "someEAName",null, null,genAppPermissions(),
-                null,null,null,ITSSStatusType.ACTIVE)
+                null,null,null,ITSSStatusType.ACTIVE, null)
         printXML(rd.responseData)
         xml = slurpXml(rd.responseData)
         payloadObject = xml.payload.GetITSSDataResponse
@@ -308,6 +356,77 @@ class V2XPayloadParserSpec extends Specification {
 
         expect:
         pp.parseMessage(rd.responseData)
+
+        when: // Generate message with pre-populated payload
+        GetITSSDataResponse payload = new GetITSSDataResponse()
+        pp.populateBaseV2XResponseType(payload,                 "someEcuType",
+                "SomeITSId", genEcKeyType(), "someEAName",null, null,genAppPermissions(),
+                null,null,null,ITSSStatusType.ACTIVE)
+
+        rd = pp.generateGetITSDataResponse("SomeRelatedEndEntity", request,payload)
+        printXML(rd.responseData)
+        xml = slurpXml(rd.responseData)
+        payloadObject = xml.payload.GetITSSDataResponse
+
+        then:
+        messageContainsPayload rd.responseData, "v2x:GetITSSDataResponse"
+
+        verifyCSMessageResponseData  rd, "SOMEREQUESTER", TEST_ID, false,
+                "GetITSSDataResponse", "SomeRelatedEndEntity"
+        verifyCSHeaderMessage(rd.responseData, xml, "SOMESOURCEID", "SOMEREQUESTER",
+                "someorg","GetITSSDataResponse", null, csMessageParser)
+        verifySuccessfulBasePayload(payloadObject, TEST_ID)
+
+        verifyMinimalResponsePayload(payloadObject)
+        verifyAppPermissions(payloadObject.atPermissions)
+
+        expect:
+        pp.parseMessage(rd.responseData)
+    }
+
+    def "Verify that generateGetITSSRequest() generates a valid xml message and generateGetITSResponse() with enrolment credentials included"(){
+        when:
+        csMessageParser.sourceId = "SOMEREQUESTER"
+        byte[] requestMessage = pp.generateGetITSSDataRequest(TEST_ID, "SOMESOURCEID", "someorg",  "SomeITSId", true, createOriginatorCredential(), null)
+        printXML(requestMessage)
+        def xml = slurpXml(requestMessage)
+        def payloadObject = xml.payload.GetITSSDataRequest
+        then:
+        messageContainsPayload requestMessage, "v2x:GetITSSDataRequest"
+        verifyCSHeaderMessage(requestMessage, xml, "SOMEREQUESTER", "SOMESOURCEID",
+                "someorg","GetITSSDataRequest", null, csMessageParser)
+
+        payloadObject.canonicalId == "SomeITSId"
+        payloadObject.includeEC == "true"
+        when:
+        csMessageParser.sourceId = "SOMESOURCEID"
+        CSMessage request = pp.parseMessage(requestMessage)
+
+
+        CSMessageResponseData rd = pp.generateGetITSDataResponse("SomeRelatedEndEntity", request,
+                "someEcuType",
+                "SomeITSId", genEcKeyType(), "someEAName",null, null,genAppPermissions(),
+                null,null,null,ITSSStatusType.ACTIVE, genECs())
+        printXML(rd.responseData)
+        xml = slurpXml(rd.responseData)
+        payloadObject = xml.payload.GetITSSDataResponse
+
+        then:
+        messageContainsPayload rd.responseData, "v2x:GetITSSDataResponse"
+
+        verifyCSMessageResponseData  rd, "SOMEREQUESTER", TEST_ID, false,
+                "GetITSSDataResponse", "SomeRelatedEndEntity"
+        verifyCSHeaderMessage(rd.responseData, xml, "SOMESOURCEID", "SOMEREQUESTER",
+                "someorg","GetITSSDataResponse", null, csMessageParser)
+        verifySuccessfulBasePayload(payloadObject, TEST_ID)
+
+        verifyMinimalResponsePayload(payloadObject)
+        verifyAppPermissions(payloadObject.atPermissions)
+        verifyEnrolmentCredentials(payloadObject.enrolmentCredentials)
+
+        expect:
+        pp.parseMessage(rd.responseData)
+
     }
 
     def "Verify that generateDeactivateITSSRequest() generates a valid xml message and generateDeactivateITSRequest() generates a valid CSMessageResponseData"(){
@@ -351,6 +470,31 @@ class V2XPayloadParserSpec extends Specification {
 
         expect:
         pp.parseMessage(rd.responseData)
+
+        when: // Generate message with pre-populated payload
+        DeactivateITSSResponse payload = new DeactivateITSSResponse()
+        pp.populateBaseV2XResponseType(payload,                "someEcuType",
+                "SomeITSId", genEcKeyType(),"someEAName", null, null,genAppPermissions(),
+                null,null,null,ITSSStatusType.ACTIVE)
+        rd = pp.generateDeactivateITSSResponse("SomeRelatedEndEntity", request,payload)
+        printXML(rd.responseData)
+        xml = slurpXml(rd.responseData)
+        payloadObject = xml.payload.DeactivateITSSResponse
+
+        then:
+        messageContainsPayload rd.responseData, "v2x:DeactivateITSSResponse"
+
+        verifyCSMessageResponseData  rd, "SOMEREQUESTER", TEST_ID, false,
+                "DeactivateITSSResponse", "SomeRelatedEndEntity"
+        verifyCSHeaderMessage(rd.responseData, xml, "SOMESOURCEID", "SOMEREQUESTER",
+                "someorg","DeactivateITSSResponse", null, csMessageParser)
+        verifySuccessfulBasePayload(payloadObject, TEST_ID)
+
+        verifyMinimalResponsePayload(payloadObject)
+        verifyAppPermissions(payloadObject.atPermissions)
+
+        expect:
+        pp.parseMessage(rd.responseData)
     }
 
     def "Verify that generateReactivateITSSRequest() generates a valid xml message and generateReactivateITSRequest() generates a valid CSMessageResponseData"(){
@@ -376,6 +520,31 @@ class V2XPayloadParserSpec extends Specification {
                 "someEcuType",
                 "SomeITSId", genEcKeyType(), "someEAName",null, null,genAppPermissions(),
                 null,null,null,ITSSStatusType.ACTIVE)
+        printXML(rd.responseData)
+        xml = slurpXml(rd.responseData)
+        payloadObject = xml.payload.ReactivateITSSResponse
+
+        then:
+        messageContainsPayload rd.responseData, "v2x:ReactivateITSSResponse"
+
+        verifyCSMessageResponseData  rd, "SOMEREQUESTER", TEST_ID, false,
+                "ReactivateITSSResponse", "SomeRelatedEndEntity"
+        verifyCSHeaderMessage(rd.responseData, xml, "SOMESOURCEID", "SOMEREQUESTER",
+                "someorg","ReactivateITSSResponse", null, csMessageParser)
+        verifySuccessfulBasePayload(payloadObject, TEST_ID)
+
+        verifyMinimalResponsePayload(payloadObject)
+        verifyAppPermissions(payloadObject.atPermissions)
+
+        expect:
+        pp.parseMessage(rd.responseData)
+
+        when: // Generate message with pre-populated payload
+        ReactivateITSSResponse payload = new ReactivateITSSResponse()
+        pp.populateBaseV2XResponseType(payload,                "someEcuType",
+                "SomeITSId", genEcKeyType(),"someEAName", null, null,genAppPermissions(),
+                null,null,null,ITSSStatusType.ACTIVE)
+        rd = pp.generateReactivateITSSResponse("SomeRelatedEndEntity", request,payload)
         printXML(rd.responseData)
         xml = slurpXml(rd.responseData)
         payloadObject = xml.payload.ReactivateITSSResponse
@@ -461,6 +630,54 @@ class V2XPayloadParserSpec extends Specification {
         appPerm3.type = PermissionType.BITMAP
         appPerm3.value = "03040506"
         return [appPerm1, appPerm2, appPerm3]
+    }
+
+    List<EnrolmentCredentialType> genECs(){
+        EnrolmentCredentialType ec1 = new EnrolmentCredentialType()
+        ec1.ecProfile = "SomeECProfile"
+        ec1.eaName = "SomeEA"
+        ec1.revocationDate = null
+        ec1.type = "SomeType"
+        ec1.status = ECStatusType.ACTIVE
+        ec1.validFrom = MessageGenerateUtils.dateToXMLGregorianCalendar(new Date(5000L))
+        ec1.expireDate = MessageGenerateUtils.dateToXMLGregorianCalendar(new Date(15000L))
+        ec1.hashedId = "abcedef"
+        ec1.data = "abc".getBytes()
+
+        EnrolmentCredentialType ec2 = new EnrolmentCredentialType()
+        ec2.ecProfile = "SomeECProfile"
+        ec2.eaName = "SomeEA"
+        ec2.revocationDate = MessageGenerateUtils.dateToXMLGregorianCalendar(new Date(10000L))
+        ec2.type = "SomeType"
+        ec2.status = ECStatusType.REVOKED
+        ec2.validFrom = MessageGenerateUtils.dateToXMLGregorianCalendar(new Date(5000L))
+        ec2.expireDate = MessageGenerateUtils.dateToXMLGregorianCalendar(new Date(15000L))
+        ec2.hashedId = "abcedef"
+        ec2.data = "abc".getBytes()
+
+        return [ec1,ec2]
+    }
+
+    void verifyEnrolmentCredentials(def eCs){
+        assert eCs.ec.size() == 2
+        assert eCs.ec[0].ecProfile == "SomeECProfile"
+        assert eCs.ec[0].eaName == "SomeEA"
+        assert eCs.ec[0].type == "SomeType"
+        assert eCs.ec[0].status == "ACTIVE"
+        assert eCs.ec[0].validFrom == "1970-01-01T01:00:05.000+01:00"
+        assert eCs.ec[0].expireDate == "1970-01-01T01:00:15.000+01:00"
+        assert eCs.ec[0].hashedId == "abcedef"
+        assert eCs.ec[0].data == "YWJj"
+
+        assert eCs.ec[1].ecProfile == "SomeECProfile"
+        assert eCs.ec[1].eaName == "SomeEA"
+        assert eCs.ec[1].type == "SomeType"
+        assert eCs.ec[1].status == "REVOKED"
+        assert eCs.ec[1].revocationDate == "1970-01-01T01:00:10.000+01:00"
+        assert eCs.ec[1].validFrom == "1970-01-01T01:00:05.000+01:00"
+        assert eCs.ec[1].expireDate == "1970-01-01T01:00:15.000+01:00"
+        assert eCs.ec[1].hashedId == "abcedef"
+        assert eCs.ec[1].data == "YWJj"
     }
 
 

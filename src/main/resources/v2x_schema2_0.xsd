@@ -11,7 +11,14 @@
 	<xs:simpleType name="CanonicalIdType">
 		<xs:restriction base="xs:string">
 			<xs:minLength value="1" />
-			<xs:maxLength value="256" />
+			<xs:maxLength value="255" />
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:simpleType name="HashedIdType">
+		<xs:restriction base="xs:string">
+			<xs:minLength value="1" />
+			<xs:maxLength value="255" />
 		</xs:restriction>
 	</xs:simpleType>
 
@@ -26,6 +33,15 @@
 		<xs:restriction base="xs:string">
 			<xs:enumeration value="ACTIVE"/>
 			<xs:enumeration value="INACTIVE"/>
+			<xs:enumeration value="NOTYETVALID"/>
+			<xs:enumeration value="EXPIRED"/>
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:simpleType name="ECStatusType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="ACTIVE"/>
+			<xs:enumeration value="REVOKED"/>
 			<xs:enumeration value="NOTYETVALID"/>
 			<xs:enumeration value="EXPIRED"/>
 		</xs:restriction>
@@ -65,6 +81,36 @@
 				</xs:complexType>
 			</xs:element>
 		</xs:choice>
+	</xs:complexType>
+
+	<xs:complexType name="EnrolmentCredentialType" >
+		<xs:sequence>
+			<xs:element minOccurs="1" maxOccurs="1" name="type"
+							type="tns:ProfileNameType" />
+			<xs:element minOccurs="1" maxOccurs="1" name="hashedId"
+						type="tns:HashedIdType" />
+			<xs:element minOccurs="1" maxOccurs="1" name="ecProfile"
+						type="tns:ProfileNameType" />
+			<xs:element minOccurs="1" maxOccurs="1" name="eaName"
+						type="tns:ProfileNameType" />
+			<xs:element minOccurs="1" maxOccurs="1" name="data"
+						type="xs:base64Binary" />
+			<xs:element minOccurs="1" maxOccurs="1" name="validFrom"
+						type="xs:dateTime" />
+			<xs:element minOccurs="1" maxOccurs="1" name="expireDate"
+						type="xs:dateTime" />
+			<xs:element minOccurs="0" maxOccurs="1" name="revocationDate"
+						type="xs:dateTime" />
+			<xs:element minOccurs="1" maxOccurs="1" name="status"
+						type="tns:ECStatusType" />
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="EnrolmentCredentialsType">
+		<xs:sequence>
+			<xs:element minOccurs="0" maxOccurs="unbounded" name="ec"
+						type="tns:EnrolmentCredentialType" />
+		</xs:sequence>
 	</xs:complexType>
 
 	<xs:complexType name="ATAppPermissionsType">
@@ -110,6 +156,7 @@
 					<xs:element minOccurs="0" maxOccurs="1" name="itssValidTo" type="xs:dateTime"/>
 					<xs:element minOccurs="0" maxOccurs="1" name="regions" type="tns:RegionsType"/>
 					<xs:element minOccurs="1" maxOccurs="1" name="itssStatus" type="tns:ITSSStatusType"/>
+					<xs:element minOccurs="0" maxOccurs="1" name="enrolmentCredentials" type="tns:EnrolmentCredentialsType"/>
 				</xs:sequence>
 			</xs:extension>
 		</xs:complexContent>
@@ -143,6 +190,7 @@
 			<xs:complexContent>
 				<xs:extension base="tns:BaseRegisterRequestType">
 					<xs:sequence>
+						<xs:element minOccurs="0" maxOccurs="1" name="ecuType"  type="cs:notemptystring" />
 						<xs:element minOccurs="0" maxOccurs="1" name="canonicalPublicKey" type="tns:CanonicalKeyType"/>
 						<xs:element minOccurs="0" maxOccurs="1" name="eaName" type="tns:ProfileNameType"/>
 						<xs:element minOccurs="0" maxOccurs="1" name="atPermissions" type="tns:ATAppPermissionsType"/>
@@ -166,6 +214,7 @@
 				<xs:extension base="cs:CSRequest">
 					<xs:sequence>
 						<xs:element minOccurs="1" maxOccurs="1" name="canonicalId" type="tns:CanonicalIdType"/>
+						<xs:element minOccurs="0" maxOccurs="1" name="includeEC" type="xs:boolean" default="false"/>
 					</xs:sequence>
 				</xs:extension>
 			</xs:complexContent>
