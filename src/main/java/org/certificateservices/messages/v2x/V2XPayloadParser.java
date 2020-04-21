@@ -369,7 +369,7 @@ public class V2XPayloadParser extends BasePayloadParser {
 	 * @throws MessageContentException if input data contained invalid format.
 	 * @throws MessageProcessingException if internal problems occurred processing the cs message.
 	 */
-	public CSMessageResponseData generateGetITSDataResponse(String relatedEndEntity, CSMessage request,
+	public CSMessageResponseData generateGetITSSDataResponse(String relatedEndEntity, CSMessage request,
 															String ecuType, String canonicalId,
 															CanonicalKeyType canonicalKeyType, String eaName,
 															String ecProfile, String atProfile,
@@ -401,7 +401,7 @@ public class V2XPayloadParser extends BasePayloadParser {
 	 * @throws MessageContentException if input data contained invalid format.
 	 * @throws MessageProcessingException if internal problems occurred processing the cs message.
 	 */
-	public CSMessageResponseData generateGetITSDataResponse(String relatedEndEntity, CSMessage request,
+	public CSMessageResponseData generateGetITSSDataResponse(String relatedEndEntity, CSMessage request,
 															GetITSSDataResponse payload)
 			throws MessageContentException, MessageProcessingException{
 		return getCSMessageParser().generateCSResponseMessage(relatedEndEntity, request, request.getPayLoadVersion(), payload);

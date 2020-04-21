@@ -316,7 +316,7 @@ class V2XPayloadParserSpec extends Specification {
 
     }
 
-    def "Verify that generateGetITSSRequest() generates a valid xml message and generateGetITSResponse() generates a valid CSMessageResponseData"(){
+    def "Verify that generateGetITSSRequest() generates a valid xml message and generateGetITSSResponse() generates a valid CSMessageResponseData"(){
         when:
         csMessageParser.sourceId = "SOMEREQUESTER"
         byte[] requestMessage = pp.generateGetITSSDataRequest(TEST_ID, "SOMESOURCEID", "someorg",  "SomeITSId", false, createOriginatorCredential(), null)
@@ -334,7 +334,7 @@ class V2XPayloadParserSpec extends Specification {
         CSMessage request = pp.parseMessage(requestMessage)
 
 
-        CSMessageResponseData rd = pp.generateGetITSDataResponse("SomeRelatedEndEntity", request,
+        CSMessageResponseData rd = pp.generateGetITSSDataResponse("SomeRelatedEndEntity", request,
                  "someEcuType",
                 "SomeITSId", genEcKeyType(), "someEAName",null, null,genAppPermissions(),
                 null,null,null,ITSSStatusType.ACTIVE, null)
@@ -363,7 +363,7 @@ class V2XPayloadParserSpec extends Specification {
                 "SomeITSId", genEcKeyType(), "someEAName",null, null,genAppPermissions(),
                 null,null,null,ITSSStatusType.ACTIVE)
 
-        rd = pp.generateGetITSDataResponse("SomeRelatedEndEntity", request,payload)
+        rd = pp.generateGetITSSDataResponse("SomeRelatedEndEntity", request,payload)
         printXML(rd.responseData)
         xml = slurpXml(rd.responseData)
         payloadObject = xml.payload.GetITSSDataResponse
@@ -384,7 +384,7 @@ class V2XPayloadParserSpec extends Specification {
         pp.parseMessage(rd.responseData)
     }
 
-    def "Verify that generateGetITSSRequest() generates a valid xml message and generateGetITSResponse() with enrolment credentials included"(){
+    def "Verify that generateGetITSSRequest() generates a valid xml message and generateGetITSSResponse() with enrolment credentials included"(){
         when:
         csMessageParser.sourceId = "SOMEREQUESTER"
         byte[] requestMessage = pp.generateGetITSSDataRequest(TEST_ID, "SOMESOURCEID", "someorg",  "SomeITSId", true, createOriginatorCredential(), null)
@@ -403,7 +403,7 @@ class V2XPayloadParserSpec extends Specification {
         CSMessage request = pp.parseMessage(requestMessage)
 
 
-        CSMessageResponseData rd = pp.generateGetITSDataResponse("SomeRelatedEndEntity", request,
+        CSMessageResponseData rd = pp.generateGetITSSDataResponse("SomeRelatedEndEntity", request,
                 "someEcuType",
                 "SomeITSId", genEcKeyType(), "someEAName",null, null,genAppPermissions(),
                 null,null,null,ITSSStatusType.ACTIVE, genECs())
