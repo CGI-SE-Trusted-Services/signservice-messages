@@ -13,6 +13,7 @@
 package org.certificateservices.messages.csmessages.manager;
 
 import java.io.IOException;
+import java.util.Map;
 
 import org.certificateservices.messages.MessageProcessingException;
 import org.certificateservices.messages.csmessages.jaxb.CSMessage;
@@ -30,6 +31,16 @@ public interface ReqRespManager {
 	 * for a given time before a time-out IO exception is thrown.
 	 */
 	 CSMessage sendRequest(String requestId, byte[] request)
+			throws IllegalArgumentException, IOException,
+			MessageProcessingException;
+
+	/**
+	 * Main method signaling sending a request with given id and waits for a response
+	 * for a given time before a time-out IO exception is thrown.
+	 * This methods provides optional requestAttributes containing meta-data about
+	 * the message.
+	 */
+	CSMessage sendRequest(String requestId, byte[] request, Map<String,String> requestAttributes)
 			throws IllegalArgumentException, IOException,
 			MessageProcessingException;
 

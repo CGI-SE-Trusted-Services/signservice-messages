@@ -73,12 +73,22 @@ public class DefaultReqRespManager implements ReqRespManager,
 	public CSMessage sendRequest(String requestId, byte[] request)
 			throws IllegalArgumentException, IOException,
 			MessageProcessingException {
+		return sendRequest(requestId,request,null);
+	}
+
+	/**
+	 * @see org.certificateservices.messages.csmessages.manager.ReqRespManager#sendRequest(java.lang.String, byte[], Map)
+	 */
+	@Override
+	public CSMessage sendRequest(String requestId, byte[] request, Map<String,String> requestAttributes)
+			throws IllegalArgumentException, IOException,
+			MessageProcessingException {
 		CSMessage retval = null;
-		
+
 		registerWaitForRequestId(requestId);
-		
-		messageHandler.sendMessage(messageSenderName,requestId, request, null);
-				
+
+		messageHandler.sendMessage(messageSenderName,requestId, request, requestAttributes);
+
 		long waitTime = 0;
 		while(waitTime < timeOut){
 			retval = checkIfResponseIsReady(requestId);
@@ -91,14 +101,14 @@ public class DefaultReqRespManager implements ReqRespManager,
 				log.error("waiting process interupted while waiting for MQ response: " + e.getMessage());
 			}
 			waitTime+= SLEEP_INTERVAL_MILLIS;
-			
+
 		}
-		
+
 		if(retval == null){
 			cancelWaitForResponse(requestId);
 			throw new IOException("Error: Timeout exception after waiting for message with request id: " + requestId);
 		}
-		
+
 		return retval;
 	}
 	
