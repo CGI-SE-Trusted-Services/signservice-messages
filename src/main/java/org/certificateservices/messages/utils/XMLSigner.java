@@ -68,6 +68,7 @@ public class XMLSigner {
 	public static String XMLDSIG_NAMESPACE = "http://www.w3.org/2000/09/xmldsig#";
 	
 	private static String ENVELOPE_TRANSFORM = "http://www.w3.org/2000/09/xmldsig#enveloped-signature";
+	private static String C14N_TRANSFORM = "http://www.w3.org/2001/10/xml-exc-c14n#";
 
 	static Logger log = Logger.getLogger(XMLSigner.class);
 
@@ -554,6 +555,7 @@ public class XMLSigner {
 					String messageID = signatureLocationFinder.getIDValue(signatureLocation);
 					List<Transform> transFormList = new ArrayList<Transform>();
 					transFormList.add(fac.newTransform(Transform.ENVELOPED, (TransformParameterSpec) null));
+					transFormList.add(fac.newTransform(C14N_TRANSFORM, (TransformParameterSpec)null));
 
 					Reference ref = fac.newReference((messageID == null ? "" : "#" + messageID),digestMethod, transFormList, null, null);
 

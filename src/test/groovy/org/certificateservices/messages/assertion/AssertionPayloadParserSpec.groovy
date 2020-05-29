@@ -149,7 +149,7 @@ class AssertionPayloadParserSpec extends Specification {
 		def xml = new XmlSlurper().parse(new ByteArrayInputStream(xmlData))
 		then:
 		xml.@ID.toString().length() > 0
-		xml.@IssueInstant == "2015-07-07T16:26:53.000+02:00"
+		xml.@IssueInstant == "2015-07-07T14:26:53.000Z"
 		xml.@Version == AssertionPayloadParser.DEFAULT_ASSERTION_VERSION
 		xml.Subject.NameID == "SomeSubjectId@someorg"
 		xml.Attribute[0].@Name == AssertionPayloadParser.ATTRIBUTE_NAME_ROLES
@@ -163,7 +163,7 @@ class AssertionPayloadParserSpec extends Specification {
 		def xml = new XmlSlurper().parse(new ByteArrayInputStream(xmlData))
 		then:
 		xml.@ID.toString().length() > 0
-		xml.@IssueInstant == "2015-07-07T16:26:53.000+02:00"
+		xml.@IssueInstant == "2015-07-07T14:26:53.000Z"
 		xml.@Version == AssertionPayloadParser.DEFAULT_ASSERTION_VERSION
 		xml.Subject.NameID == "SomeSubjectId@someorg"
 		xml.Attribute[0].@Name == AssertionPayloadParser.ATTRIBUTE_NAME_USERDATA
@@ -190,20 +190,20 @@ class AssertionPayloadParserSpec extends Specification {
 		
 		then:
 		xml.@ID.toString().length() > 0
-		xml.@IssueInstant == "2015-07-07T16:26:53.000+02:00"
+		xml.@IssueInstant == "2015-07-07T14:26:53.000Z"
 		xml.@Version == AssertionPayloadParser.DEFAULT_ASSERTION_VERSION
 		xml.@InResponseTo == "_123456789"
 		xml.Status.StatusCode.@Value == ResponseStatusCodes.SUCCESS.getURIValue()
 		xml.@ID.toString() != xml.Assertion.@ID.toString()
 		xml.Assertion.@ID.toString().length() > 0
-		xml.Assertion.@IssueInstant == "2015-07-07T16:26:53.000+02:00"
+		xml.Assertion.@IssueInstant == "2015-07-07T14:26:53.000Z"
 		xml.Assertion.@Version == AssertionPayloadParser.DEFAULT_ASSERTION_VERSION
 		xml.Assertion.Issuer == "someIssuer"
 		xml.Assertion.Signature.size() == 1
 		verifySignature(ticketData)
 		xml.Assertion.Subject.NameID == "SomeSubject"
-		xml.Assertion.Conditions.@NotBefore == "2015-07-07T16:26:52.427+02:00" 
-		xml.Assertion.Conditions.@NotOnOrAfter == "2015-07-07T16:28:32.427+02:00"
+		xml.Assertion.Conditions.@NotBefore == "2015-07-07T14:26:52.427Z"
+		xml.Assertion.Conditions.@NotOnOrAfter == "2015-07-07T14:28:32.427Z"
 		xml.Assertion.AttributeStatement.Attribute.size() == 1
 		xml.Assertion.AttributeStatement.Attribute[0].@Name == AssertionPayloadParser.ATTRIBUTE_NAME_TYPE
 		xml.Assertion.AttributeStatement.Attribute[0].AttributeValue == AssertionTypeEnum.AUTHORIZATION_TICKET.getAttributeValue()
@@ -236,20 +236,20 @@ class AssertionPayloadParserSpec extends Specification {
 
 		then:
 		xml.@ID.toString().length() > 0
-		xml.@IssueInstant == "2015-07-07T16:26:53.000+02:00"
+		xml.@IssueInstant == "2015-07-07T14:26:53.000Z"
 		xml.@Version == AssertionPayloadParser.DEFAULT_ASSERTION_VERSION
 		xml.@InResponseTo == "_123456789"
 		xml.Status.StatusCode.@Value == ResponseStatusCodes.SUCCESS.getURIValue()
 		xml.@ID.toString() != xml.Assertion.@ID.toString()
 		xml.Assertion.@ID.toString().length() > 0
-		xml.Assertion.@IssueInstant == "2015-07-07T16:26:53.000+02:00"
+		xml.Assertion.@IssueInstant == "2015-07-07T14:26:53.000Z"
 		xml.Assertion.@Version == AssertionPayloadParser.DEFAULT_ASSERTION_VERSION
 		xml.Assertion.Issuer == "someIssuer"
 		xml.Assertion.Signature.size() == 1
 		verifySignature(ticketData)
 		xml.Assertion.Subject.NameID == "SomeSubject"
-		xml.Assertion.Conditions.@NotBefore == "2015-07-07T16:26:52.427+02:00"
-		xml.Assertion.Conditions.@NotOnOrAfter == "2015-07-07T16:28:32.427+02:00"
+		xml.Assertion.Conditions.@NotBefore == "2015-07-07T14:26:52.427Z"
+		xml.Assertion.Conditions.@NotOnOrAfter == "2015-07-07T14:28:32.427Z"
 		xml.Assertion.AttributeStatement.Attribute.size() == 1
 		xml.Assertion.AttributeStatement.Attribute[0].@Name == AssertionPayloadParser.ATTRIBUTE_NAME_TYPE
 		xml.Assertion.AttributeStatement.Attribute[0].AttributeValue == AssertionTypeEnum.AUTHORIZATION_TICKET.getAttributeValue()
@@ -346,7 +346,7 @@ class AssertionPayloadParserSpec extends Specification {
 		def xml = new XmlSlurper().parse(new ByteArrayInputStream(samlPData))
 		then:
 		xml.@ID.toString().length() > 0
-		xml.@IssueInstant == "2015-07-07T16:26:53.000+02:00"
+		xml.@IssueInstant == "2015-07-07T14:26:53.000Z"
 		xml.@Version == AssertionPayloadParser.DEFAULT_ASSERTION_VERSION
 		xml.@InResponseTo == "_143214321"
 		xml.Status.StatusCode.@Value == ResponseStatusCodes.REQUESTER.getURIValue()
@@ -359,7 +359,7 @@ class AssertionPayloadParserSpec extends Specification {
 		xml = new XmlSlurper().parse(new ByteArrayInputStream(samlPData))
 		then:
 		xml.@ID.toString().length() > 0
-		xml.@IssueInstant == "2015-07-07T16:26:53.000+02:00"
+		xml.@IssueInstant == "2015-07-07T14:26:53.000Z"
 		xml.@Version == AssertionPayloadParser.DEFAULT_ASSERTION_VERSION
 		xml.@InResponseTo == "_143214321"
 		xml.Status.StatusCode.@Value == ResponseStatusCodes.REQUESTER.getURIValue()

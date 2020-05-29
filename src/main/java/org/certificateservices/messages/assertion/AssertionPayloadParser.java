@@ -417,7 +417,7 @@ public class AssertionPayloadParser extends BasePayloadParser {
 
 			ResponseType responseType = samlpOf.createResponseType();
 			responseType.setID("_" + MessageGenerateUtils.generateRandomUUID());
-			responseType.setIssueInstant(MessageGenerateUtils.dateToXMLGregorianCalendar(systemTime.getSystemTime()));
+			responseType.setIssueInstant(MessageGenerateUtils.dateToXMLGregorianCalendarNoTimeZone(systemTime.getSystemTime()));
 			responseType.setVersion(DEFAULT_ASSERTION_VERSION);
 			responseType.setInResponseTo(inResponseTo);
 			responseType.setStatus(statusType);
@@ -738,7 +738,7 @@ public class AssertionPayloadParser extends BasePayloadParser {
 		}
 		AttributeQueryType attributeQueryType = samlpOf.createAttributeQueryType();
 		attributeQueryType.setID("_" +MessageGenerateUtils.generateRandomUUID());
-		attributeQueryType.setIssueInstant(MessageGenerateUtils.dateToXMLGregorianCalendar(systemTime.getSystemTime()));
+		attributeQueryType.setIssueInstant(MessageGenerateUtils.dateToXMLGregorianCalendarNoTimeZone(systemTime.getSystemTime()));
 		attributeQueryType.setVersion(DEFAULT_ASSERTION_VERSION);
 		
 		NameIDType nameIdType = of.createNameIDType();

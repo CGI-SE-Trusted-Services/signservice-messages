@@ -267,7 +267,7 @@ public class SweEID2DSSExtensionsMessageParser extends DSS1CoreMessageParser{
 
         SignRequestExtensionType t = eid2Of.createSignRequestExtensionType();
         t.setVersion(version);
-        t.setRequestTime(MessageGenerateUtils.dateToXMLGregorianCalendar(requestTime));
+        t.setRequestTime(MessageGenerateUtils.dateToXMLGregorianCalendarNoTimeZone(requestTime));
         t.setConditions(conditionsType);
         t.setSigner(signer);
         t.setIdentityProvider(identityProvider);
@@ -294,8 +294,8 @@ public class SweEID2DSSExtensionsMessageParser extends DSS1CoreMessageParser{
      */
     public ConditionsType genBasicConditions(Date notBefore, Date notOnOrAfter, String audience) throws MessageProcessingException {
         ConditionsType conditionsType = of.createConditionsType();
-        conditionsType.setNotBefore(MessageGenerateUtils.dateToXMLGregorianCalendar(notBefore));
-        conditionsType.setNotOnOrAfter(MessageGenerateUtils.dateToXMLGregorianCalendar(notOnOrAfter));
+        conditionsType.setNotBefore(MessageGenerateUtils.dateToXMLGregorianCalendarNoTimeZone(notBefore));
+        conditionsType.setNotOnOrAfter(MessageGenerateUtils.dateToXMLGregorianCalendarNoTimeZone(notOnOrAfter));
         AudienceRestrictionType art = of.createAudienceRestrictionType();
         art.getAudience().add(audience);
         conditionsType.getConditionOrAudienceRestrictionOrOneTimeUse().add(art);
@@ -619,7 +619,7 @@ public class SweEID2DSSExtensionsMessageParser extends DSS1CoreMessageParser{
                                                               List<Object> otherResponseInfo) throws MessageProcessingException {
         SignResponseExtensionType t = eid2Of.createSignResponseExtensionType();
         t.setVersion(version);
-        t.setResponseTime(MessageGenerateUtils.dateToXMLGregorianCalendar(responseTime));
+        t.setResponseTime(MessageGenerateUtils.dateToXMLGregorianCalendarNoTimeZone(responseTime));
         t.setSignerAssertionInfo(signerAssertionInfo);
         t.setRequest(requestData);
         if(signatureCertificateChain != null){
@@ -723,7 +723,7 @@ public class SweEID2DSSExtensionsMessageParser extends DSS1CoreMessageParser{
                                           String assertionRef) throws MessageProcessingException {
         ContextInfoType t = eid2Of.createContextInfoType();
         t.setIdentityProvider(identityProvider);
-        t.setAuthenticationInstant(MessageGenerateUtils.dateToXMLGregorianCalendar(authenticationInstant));
+        t.setAuthenticationInstant(MessageGenerateUtils.dateToXMLGregorianCalendarNoTimeZone(authenticationInstant));
         t.setAuthnContextClassRef(authnContextClassRef);
         t.setServiceID(serviceID);
         t.setAuthType(authType);

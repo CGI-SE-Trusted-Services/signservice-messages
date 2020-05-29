@@ -288,7 +288,7 @@ public class SAMLProtocolMessageParser extends BaseSAMLMessageParser{
      */
     protected void populateRequestAbstractType(RequestAbstractType requestAbstractType, String id, String destination, String consent, NameIDType issuer, ExtensionsType extensions) throws MessageProcessingException, MessageContentException{
         requestAbstractType.setID(id);
-        requestAbstractType.setIssueInstant(MessageGenerateUtils.dateToXMLGregorianCalendar(systemTime.getSystemTime()));
+        requestAbstractType.setIssueInstant(MessageGenerateUtils.dateToXMLGregorianCalendarNoTimeZone(systemTime.getSystemTime()));
         requestAbstractType.setVersion(DEFAULT_SAML_VERSION);
 
         requestAbstractType.setDestination(destination);
@@ -361,7 +361,7 @@ public class SAMLProtocolMessageParser extends BaseSAMLMessageParser{
         statusType.setStatusDetail(statusDetail);
 
         statusResponseType.setID("_" + MessageGenerateUtils.generateRandomUUID());
-        statusResponseType.setIssueInstant(MessageGenerateUtils.dateToXMLGregorianCalendar(systemTime.getSystemTime()));
+        statusResponseType.setIssueInstant(MessageGenerateUtils.dateToXMLGregorianCalendarNoTimeZone(systemTime.getSystemTime()));
         statusResponseType.setVersion(DEFAULT_SAML_VERSION);
         statusResponseType.setInResponseTo(inResponseTo);
         statusResponseType.setStatus(statusType);

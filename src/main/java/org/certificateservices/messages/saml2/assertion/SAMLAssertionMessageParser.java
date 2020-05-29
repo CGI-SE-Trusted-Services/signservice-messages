@@ -119,12 +119,12 @@ public class SAMLAssertionMessageParser extends BaseSAMLMessageParser{
         subjectType.getContent().add(of.createNameID(subjectNameType));
 
         ConditionsType conditionsType = of.createConditionsType();
-        conditionsType.setNotBefore(MessageGenerateUtils.dateToXMLGregorianCalendar(notBefore));
-        conditionsType.setNotOnOrAfter(MessageGenerateUtils.dateToXMLGregorianCalendar(notOnOrAfter));
+        conditionsType.setNotBefore(MessageGenerateUtils.dateToXMLGregorianCalendarNoTimeZone(notBefore));
+        conditionsType.setNotOnOrAfter(MessageGenerateUtils.dateToXMLGregorianCalendarNoTimeZone(notOnOrAfter));
 
         AssertionType assertionType = of.createAssertionType();
         assertionType.setID("_" + MessageGenerateUtils.generateRandomUUID());
-        assertionType.setIssueInstant(MessageGenerateUtils.dateToXMLGregorianCalendar(systemTime.getSystemTime()));
+        assertionType.setIssueInstant(MessageGenerateUtils.dateToXMLGregorianCalendarNoTimeZone(systemTime.getSystemTime()));
         assertionType.setVersion(DEFAULT_SAML_VERSION);
         assertionType.setIssuer(issuerNameType);
         assertionType.setSubject(subjectType);

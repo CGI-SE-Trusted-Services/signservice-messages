@@ -158,7 +158,7 @@ public class SAMLMetaDataMessageParser extends BaseSAMLMessageParser {
         }
         edt.setEntityID(entityID);
         edt.setID("_" + MessageGenerateUtils.generateRandomUUID());
-        edt.setValidUntil(MessageGenerateUtils.dateToXMLGregorianCalendar(validUntil));
+        edt.setValidUntil(MessageGenerateUtils.dateToXMLGregorianCalendarNoTimeZone(validUntil));
         edt.setCacheDuration(cacheDuration);
         edt.setExtensions(extensions);
 
@@ -281,7 +281,7 @@ public class SAMLMetaDataMessageParser extends BaseSAMLMessageParser {
                                                         ExtensionsType extensions, List<Object> entityDescriptors) throws MessageProcessingException {
         EntitiesDescriptorType edt = mdOf.createEntitiesDescriptorType();
         edt.setID("_" + MessageGenerateUtils.generateRandomUUID());
-        edt.setValidUntil(MessageGenerateUtils.dateToXMLGregorianCalendar(validUntil));
+        edt.setValidUntil(MessageGenerateUtils.dateToXMLGregorianCalendarNoTimeZone(validUntil));
         edt.setCacheDuration(cacheDuration);
         edt.setExtensions(extensions);
         edt.setName(name);
@@ -996,7 +996,7 @@ public class SAMLMetaDataMessageParser extends BaseSAMLMessageParser {
                                                         Map<QName, String> otherAttributes) throws MessageContentException, MessageProcessingException {
 
         roleDescriptor.setID("_" + MessageGenerateUtils.generateRandomUUID());
-        roleDescriptor.setValidUntil(MessageGenerateUtils.dateToXMLGregorianCalendar(validUntil));
+        roleDescriptor.setValidUntil(MessageGenerateUtils.dateToXMLGregorianCalendarNoTimeZone(validUntil));
         roleDescriptor.setCacheDuration(cacheDuration);
         if(protocolSupportEnumeration != null) {
             roleDescriptor.getProtocolSupportEnumeration().addAll(protocolSupportEnumeration);

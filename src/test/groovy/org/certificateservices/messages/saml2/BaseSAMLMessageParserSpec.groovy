@@ -86,7 +86,7 @@ class BaseSAMLMessageParserSpec extends CommonSAMLMessageParserSpecification {
 		def xml = new XmlSlurper().parse(new ByteArrayInputStream(samlPData))
 		then:
 		xml.@ID.toString().length() > 0
-		xml.@IssueInstant == "2015-07-07T16:26:53.000+02:00"
+		xml.@IssueInstant == "2015-07-07T14:26:53.000Z"
 		xml.@Version == AssertionPayloadParser.DEFAULT_ASSERTION_VERSION
 		xml.@InResponseTo == "_143214321"
 		xml.Status.StatusCode.@Value == ResponseStatusCodes.REQUESTER.getURIValue()
@@ -99,7 +99,7 @@ class BaseSAMLMessageParserSpec extends CommonSAMLMessageParserSpecification {
 		xml = new XmlSlurper().parse(new ByteArrayInputStream(samlPData))
 		then:
 		xml.@ID.toString().length() > 0
-		xml.@IssueInstant == "2015-07-07T16:26:53.000+02:00"
+		xml.@IssueInstant == "2015-07-07T14:26:53.000Z"
 		xml.@Version == AssertionPayloadParser.DEFAULT_ASSERTION_VERSION
 		xml.@InResponseTo == "_143214321"
 		xml.Status.StatusCode.@Value == ResponseStatusCodes.REQUESTER.getURIValue()

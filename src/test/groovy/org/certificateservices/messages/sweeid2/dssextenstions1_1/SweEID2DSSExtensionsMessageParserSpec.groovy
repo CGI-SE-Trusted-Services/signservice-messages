@@ -195,7 +195,7 @@ class SweEID2DSSExtensionsMessageParserSpec extends CommonSAMLMessageParserSpeci
 		def xml = slurpXml(d)
 		then:
 		xml.@Version == "1.5"
-		xml.RequestTime == "2015-07-07T16:26:53.000+02:00"
+		xml.RequestTime == "2015-07-07T14:26:53.000Z"
 		xml.Conditions.size() == 1
 		xml.Signer.Attribute.size() == 2
 		xml.IdentityProvider == "SomeIdentityProvider"
@@ -239,8 +239,8 @@ class SweEID2DSSExtensionsMessageParserSpec extends CommonSAMLMessageParserSpeci
 		//printXML(d);
 		def xml = slurpXml(d)
 		then:
-		xml.@NotBefore == "2015-07-07T16:26:53.000+02:00"
-		xml.@NotOnOrAfter == "2015-07-07T16:26:54.000+02:00"
+		xml.@NotBefore == "2015-07-07T14:26:53.000Z"
+		xml.@NotOnOrAfter == "2015-07-07T14:26:54.000Z"
 		xml.AudienceRestriction.Audience == "SomeAudience"
 	}
 
@@ -369,7 +369,7 @@ class SweEID2DSSExtensionsMessageParserSpec extends CommonSAMLMessageParserSpeci
 		def xml = slurpXml(d)
 		then:
 		xml.@Version == "1.5"
-		xml.ResponseTime == "2015-07-07T16:26:53.000+02:00"
+		xml.ResponseTime == "2015-07-07T14:26:53.000Z"
 		xml.Request.size() == 1
 		xml.SignerAssertionInfo.size() == 1
 		xml.SignatureCertificateChain.X509Certificate.size() == 2
@@ -388,7 +388,7 @@ class SweEID2DSSExtensionsMessageParserSpec extends CommonSAMLMessageParserSpeci
 		//printXML(d);
 		xml = slurpXml(d)
 		then:
-		xml.ResponseTime == "2015-07-07T16:26:53.000+02:00"
+		xml.ResponseTime == "2015-07-07T14:26:53.000Z"
 
 		when:
 		t2 = emp.parseMessage(DEFAULT_CONTEXT,d, false)
@@ -438,7 +438,7 @@ class SweEID2DSSExtensionsMessageParserSpec extends CommonSAMLMessageParserSpeci
 		def xml = slurpXml(d)
 		then:
 		xml.IdentityProvider == "SomeIdentifyProvider"
-		xml.AuthenticationInstant == "2015-07-07T16:26:53.000+02:00"
+		xml.AuthenticationInstant == "2015-07-07T14:26:53.000Z"
 		xml.AuthnContextClassRef == "SomeAuthnContextClassRef"
 		xml.ServiceID == "SomeServiceID"
 		xml.AuthType == "SomeAuthType"
@@ -456,7 +456,7 @@ class SweEID2DSSExtensionsMessageParserSpec extends CommonSAMLMessageParserSpeci
 		xml = slurpXml(d)
 		then:
 		xml.IdentityProvider == "SomeIdentifyProvider"
-		xml.AuthenticationInstant == "2015-07-07T16:26:53.000+02:00"
+		xml.AuthenticationInstant == "2015-07-07T14:26:53.000Z"
 		xml.AuthnContextClassRef == "SomeAuthnContextClassRef"
 
 		when:

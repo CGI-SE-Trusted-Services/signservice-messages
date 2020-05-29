@@ -309,7 +309,7 @@ public abstract class BaseSAMLMessageParser {
 
 			ResponseType responseType = samlpOf.createResponseType();
 			responseType.setID("_" + MessageGenerateUtils.generateRandomUUID());
-			responseType.setIssueInstant(MessageGenerateUtils.dateToXMLGregorianCalendar(systemTime.getSystemTime()));
+			responseType.setIssueInstant(MessageGenerateUtils.dateToXMLGregorianCalendarNoTimeZone(systemTime.getSystemTime()));
 			responseType.setVersion(DEFAULT_SAML_VERSION);
 			responseType.setInResponseTo(inResponseTo);
 			responseType.setStatus(statusType);
@@ -503,7 +503,7 @@ public abstract class BaseSAMLMessageParser {
 		
 		ResponseType responseType = samlpOf.createResponseType();
 		responseType.setID("_" + MessageGenerateUtils.generateRandomUUID());
-		responseType.setIssueInstant(MessageGenerateUtils.dateToXMLGregorianCalendar(systemTime.getSystemTime()));
+		responseType.setIssueInstant(MessageGenerateUtils.dateToXMLGregorianCalendarNoTimeZone(systemTime.getSystemTime()));
 		responseType.setVersion(DEFAULT_SAML_VERSION);
 		responseType.setInResponseTo(inResponseTo);
 		

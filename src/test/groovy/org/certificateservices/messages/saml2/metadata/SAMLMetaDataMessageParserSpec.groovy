@@ -68,7 +68,7 @@ class SAMLMetaDataMessageParserSpec extends CommonSAMLMessageParserSpecification
 		then:
 		xml.@ID.toString().startsWith("_")
 		xml.@entityID == "SomeEntityId"
-		xml.@validUntil == MessageGenerateUtils.dateToXMLGregorianCalendar(validUntil)
+		xml.@validUntil == MessageGenerateUtils.dateToXMLGregorianCalendarNoTimeZone(validUntil)
 		xml.@cacheDuration == "P1Y1M1DT1H1M1S"
 		xml.@"ds:Algorithm" == "http://somealg"
 		xml.Extensions.size() == 1
@@ -152,7 +152,7 @@ class SAMLMetaDataMessageParserSpec extends CommonSAMLMessageParserSpecification
 		then:
 		xml.@ID.toString().startsWith("_")
 		xml.@Name == "SomeName"
-		xml.@validUntil == MessageGenerateUtils.dateToXMLGregorianCalendar(validUntil)
+		xml.@validUntil == MessageGenerateUtils.dateToXMLGregorianCalendarNoTimeZone(validUntil)
 		xml.@cacheDuration == "P1Y1M1DT1H1M1S"
 		xml.Extensions.size() == 1
 		xml.EntityDescriptor.size() == 2
@@ -182,7 +182,7 @@ class SAMLMetaDataMessageParserSpec extends CommonSAMLMessageParserSpecification
 		def xml = slurpXml(dtd)
 		then:
 		xml.@ID.toString().startsWith("_")
-		xml.@validUntil == MessageGenerateUtils.dateToXMLGregorianCalendar(validUntil)
+		xml.@validUntil == MessageGenerateUtils.dateToXMLGregorianCalendarNoTimeZone(validUntil)
 		xml.@cacheDuration == "P1Y1M1DT1H1M1S"
 		xml.@protocolSupportEnumeration == "urn:oasis:names:tc:SAML:2.0:protocol urn:oasis:names:tc:SAML:profiles:query:attributes:X509-basic"
 		xml.@errorURL == "http://someerrorURL"
@@ -250,7 +250,7 @@ class SAMLMetaDataMessageParserSpec extends CommonSAMLMessageParserSpecification
 		def xml = slurpXml(dtd)
 		then:
 		xml.@ID.toString().startsWith("_")
-		xml.@validUntil == MessageGenerateUtils.dateToXMLGregorianCalendar(validUntil)
+		xml.@validUntil == MessageGenerateUtils.dateToXMLGregorianCalendarNoTimeZone(validUntil)
 		xml.@cacheDuration == "P1Y1M1DT1H1M1S"
 		xml.@protocolSupportEnumeration == "urn:oasis:names:tc:SAML:2.0:protocol urn:oasis:names:tc:SAML:profiles:query:attributes:X509-basic"
 		xml.@errorURL == "http://someerrorURL"
