@@ -60,4 +60,11 @@ public interface PayloadParser {
 	 */
 	InputStream getSchemaAsInputStream(String payLoadVersion) throws MessageContentException,MessageProcessingException;
 
+	/**
+	 * Method that should return related schemas used during payload schema validation.
+	 * @param payloadVersion payload version.
+	 * @return an array of related schemas if no related schemas exists is empty array returned, never null.
+	 */
+	String[] getRelatedSchemas(String payloadVersion);
+
 }
