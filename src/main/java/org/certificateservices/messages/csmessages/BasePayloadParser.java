@@ -258,4 +258,13 @@ public abstract class BasePayloadParser implements PayloadParser {
 		this.payloadVersion = payloadVersion;
 	}
 
+
+	/**
+	 * Method that should return related schemas used during payload schema validation.
+	 * @param payloadVersion payload version.
+	 * @return an array of related schemas if no related schemas exists is empty array returned, never null.
+	 */
+	public String[] getRelatedSchemas(String payloadVersion){
+		return new String[0];
+	}
 }

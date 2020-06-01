@@ -27,7 +27,8 @@ import org.certificateservices.messages.encryptedcsmessage.EncryptedCSMessagePay
 import org.certificateservices.messages.keystoremgmt.KeystoreMgmtPayloadParser;
 import org.certificateservices.messages.signrequest.SignRequestPayloadParser;
 import org.certificateservices.messages.sysconfig.SysConfigPayloadParser;
-import org.certificateservices.messages.v2x.V2XPayloadParser;
+import org.certificateservices.messages.v2x.backend.V2XBackendPayloadParser;
+import org.certificateservices.messages.v2x.registration.V2XPayloadParser;
 
 /**
  * Class in charge of maintaining available PayLoadParsers for different pay load content in CS Messages.
@@ -71,6 +72,7 @@ public class PayloadParserRegistry {
 		  payloadParserRegistry.put(CSAgentProtocolPayloadParser.NAMESPACE, CSAgentProtocolPayloadParser.class);
 		  payloadParserRegistry.put(SignRequestPayloadParser.NAMESPACE, SignRequestPayloadParser.class);
 		  payloadParserRegistry.put(V2XPayloadParser.NAMESPACE, V2XPayloadParser.class);
+		  payloadParserRegistry.put(V2XBackendPayloadParser.NAMESPACE, V2XBackendPayloadParser.class);
 		}
 	}
 	

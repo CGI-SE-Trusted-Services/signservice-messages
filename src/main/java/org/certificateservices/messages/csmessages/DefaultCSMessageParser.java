@@ -954,14 +954,20 @@ public class DefaultCSMessageParser implements CSMessageParser {
 				PayloadParser pp = PayloadParserRegistry.getParser(payLoadNamespace);
 				InputStream payLoadSchemaStream = pp.getSchemaAsInputStream(payLoadVersion);
 		    	String csMessageSchemaLocation = csMessageSchemaMap.get(version);
-				
-		        Source[] sources = new Source[(payLoadSchemaStream == null ? 3: 4)];
+
+		    	String[] relatedSchemas = pp.getRelatedSchemas(payLoadVersion);
+
+		        Source[] sources = new Source[(payLoadSchemaStream == null ? 3 + relatedSchemas.length: 4 + relatedSchemas.length)];
 		        sources[0] = new StreamSource(getClass().getResourceAsStream(XMLDSIG_XSD_SCHEMA_RESOURCE_LOCATION));
 				sources[1] = new StreamSource(getClass().getResourceAsStream(SensitiveKeysParser.SENSITIVE_KEYS_XSD_SCHEMA_RESOURCE_LOCATION));
 		        sources[2] = new StreamSource(getClass().getResourceAsStream(csMessageSchemaLocation));
+				for(int i = 0; i<relatedSchemas.length; i++){
+					sources[3+i] = new StreamSource(getClass().getResourceAsStream(relatedSchemas[i]));
+				}
 		        if(payLoadSchemaStream != null){
-		          sources[3] = new StreamSource(payLoadSchemaStream);
+		          sources[3 + relatedSchemas.length] = new StreamSource(payLoadSchemaStream);
 		        }
+
 				try {
 					Schema s = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI).newSchema(sources);
 					retval = s.newValidator();
