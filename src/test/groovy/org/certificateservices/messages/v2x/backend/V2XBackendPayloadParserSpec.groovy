@@ -68,46 +68,47 @@ class V2XBackendPayloadParserSpec extends Specification {
     def "Verify that generateSignECRequest() generates a valid xml message and generateSignECResponse() generates a valid CSMessageResponseData"(){
         when:
         csMessageParser.sourceId = "SOMEREQUESTER"
-        byte[] requestMessage = pp.generateSignECRequest(TEST_ID, "SOMESOURCEID",  "someorg",
-                "SomeITSId", 1,2,"someEAName", "someECProfile", ValidityUnitType.HOURS, 100,
-                 genRegions([1,2,3]),"SomeVerificationKeys".getBytes("UTF-8"),"SomeEncryptionKeys".getBytes("UTF-8"),  createOriginatorCredential(), null)
+        byte[] requestMessage = pp.generateSignCertRequest(TEST_ID, "SOMESOURCEID",  "someorg",
+                "SomeITSId", 1,2,"someEAId", "someECProfile", ValidityUnitType.HOURS, 100,
+                 genRegions([1,2,3]),"SomeVerificationKeys".getBytes("UTF-8"),"SomeEncryptionKeys".getBytes("UTF-8"),"SomeRequestHash".getBytes("UTF-8"),  createOriginatorCredential(), null)
         printXML(requestMessage)
         def xml = slurpXml(requestMessage)
-        def payloadObject = xml.payload.SignECRequest
+        def payloadObject = xml.payload.SignCertRequest
         then:
-        messageContainsPayload requestMessage, "v2xb:SignECRequest"
-        verifyCSHeaderMessage(requestMessage, xml, "SOMEREQUESTER", "SOMESOURCEID", "someorg","SignECRequest", createOriginatorCredential(), csMessageParser)
+        messageContainsPayload requestMessage, "v2xb:SignCertRequest"
+        verifyCSHeaderMessage(requestMessage, xml, "SOMEREQUESTER", "SOMESOURCEID", "someorg","SignCertRequest", createOriginatorCredential(), csMessageParser)
 
         payloadObject.canonicalId == "SomeITSId"
-        payloadObject.eaName == "someEAName"
+        payloadObject.caId == "someEAId"
         payloadObject.assuranceLevel == 1
         payloadObject.confidenceLevel == 2
         payloadObject.validityUnit == "hours"
         payloadObject.validityDuration == 100
-        payloadObject.ecProfile == "someECProfile"
+        payloadObject.profileName == "someECProfile"
         payloadObject.regions.identifiedRegions.countryOnly.size() == 3
         payloadObject.regions.identifiedRegions.countryOnly[0] == 1
         payloadObject.regions.identifiedRegions.countryOnly[1] == 2
         payloadObject.regions.identifiedRegions.countryOnly[2] == 3
         payloadObject.publicVerificationKey == new String(Base64.encode("SomeVerificationKeys".getBytes("UTF-8")))
         payloadObject.publicEncryptionKey == new String(Base64.encode("SomeEncryptionKeys".getBytes("UTF-8")))
+        payloadObject.requestHash == new String(Base64.encode("SomeRequestHash".getBytes("UTF-8")))
 
         when:
         csMessageParser.sourceId = "SOMESOURCEID"
         CSMessage request = pp.parseMessage(requestMessage)
 
 
-        CSMessageResponseData rd = pp.generateSignECResponse("SomeRelatedEndEntity", request,  "SomeITSId",
+        CSMessageResponseData rd = pp.generateSignCertResponse("SomeRelatedEndEntity", request,  "SomeITSId",
                 "ok", "someMessage", "SomeResponseData".getBytes("UTF-8"))
         printXML(rd.responseData)
         xml = slurpXml(rd.responseData)
-        payloadObject = xml.payload.SignECResponse
+        payloadObject = xml.payload.SignCertResponse
 
         then:
-        messageContainsPayload rd.responseData, "v2xb:SignECResponse"
+        messageContainsPayload rd.responseData, "v2xb:SignCertResponse"
 
-        verifyCSMessageResponseData  rd, "SOMEREQUESTER", TEST_ID, false, "SignECResponse", "SomeRelatedEndEntity"
-        verifyCSHeaderMessage(rd.responseData, xml, "SOMESOURCEID", "SOMEREQUESTER", "someorg","SignECResponse", createOriginatorCredential(), csMessageParser)
+        verifyCSMessageResponseData  rd, "SOMEREQUESTER", TEST_ID, false, "SignCertResponse", "SomeRelatedEndEntity"
+        verifyCSHeaderMessage(rd.responseData, xml, "SOMESOURCEID", "SOMEREQUESTER", "someorg","SignCertResponse", createOriginatorCredential(), csMessageParser)
         verifySuccessfulBasePayload(payloadObject, TEST_ID)
         payloadObject.canonicalId == "SomeITSId"
         payloadObject.responseCode == "ok"
@@ -116,40 +117,40 @@ class V2XBackendPayloadParserSpec extends Specification {
 
     }
 
-    def "Verify that generateSignECRequest() generates a valid xml message with minimal values and generateSignECResponse() generates a valid CSMessageResponseData"(){
+    def "Verify that generateSignCertRequest() generates a valid xml message with minimal values and generateSignECResponse() generates a valid CSMessageResponseData"(){
         when:
         csMessageParser.sourceId = "SOMEREQUESTER"
-        byte[] requestMessage = pp.generateSignECRequest(TEST_ID, "SOMESOURCEID",  "someorg",
-                "SomeITSId", null,null,"someEAName", "someECProfile", null, null,
-                null,"SomeVerificationKeys".getBytes("UTF-8"),null,  null, null)
+        byte[] requestMessage = pp.generateSignCertRequest(TEST_ID, "SOMESOURCEID",  "someorg",
+                "SomeITSId", null,null,"someEAId", "someECProfile", null, null,
+                null,"SomeVerificationKeys".getBytes("UTF-8"),null,  "SomeRequestHash".getBytes("UTF-8"), null, null)
         printXML(requestMessage)
         def xml = slurpXml(requestMessage)
-        def payloadObject = xml.payload.SignECRequest
+        def payloadObject = xml.payload.SignCertRequest
         then:
-        messageContainsPayload requestMessage, "v2xb:SignECRequest"
-        verifyCSHeaderMessage(requestMessage, xml, "SOMEREQUESTER", "SOMESOURCEID", "someorg","SignECRequest", null, csMessageParser)
+        messageContainsPayload requestMessage, "v2xb:SignCertRequest"
+        verifyCSHeaderMessage(requestMessage, xml, "SOMEREQUESTER", "SOMESOURCEID", "someorg","SignCertRequest", null, csMessageParser)
 
         payloadObject.canonicalId == "SomeITSId"
-        payloadObject.eaName == "someEAName"
-        payloadObject.ecProfile == "someECProfile"
+        payloadObject.caId == "someEAId"
+        payloadObject.profileName == "someECProfile"
         payloadObject.publicVerificationKey == new String(Base64.encode("SomeVerificationKeys".getBytes("UTF-8")))
-
+        payloadObject.requestHash == new String(Base64.encode("SomeRequestHash".getBytes("UTF-8")))
         when:
         csMessageParser.sourceId = "SOMESOURCEID"
         CSMessage request = pp.parseMessage(requestMessage)
 
 
-        CSMessageResponseData rd = pp.generateSignECResponse("SomeRelatedEndEntity", request,  "SomeITSId",
+        CSMessageResponseData rd = pp.generateSignCertResponse("SomeRelatedEndEntity", request,  "SomeITSId",
                 "ok", null, "SomeResponseData".getBytes("UTF-8"))
         printXML(rd.responseData)
         xml = slurpXml(rd.responseData)
-        payloadObject = xml.payload.SignECResponse
+        payloadObject = xml.payload.SignCertResponse
 
         then:
-        messageContainsPayload rd.responseData, "v2xb:SignECResponse"
+        messageContainsPayload rd.responseData, "v2xb:SignCertResponse"
 
-        verifyCSMessageResponseData  rd, "SOMEREQUESTER", TEST_ID, false, "SignECResponse", "SomeRelatedEndEntity"
-        verifyCSHeaderMessage(rd.responseData, xml, "SOMESOURCEID", "SOMEREQUESTER", "someorg","SignECResponse", null, csMessageParser)
+        verifyCSMessageResponseData  rd, "SOMEREQUESTER", TEST_ID, false, "SignCertResponse", "SomeRelatedEndEntity"
+        verifyCSHeaderMessage(rd.responseData, xml, "SOMESOURCEID", "SOMEREQUESTER", "someorg","SignCertResponse", null, csMessageParser)
         verifySuccessfulBasePayload(payloadObject, TEST_ID)
         payloadObject.canonicalId == "SomeITSId"
         payloadObject.responseCode == "ok"
@@ -161,7 +162,7 @@ class V2XBackendPayloadParserSpec extends Specification {
         when:
         csMessageParser.sourceId = "SOMEREQUESTER"
         byte[] requestMessage = pp.generateSignErrorRequest(TEST_ID, "SOMESOURCEID",  "someorg",
-                "SomeITSId", "someEA", "ok", "someMessage", createOriginatorCredential(), null)
+                "SomeITSId", "someEAId", "ok", "someMessage", "SomeRequestHash".getBytes("UTF-8"),createOriginatorCredential(), null)
         printXML(requestMessage)
         def xml = slurpXml(requestMessage)
         def payloadObject = xml.payload.SignErrorRequest
@@ -170,9 +171,10 @@ class V2XBackendPayloadParserSpec extends Specification {
         verifyCSHeaderMessage(requestMessage, xml, "SOMEREQUESTER", "SOMESOURCEID", "someorg","SignErrorRequest", createOriginatorCredential(), csMessageParser)
 
         payloadObject.canonicalId == "SomeITSId"
-        payloadObject.eaName == "someEA"
+        payloadObject.caId == "someEAId"
         payloadObject.responseCode == "ok"
         payloadObject.message == "someMessage"
+        payloadObject.requestHash == new String(Base64.encode("SomeRequestHash".getBytes("UTF-8")))
 
         when:
         csMessageParser.sourceId = "SOMESOURCEID"

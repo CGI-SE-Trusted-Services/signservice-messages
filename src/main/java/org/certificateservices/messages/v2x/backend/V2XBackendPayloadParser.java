@@ -102,7 +102,7 @@ public class V2XBackendPayloadParser extends BasePayloadParser {
 
 	/**
 	 *
-	 * Method generate a Sign EC Request Message.
+	 * Method generate a Sign Cert Request Message.
 	 *
 	 * @param requestId  id of request to send. (Required)
 	 * @param destinationId the destination Id to use. (Required)
@@ -112,15 +112,16 @@ public class V2XBackendPayloadParser extends BasePayloadParser {
 	 *                          confidenceLevel should be set).
 	 * @param confidenceLevel the confidenceLevel level to set in the certificate (Optional, use if assuranceLevel and
 	 * 	                      confidenceLevel should be set).
-	 * @param eaName name of EA that the ITSS should be associated with.
-	 * @param ecProfile Name of profile to use for the enrollment credential. The profile determines Service Permissions,
-	 *                  default region and validity. If not set is default profile for default EA used.
+	 * @param caId the hashedId8 of related CA in hexadecimal representation.
+	 * @param profileName Name of profile to use for the  credential. The profile determines Service Permissions,
+	 *                  default region and validity. If not set is default profile for default profile is used.
 	 * @param validityUnit  the unit used for the maximum end date for EC if specified, if empty is profile validity used. (Optional)
 	 * @param validityDuration  the duration value the maximum end date for EC if specified, if empty is profile validity used. (Optional)
 	 * @param regions Defines specific regions for this vehicle. The defined regions is checked against the profile and only regions that are a subset of regions defined in related profile will be accepted.
 	 *                If not set is the default regions set in related profile used. (Optional)
 	 * @param publicVerificationKey the public verification key as a COER encoded PublicVerificationKey from ETSI 103 097. (Required)
 	 * @param publicEncryptionKey the public verification key as a COER encoded PublicEncryptionKey from ETSI 103 097. (Optional)
+	 * @param requestHash the related request message hash (Required).
 	 * @param originator the credential of the original requester, null if this is the origin of the request.
 	 * @param assertions a list of related authorization assertions, or null if no authorization assertions is available.
 	 * @return  a generated and signed (if configured) message.
@@ -128,32 +129,33 @@ public class V2XBackendPayloadParser extends BasePayloadParser {
 	 * @throws MessageContentException if input data contained invalid format.
 	 * @throws MessageProcessingException if internal problems occurred processing the cs message.
 	 */
-	public byte[] generateSignECRequest(String requestId, String destinationId, String organisation,
+	public byte[] generateSignCertRequest(String requestId, String destinationId, String organisation,
 										String canonicalId, Integer assuranceLevel, Integer confidenceLevel,
-										String eaName, String ecProfile,
+										String caId, String profileName,
 										ValidityUnitType validityUnit, Integer validityDuration,
 										RegionsType regions,
 										byte[] publicVerificationKey, byte[] publicEncryptionKey,
-										Credential originator, List<Object> assertions)
+										byte[] requestHash, Credential originator, List<Object> assertions)
 			throws MessageContentException, MessageProcessingException{
-		SignECRequest payload = of.createSignECRequest();
+		SignCertRequest payload = of.createSignCertRequest();
 		payload.setCanonicalId(canonicalId);
 		payload.setAssuranceLevel(assuranceLevel);
 		payload.setConfidenceLevel(confidenceLevel);
-		payload.setEaName(eaName);
-		payload.setEcProfile(ecProfile);
+		payload.setCaId(caId);
+		payload.setProfileName(profileName);
 		payload.setValidityUnit(validityUnit);
 		payload.setValidityDuration(validityDuration);
 		payload.setRegions(regions);
 		payload.setPublicVerificationKey(publicVerificationKey);
 		payload.setPublicEncryptionKey(publicEncryptionKey);
+		payload.setRequestHash(requestHash);
 
 		return getCSMessageParser().generateCSRequestMessage(requestId, destinationId, organisation, getPayloadVersion(),
 				payload, originator, assertions);
 	}
 
 	/**
-	 * Method generate a Sign EC Response Message.
+	 * Method generate a Sign Cert Response Message.
 	 *
 	 * @param relatedEndEntity the name of the related end entity (such as username of the related user)
 	 * @param request the related request
@@ -166,12 +168,12 @@ public class V2XBackendPayloadParser extends BasePayloadParser {
 	 * @throws MessageContentException if input data contained invalid format.
 	 * @throws MessageProcessingException if internal problems occurred processing the cs message.
 	 */
-    public CSMessageResponseData generateSignECResponse(String relatedEndEntity, CSMessage request,
+    public CSMessageResponseData generateSignCertResponse(String relatedEndEntity, CSMessage request,
 														String canonicalId, String responseCode,
 														String message,
 														byte[] responseData)
 			throws MessageContentException, MessageProcessingException{
-		SignECResponse payload = of.createSignECResponse();
+		SignCertResponse payload = of.createSignCertResponse();
 		payload.setCanonicalId(canonicalId);
 		payload.setResponseCode(responseCode);
 		payload.setMessage(message);
@@ -188,8 +190,9 @@ public class V2XBackendPayloadParser extends BasePayloadParser {
 	 * @param requestId  id of request to send.
 	 * @param destinationId the destination Id to use.
 	 * @param canonicalId the canonical name of the ITS to register. Should be a unique identifier. (Required)
-	 * @param eaName name of EA that the ITSS should be associated with.
+	 * @param caId the hashedId8 of related CA in hexadecimal representation.
 	 * @param responseCode name representation of one result code in related enrolment protocol. (Required)
+	 * @param requestHash the related request message hash
 	 * @param message descriptive messate related to the response used in logging (Required)
 	 * @param originator the credential of the original requester, null if this is the origin of the request.
 	 * @param assertions a list of related authorization assertions, or null if no authorization assertions is available.
@@ -199,14 +202,16 @@ public class V2XBackendPayloadParser extends BasePayloadParser {
 	 * @throws MessageProcessingException if internal problems occurred processing the cs message.
 	 */
 	public byte[] generateSignErrorRequest(String requestId, String destinationId, String organisation,
-											String canonicalId, String eaName, String responseCode, String message,
+											String canonicalId, String caId, String responseCode, String message,
+										   byte[] requestHash,
 										   Credential originator, List<Object> assertions)
 			throws MessageContentException, MessageProcessingException{
 		SignErrorRequest payload = of.createSignErrorRequest();
 		payload.setCanonicalId(canonicalId);
-		payload.setEaName(eaName);
+		payload.setCaId(caId);
 		payload.setMessage(message);
 		payload.setResponseCode(responseCode);
+		payload.setRequestHash(requestHash);
 
 		return getCSMessageParser().generateCSRequestMessage(requestId, destinationId, organisation, getPayloadVersion(), payload, originator, assertions);
 	}

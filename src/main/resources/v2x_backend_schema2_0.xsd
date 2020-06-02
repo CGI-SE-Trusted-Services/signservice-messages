@@ -37,28 +37,29 @@
 		</xs:complexContent>
 	</xs:complexType>
 
-	<xs:element name="SignECRequest">
+	<xs:element name="SignCertRequest">
 		<xs:complexType>
 			<xs:complexContent>
 				<xs:extension base="cs:CSRequest">
 					<xs:sequence>
 						<xs:element minOccurs="1" maxOccurs="1" name="canonicalId"  type="v2x:CanonicalIdType" />
-						<xs:element minOccurs="1" maxOccurs="1" name="eaName" type="v2x:ProfileNameType"/>
+						<xs:element minOccurs="1" maxOccurs="1" name="caId" type="xs:string"/>
 						<xs:element minOccurs="0" maxOccurs="1" name="assuranceLevel"  type="xs:int" />
 						<xs:element minOccurs="0" maxOccurs="1" name="confidenceLevel"  type="xs:int" />
 						<xs:element minOccurs="0" maxOccurs="1" name="validityUnit"  type="tns:ValidityUnitType" />
 						<xs:element minOccurs="0" maxOccurs="1" name="validityDuration"  type="xs:int" />
-						<xs:element minOccurs="1" maxOccurs="1" name="ecProfile"  type="v2x:ProfileNameType" />
+						<xs:element minOccurs="1" maxOccurs="1" name="profileName"  type="v2x:ProfileNameType" />
 						<xs:element minOccurs="0" maxOccurs="1" name="regions"  type="v2x:RegionsType" />
 						<xs:element minOccurs="1" maxOccurs="1" name="publicVerificationKey" type="xs:base64Binary"/>
 						<xs:element minOccurs="0" maxOccurs="1" name="publicEncryptionKey" type="xs:base64Binary"/>
+						<xs:element minOccurs="1" maxOccurs="1" name="requestHash" type="xs:base64Binary"/>
 					</xs:sequence>
 				</xs:extension>
 			</xs:complexContent>
 		</xs:complexType>
 	</xs:element>
 
-	<xs:element name="SignECResponse">
+	<xs:element name="SignCertResponse">
 		<xs:complexType>
 			<xs:complexContent>
 				<xs:extension base="tns:BaseResponseType"/>
@@ -72,9 +73,10 @@
 				<xs:extension base="cs:CSRequest">
 					<xs:sequence>
 						<xs:element minOccurs="1" maxOccurs="1" name="canonicalId"  type="v2x:CanonicalIdType" />
-						<xs:element minOccurs="1" maxOccurs="1" name="eaName" type="v2x:ProfileNameType"/>
+						<xs:element minOccurs="1" maxOccurs="1" name="caId" type="xs:string"/>
 						<xs:element minOccurs="1" maxOccurs="1" name="responseCode"  type="xs:string" />
 						<xs:element minOccurs="1" maxOccurs="1" name="message"  type="xs:string" />
+						<xs:element minOccurs="1" maxOccurs="1" name="requestHash" type="xs:base64Binary"/>
 					</xs:sequence>
 				</xs:extension>
 			</xs:complexContent>
