@@ -43,7 +43,7 @@ public class SweEID2DSSExtensionsMessageParser extends DSS1CoreMessageParser{
 
     private static final String BASE_JAXB_CONTEXT = "org.certificateservices.messages.sweeid2.dssextenstions1_1.jaxb:org.certificateservices.messages.saml2.assertion.jaxb:org.certificateservices.messages.xenc.jaxb";
 
-    private static final String SWEEID_DSS_EXTENSTIONS_XSD_SCHEMA_1_1_RESOURCE_LOCATION = "/eid-dss-extensions-1.1.xsd";
+    private static final String SWEEID_DSS_EXTENSTIONS_XSD_SCHEMA_1_1_RESOURCE_LOCATION = "/eid-dss-extensions-1.1.2.xsd";
 
 
     protected org.certificateservices.messages.sweeid2.dssextenstions1_1.jaxb.ObjectFactory eid2Of = new org.certificateservices.messages.sweeid2.dssextenstions1_1.jaxb.ObjectFactory();
@@ -239,6 +239,53 @@ public class SweEID2DSSExtensionsMessageParser extends DSS1CoreMessageParser{
      *               Service MUST verify that the authenticated identity of the signer is consistent with the
      *               attributes in this element. (Optional, use null not to set.)
      * @param identityProvider The SAML EntityID of the Identity Provider that MUST be used to authenticate the signer
+     *                         before signing.  (Required)
+     * @param authnProfile An opaque string that can be used to inform the Signing Service about
+     *                     specific requirements regarding the user authentication at the given
+     *                     Identity Provider. (Optional)
+     * @param signRequester The SAML EntityID of the service that sends this request to the Signing Service.  (Required)
+     * @param signService The SAML EntityID of the service to which this Sign Request is sent. (Required)
+     * @param requestedSignatureAlgorithm An identifier of the signature algorithm the requesting service prefers when generating the
+     *                                    requested signature. (Optional, use null not to set.)
+     * @param signMessage Optional sign message with information to the signer about the requested signature.
+     *                    (Optional, use null not to set.)
+     * @param certRequestProperties An optional set of requested properties of the signature certificate that is generated as part
+     *                              of the signature process. (Optional, use null not to set.)
+     * @param otherRequestInfo Any additional inputs to the request extension. (Optional, use null not to set.)
+     * @return a newly created SignRequestExtension
+     * @throws MessageProcessingException if internal problems occurred generating message.
+     */
+    public JAXBElement<SignRequestExtensionType> genSignRequestExtension(String version, Date requestTime, ConditionsType conditionsType,
+                                                                         AttributeStatementType signer, String identityProvider, String authnProfile,
+                                                                         String signRequester, String signService,
+                                                                         String requestedSignatureAlgorithm, SignMessageType signMessage,
+                                                                         CertRequestPropertiesType certRequestProperties,
+                                                                         List<Object> otherRequestInfo) throws MessageProcessingException {
+        return genSignRequestExtension(version,requestTime,conditionsType,signer,genNameIdWithEntityFormat(identityProvider),
+                authnProfile, genNameIdWithEntityFormat(signRequester), genNameIdWithEntityFormat(signService), requestedSignatureAlgorithm,
+                signMessage,certRequestProperties,otherRequestInfo);
+    }
+
+    /**
+     * The SignRequestExtension element allows a requesting service to add essential sign request
+     * information to a DSS Sign request. When present, this element MUST be included in the dss:OptionalInputs
+     * element in a DSS Sign Request.
+     *
+     * @param version The version of this specification. If absent, the version value defaults to "1.1". This
+     *                attribute provides means for the receiving service to determine the expected syntax of the request
+     *                based on the protocol version. (Optional, use null not to set. Default: 1.1)
+     * @param requestTime The time when this request was created. (Required)
+     * @param conditionsType    Conditions that MUST be evaluated when assessing the validity of and/or when using the
+     *                          Sign Request. See Section 2.5 of [SAML2.0]for additional information on how to evaluate
+     *                          conditions. This element MUST include the attributes NotBefore and
+     *                          NotOnOrAfter and MUST includethe element saml:AudienceRestriction which in turn MUST contain one
+     *                          saml:Audience element, specifying the return URL for any resulting Sign Response message.
+     *                          (Required)
+     * @param signer The identity of the signer expressed as a sequence of SAML attributes using the
+     *               saml:AttributeStatementType complex type. If this element is present, then the Signing
+     *               Service MUST verify that the authenticated identity of the signer is consistent with the
+     *               attributes in this element. (Optional, use null not to set.)
+     * @param identityProvider The SAML EntityID of the Identity Provider that MUST be used to authenticate the signer
      *                         before signing. The EntitID value is specified using the saml:NameIDType
      *                         complex type and MUST include a Format attribute with the value
      *                         urn:oasis:names:tc:SAML:2.0:nameid-format:entity. (Required)
@@ -265,12 +312,67 @@ public class SweEID2DSSExtensionsMessageParser extends DSS1CoreMessageParser{
                                                             CertRequestPropertiesType certRequestProperties,
                                                             List<Object> otherRequestInfo) throws MessageProcessingException {
 
+        return genSignRequestExtension(version,requestTime,conditionsType,signer,identityProvider,null,signRequester,
+                signService,requestedSignatureAlgorithm,signMessage,certRequestProperties,otherRequestInfo);
+    }
+
+    /**
+     * The SignRequestExtension element allows a requesting service to add essential sign request
+     * information to a DSS Sign request. When present, this element MUST be included in the dss:OptionalInputs
+     * element in a DSS Sign Request.
+     *
+     * @param version The version of this specification. If absent, the version value defaults to "1.1". This
+     *                attribute provides means for the receiving service to determine the expected syntax of the request
+     *                based on the protocol version. (Optional, use null not to set. Default: 1.1)
+     * @param requestTime The time when this request was created. (Required)
+     * @param conditionsType    Conditions that MUST be evaluated when assessing the validity of and/or when using the
+     *                          Sign Request. See Section 2.5 of [SAML2.0]for additional information on how to evaluate
+     *                          conditions. This element MUST include the attributes NotBefore and
+     *                          NotOnOrAfter and MUST includethe element saml:AudienceRestriction which in turn MUST contain one
+     *                          saml:Audience element, specifying the return URL for any resulting Sign Response message.
+     *                          (Required)
+     * @param signer The identity of the signer expressed as a sequence of SAML attributes using the
+     *               saml:AttributeStatementType complex type. If this element is present, then the Signing
+     *               Service MUST verify that the authenticated identity of the signer is consistent with the
+     *               attributes in this element. (Optional, use null not to set.)
+     * @param identityProvider The SAML EntityID of the Identity Provider that MUST be used to authenticate the signer
+     *                         before signing. The EntitID value is specified using the saml:NameIDType
+     *                         complex type and MUST include a Format attribute with the value
+     *                         urn:oasis:names:tc:SAML:2.0:nameid-format:entity. (Required)
+     * @param authnProfile An opaque string that can be used to inform the Signing Service about
+     *                     specific requirements regarding the user authentication at the given
+     *                     Identity Provider. (Optional)
+     * @param signRequester The SAML EntityID of the service that sends this request to the Signing Service. The
+     *                      EntityID value is specified using the saml:NameIDType complex type and MUST include a
+     *                      Format attribute with the value urn:oasis:names:tc:SAML:2.0:nameid-format:entity. (Required)
+     * @param signService The SAML EntityID of the service to which this Sign Request is sent. The EntityID value is
+     *                    specified using the saml:NameIDType complex type and MUST include a Format attribute
+     *                    with the value urn:oasis:names:tc:SAML:2.0:nameid-format:entity. (Required)
+     * @param requestedSignatureAlgorithm An identifier of the signature algorithm the requesting service prefers when generating the
+     *                                    requested signature. (Optional, use null not to set.)
+     * @param signMessage Optional sign message with information to the signer about the requested signature.
+     *                    (Optional, use null not to set.)
+     * @param certRequestProperties An optional set of requested properties of the signature certificate that is generated as part
+     *                              of the signature process. (Optional, use null not to set.)
+     * @param otherRequestInfo Any additional inputs to the request extension. (Optional, use null not to set.)
+     * @return a newly created SignRequestExtension
+     * @throws MessageProcessingException if internal problems occurred generating message.
+     */
+    public JAXBElement<SignRequestExtensionType> genSignRequestExtension(String version, Date requestTime, ConditionsType conditionsType,
+                                                                         AttributeStatementType signer, NameIDType identityProvider,
+                                                                         String authnProfile,
+                                                                         NameIDType signRequester, NameIDType signService,
+                                                                         String requestedSignatureAlgorithm, SignMessageType signMessage,
+                                                                         CertRequestPropertiesType certRequestProperties,
+                                                                         List<Object> otherRequestInfo) throws MessageProcessingException {
+
         SignRequestExtensionType t = eid2Of.createSignRequestExtensionType();
         t.setVersion(version);
         t.setRequestTime(MessageGenerateUtils.dateToXMLGregorianCalendarNoTimeZone(requestTime));
         t.setConditions(conditionsType);
         t.setSigner(signer);
         t.setIdentityProvider(identityProvider);
+        t.setAuthnProfile(authnProfile);
         t.setSignRequester(signRequester);
         t.setSignService(signService);
         t.setRequestedSignatureAlgorithm(requestedSignatureAlgorithm);
@@ -330,11 +432,48 @@ public class SweEID2DSSExtensionsMessageParser extends DSS1CoreMessageParser{
     public CertRequestPropertiesType genCertRequestProperties(CertType certType, String authnContextClassRef,
                                                               List<MappedAttributeType> requestedCertAttributes,
                                                               List<Object> otherProperties){
+        ArrayList<String> authContextClassRefs = null;
+        if(authnContextClassRef != null) {
+            authContextClassRefs = new ArrayList<>();
+            authContextClassRefs.add(authnContextClassRef);
+        }
+        return genCertRequestProperties(certType,authContextClassRefs,requestedCertAttributes,otherProperties);
+    }
+
+    /**
+     * The CertRequestPropertiesType complex type is used to specify requested properties of the
+     * signature certificate that is associated with the generated signature.
+     *
+     * @param certType An enumeration of certificate types, default "PKC". The supported values are "PKC", "QC"
+     *                 and "QC/SSCD". "QC" means that the certificate is requested to be a Qualified Certificate
+     *                 according to legal definitions in national law governing the issuer. "QC/SSCD" means a
+     *                 Qualified Certificate where the private key is declared to be residing within a Secure
+     *                 Signature Creation Device according to national law. "PKC" (Public Key Certificate) means a
+     *                 certificate that is not a Qualified Certificate. (Optional, use null not to set, Default "PKC")
+
+     * @param authnContextClassRefs A list of URI identifying the requested level of assurance that authentication of the signature
+     *                             certificate subject MUST comply with in order to complete signing and certificate issuance. A
+     *                             Signing Service MUST NOT issue signature certificates and generate the requested
+     *                             signature unless the authentication process used to authenticate the requested signer meets
+     *                             the requested level of assurance expressed in this element. If this element is absent, the
+     *                             locally configured policy of the Signing Service is assumed. (Optional, use null not to set)
+     * @param requestedCertAttributes Element holding a SAML Entity ID of an Attribute Authority that MAY be used to obtain an
+     *                                attribute value for the requested attribute. The EntityID value is specified using the
+     *                                saml:NameIDType complex type and MUST include a Format attribute with the value
+     *                                urn:oasis:names:tc:SAML:2.0:nameid-format:entity. (Optional, use null not to set)
+     * @param otherProperties Other requested properties of the signature certificates. (Optional, use null not to set)
+     * @return a newly created CertRequestPropertiesType
+     */
+    public CertRequestPropertiesType genCertRequestProperties(CertType certType, List<String> authnContextClassRefs,
+                                                              List<MappedAttributeType> requestedCertAttributes,
+                                                              List<Object> otherProperties){
         CertRequestPropertiesType t = eid2Of.createCertRequestPropertiesType();
         if(certType != null) {
             t.setCertType(certType.getValue());
         }
-        t.setAuthnContextClassRef(authnContextClassRef);
+        if(authnContextClassRefs != null) {
+            t.getAuthnContextClassRef().addAll(authnContextClassRefs);
+        }
         if(requestedCertAttributes != null){
             RequestedAttributesType rat = eid2Of.createRequestedAttributesType();
             rat.getRequestedCertAttribute().addAll(requestedCertAttributes);

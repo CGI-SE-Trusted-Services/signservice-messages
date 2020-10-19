@@ -187,7 +187,7 @@ class SweEID2DSSExtensionsMessageParserSpec extends CommonSAMLMessageParserSpeci
 	def "Verify that genSignRequestExtension populates data structure correctly"() {
 		when:  "Generate full data structure"
 		JAXBElement<SignRequestExtensionType> t = emp.genSignRequestExtension("1.5", currentDate, createConditions(), createAttributeStatement(),
-				"SomeIdentityProvider", "SomeSignRequest", "SomeSignService",
+				"SomeIdentityProvider", "SomeAuthnProfile","SomeSignRequest", "SomeSignService",
 				"SomeRequestedSignatureAlgorithm", createSignMessage(), createCertRequestProperties(),
 				createOtherRequestInfo())
 		byte[] d = emp.marshall(t)
@@ -200,6 +200,7 @@ class SweEID2DSSExtensionsMessageParserSpec extends CommonSAMLMessageParserSpeci
 		xml.Signer.Attribute.size() == 2
 		xml.IdentityProvider == "SomeIdentityProvider"
 		xml.IdentityProvider.@Format == "urn:oasis:names:tc:SAML:2.0:nameid-format:entity"
+		xml.AuthnProfile == "SomeAuthnProfile"
 		xml.SignRequester == "SomeSignRequest"
 		xml.SignService == "SomeSignService"
 		xml.RequestedSignatureAlgorithm == "SomeRequestedSignatureAlgorithm"
@@ -252,7 +253,21 @@ class SweEID2DSSExtensionsMessageParserSpec extends CommonSAMLMessageParserSpeci
 		def xml = slurpXml(d)
 		then:
 		xml.@CertType == "QC"
+		xml.AuthnContextClassRef.size() == 1
 		xml.AuthnContextClassRef == "SomeAuthnContextClassRef"
+		xml.RequestedCertAttributes.RequestedCertAttribute.size() == 2
+		xml.OtherProperties.KeyName.size() == 2
+
+		when: "Generate with multiple authContextClassRef"
+		t = emp.genCertRequestProperties(CertType.QC,["SomeAuthnContextClassRef1","SomeAuthnContextClassRef2"], createRequestedCertAttributes(), createOtherProperties())
+		d = emp.marshall(eidOf.createCertRequestProperties(t))
+		//printXML(d);
+		xml = slurpXml(d)
+		then:
+		xml.@CertType == "QC"
+		xml.AuthnContextClassRef.size() == 2
+		xml.AuthnContextClassRef[0] == "SomeAuthnContextClassRef1"
+		xml.AuthnContextClassRef[1] == "SomeAuthnContextClassRef2"
 		xml.RequestedCertAttributes.RequestedCertAttribute.size() == 2
 		xml.OtherProperties.KeyName.size() == 2
 
