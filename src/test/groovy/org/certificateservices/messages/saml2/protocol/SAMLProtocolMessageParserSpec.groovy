@@ -11,6 +11,9 @@ import org.certificateservices.messages.saml2.assertion.jaxb.ConditionsType
 import org.certificateservices.messages.saml2.assertion.jaxb.NameIDType
 import org.certificateservices.messages.saml2.assertion.jaxb.SubjectType
 import org.certificateservices.messages.saml2.protocol.jaxb.*
+import org.certificateservices.messages.sweeid2.pricipalselection1_0.PrincipalSelectionGenerator
+import org.certificateservices.messages.sweeid2.pricipalselection1_0.jaxb.MatchValueType
+import org.certificateservices.messages.sweeid2.pricipalselection1_0.jaxb.PrincipalSelectionType
 import org.certificateservices.messages.utils.MessageGenerateUtils
 import spock.lang.Ignore
 import spock.lang.IgnoreRest
@@ -26,6 +29,8 @@ class SAMLProtocolMessageParserSpec extends CommonSAMLMessageParserSpecification
 
 	SAMLProtocolMessageParser spmp;
 	SAMLAssertionMessageParser samp;
+
+	org.certificateservices.messages.sweeid2.pricipalselection1_0.jaxb.ObjectFactory pcsOf = new org.certificateservices.messages.sweeid2.pricipalselection1_0.jaxb.ObjectFactory()
 
 	def setup(){
 		spmp = new SAMLProtocolMessageParser();
@@ -256,6 +261,37 @@ class SAMLProtocolMessageParserSpec extends CommonSAMLMessageParserSpecification
 		ass[0].getDocumentElement().getAttribute("ID") == "_58470139e557126f32744518cfd3e9eb"
 		samp.xmlSigner.verifyEnvelopedSignature(null,ass[0],false)
 
+	}
+
+	def "Generate AuthNRequest with Principal Selection and verify that it is populated as and extenstion"(){
+		when:
+		MatchValueType matchValueType1 = pcsOf.createMatchValueType()
+		matchValueType1.name = "urn:oid:1.2.752.29.4.13"
+		matchValueType1.value = "198906059483"
+		MatchValueType matchValueType2 = pcsOf.createMatchValueType()
+		matchValueType2.name = "urn:oid:1.2.752.201.3.4"
+		matchValueType2.value = "NO:05068907693"
+
+		ExtensionsType extensions = samlpOf.createExtensionsType()
+		extensions.any.add( new PrincipalSelectionGenerator().genPrincipalSelectionElement([matchValueType1,matchValueType2]))
+		byte[] authNRequest = spmp.genAuthNRequest(DEFAULT_CONTEXT,"_1234512341234",null,null,null, null,null,null,null,null,null, null, extensions, null, null, null, null, null, true)
+
+		def xml = slurpXml(authNRequest)
+		//printXML(authNRequest)
+		AuthnRequestType art = spmp.parseMessage(DEFAULT_CONTEXT,authNRequest, true)
+
+		then:
+		xml.@ID == "_1234512341234"
+		xml.@IssueInstant.toString().startsWith("20")
+		xml.@Version == "2.0"
+
+		xml.Signature.SignedInfo.size() == 1
+
+		xml.Extensions.PrincipalSelection.MatchValue.size() == 2
+		xml.Extensions.PrincipalSelection.MatchValue[0].@Name == "urn:oid:1.2.752.29.4.13"
+		xml.Extensions.PrincipalSelection.MatchValue[0] == "198906059483"
+		xml.Extensions.PrincipalSelection.MatchValue[1].@Name == "urn:oid:1.2.752.201.3.4"
+		xml.Extensions.PrincipalSelection.MatchValue[1] == "NO:05068907693"
 	}
 
 

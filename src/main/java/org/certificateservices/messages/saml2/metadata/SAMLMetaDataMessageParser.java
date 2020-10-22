@@ -49,7 +49,7 @@ public class SAMLMetaDataMessageParser extends BaseSAMLMessageParser {
 
     public static final String NAMESPACE = "urn:oasis:names:tc:SAML:2.0:metadata";
 
-    private static final String BASE_JAXB_CONTEXT = "org.certificateservices.messages.saml2.assertion.jaxb:org.certificateservices.messages.saml2.metadata.jaxb:org.certificateservices.messages.saml2.metadata.ui.jaxb:org.certificateservices.messages.saml2.metadata.attr.jaxb:org.certificateservices.messages.xenc.jaxb:org.certificateservices.messages.xmldsig.jaxb";
+    private static final String BASE_JAXB_CONTEXT = "org.certificateservices.messages.saml2.assertion.jaxb:org.certificateservices.messages.saml2.metadata.jaxb:org.certificateservices.messages.saml2.metadata.ui.jaxb:org.certificateservices.messages.saml2.metadata.attr.jaxb:org.certificateservices.messages.xenc.jaxb:org.certificateservices.messages.xmldsig.jaxb:org.certificateservices.messages.sweeid2.pricipalselection1_0.jaxb";
 
     protected static final String METADATA_XSD_SCHEMA_2_0_RESOURCE_LOCATION = "/cs-message-saml-schema-metadata-2.0.xsd";
 

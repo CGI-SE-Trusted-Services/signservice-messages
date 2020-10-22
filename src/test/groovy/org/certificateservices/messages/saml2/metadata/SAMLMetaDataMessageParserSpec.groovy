@@ -13,6 +13,9 @@ import org.certificateservices.messages.saml2.metadata.ui.jaxb.DiscoHintsType
 import org.certificateservices.messages.saml2.metadata.ui.jaxb.KeywordsType
 import org.certificateservices.messages.saml2.metadata.ui.jaxb.LogoType
 import org.certificateservices.messages.saml2.metadata.ui.jaxb.UIInfoType
+import org.certificateservices.messages.sweeid2.pricipalselection1_0.PrincipalSelectionGenerator
+import org.certificateservices.messages.sweeid2.pricipalselection1_0.jaxb.MatchValueType
+import org.certificateservices.messages.sweeid2.pricipalselection1_0.jaxb.RequestedPrincipalSelectionType
 import org.certificateservices.messages.utils.MessageGenerateUtils
 import org.certificateservices.messages.xenc.jaxb.EncryptionMethodType
 
@@ -606,6 +609,35 @@ class SAMLMetaDataMessageParserSpec extends CommonSAMLMessageParserSpecification
 		dt.signature != null
 	}
 
+	def "Verify that signed IDPSSODescriptor with RequestedPricipalSelection are generated correctly"() {
+		when:
+		IDPSSODescriptorType dt = smdmp.genIDPSSODescriptor(validUntil, cacheDuration, ["urn:oasis:names:tc:SAML:2.0:protocol", "urn:oasis:names:tc:SAML:profiles:query:attributes:X509-basic"],
+				"http://someerrorURL", createRequestedPrincipalSelectionExtensions(), createKeyDescriptor(), createOrganisation(),
+				createContactPersons(), createOtherAttributes(), createArtifactResolutionServices(),
+				createSingleLogoutServices(), createManageNameIDServices(), ["nameid1", "nameid2"],
+				true, createSingleSignOnServices(), createNameIDMappingServices(), createAssertionIDRequestServices(),
+				["attrprofile1", "attrprofile2"], createSAMLAttributes())
+		JAXBElement<IDPSSODescriptorType> jdt = mdOf.createIDPSSODescriptor(dt)
+		byte[] dtd = smdmp.marshallAndSign(DEFAULT_CONTEXT,jdt)
+		printXML(dtd)
+		def xml = slurpXml(dtd)
+		then:
+		xml.Signature.size() == 1
+		xml.Extensions.RequestedPrincipalSelection.MatchValue.size() == 2
+		xml.Extensions.RequestedPrincipalSelection.MatchValue[0].@Name == "urn:oid:1.2.752.29.4.13"
+		xml.Extensions.RequestedPrincipalSelection.MatchValue[1].@Name == "urn:oid:1.2.752.29.4.14"
+
+		when:
+		dt = smdmp.parseMessage(DEFAULT_CONTEXT,dtd,true)
+		then:
+		dt.extensions.any.size() == 1
+		RequestedPrincipalSelectionType v = dt.extensions.any[0].value
+		v.matchValue[0].name == "urn:oid:1.2.752.29.4.13"
+		v.matchValue[1].name == "urn:oid:1.2.752.29.4.14"
+
+
+	}
+
 	def "Verify that signed SPSSODescriptor are generated correctly"() {
 		when:
 		SPSSODescriptorType dt = smdmp.genSPSSODescriptor(validUntil,cacheDuration,["urn:oasis:names:tc:SAML:2.0:protocol", "urn:oasis:names:tc:SAML:profiles:query:attributes:X509-basic"],
@@ -882,29 +914,42 @@ class SAMLMetaDataMessageParserSpec extends CommonSAMLMessageParserSpecification
 
 	def "Verify that parser can parse a MD document containing UIInfo and DiscoHints"(){
 		when:
-		EntityDescriptorType edt = smdmp.parseMessage(null,MDWithUIElementsAndAttr,false)
+		EntityDescriptorType edt = smdmp.parseMessage(null,MDWithUIElementsAndAttrAndRequestedPricipalSelection,false)
 		then:
-		edt.roleDescriptorOrIDPSSODescriptorOrSPSSODescriptor[0].extensions.any.size() == 2
+		edt.roleDescriptorOrIDPSSODescriptorOrSPSSODescriptor[0].extensions.any.size() == 3
 		edt.roleDescriptorOrIDPSSODescriptorOrSPSSODescriptor[0].extensions.any[0].name.localPart == "UIInfo"
 		edt.roleDescriptorOrIDPSSODescriptorOrSPSSODescriptor[0].extensions.any[0].value.displayNameOrDescriptionOrKeywords.size() == 8
 
 		edt.roleDescriptorOrIDPSSODescriptorOrSPSSODescriptor[0].extensions.any[1].name.localPart == "DiscoHints"
 		edt.roleDescriptorOrIDPSSODescriptorOrSPSSODescriptor[0].extensions.any[1].value.ipHintOrDomainHintOrGeolocationHint.size() == 4
+
+		edt.roleDescriptorOrIDPSSODescriptorOrSPSSODescriptor[0].extensions.any[2].name.localPart == "RequestedPrincipalSelection"
+		edt.roleDescriptorOrIDPSSODescriptorOrSPSSODescriptor[0].extensions.any[2].value.matchValue.size() == 2
+		edt.roleDescriptorOrIDPSSODescriptorOrSPSSODescriptor[0].extensions.any[2].value.matchValue[0].name == "urn:oid:1.2.752.29.4.13"
+		edt.roleDescriptorOrIDPSSODescriptorOrSPSSODescriptor[0].extensions.any[2].value.matchValue[1].name == "urn:oid:1.2.752.29.4.14"
 	}
 
 	def "Verify that parser can parse a MD document containing md attributes"(){
 		when:
-		EntityDescriptorType edt = smdmp.parseMessage(null,MDWithUIElementsAndAttr,false)
+		EntityDescriptorType edt = smdmp.parseMessage(null,MDWithUIElementsAndAttrAndRequestedPricipalSelection,false)
 		then:
 		edt.extensions.any.size() == 1
 		edt.extensions.any[0].name.localPart == "EntityAttributes"
 		edt.extensions.any[0].value.attributeOrAssertion.size() == 1
 		edt.extensions.any[0].value.attributeOrAssertion[0].attributeValue.size() == 6
-
 	}
 
 	private ExtensionsType createExtensions(){
 		return smdmp.genExtensions([dsignObj.createKeyName("SomeKeyName")])
+	}
+
+	private ExtensionsType createRequestedPrincipalSelectionExtensions(){
+		MatchValueType mv1 = new MatchValueType()
+		mv1.name = "urn:oid:1.2.752.29.4.13"
+		MatchValueType mv2 = new MatchValueType()
+		mv2.name = "urn:oid:1.2.752.29.4.14"
+		def rpcs = new PrincipalSelectionGenerator().genRequestedPrincipalSelectionElement([mv1,mv2])
+		return smdmp.genExtensions([rpcs])
 	}
 
 	private List<Object> createAnyXML(){
@@ -1078,7 +1123,7 @@ class SAMLMetaDataMessageParserSpec extends CommonSAMLMessageParserSpecification
 
 
 
-	static final MDWithUIElementsAndAttr = """
+	static final MDWithUIElementsAndAttrAndRequestedPricipalSelection = """
 <EntityDescriptor entityID="https://idp.switch.ch/idp/shibboleth" xmlns="urn:oasis:names:tc:SAML:2.0:metadata" xmlns:mdui="urn:oasis:names:tc:SAML:metadata:ui" xmlns:mdattr="urn:oasis:names:tc:SAML:metadata:attribute" xmlns:saml="urn:oasis:names:tc:SAML:2.0:assertion">
   <Extensions>
     <mdattr:EntityAttributes
@@ -1141,11 +1186,15 @@ class SAMLMetaDataMessageParserSpec extends CommonSAMLMessageParserSpecification
         <mdui:DomainHint>switch.ch</mdui:DomainHint>
         <mdui:GeolocationHint>geo:47.37328,8.531126</mdui:GeolocationHint>
       </mdui:DiscoHints>
+      <psc:RequestedPrincipalSelection 
+         xmlns:psc="http://id.swedenconnect.se/authn/1.0/principal-selection/ns">
+      <psc:MatchValue Name="urn:oid:1.2.752.29.4.13" />
+      <psc:MatchValue Name="urn:oid:1.2.752.29.4.14" />
+    </psc:RequestedPrincipalSelection>
     </Extensions>
     <SingleSignOnService Binding="http://ssobinding1.com" Location="http://ssolocation1.com"/>
   </IDPSSODescriptor>
 </EntityDescriptor>""".getBytes("UTF-8")
-
 
 
 

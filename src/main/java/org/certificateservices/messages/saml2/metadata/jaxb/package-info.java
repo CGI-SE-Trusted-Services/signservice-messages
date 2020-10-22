@@ -12,6 +12,7 @@
                 @javax.xml.bind.annotation.XmlNs(namespaceURI = "http://www.w3.org/2000/09/xmldsig#", prefix = "ds"),
                 @javax.xml.bind.annotation.XmlNs(namespaceURI = "http://www.w3.org/2001/04/xmlenc#", prefix = "xenc"),
                 @javax.xml.bind.annotation.XmlNs(namespaceURI = "urn:oasis:names:tc:SAML:metadata:ui", prefix = "mdui"),
-                @javax.xml.bind.annotation.XmlNs(namespaceURI = "urn:oasis:names:tc:SAML:metadata:attribute", prefix = "mdattr")},
+                @javax.xml.bind.annotation.XmlNs(namespaceURI = "urn:oasis:names:tc:SAML:metadata:attribute", prefix = "mdattr"),
+                @javax.xml.bind.annotation.XmlNs(namespaceURI = "http://id.swedenconnect.se/authn/1.0/principal-selection/ns", prefix = "psc")},
         elementFormDefault = javax.xml.bind.annotation.XmlNsForm.QUALIFIED)
 package org.certificateservices.messages.saml2.metadata.jaxb;
