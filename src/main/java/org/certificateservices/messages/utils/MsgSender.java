@@ -14,6 +14,7 @@ package org.certificateservices.messages.utils;
 
 import org.certificateservices.messages.MessageContentException;
 import org.certificateservices.messages.MessageProcessingException;
+import org.certificateservices.messages.SpamProtectionException;
 
 import java.io.IOException;
 
@@ -32,8 +33,10 @@ public interface MsgSender {
      * @return the response message to receive.
      * @throws MessageContentException if content of the request was illegal.
      * @throws MessageProcessingException if internal problems occurred processing the request.
+     * @throws IOException if communication problems occurred.
+     * @throws SpamProtectionException if server side regarded call as a SPAM request and denied it.
      */
-    byte[] sendMsg(byte[] request) throws MessageContentException, MessageProcessingException, IOException;
+    byte[] sendMsg(byte[] request) throws MessageContentException, MessageProcessingException, IOException, SpamProtectionException;
 
     /**
      * Method to asyncronically send a request and response (or error) is signaled through callback.

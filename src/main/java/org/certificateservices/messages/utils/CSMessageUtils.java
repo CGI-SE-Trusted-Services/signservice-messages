@@ -1,6 +1,8 @@
 package org.certificateservices.messages.utils;
 
 import org.certificateservices.messages.MessageContentException;
+import org.certificateservices.messages.MessageProcessingException;
+import org.certificateservices.messages.csmessages.CSMessageParser;
 import org.certificateservices.messages.csmessages.jaxb.CSMessage;
 import org.certificateservices.messages.csmessages.jaxb.GetApprovalRequest;
 import org.xml.sax.SAXParseException;
@@ -8,6 +10,8 @@ import org.xml.sax.SAXParseException;
 import javax.xml.bind.JAXBElement;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.UnmarshalException;
+import java.security.cert.CertificateEncodingException;
+import java.security.cert.X509Certificate;
 
 /**
  * Utility methods used when working with CS Messages
@@ -104,6 +108,27 @@ public class CSMessageUtils {
 			}
 		}
 		return e.getMessage();
+	}
+
+	/**
+	 * Help method to parse a requester unique id from messageData used primarily for spam protection.
+	 * @param parser the related CSMessageParser
+	 * @param messageData the message data to extract unique id from.
+	 * @return the requester id from the signer of the message.
+	 * @throws MessageContentException if signer certificate data in message was invalid.
+	 * @throws MessageProcessingException if internal problems occurred parsing the message data.
+	 */
+	public static String getRequesterUniqueId(CSMessageParser parser, byte[] messageData) throws MessageContentException, MessageProcessingException {
+		X509Certificate signingCert = parser.getSigningCertificate(messageData);
+		if (signingCert == null) {
+			throw new MessageContentException("Error, no signing certificate found in CS Message Request");
+		}
+		// Reencode certificate with BC provider to ensure normalized issuer dn.
+		try {
+			return CertUtils.getCertificateUniqueId(CertUtils.getCertfromByteArray(signingCert.getEncoded()));
+		}catch(Exception e){
+			throw new MessageContentException("Error parsing certificate from CS Message: " + e.getMessage());
+		}
 	}
 	
 }

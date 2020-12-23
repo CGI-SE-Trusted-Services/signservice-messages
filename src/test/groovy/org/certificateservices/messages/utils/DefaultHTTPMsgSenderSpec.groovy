@@ -12,6 +12,8 @@
  *************************************************************************/
 package org.certificateservices.messages.utils
 
+import org.certificateservices.messages.SpamProtectionException
+
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 
@@ -26,8 +28,11 @@ import org.eclipse.jetty.server.Server
 import org.eclipse.jetty.server.handler.AbstractHandler
 import org.eclipse.jetty.server.handler.ContextHandler
 
-
-
+/**
+ * Unit tests for DefaultHTTPMsgSender
+ *
+ * @author Philip Vendil
+ */
 class DefaultHTTPMsgSenderSpec extends Specification{
 
 
@@ -49,17 +54,21 @@ class DefaultHTTPMsgSenderSpec extends Specification{
         def defaultHandler = [handle:{String target, Request baseRequest, HttpServletRequest request, HttpServletResponse response ->
 
             byte[] requestBodyInput =  request.getInputStream().getBytes()
-            if(request.getMethod() != "POST"){
-                response.sendError(HttpServletResponse.SC_METHOD_NOT_ALLOWED, "Only supporting POST request method.")
-            }else if(request.getContentType() != "text/xml; charset=UTF-8"){
-                response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Only supporting content type text/xml.")
-            }else if(!requestBodyInput){
-                response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid message")
-            }else{
-                response.setContentType("text/xml")
-                response.setStatus(HttpServletResponse.SC_OK)
-                baseRequest.setHandled(true)
-                response.getOutputStream().write(responseData.bytes)
+            if(target == "/messageprocessor/spam"){
+                response.sendError(429, "SPAM message detected.")
+            }else {
+                if (request.getMethod() != "POST") {
+                    response.sendError(HttpServletResponse.SC_METHOD_NOT_ALLOWED, "Only supporting POST request method.")
+                } else if (request.getContentType() != "text/xml; charset=UTF-8") {
+                    response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Only supporting content type text/xml.")
+                } else if (!requestBodyInput) {
+                    response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid message")
+                } else {
+                    response.setContentType("text/xml")
+                    response.setStatus(HttpServletResponse.SC_OK)
+                    baseRequest.setHandled(true)
+                    response.getOutputStream().write(responseData.bytes)
+                }
             }
 
         }] as AbstractHandler
@@ -89,10 +98,9 @@ class DefaultHTTPMsgSenderSpec extends Specification{
 
         when:
         msgSender.sendMsg("RequestData".getBytes(), asyncCallBack)
-        while(!asyncCallBack.responseData){
-            if(asyncCallBack.responseData){
-                break;
-            }
+        int retries = 0
+        while(!asyncCallBack.responseData && (retries++) < 50){
+            Thread.sleep(100)
         }
         then:
         assert new String(asyncCallBack.responseData, "UTF-8") == "Response data"
@@ -124,6 +132,33 @@ class DefaultHTTPMsgSenderSpec extends Specification{
         "5"		 | "IOException"				| "wrong port is accessed."
     }
 
+    def "Verify that SpamProtectionException is thrown if server returns 429 (Too many requests) response code for synchronous call."(){
+        when:
+
+        msgSender = new DefaultHTTPMsgSender("http://localhost:8089/messageprocessor/spam", "POST")
+        msgSender.sendMsg("".getBytes())
+        then:
+        def e = thrown (SpamProtectionException)
+        e.message == "Error sending message to http://localhost:8089/messageprocessor/spam, got response code :429 message: SPAM message detected."
+    }
+
+    def "Verify that SpamProtectionException is thrown if server returns 429 (Too many requests) response code for asynchronous call."(){
+        setup:
+        def asyncCallBack = new TestMsgCallback()
+
+        when:
+        msgSender = new DefaultHTTPMsgSender("http://localhost:8089/messageprocessor/spam", "POST")
+        msgSender.sendMsg("".getBytes(), asyncCallBack)
+        then:
+        int retries = 0
+        while(!asyncCallBack.error && (retries++) < 50){
+            Thread.sleep(100)
+        }
+        asyncCallBack.error instanceof SpamProtectionException
+        asyncCallBack.error.message == "Error sending message to http://localhost:8089/messageprocessor/spam, got response code :429 message: SPAM message detected."
+    }
+
+
     def cleanupSpec(){
         if(jettyServer!=null && jettyServer.isRunning()){
             jettyServer.stop()
@@ -134,16 +169,16 @@ class DefaultHTTPMsgSenderSpec extends Specification{
 
     class TestMsgCallback implements MsgSender.MsgCallback {
 
-        byte[] responseData;
-        Exception error;
+        byte[] responseData
+        Exception error
         @Override
-        public void responseReceived(byte[] responseData) {
-            this.responseData = responseData;
+        void responseReceived(byte[] responseData) {
+            this.responseData = responseData
         }
 
         @Override
-        public void errorOccurred(Exception e) {
-            this.error = e;
+        void errorOccurred(Exception e) {
+            this.error = e
         }
     }
 

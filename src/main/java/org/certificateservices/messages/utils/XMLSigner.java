@@ -484,7 +484,7 @@ public class XMLSigner {
 			if(e instanceof MessageProcessingException){
 				throw (MessageProcessingException) e;
 			}
-			throw new MessageContentException("Error  parsing the certificate from siganture in message: " + e.getMessage(),e);
+			throw new MessageContentException("Error parsing the certificate from signature in message: " + e.getMessage(),e);
 		}
 	}
 

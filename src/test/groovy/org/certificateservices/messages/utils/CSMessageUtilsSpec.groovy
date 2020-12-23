@@ -11,26 +11,23 @@
  *                                                                       *
  *************************************************************************/
 package org.certificateservices.messages.utils
+
 import org.certificateservices.messages.DummyMessageSecurityProvider
-import org.certificateservices.messages.MessageContentException;
+import org.certificateservices.messages.MessageContentException
 import org.certificateservices.messages.credmanagement.CredManagementPayloadParser
 import org.certificateservices.messages.credmanagement.CredManagementPayloadParserSpec
-import org.certificateservices.messages.credmanagement.jaxb.FetchHardTokenDataRequest;
-import org.certificateservices.messages.credmanagement.jaxb.IsIssuerRequest;
-import org.certificateservices.messages.csmessages.CSMessageParser;
-import org.certificateservices.messages.csmessages.CSMessageParserManager;
-import org.certificateservices.messages.csmessages.PayloadParser;
-import org.certificateservices.messages.csmessages.PayloadParserRegistry;
+import org.certificateservices.messages.credmanagement.jaxb.FetchHardTokenDataRequest
+import org.certificateservices.messages.credmanagement.jaxb.IsIssuerRequest
+import org.certificateservices.messages.csmessages.CSMessageParser
+import org.certificateservices.messages.csmessages.CSMessageParserManager
+import org.certificateservices.messages.csmessages.PayloadParserRegistry
 import org.certificateservices.messages.csmessages.jaxb.CSMessage
 import org.certificateservices.messages.csmessages.jaxb.Credential
-import org.certificateservices.messages.csmessages.jaxb.IsApprovedRequest;
-import org.certificateservices.messages.utils.MessageGenerateUtils;
-
+import org.certificateservices.messages.csmessages.jaxb.IsApprovedRequest
 import spock.lang.Specification
 
 class CSMessageUtilsSpec extends Specification {
 
-	
 	CSMessageParser csMessageParser
 	String messageId = MessageGenerateUtils.generateRandomUUID()
 	Properties props = new Properties()
@@ -42,6 +39,10 @@ class CSMessageUtilsSpec extends Specification {
 	static def config = """
 csmessage.sourceid=SomeClientSystem
 """
+	def setupSpec(){
+		CertUtils.installBCProvider()
+	}
+
 	def setup(){
 		props.load(new StringReader(config))
 		csMessageParser = CSMessageParserManager.initCSMessageParser(new DummyMessageSecurityProvider(), props)
@@ -114,5 +115,28 @@ csmessage.sourceid=SomeClientSystem
 		CSMessageUtils.getRelatedPayloadName(null)
 		then:
 		thrown MessageContentException
+	}
+
+	def "Verify that getRequesterUniqueId parser requester unique id properly"(){
+		expect:
+		CSMessageUtils.getRequesterUniqueId(csMessageParser,CredManagementPayloadParserSpec.ver2_0IssueTokenCredentialMessage) == "2457777d97b66fff;CN=Demo Customer1 AT ServerCA,O=Demo Customer1 AT"
+	}
+
+	def "Verify that getRequesterUniqueId throws MessageContentException for invalid csmessage data"(){
+		when:
+		CSMessageUtils.getRequesterUniqueId(csMessageParser,"""<?xml version="1.0" encoding="UTF-8" standalone="no"?><invalid>""".bytes)
+		then:
+		def e = thrown MessageContentException
+		e.message == "Error parsing the certificate from signature in message: XML document structures must start and end within the same entity."
+	}
+
+	def "Verify that corrupt signer certificate generated MessageContentException"(){
+		setup:
+		byte[] corruptMessage = new String(CredManagementPayloadParserSpec.ver2_0IssueTokenCredentialMessage).replace("MDCTBABgNVHR8EOTA3","INVALID").bytes
+		when:
+		CSMessageUtils.getRequesterUniqueId(csMessageParser,corruptMessage)
+		then:
+		def e = thrown MessageContentException
+		e.message =~ "Error parsing the certificate from signature in message:"
 	}
 }

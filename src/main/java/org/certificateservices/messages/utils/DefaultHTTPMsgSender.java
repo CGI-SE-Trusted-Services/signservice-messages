@@ -2,6 +2,7 @@ package org.certificateservices.messages.utils;
 
 import org.certificateservices.messages.MessageContentException;
 import org.certificateservices.messages.MessageProcessingException;
+import org.certificateservices.messages.SpamProtectionException;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -37,7 +38,7 @@ public class DefaultHTTPMsgSender extends BaseHTTPSender implements MsgSender {
     }
 
     @Override
-    public byte[] sendMsg(byte[] request) throws MessageContentException, MessageProcessingException, IOException {
+    public byte[] sendMsg(byte[] request) throws MessageContentException, MessageProcessingException, IOException, SpamProtectionException {
         return super.sendMsg(request);
     }
 

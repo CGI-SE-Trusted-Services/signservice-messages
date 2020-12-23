@@ -2,6 +2,7 @@ package org.certificateservices.messages.utils;
 
 import org.certificateservices.messages.MessageContentException;
 import org.certificateservices.messages.MessageProcessingException;
+import org.certificateservices.messages.SpamProtectionException;
 
 import java.io.*;
 import java.net.HttpURLConnection;
@@ -68,8 +69,9 @@ public abstract class BaseHTTPSender {
      * @throws MessageContentException if request contained illegal content.
      * @throws MessageProcessingException if internal problems occurred processing the request at the server.
      * @throws IOException if communication problems occurred.
+     * @throws SpamProtectionException if server side regarded call as a SPAM request and denied it.
      */
-    protected byte[] sendMsg(byte[] request) throws MessageContentException, MessageProcessingException, IOException {
+    protected byte[] sendMsg(byte[] request) throws MessageContentException, MessageProcessingException, IOException, SpamProtectionException {
         BaseHTTPSender.SynchronousCallback callback = new BaseHTTPSender.SynchronousCallback();
         BaseHTTPSender.SendMsgRunnable sendMsgRunnable = new BaseHTTPSender.SendMsgRunnable(request, callback);
         sendMsgRunnable.run(); // Run syncronically
@@ -82,6 +84,9 @@ public abstract class BaseHTTPSender {
             }
             if(callback.error instanceof IOException){
                 throw (IOException) callback.error;
+            }
+            if(callback.error instanceof SpamProtectionException){
+                throw (SpamProtectionException) callback.error;
             }
             throw new MessageProcessingException("Error sending message to " + baseURL + " : " + callback.error.getMessage(), callback.error);
         }
@@ -118,8 +123,9 @@ public abstract class BaseHTTPSender {
      * @throws MessageContentException if request contained illegal content.
      * @throws MessageProcessingException if internal problems occurred processing the request at the server.
      * @throws IOException if communication problems occurred.
+     * @throws SpamProtectionException if server side regarded call as a SPAM request and denied it.
      */
-    protected byte[] sendMsg(String parameters) throws MessageContentException, MessageProcessingException, IOException {
+    protected byte[] sendMsg(String parameters) throws MessageContentException, MessageProcessingException, IOException, SpamProtectionException {
         BaseHTTPSender.SynchronousCallback callback = new BaseHTTPSender.SynchronousCallback();
         BaseHTTPSender.SendMsgRunnable sendMsgRunnable = new BaseHTTPSender.SendMsgRunnable(parameters, callback);
         sendMsgRunnable.run(); // Run syncronically
@@ -132,6 +138,9 @@ public abstract class BaseHTTPSender {
             }
             if(callback.error instanceof IOException){
                 throw (IOException) callback.error;
+            }
+            if(callback.error instanceof SpamProtectionException){
+                throw (SpamProtectionException) callback.error;
             }
             throw new MessageProcessingException("Error sending message to " + baseURL + " : " + callback.error.getMessage(), callback.error);
         }
@@ -193,7 +202,8 @@ public abstract class BaseHTTPSender {
                     os.close();
                 }
 
-                int responseCode = con.getResponseCode() / 100;
+                int httpStatus = con.getResponseCode();
+                int responseCode = httpStatus / 100;
 
                 if(responseCode == 2){
                     DataInputStream inputStream = new DataInputStream(con.getInputStream());
@@ -206,10 +216,14 @@ public abstract class BaseHTTPSender {
                     inputStream.close();
                     callback.responseReceived(baos.toByteArray());
                 }else {
-                    if (responseCode == 4) {
-                        callback.errorOccurred(new MessageContentException("Error sending message to " + url + ", got response code :" + con.getResponseCode() + " message: " + con.getResponseMessage()));
-                    } else {
-                        callback.errorOccurred(new MessageProcessingException("Error sending message to " + url + ", got response code :" + con.getResponseCode() + " message: " + con.getResponseMessage()));
+                    if(httpStatus == 429){
+                        callback.errorOccurred(new SpamProtectionException("Error sending message to " + url + ", got response code :" + con.getResponseCode() + " message: " + con.getResponseMessage()));
+                    }else {
+                        if (responseCode == 4) {
+                            callback.errorOccurred(new MessageContentException("Error sending message to " + url + ", got response code :" + con.getResponseCode() + " message: " + con.getResponseMessage()));
+                        } else {
+                            callback.errorOccurred(new MessageProcessingException("Error sending message to " + url + ", got response code :" + con.getResponseCode() + " message: " + con.getResponseMessage()));
+                        }
                     }
                 }
 
