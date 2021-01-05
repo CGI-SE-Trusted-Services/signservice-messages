@@ -4,7 +4,6 @@ This a project containing Java code to generate and parse various messages withi
 
 It mainly consists of the following parts:
 
-* 
 
 CS Message 2.0 (core message format) with a set of Payload Parsers (which also are generators).
 
@@ -14,15 +13,13 @@ CS Message 2.0 (core message format) with a set of Payload Parsers (which also a
 ** Assertion Payload Parser
 ** Authorization Payload Parser
 ** Encrypted CS Message Payload Parser
-* 
+
 
 PKI Message generator (Older core message format) containing messages for credential management. 
 
-* 
 
 Framework for generating and parsing Receipt Messages (but no actual message implementation exists in this project. See org.certificateservices.messages.receipts package for details. To implement a custom kind of receipt message used by certservice-ejbcacomponents or certservice-ejbcaproviders implement a custom RecieptParser, add the jar to the main applications classpath and use settings defined in certservice-ejbcacomponents or certservice-ejbcaproviders to specify your implementation.
 
-* 
 
 Framework for generating and parsing Heartbeat Messages (but no actual message implementation exists in this project. See org.certificateservices.messages.heartbeat package for details. To implement a custom kind of receipt message used by certservice-ejbcacomponents or certservice-ejbcaproviders implement a custom HeartBeatParser, add the jar to the main applications classpath and use settings defined in certservice-ejbcacomponents or certservice-ejbcaproviders to specify your implementation.
 
@@ -109,23 +106,13 @@ For examples on using the payload parser, especially on using it in combination 
 
 The following build in pay load parser exists.
 
-* 
-
 Credential Management Payload Parser, to generate credential management messages, See org.certificateservices.messages.credmanagement.CredManagementPayloadParser
-
-* 
 
 Key Store Managment Payload Parser for generate key store management messages, see org.certificateservices.messages.keystoremgmt.KeystoreMgmtPayloadParser
 
-* 
-
 System Configuration Payload Parser to generate system configuration messages, see org.certificateservices.messages.sysconfig.SysConfigPayloadParser
 
-* 
-
 Assertion Payload Parser to generate assertions inserted into other payload messages, see org.certificateservices.messages.assertion.AssertionPayloadParser
-
-* 
 
 Encrypted CS Message Payload Parser, not actually a payload but encrypts an entire CS Message into an Encrypted variant, see org.certificateservices.messages.encryptedcsmessage.EncryptedCSMessagePayloadParser
 
