@@ -1,6 +1,7 @@
 package org.certificateservices.messages.csmessages.manager
 
 import org.bouncycastle.jce.provider.BouncyCastleProvider
+import org.certificateservices.messages.csmessages.CSMessageParserManager
 
 import java.io.IOException
 import java.security.Security;
@@ -49,9 +50,15 @@ class DefaultReqRespManagerSpec extends Specification{
 		config = new Properties();
         config.setProperty(DefaultCSMessageParser.SETTING_SOURCEID, "somesourceId");
 		config.setProperty(DummyMessageHandler.SETTING_WAITTIME, "100")
-		
-		parser.init(new DummyMessageSecurityProvider(), config);	
+
+		CSMessageParserManager.initCSMessageParser(new DummyMessageSecurityProvider(), config)
+		parser = CSMessageParserManager.getCSMessageParser()
 		credManagementPayloadParser = PayloadParserRegistry.getParser(CredManagementPayloadParser.NAMESPACE)
+	}
+
+	def cleanupSpec(){
+		CSMessageParserManager.config = null
+		CSMessageParserManager.parser = null
 	}
 	
 	def setup(){
