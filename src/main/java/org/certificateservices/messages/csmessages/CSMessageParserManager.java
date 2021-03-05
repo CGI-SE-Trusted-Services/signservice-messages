@@ -12,8 +12,6 @@
 *************************************************************************/
 package org.certificateservices.messages.csmessages;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Properties;
 
 import org.certificateservices.messages.MessageProcessingException;

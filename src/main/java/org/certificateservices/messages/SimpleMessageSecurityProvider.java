@@ -12,6 +12,10 @@
 *************************************************************************/
 package org.certificateservices.messages;
 
+import org.certificateservices.messages.utils.SettingsUtils;
+import org.certificateservices.messages.utils.XMLEncrypter;
+import org.certificateservices.messages.utils.XMLSigner;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -23,16 +27,7 @@ import java.security.PrivateKey;
 import java.security.cert.Certificate;
 import java.security.cert.CertificateEncodingException;
 import java.security.cert.X509Certificate;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Properties;
-import java.util.Set;
-
-import org.apache.log4j.Logger;
-import org.certificateservices.messages.utils.*;
+import java.util.*;
 
 /**
  * Simple PKI Message provider that is configured with two soft key stores.
@@ -45,8 +40,7 @@ import org.certificateservices.messages.utils.*;
  */
 public class SimpleMessageSecurityProvider implements
 		ContextMessageSecurityProvider {
-	
-	Logger log = Logger.getLogger(SimpleMessageSecurityProvider.class);
+
 	
 	/**
 	 * Setting indicating the path to the signing JKS key store (required) 

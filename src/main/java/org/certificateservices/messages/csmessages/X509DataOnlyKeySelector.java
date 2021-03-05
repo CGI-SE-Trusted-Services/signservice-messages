@@ -15,6 +15,7 @@ package org.certificateservices.messages.csmessages;
 import java.security.Key;
 import java.security.cert.X509Certificate;
 import java.util.Iterator;
+import java.util.logging.Logger;
 
 import javax.xml.crypto.AlgorithmMethod;
 import javax.xml.crypto.KeySelector;
@@ -30,7 +31,6 @@ import javax.xml.crypto.dsig.keyinfo.RetrievalMethod;
 import javax.xml.crypto.dsig.keyinfo.X509Data;
 import javax.xml.crypto.dsig.keyinfo.X509IssuerSerial;
 
-import org.apache.log4j.Logger;
 import org.certificateservices.messages.MessageProcessingException;
 import org.certificateservices.messages.MessageSecurityProvider;
 import org.w3c.dom.Node;
@@ -44,7 +44,7 @@ import org.w3c.dom.NodeList;
  */
 public class X509DataOnlyKeySelector extends KeySelector {
 	
-	protected static Logger log = Logger.getLogger(X509DataOnlyKeySelector.class);
+	protected static Logger log = Logger.getLogger(X509DataOnlyKeySelector.class.getName());
 
 	protected MessageSecurityProvider pkiMessageSecurityProvider;
 	
@@ -67,7 +67,7 @@ public class X509DataOnlyKeySelector extends KeySelector {
 	 * @param method the algorithm method that this key is to be used for.
 	 *    Only keys that are compatible with the algorithm and meet the
 	 *    constraints of the specified algorithm should be returned.
-	 * @param an <code>XMLCryptoContext</code> that may contain additional
+	 * @param context an <code>XMLCryptoContext</code> that may contain additional
 	 *    useful information for finding an appropriate key
 	 * @return a key selector result
 	 * @throws KeySelectorException if an exceptional condition occurs while
@@ -100,9 +100,9 @@ public class X509DataOnlyKeySelector extends KeySelector {
 					return ksr;
 				}
 			} else if (kiType instanceof KeyName) {
-				log.debug("Recieved digitally signed message with unsupported KeyName in KeyInfo, skipping.");
+				log.fine("Recieved digitally signed message with unsupported KeyName in KeyInfo, skipping.");
 			} else if (kiType instanceof RetrievalMethod) {
-				log.debug("Recieved digitally signed message with unsupported KeyName in RetrievalMethod, skipping.");
+				log.fine("Recieved digitally signed message with unsupported KeyName in RetrievalMethod, skipping.");
 			}
 		}
 
@@ -169,7 +169,7 @@ public class X509DataOnlyKeySelector extends KeySelector {
 					if(pkiMessageSecurityProvider.isValidAndAuthorized(xcert, organisation)){
 						ksr = new SimpleKeySelectorResult(xcert.getPublicKey());
 					}else{
-						log.debug("A certificate with DN " + xcert.getSubjectDN().toString() + " signing a message wasn't authorized or valid.");
+						log.fine("A certificate with DN " + xcert.getSubjectDN().toString() + " signing a message wasn't authorized or valid.");
 					}
 				}catch(IllegalArgumentException e){
 					throw new KeySelectorException(e.getMessage(),e);
@@ -177,11 +177,11 @@ public class X509DataOnlyKeySelector extends KeySelector {
 					throw new KeySelectorException(e.getMessage(),e);	
 				}			
 			} else if (o instanceof X509IssuerSerial) {
-				log.debug("Recieved digitally signed message with unsupported X509Data with X509IssuerSerial, skipping.");
+				log.fine("Recieved digitally signed message with unsupported X509Data with X509IssuerSerial, skipping.");
 			} else if (o instanceof String) {
-				log.debug("Recieved digitally signed message with unsupported X509Data with String, only X509Certificate supported, skipping.");
+				log.fine("Recieved digitally signed message with unsupported X509Data with String, only X509Certificate supported, skipping.");
 			} else if (o instanceof byte[]) {
-				log.debug("Recieved digitally signed message with unsupported X509Data with String, only SPKIInfo supported, skipping.");
+				log.fine("Recieved digitally signed message with unsupported X509Data with String, only SPKIInfo supported, skipping.");
 			} else {
 				// skip all other entries
 				continue;

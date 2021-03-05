@@ -1010,7 +1010,7 @@ class CredManagementPayloadParserSpec extends Specification {
 		pp.parseMessage(changeTokenStatusRequestV2_2_With2_3Data)
 		then:
 		def e = thrown MessageContentException
-		e.message == "Error parsing payload of CS Message: cvc-elt.1: Cannot find the declaration of element 'credmanagement:ChangeTokenStatusRequest'."
+		e.message =~ "Cannot find the declaration of element 'credmanagement:ChangeTokenStatusRequest'."
 	}
 
 

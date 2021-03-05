@@ -12,25 +12,24 @@
  *************************************************************************/
 package org.certificateservices.messages;
 
-import org.apache.log4j.Logger;
 import org.certificateservices.messages.utils.SettingsUtils;
 import org.certificateservices.messages.utils.XMLEncrypter;
 import org.certificateservices.messages.utils.XMLSigner;
-import sun.security.pkcs11.SunPKCS11;
 import sun.security.pkcs11.wrapper.PKCS11;
 import sun.security.pkcs11.wrapper.PKCS11Exception;
 
 import java.io.*;
-import java.lang.reflect.Constructor;
 import java.security.*;
 import java.security.cert.Certificate;
 import java.security.cert.CertificateEncodingException;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class PKCS11MessageSecurityProvider implements ContextMessageSecurityProvider {
-    Logger log = Logger.getLogger(PKCS11MessageSecurityProvider.class);
+    Logger log = Logger.getLogger(PKCS11MessageSecurityProvider.class.getName());
 
     /**
      * Setting indicating the path to the PKCS#11 library to use (required)
@@ -117,12 +116,12 @@ public class PKCS11MessageSecurityProvider implements ContextMessageSecurityProv
             pkcs11Keystore = getPKCS11Keystore(pkcs11Library, pkcs11Slot, pkcs11Password);
             if(signingKeyAlias == null){
                 // Use first key entry found if no alias is specified.
-                log.debug("Signing key alias not specified. Trying to find available key.");
+                log.fine("Signing key alias not specified. Trying to find available key.");
                 Enumeration<String> aliases = pkcs11Keystore.aliases();
                 while(aliases.hasMoreElements()) {
                     String alias = aliases.nextElement();
                     if(pkcs11Keystore.isKeyEntry(alias) && signingKeyAlias == null){
-                        log.debug("Using signing key alias: " + alias);
+                        log.fine("Using signing key alias: " + alias);
                         signingKeyAlias = alias;
                     }
                 }
@@ -142,7 +141,7 @@ public class PKCS11MessageSecurityProvider implements ContextMessageSecurityProv
         }
 
         if(decryptKeyDefaultAlias == null){
-            log.debug("Default decryption key alias not specified, using signing key alias: " + signingKeyAlias);
+            log.fine("Default decryption key alias not specified, using signing key alias: " + signingKeyAlias);
             decryptKeyDefaultAlias = signingKeyAlias;
         }
 
@@ -193,11 +192,11 @@ public class PKCS11MessageSecurityProvider implements ContextMessageSecurityProv
 
         if(trustStorePath != null){
             try {
-                log.debug("Using truststore: " + trustStorePath);
+                log.fine("Using truststore: " + trustStorePath);
                 trustStore = KeyStore.getInstance("JKS");
                 trustStore.load(new FileInputStream(trustStorePath), trustStorePassword.toCharArray());
             } catch(Exception e){
-                log.error("Failed to load truststore: " + trustStorePath, e);
+                log.log(Level.FINE,"Failed to load truststore: " + trustStorePath, e);
             }
         }
     }
@@ -369,7 +368,7 @@ public class PKCS11MessageSecurityProvider implements ContextMessageSecurityProv
      */
     @Override
     public boolean isValidAndAuthorized(Context context, X509Certificate signCertificate, String organisation) throws IllegalArgumentException, MessageProcessingException {
-        log.debug("Checking if valid and authorized: " + signCertificate.getSubjectDN().getName());
+        log.fine("Checking if valid and authorized: " + signCertificate.getSubjectDN().getName());
 
         if(!XMLSigner.checkBasicCertificateValidation(signCertificate)){
             return false;
@@ -383,7 +382,7 @@ public class PKCS11MessageSecurityProvider implements ContextMessageSecurityProv
             while(aliases.hasMoreElements()){
                 X509Certificate trustedCertificate = (X509Certificate)ks.getCertificate(aliases.nextElement());
                 if(isEqual(signCertificate, trustedCertificate)){
-                    log.debug("Found signing certificate in truststore");
+                    log.fine("Found signing certificate in truststore");
                     foundMatching = true;
                     break;
                 }
@@ -480,26 +479,26 @@ public class PKCS11MessageSecurityProvider implements ContextMessageSecurityProv
         pkcs11Config.append("library = " + pkcs11Library + "\n");
         pkcs11Config.append("slot = " + slot + "\n");
 
-        if (log.isDebugEnabled()) {
+        if (log.isLoggable(Level.FINE)) {
             PKCS11 p11 = PKCS11.getInstance(pkcs11Library, "C_GetFunctionList", null, false);
             long[] slots = p11.C_GetSlotList(true);
             for (long s : slots) {
-                log.debug("Found available PKCS#11 slot: " + s);
+                log.fine("Found available PKCS#11 slot: " + s);
             }
         }
 
-        log.debug("Using PKCS#11 configuration: " + pkcs11Config.toString());
+        log.fine("Using PKCS#11 configuration: " + pkcs11Config.toString());
         configStream = new ByteArrayInputStream(pkcs11Config.toString().getBytes("UTF-8"));
         providerManager.addPKCS11Provider(configStream);
         keyStore = providerManager.loadPKCS11Keystore(slotPassword == null ? null : slotPassword.toCharArray());
 
-        log.debug("PKCS#11 Keystore successfully loaded");
+        log.fine("PKCS#11 Keystore successfully loaded");
 
-        if (log.isDebugEnabled()) {
+        if (log.isLoggable(Level.FINE)) {
             Enumeration<String> aliases = keyStore.aliases();
             while (aliases.hasMoreElements()) {
                 String alias = aliases.nextElement();
-                log.debug("Found keystore alias: " + alias);
+                log.fine("Found keystore alias: " + alias);
             }
         }
 

@@ -713,7 +713,9 @@ public class DefaultCSMessageParserSpec extends Specification{
 		mp.parseMessage(invalidCSMessage, false,false)
 		then:
 		def e = thrown(MessageContentException)
-		e.message == "Error parsing CS Message: cvc-complex-type.2.4.a: Invalid content was found starting with element 'cs:neme'. One of '{\"http://certificateservices.org/xsd/csmessages2_0\":name}' is expected."
+		e.message =~ "Error parsing CS Message: cvc-complex-type.2.4.a: Invalid content was found starting with element"
+		e.message =~ ":neme"
+		e.message =~ "is expected."
 	}
 
 	def "Verify that populateOriginatorAssertionsAndSignCSMessage populates requests properly."(){

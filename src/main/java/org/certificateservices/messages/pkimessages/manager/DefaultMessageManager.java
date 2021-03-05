@@ -16,8 +16,8 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
+import java.util.logging.Logger;
 
-import org.apache.log4j.Logger;
 import org.certificateservices.messages.MessageException;
 import org.certificateservices.messages.pkimessages.DefaultPKIMessageParser;
 import org.certificateservices.messages.pkimessages.PKIMessageParser;
@@ -42,7 +42,7 @@ import org.certificateservices.messages.utils.MessageGenerateUtils;
 @SuppressWarnings({ "deprecation" })
 public class DefaultMessageManager implements MessageManager, MessageResponseCallback{
 	
-	private static Logger log = Logger.getLogger(DefaultMessageManager.class);
+	private static Logger log = Logger.getLogger(DefaultMessageManager.class.getName());
 
 	private  Map<String, RequestEntry> responseMap = new HashMap<String, RequestEntry>();
 	  
@@ -69,7 +69,7 @@ public class DefaultMessageManager implements MessageManager, MessageResponseCal
 	/** 
 	 * Method that initializes the message manager
 	 * 
-	 * @see org.certificateservices.messages.pkimessages.manager.MessageManager#init(Properties, PKIMessageParser, String, String)
+	 * @see org.certificateservices.messages.pkimessages.manager.MessageManager#init(Properties, PKIMessageParser, String)
 	 */	
 	public void init(Properties config, PKIMessageParser parser, String destination) throws IllegalArgumentException,
 			IOException, MessageException {
@@ -102,7 +102,7 @@ public class DefaultMessageManager implements MessageManager, MessageResponseCal
 			try {
 				Thread.sleep(SLEEP_INTERVAL_MILLIS);
 			} catch (InterruptedException e) {
-				log.error("waiting process interupted while waiting for MQ response: " + e.getMessage());
+				log.severe("waiting process interupted while waiting for MQ response: " + e.getMessage());
 			}
 			waitTime+= SLEEP_INTERVAL_MILLIS;
 			
@@ -137,11 +137,11 @@ public class DefaultMessageManager implements MessageManager, MessageResponseCal
 									byte[] revokeMessage = parser.genChangeCredentialStatusRequest(messageId,destination, responseMessage.getOrganisation(), c.getIssuerId(), c.getSerialNumber(), AvailableCredentialStatuses.REVOKED, REVOKE_REASON_REASONINFORMATION_CESSATIONOFOPERATION, DefaultPKIMessageParser.getOriginatorFromRequest(responseMessage));
 									messageHandler.sendMessage(messageId, revokeMessage);
 								} catch (IOException e) {
-									log.error("Error revoking timed-out certificate, io exception: " + e.getMessage());
+									log.severe("Error revoking timed-out certificate, io exception: " + e.getMessage());
 								} catch (MessageException e) {
-									log.error("Error revoking timed-out certificate, internal error: " + e.getMessage());
+									log.severe("Error revoking timed-out certificate, internal error: " + e.getMessage());
 								} catch (IllegalArgumentException e) {
-									log.error("Error revoking timed-out certificate, illegal argument: " + e.getMessage());
+									log.severe("Error revoking timed-out certificate, illegal argument: " + e.getMessage());
 								} 															
 							}
 						}
@@ -262,8 +262,7 @@ public class DefaultMessageManager implements MessageManager, MessageResponseCal
 
 	/**
 	 * Closes the underlying connection.
-	 * 
-	 * @see org.certificateservices.custom.vcc.vccpieclient.mq.MessageManager#close()
+	 * @see MessageManager#close()
 	 */
 	public void close() throws IOException {
 		messageHandler.close();

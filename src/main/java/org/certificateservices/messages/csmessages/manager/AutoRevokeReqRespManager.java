@@ -14,8 +14,8 @@ package org.certificateservices.messages.csmessages.manager;
 
 import java.io.IOException;
 import java.util.Map;
+import java.util.logging.Logger;
 
-import org.apache.log4j.Logger;
 import org.certificateservices.messages.MessageContentException;
 import org.certificateservices.messages.MessageProcessingException;
 import org.certificateservices.messages.credmanagement.CredManagementPayloadParser;
@@ -35,7 +35,7 @@ import org.certificateservices.messages.utils.MessageGenerateUtils;
  */
 public class AutoRevokeReqRespManager extends DefaultReqRespManager {
 	
-	private static Logger log = Logger.getLogger(AutoRevokeReqRespManager.class);
+	private static Logger log = Logger.getLogger(AutoRevokeReqRespManager.class.getName());
 
 	protected CSMessageParser csMessageParser;
 	protected CredManagementPayloadParser credManagementPayloadParser;
@@ -74,11 +74,11 @@ public class AutoRevokeReqRespManager extends DefaultReqRespManager {
 									byte[] revokeMessage = credManagementPayloadParser.genChangeCredentialStatusRequest(messageId, responseMessage.getSourceId(), responseMessage.getOrganisation(), c.getIssuerId(), c.getSerialNumber(), AvailableCredentialStatuses.REVOKED, REVOKE_REASON_REASONINFORMATION_CESSATIONOFOPERATION, csMessageParser.getOriginatorFromRequest(responseMessage), null);
 									messageHandler.sendMessage(messageSenderName, messageId, revokeMessage, messageAttributes);
 								} catch (IOException e) {
-									log.error("Error revoking timed-out certificate, io exception: " + e.getMessage());
+									log.severe("Error revoking timed-out certificate, io exception: " + e.getMessage());
 								} catch (MessageProcessingException e) {
-									log.error("Error revoking timed-out certificate, internal error: " + e.getMessage());
+									log.severe("Error revoking timed-out certificate, internal error: " + e.getMessage());
 								} catch (MessageContentException e) {
-									log.error("Error revoking timed-out certificate, illegal message: " + e.getMessage());
+									log.severe("Error revoking timed-out certificate, illegal message: " + e.getMessage());
 								} 															
 							}
 						}

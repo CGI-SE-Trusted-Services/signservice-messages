@@ -13,7 +13,6 @@
 
 package org.certificateservices.messages.utils;
 
-import org.apache.log4j.Logger;
 import org.bouncycastle.asn1.*;
 import org.bouncycastle.asn1.x500.AttributeTypeAndValue;
 import org.bouncycastle.asn1.x500.RDN;
@@ -38,6 +37,8 @@ import java.security.interfaces.DSAPublicKey;
 import java.security.interfaces.ECPublicKey;
 import java.security.interfaces.RSAPublicKey;
 import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 
 /**
@@ -52,7 +53,7 @@ import java.util.*;
 
 @SuppressWarnings( "deprecation" )
 public class CertUtils {
-	private static Logger log = Logger.getLogger(CertUtils.class);
+	private static Logger log = Logger.getLogger(CertUtils.class.getName());
 
 	public static final  String BEGIN_CERTIFICATE_REQUEST  = "-----BEGIN CERTIFICATE REQUEST-----";
 	public static final  String END_CERTIFICATE_REQUEST     = "-----END CERTIFICATE REQUEST-----";
@@ -387,9 +388,9 @@ public class CertUtils {
 			try {
 				certificate = (X509Certificate) getCertificateFactory().generateCertificate(new ByteArrayInputStream(certificate.getEncoded()));
 			} catch (CertificateException e) {
-				log.error("Error parsing certificate when extracting issuer dn: " + e.getMessage(),e);
+				log.log(Level.SEVERE,"Error parsing certificate when extracting issuer dn: " + e.getMessage(),e);
 			} catch (NoSuchProviderException e) {
-				log.error("Error BC Provider not found when extracting issuer dn: " + e.getMessage(),e);
+				log.log(Level.SEVERE,"Error BC Provider not found when extracting issuer dn: " + e.getMessage(),e);
 			}
 		}
 
@@ -688,7 +689,7 @@ public class CertUtils {
 	 * @return String containing dnpart or null if dnpart is not present
 	 */
 	public static String getPartFromDN(String dn, String dnpart) {
-		log.debug(">getPartFromDN: dn:'" + dn + "', dnpart=" + dnpart);
+		log.fine(">getPartFromDN: dn:'" + dn + "', dnpart=" + dnpart);
 		String part = null;
 		if ((dn != null) && (dnpart != null)) {
 			String o;
@@ -705,7 +706,7 @@ public class CertUtils {
 				}
 			}
 		}
-		log.debug("<getpartFromDN: resulting DN part=" + part);
+		log.fine("<getpartFromDN: resulting DN part=" + part);
 		return part;
 	} //getPartFromDN
 
@@ -718,11 +719,11 @@ public class CertUtils {
 	 * @return boolean true if the certificate has the same issuer and subject, false otherwise.
 	 */
 	public static boolean isSelfSigned(X509Certificate cert) {
-		log.debug(">isSelfSigned: cert: " + CertUtils.getIssuer(cert) + "\n" +
+		log.fine(">isSelfSigned: cert: " + CertUtils.getIssuer(cert) + "\n" +
 				CertUtils.getSubject(cert));
 
 		boolean ret = CertUtils.getSubject(cert).equals(CertUtils.getIssuer(cert));
-		log.debug("<isSelfSigned:" + ret);
+		log.fine("<isSelfSigned:" + ret);
 
 		return ret;
 	} // isSelfSigned

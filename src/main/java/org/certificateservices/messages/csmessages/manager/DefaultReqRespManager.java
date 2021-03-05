@@ -12,17 +12,15 @@
 *************************************************************************/
 package org.certificateservices.messages.csmessages.manager;
 
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
-
-import org.apache.log4j.Logger;
 import org.certificateservices.messages.MessageProcessingException;
 import org.certificateservices.messages.csmessages.jaxb.CSMessage;
 import org.certificateservices.messages.csmessages.jaxb.CSResponse;
-import org.certificateservices.messages.utils.CSMessageUtils;
 
 import javax.xml.bind.JAXBElement;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.logging.Logger;
 
 /**
  * Default request response manager sending a request on one queue and waiting for a response on a response queue.
@@ -34,7 +32,7 @@ import javax.xml.bind.JAXBElement;
 public class DefaultReqRespManager implements ReqRespManager,
 		MessageResponseCallback {
 	
-	private static Logger log = Logger.getLogger(DefaultReqRespManager.class);
+	private static Logger log = Logger.getLogger(DefaultReqRespManager.class.getName());
 
 	protected  Map<String, RequestEntry> responseMap = new HashMap<String, RequestEntry>();
 	
@@ -98,7 +96,7 @@ public class DefaultReqRespManager implements ReqRespManager,
 			try {
 				Thread.sleep(SLEEP_INTERVAL_MILLIS);
 			} catch (InterruptedException e) {
-				log.error("waiting process interupted while waiting for MQ response: " + e.getMessage());
+				log.severe("waiting process interupted while waiting for MQ response: " + e.getMessage());
 			}
 			waitTime+= SLEEP_INTERVAL_MILLIS;
 

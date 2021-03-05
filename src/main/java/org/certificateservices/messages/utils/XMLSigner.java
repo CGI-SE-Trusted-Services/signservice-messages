@@ -20,6 +20,7 @@ import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
 import java.util.*;
+import java.util.logging.Logger;
 
 import javax.xml.crypto.MarshalException;
 import javax.xml.crypto.dsig.CanonicalizationMethod;
@@ -47,7 +48,6 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
-import org.apache.log4j.Logger;
 import org.apache.xml.security.utils.Base64;
 import org.certificateservices.messages.*;
 import org.w3c.dom.Document;
@@ -70,7 +70,7 @@ public class XMLSigner {
 	private static String ENVELOPE_TRANSFORM = "http://www.w3.org/2000/09/xmldsig#enveloped-signature";
 	private static String C14N_TRANSFORM = "http://www.w3.org/2001/10/xml-exc-c14n#";
 
-	static Logger log = Logger.getLogger(XMLSigner.class);
+	static Logger log = Logger.getLogger(XMLSigner.class.getName());
 
 	static SystemTime systemTime = new DefaultSystemTime();
 	private DocumentBuilder documentBuilder;
@@ -503,11 +503,11 @@ public class XMLSigner {
 
 		Date currentTime = systemTime.getSystemTime();
 		if(currentTime.after(cert.getNotAfter())){
-			log.error("Error processing Certificate Services message signing certificate expired: " + cert.getNotAfter());
+			log.severe("Error processing Certificate Services message signing certificate expired: " + cert.getNotAfter());
 			return false;
 		}
 		if(currentTime.before(cert.getNotBefore())){
-			log.error("Error processing Certificate Services message signing certificate not yet valid: " + cert.getNotBefore());
+			log.severe("Error processing Certificate Services message signing certificate not yet valid: " + cert.getNotBefore());
 			return false;
 		}
 

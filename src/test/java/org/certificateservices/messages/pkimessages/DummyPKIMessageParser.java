@@ -12,20 +12,14 @@
  *************************************************************************/
 package org.certificateservices.messages.pkimessages;
 
+import org.certificateservices.messages.MessageException;
+import org.certificateservices.messages.MessageSecurityProvider;
+import org.certificateservices.messages.pkimessages.jaxb.*;
+
 import java.security.cert.X509Certificate;
 import java.util.Date;
 import java.util.List;
 import java.util.Properties;
-
-import org.certificateservices.messages.MessageException;
-import org.certificateservices.messages.MessageSecurityProvider;
-import org.certificateservices.messages.pkimessages.PKIMessageParser;
-import org.certificateservices.messages.pkimessages.PKIMessageResponseData;
-import org.certificateservices.messages.pkimessages.jaxb.Credential;
-import org.certificateservices.messages.pkimessages.jaxb.CredentialStatusList;
-import org.certificateservices.messages.pkimessages.jaxb.PKIMessage;
-import org.certificateservices.messages.pkimessages.jaxb.RequestStatus;
-import org.certificateservices.messages.pkimessages.jaxb.TokenRequest;
 
 @SuppressWarnings("deprecation")
 public class DummyPKIMessageParser  implements PKIMessageParser{
