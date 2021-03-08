@@ -44,6 +44,7 @@ class V2XPayloadParserSpec extends Specification {
     org.certificateservices.messages.csmessages.jaxb.ObjectFactory csMessageOf = new org.certificateservices.messages.csmessages.jaxb.ObjectFactory()
 
     DefaultCSMessageParser csMessageParser
+    def currentTimeZone
 
     KeyPair signKeys
 
@@ -56,6 +57,8 @@ class V2XPayloadParserSpec extends Specification {
     }
 
     def setup(){
+        currentTimeZone = TimeZone.getDefault()
+        TimeZone.setDefault(TimeZone.getTimeZone("Europe/Stockholm"))
         setupRegisteredPayloadParser()
         csMessageParser = CSMessageParserManager.getCSMessageParser()
         pp = PayloadParserRegistry.getParser(V2XPayloadParser.NAMESPACE)
@@ -63,6 +66,10 @@ class V2XPayloadParserSpec extends Specification {
         KeyPairGenerator kf = KeyPairGenerator.getInstance("EC","BC")
         kf.initialize(ECNamedCurveTable.getParameterSpec("P-256"))
         signKeys = kf.generateKeyPair()
+    }
+
+    def cleanup(){
+        TimeZone.setDefault(currentTimeZone)
     }
 
     def "Verify that JAXBPackage(), getNameSpace(), getSchemaAsInputStream(), getSupportedVersions(), getDefaultPayloadVersion() returns the correct values"(){
