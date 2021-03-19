@@ -31,6 +31,7 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 
+
 import org.apache.log4j.Logger;
 import org.certificateservices.messages.utils.*;
 
@@ -474,7 +475,7 @@ public class SimpleMessageSecurityProvider implements
 	/**
 	 * Help method reading a JKS keystore from configuration and specified settings.
 	 */
-	protected static KeyStore getKeyStore(Properties config, String pathSetting, String passwordSetting) throws MessageProcessingException {
+	public static KeyStore getKeyStore(Properties config, String pathSetting, String passwordSetting) throws MessageProcessingException {
 		String keyStorePath = SettingsUtils.getRequiredProperty(config, pathSetting);
 		
 		InputStream keyStoreInputStream = SimpleMessageSecurityProvider.class.getClassLoader().getResourceAsStream(keyStorePath);
