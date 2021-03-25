@@ -29,6 +29,7 @@ import java.security.cert.CertificateEncodingException;
 import java.security.cert.X509Certificate;
 import java.util.*;
 
+
 /**
  * Simple PKI Message provider that is configured with two soft key stores.
  * One key store used as a client key store signing messages and
@@ -468,7 +469,7 @@ public class SimpleMessageSecurityProvider implements
 	/**
 	 * Help method reading a JKS keystore from configuration and specified settings.
 	 */
-	protected static KeyStore getKeyStore(Properties config, String pathSetting, String passwordSetting) throws MessageProcessingException {
+	public static KeyStore getKeyStore(Properties config, String pathSetting, String passwordSetting) throws MessageProcessingException {
 		String keyStorePath = SettingsUtils.getRequiredProperty(config, pathSetting);
 		
 		InputStream keyStoreInputStream = SimpleMessageSecurityProvider.class.getClassLoader().getResourceAsStream(keyStorePath);
