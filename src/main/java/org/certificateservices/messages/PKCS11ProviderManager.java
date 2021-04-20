@@ -26,11 +26,12 @@ public interface PKCS11ProviderManager {
      * Create and add a PKCS#11 provider to the system
      *
      * @param config Configuration to use when creating the provider
+     * @return the name of the created provider.
      * @throws NullPointerException If an empty provider was created based on the configuration.
      * @throws SecurityException If a security manager exists and its SecurityManager.checkSecurityAccess method denies access to add a new provider
      * @throws ProviderException If error occurred when creating the provider.
      */
-    void addPKCS11Provider(InputStream config) throws SecurityException, NullPointerException, ProviderException;
+    String addPKCS11Provider(InputStream config) throws SecurityException, NullPointerException, ProviderException;
 
     /**
      * Load the PKCS#11 keystore and make it available for use.

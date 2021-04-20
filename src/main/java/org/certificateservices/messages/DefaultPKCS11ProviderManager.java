@@ -28,15 +28,17 @@ public class DefaultPKCS11ProviderManager implements PKCS11ProviderManager {
      * Create and add a PKCS#11 provider to the system
      *
      * @param config Configuration to use when creating the provider
+     * @return the name of the created provider.
      * @throws NullPointerException If an empty provider was created based on the configuration.
      * @throws SecurityException If a security manager exists and its SecurityManager.checkSecurityAccess method denies access to add a new provider
      * @throws ProviderException If error occurred when creating the provider.
      */
-    public void addPKCS11Provider(InputStream config) throws SecurityException, NullPointerException, ProviderException {
+    public String addPKCS11Provider(InputStream config) throws SecurityException, NullPointerException, ProviderException {
         SunPKCS11 pkcs11Provider = new SunPKCS11(config);
         if(pkcs11Provider != null){
             Security.addProvider(pkcs11Provider);
         }
+        return pkcs11Provider.getName();
     }
 
     /**
