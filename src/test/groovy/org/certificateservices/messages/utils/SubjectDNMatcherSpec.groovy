@@ -1,10 +1,7 @@
-package se.signatureservice.common.tls
-
+package org.certificateservices.messages.utils
 
 import org.bouncycastle.asn1.x500.style.BCStyle
 import org.bouncycastle.util.encoders.Base64
-import se.signatureservice.configuration.common.utils.CertUtils
-import se.signatureservice.common.utils.CertUtilsTests
 import spock.lang.Specification
 
 import java.security.cert.X509Certificate
@@ -32,10 +29,10 @@ class SubjectDNMatcherSpec extends Specification {
 
     def "Verify that subjectMatch returns true if a certificate has a field that matches"(){
         setup:
-        X509Certificate cert = CertUtils.getCertfromByteArray(Base64.decode(CertUtilsTests.base64LotOfExtensitonsCert))
+        X509Certificate cert = CertUtils.getCertfromByteArray(Base64.decode(CertUtilsSpec.base64LotOfExtensitonsCert))
         println cert.subjectDN.toString()
         expect:
-        matchsubjectMatch(cert,"Cn"," Kalle Anka  ")
+        matcher.subjectMatch(cert,"Cn"," Kalle Anka  ")
         !matcher.subjectMatch(cert,"Cn"," Arne Anka  ")
         !matcher.subjectMatch(cert,"unknown", "unknown")
         matcher.subjectMatch(cert, BCStyle.CN," Kalle Anka  ")

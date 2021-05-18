@@ -14,6 +14,7 @@ package org.certificateservices.messages
 
 import org.bouncycastle.jce.provider.BouncyCastleProvider
 import org.certificateservices.messages.utils.XMLSigner
+import spock.lang.Unroll
 
 import java.security.Security
 
@@ -24,14 +25,18 @@ import java.security.PrivateKey
 import java.security.cert.CertificateFactory
 import java.security.cert.X509Certificate
 import java.security.interfaces.RSAPrivateKey
-import java.text.SimpleDateFormat
 
 import org.apache.xml.security.utils.Base64
-import org.certificateservices.messages.utils.SystemTime
 import org.certificateservices.messages.utils.XMLEncrypter
 
 import spock.lang.Specification
 
+import static org.certificateservices.messages.SimpleMessageSecurityProvider.DEFAULT_TRUSTKEYSTORE_MATCHSUBJECT
+import static org.certificateservices.messages.SimpleMessageSecurityProvider.DEFAULT_TRUSTKEYSTORE_MATCHSUBJECT
+
+/**
+ * Unit tests for SimplePKIMessageSecurityProvider
+ */
 class SimplePKIMessageSecurityProviderSpec extends Specification {
 	
 	SimpleMessageSecurityProvider prov
@@ -67,6 +72,10 @@ class SimplePKIMessageSecurityProviderSpec extends Specification {
 		expect:
 		prov.signingAlgorithmScheme == SigningAlgorithmScheme.RSAWithSHA256
 		prov.encryptionAlgorithmScheme == EncryptionAlgorithmScheme.RSA_PKCS1_5_WITH_AES256
+	}
+
+	def "Verify that if truststore type is CA the provider is initialized properly"(){
+
 	}
 	
 	def "Test that getSigningKey() returns a valid signing key"(){
@@ -243,5 +252,112 @@ class SimplePKIMessageSecurityProviderSpec extends Specification {
 		then:
 		thrown MessageProcessingException
 		
+	}
+
+	@Unroll
+	def "Verify that getTrustStoreType() with valid truststore type configuration is returned in trimmed uppercase"(){
+		setup:
+		Properties config = new Properties()
+		config.setProperty(SETTING_TRUSTKEYSTORE_TYPE, value)
+		expect:
+		prov.getTrustStoreType(config) == expected
+		where:
+		value           | expected
+		"  cA   "       | TRUSTKEYSTORE_TYPE_CA
+		"  endentity "  | TRUSTKEYSTORE_TYPE_ENDENTITY
+	}
+
+	def "Verify that getTrustStoreType() with unset truststore type returns default value"(){
+		expect:
+		prov.getTrustStoreType(new Properties()) == TRUSTKEYSTORE_TYPE_ENDENTITY
+	}
+
+	def "Verify that invalid configuration to getTrustStoreType throws MessageProcessingException"(){
+		setup:
+		Properties config = new Properties()
+		config.setProperty(SETTING_TRUSTKEYSTORE_TYPE, " invalid")
+		when:
+		prov.getTrustStoreType(config)
+		then:
+		def e = thrown MessageProcessingException
+		e.message == "Invalid setting for simple message security provider, setting simplesecurityprovider.trustkeystore.type should have a value of either CA or ENDENTITY not: INVALID"
+	}
+
+	@Unroll
+	def "Verify that useSubjectMatch() with valid configuration returns boolean"(){
+		setup:
+		Properties config = new Properties()
+		config.setProperty(SETTING_TRUSTKEYSTORE_MATCHSUBJECT, value)
+		expect:
+		prov.useSubjectMatch(config) == expected
+		where:
+		value           | expected
+		"  TrUe   "     | true
+		"  fAlse "      | false
+	}
+
+	def "Verify that useSubjectMatch() with unset use subject match returns default value"(){
+		expect:
+		prov.useSubjectMatch(new Properties()) == DEFAULT_TRUSTKEYSTORE_MATCHSUBJECT as Boolean
+	}
+
+	def "Verify that useSubjectMatch() with invalid configuration throws MessageProcessingException"(){
+		setup:
+		Properties config = new Properties()
+		config.setProperty(SETTING_TRUSTKEYSTORE_MATCHSUBJECT, " invalid")
+		when:
+		prov.useSubjectMatch(config)
+		then:
+		def e = thrown MessageProcessingException
+		e.message == "Invalid setting for simple message security provider, setting simplesecurityprovider.trustkeystore.matchsubject should have a value of either true or false not: invalid"
+	}
+
+	@Unroll
+	def "Verify that getMatchSubjectField() with valid value returns expected DN field"(){
+		setup:
+		Properties config = new Properties()
+		config.setProperty(SETTING_TRUSTKEYSTORE_MATCHDNFIELD, value)
+		expect:
+		prov.getMatchSubjectField(config) == expected
+		where:
+		value           | expected
+		"  Cn   "       | "CN"
+		"  Ou "         | "OU"
+		"  UID "        | "UID"
+	}
+
+	def "Verify that getMatchSubjectField() without setting throws MessageProcessingException"(){
+		when:
+		prov.getMatchSubjectField(new Properties())
+		then:
+		def e = thrown MessageProcessingException
+		e.message == "Error required configuration property simplesecurityprovider.trustkeystore.matchdnfield not set."
+	}
+
+	def "Verify that getMatchSubjectField() with invalid configuration throws MessageProcessingException"(){
+		setup:
+		Properties config = new Properties()
+		config.setProperty(SETTING_TRUSTKEYSTORE_MATCHDNFIELD, " invalid")
+		when:
+		prov.getMatchSubjectField(config)
+		then:
+		def e = thrown MessageProcessingException
+		e.message == "Invalid DN field INVALID configured in setting simplesecurityprovider.trustkeystore.matchdnfield."
+	}
+
+	def "Verify that getMatchSubjectValue() with valid value returns expected DN field"(){
+		setup:
+		Properties config = new Properties()
+		config.setProperty(SETTING_TRUSTKEYSTORE_MATCHDNVALUE, " someValue ")
+		expect:
+		prov.getMatchSubjectValue(config) == "someValue"
+	}
+
+	def "Verify that getMatchSubjectValue() without setting throws MessageProcessingException"(){
+		when:
+		prov.getMatchSubjectValue(new Properties())
+		then:
+		def e = thrown MessageProcessingException
+		e.message == "Error required configuration property simplesecurityprovider.trustkeystore.matchdnvalue not set."
 	}
 }
