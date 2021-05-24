@@ -5,27 +5,17 @@ import org.bouncycastle.jce.provider.BouncyCastleProvider
 import java.security.Security;
 import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
-import java.util.Date;
-
-import javax.xml.datatype.DatatypeFactory;
-
 import org.apache.xml.security.Init;
 import org.apache.xml.security.utils.Base64;
 import org.certificateservices.messages.DummyMessageSecurityProvider;
 import org.certificateservices.messages.MessageContentException;
 import org.certificateservices.messages.MessageSecurityProvider;
-import org.certificateservices.messages.TestUtils;
 import org.certificateservices.messages.hardtoken.jaxb.HardTokenData;
 import org.certificateservices.messages.hardtoken.jaxb.ObjectFactory;
 import org.certificateservices.messages.hardtoken.jaxb.PINData;
 import org.certificateservices.messages.utils.MessageGenerateUtils;
-import org.certificateservices.messages.utils.SystemTime;
-import org.w3c.dom.Document;
-
-import spock.lang.IgnoreRest;
 import spock.lang.Specification;
 import static org.certificateservices.messages.TestUtils.*
-import static org.certificateservices.messages.csmessages.DefaultCSMessageParserSpec.*
 
 class HardTokenDataParserSpec extends Specification {
 	

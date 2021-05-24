@@ -5,31 +5,18 @@ import org.certificateservices.messages.csmessages.CSMessageParserManager
 
 import java.security.Security;
 import java.security.cert.X509Certificate;
-
-import javax.xml.datatype.DatatypeFactory;
-
 import org.apache.xml.security.Init;
-import org.certificateservices.messages.DummyMessageSecurityProvider;
 import org.certificateservices.messages.MessageSecurityProvider;
-import org.certificateservices.messages.TestUtils;
-import org.certificateservices.messages.csmessages.CSMessageResponseData;
-import org.certificateservices.messages.csmessages.DefaultCSMessageParser;
 import org.certificateservices.messages.csmessages.PayloadParserRegistry;
-import org.certificateservices.messages.csmessages.jaxb.Attribute;
 import org.certificateservices.messages.csmessages.jaxb.CSMessage;
-import org.certificateservices.messages.csmessages.jaxb.Credential;
-import org.certificateservices.messages.csmessages.jaxb.CredentialRequest;
 import org.certificateservices.messages.csmessages.jaxb.IsApprovedRequest;
-import org.certificateservices.messages.csmessages.jaxb.Organisation;
 import org.certificateservices.messages.encryptedcsmessage.jaxb.ObjectFactory;
 import org.certificateservices.messages.utils.MessageGenerateUtils;
 import org.certificateservices.messages.utils.SystemTime;
 import org.w3c.dom.Document;
 
-import spock.lang.IgnoreRest;
 import spock.lang.Specification;
 import static org.certificateservices.messages.TestUtils.*
-import static org.certificateservices.messages.csmessages.DefaultCSMessageParserSpec.*
 
 class EncryptedCSMessagePayloadParserSpec extends Specification {
 	

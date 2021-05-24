@@ -1,7 +1,5 @@
 package org.certificateservices.messages.saml2
 
-import org.bouncycastle.util.encoders.Base64
-import org.certificateservices.messages.ContextMessageSecurityProvider
 import org.certificateservices.messages.MessageContentException
 import org.certificateservices.messages.assertion.AssertionPayloadParser
 import org.certificateservices.messages.assertion.ResponseStatusCodes
@@ -23,7 +21,6 @@ import spock.lang.IgnoreIf
 
 import javax.xml.bind.JAXBElement
 
-import static org.certificateservices.messages.TestUtils.printXML
 import static org.certificateservices.messages.TestUtils.slurpXml
 import static org.certificateservices.messages.ContextMessageSecurityProvider.DEFAULT_CONTEXT
 

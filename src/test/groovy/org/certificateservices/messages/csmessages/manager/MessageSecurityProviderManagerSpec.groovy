@@ -3,11 +3,8 @@ package org.certificateservices.messages.csmessages.manager
 import org.certificateservices.messages.DummyMessageSecurityProvider;
 import org.certificateservices.messages.MessageProcessingException;
 import org.certificateservices.messages.SimpleMessageSecurityProvider;
-import org.certificateservices.messages.csmessages.DefaultCSMessageParser;
 
-import spock.lang.IgnoreRest;
 import spock.lang.Specification
-import spock.lang.Stepwise;
 
 
 class MessageSecurityProviderManagerSpec extends Specification{

@@ -1,6 +1,5 @@
 package org.certificateservices.messages.saml2.protocol
 
-import org.certificateservices.messages.ContextMessageSecurityProvider
 import org.certificateservices.messages.MessageContentException
 import org.certificateservices.messages.assertion.ResponseStatusCodes
 import org.certificateservices.messages.saml2.BaseSAMLMessageParser
@@ -13,14 +12,9 @@ import org.certificateservices.messages.saml2.assertion.jaxb.SubjectType
 import org.certificateservices.messages.saml2.protocol.jaxb.*
 import org.certificateservices.messages.sweeid2.pricipalselection1_0.PrincipalSelectionGenerator
 import org.certificateservices.messages.sweeid2.pricipalselection1_0.jaxb.MatchValueType
-import org.certificateservices.messages.sweeid2.pricipalselection1_0.jaxb.PrincipalSelectionType
 import org.certificateservices.messages.utils.MessageGenerateUtils
-import spock.lang.Ignore
-import spock.lang.IgnoreRest
-
 import javax.xml.bind.JAXBElement
 
-import static org.certificateservices.messages.TestUtils.printXML
 import static org.certificateservices.messages.TestUtils.slurpXml
 import static org.certificateservices.messages.ContextMessageSecurityProvider.DEFAULT_CONTEXT
 
