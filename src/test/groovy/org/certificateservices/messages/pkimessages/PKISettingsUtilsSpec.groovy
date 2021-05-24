@@ -1,16 +1,6 @@
 package org.certificateservices.messages.pkimessages
 
-import static org.junit.Assert.*;
-
-import java.io.File;
-
-import javax.xml.datatype.XMLGregorianCalendar;
-
 import org.certificateservices.messages.MessageException;
-import org.certificateservices.messages.utils.SettingsUtils;
-import org.junit.Test;
-
-import spock.lang.Shared;
 import spock.lang.Specification;
 import spock.lang.Unroll;
 

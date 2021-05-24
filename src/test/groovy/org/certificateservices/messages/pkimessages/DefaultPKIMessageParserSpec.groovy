@@ -1,18 +1,12 @@
 package org.certificateservices.messages.pkimessages
 
 import groovy.util.slurpersupport.GPathResult
-import groovy.xml.XmlUtil;
-
 import java.security.KeyStore;
-import java.security.PrivateKey
 import java.security.cert.X509Certificate;
-import java.security.interfaces.RSAPrivateKey;
-
 import javax.xml.crypto.dsig.XMLSignature
 import javax.xml.crypto.dsig.XMLSignatureFactory
 import javax.xml.crypto.dsig.dom.DOMValidateContext
 import javax.xml.datatype.DatatypeFactory;
-import javax.xml.datatype.XMLGregorianCalendar;
 import javax.xml.parsers.DocumentBuilder
 import javax.xml.parsers.DocumentBuilderFactory;
 
@@ -28,7 +22,6 @@ import org.certificateservices.messages.pkimessages.jaxb.GetIssuerCredentialsReq
 import org.certificateservices.messages.pkimessages.jaxb.IsIssuerRequest;
 import org.certificateservices.messages.pkimessages.jaxb.IsIssuerResponse
 import org.certificateservices.messages.pkimessages.jaxb.IssueCredentialStatusListRequest
-import org.certificateservices.messages.pkimessages.jaxb.IssueCredentialStatusListResponse
 import org.certificateservices.messages.pkimessages.jaxb.IssueTokenCredentialsRequest;
 import org.certificateservices.messages.pkimessages.jaxb.ObjectFactory;
 import org.certificateservices.messages.pkimessages.jaxb.PKIMessage;
@@ -36,19 +29,12 @@ import org.certificateservices.messages.pkimessages.jaxb.RemoveCredentialRequest
 import org.certificateservices.messages.pkimessages.jaxb.RequestStatus;
 import org.certificateservices.messages.pkimessages.jaxb.StoreHardTokenDataRequest
 import org.certificateservices.messages.pkimessages.jaxb.TokenRequest
-import org.certificateservices.messages.pkimessages.manager.DefaultMessageManager;
 import org.certificateservices.messages.DummyMessageSecurityProvider;
 import org.certificateservices.messages.MessageException;
-import org.certificateservices.messages.pkimessages.DefaultPKIMessageParser;
-import org.certificateservices.messages.pkimessages.PKIMessageResponseData;
-import org.certificateservices.messages.pkimessages.X509KeySelector;
-import org.junit.BeforeClass;
-import org.junit.Test;
 import org.w3c.dom.Document
 import org.w3c.dom.Element
 import org.xml.sax.InputSource
 
-import spock.lang.IgnoreRest;
 import spock.lang.Specification
 
 
@@ -80,7 +66,6 @@ class DefaultPKIMessageParserSpec extends Specification {
 		TimeZone.setDefault(currentTimeZone)
 	}
 
-	@Test 
 	def "Verify that the init method creates all marshallers and unmarshallers"(){
 		when:
 		for(String version : DefaultPKIMessageParser.SUPPORTED_PKIMESSAGE_VERSIONS){
@@ -91,7 +76,6 @@ class DefaultPKIMessageParserSpec extends Specification {
 		assert true
 	}
 	
-	@Test
 	def "Verify verifyPKIMessageVersion checks the version agains supported versions"(){
 		when:
 		for(String version : DefaultPKIMessageParser.SUPPORTED_PKIMESSAGE_VERSIONS){
@@ -106,7 +90,6 @@ class DefaultPKIMessageParserSpec extends Specification {
 		
 	}
 	
-	@Test
 	def "Test that unmarshaller validates against the schema"(){
 		when:
 		  mp.parseMessage(TestMessages.faultyRequestAgainstXSD.getBytes())
@@ -114,7 +97,6 @@ class DefaultPKIMessageParserSpec extends Specification {
 		thrown(IllegalArgumentException)
 	}
 	
-	@Test
 	def "Test that marshaller validates against the schema"(){
 		when:
 		   mp.genIsIssuerRequest(null, null, null, null,null);		   
@@ -122,7 +104,6 @@ class DefaultPKIMessageParserSpec extends Specification {
 		  thrown(MessageException)
 	}
 	
-	@Test
 	def "Test that PKI Message parsing against schema and validates signatures"(){
 		setup:
 		  secprov.resetCounters()
@@ -135,7 +116,6 @@ class DefaultPKIMessageParserSpec extends Specification {
 		   assert message.payload.issueTokenCredentialsRequest != null
 	}
 	
-	@Test
 	def "Test that PKI Message parsing checks supported versions"(){
 		when:
 		   PKIMessage message = mp.parseMessage(TestMessages.testMessageWithInvalidVersion.getBytes("UTF-8"))
@@ -143,7 +123,6 @@ class DefaultPKIMessageParserSpec extends Specification {
 		   thrown(IllegalArgumentException)
 	}
 	
-	@Test
 	def "Test that parsing PKI Message with invalid signature throws IllegalArgumentException"(){
 		when:
 		   PKIMessage message = mp.parseMessage(TestMessages.testMessageWithInvalidSignature.getBytes("UTF-8"))
@@ -153,7 +132,6 @@ class DefaultPKIMessageParserSpec extends Specification {
 	}
 	
 
-	@Test
 	def "Test that unsigned basic PKI message header is populated correctly"(){
 		setup:
 		  mp.signMessages = false
@@ -186,7 +164,6 @@ class DefaultPKIMessageParserSpec extends Specification {
 	}
 	
 
-	@Test
 	def "Test that signed PKIResponse message is populated correctly and signature is valid"(){
 		when: "  with default destinationId"
           PKIMessageResponseData result = mp.genPKIResponse("SomeEntity", TestMessages.testMessageWithResponse.getBytes(), RequestStatus.ERROR, "SomeMessage",null)   
@@ -218,7 +195,6 @@ class DefaultPKIMessageParserSpec extends Specification {
 		
 	}
 	
-	@Test
 	def "Test that getSigningCertificate fetches certificate properly from signed request"(){
 		setup:
 		byte[] request = mp.genIsIssuerRequest(TEST_ID,"SomeDestination", "SomeOrg", "SomeIssuer",null);
@@ -229,15 +205,13 @@ class DefaultPKIMessageParserSpec extends Specification {
 		assert cert.getIssuerDN().toString() == "O=Demo Customer1 AT, CN=Demo Customer1 AT ServerCA"
 	}
 	
-	@Test
-	def "Test that getSigningCertificate throws IllegalArgumentException if no certificate was found."(){		
+	def "Test that getSigningCertificate throws IllegalArgumentException if no certificate was found."(){
 		when:
 		X509Certificate cert = mp.getSigningCertificate(TestMessages.testMessageWithNoCert.getBytes());
 		then:
 		thrown(IllegalArgumentException)
 	}
 	
-	@Test
 	def "Test that getSigningCertificate returns null if requireSignature is false."(){
 		setup:
 		mp.requireSignature = false
@@ -250,7 +224,6 @@ class DefaultPKIMessageParserSpec extends Specification {
 	}
 	
 
-	@Test
 	def "Test that signed IssueTokenCredentialsRequest message is populated correctly and signature is valid"(){
 		setup:
 		  TokenRequest tokenRequest = createDummyTokenRequest()		  

@@ -12,17 +12,12 @@
 *************************************************************************/
 package org.certificateservices.messages.heartbeat;
 
-import java.util.List;
-
 import org.certificateservices.messages.MessageContentException;
-import org.junit.Test;
 
-import spock.lang.Specification;
+import spock.lang.Specification
 
+class MonitoringPointSpec extends Specification {
 
-public class MonitoringPointSpec extends Specification {
-
-	@Test
 	def "Test MonitoringPoint constructors"(){
 		when:
 		MonitoringPoint mp = new MonitoringPoint("somemonitoringid",new Date(123L), HealthStatus.OK, "somedescription", 1, 2, "someunit")
