@@ -9,12 +9,6 @@ import org.certificateservices.messages.pkimessages.jaxb.PKIMessage
 import org.certificateservices.messages.pkimessages.jaxb.PKIResponse
 import org.certificateservices.messages.pkimessages.jaxb.TokenRequest;
 import org.certificateservices.messages.utils.MessageGenerateUtils;
-import org.certificateservices.messages.pkimessages.manager.DefaultMessageManager;
-import org.certificateservices.messages.pkimessages.manager.DummyMessageHandler;
-import org.certificateservices.messages.pkimessages.manager.MessageManager;
-import org.junit.BeforeClass
-import org.junit.Test
-
 import spock.lang.Shared
 import spock.lang.Specification
 
@@ -42,7 +36,6 @@ class DefaultMessageManagerSpec extends Specification{
 	}
 	
 	
-	@Test
 	def "Test to send a simple get credential request message and expect a get credential response"(){
 		setup:
 		byte[] request = parser.genGetCredentialRequest(TEST_ID, "somedestination", "someorg", "someCredentialSubType", "CN=someIssuerId", "12345678",null)
@@ -53,7 +46,6 @@ class DefaultMessageManagerSpec extends Specification{
 		assert response.getPayload().getGetCredentialResponse() != null;
 	}
 	
-	@Test
 	def "Test to 100 concurrent request and verify all responses are ok"(){
 		final int numberOfConcurrentRequests = 100
 		when:
@@ -88,7 +80,6 @@ class DefaultMessageManagerSpec extends Specification{
 		assert true;
 	}
 	
-	@Test
 	def "Check that time out expeption is thrown when message takes longer time than set timeout."(){
 		setup:
 		((DummyMessageHandler) mm.messageHandler).waitTime = 10000
@@ -103,7 +94,6 @@ class DefaultMessageManagerSpec extends Specification{
 		mm.timeout = 10000
 	}
 	
-	@Test
 	def "Check that revoce message is sent for issue token request responses where wait thread has timed out."(){
 		setup:
 		((DummyMessageHandler) mm.messageHandler).waitTime = 1000
@@ -128,8 +118,6 @@ class DefaultMessageManagerSpec extends Specification{
 	}
 	
 
-	
-	@Test
 	def "Check findRequestId returns the correct request id from the message"(){
 		when:
 		PKIResponse response = of.createPKIResponse();
@@ -160,11 +148,9 @@ class DefaultMessageManagerSpec extends Specification{
 		then:
 		assert mm.findRequestId(pkiMessage) == null
 
-
 	}
 	
 
-	@Test
 	def "Check getTimeOutInMillis verifies the responses properly"(){
 		when:
 		Properties config = new Properties();

@@ -1,16 +1,11 @@
 package org.certificateservices.messages.pkimessages
 
-import static org.certificateservices.messages.pkimessages.TestMessages.*
-
 import java.lang.reflect.Method;
-
 import org.certificateservices.messages.DummyMessageSecurityProvider;
 import org.certificateservices.messages.pkimessages.jaxb.ObjectFactory;
 import org.certificateservices.messages.pkimessages.jaxb.PKIMessage;
 import org.certificateservices.messages.pkimessages.jaxb.PKIMessage.Payload;
 import org.certificateservices.messages.pkimessages.jaxb.PKIResponse;
-import org.junit.After;
-
 import spock.lang.Shared;
 import spock.lang.Specification;
 import spock.lang.Unroll;

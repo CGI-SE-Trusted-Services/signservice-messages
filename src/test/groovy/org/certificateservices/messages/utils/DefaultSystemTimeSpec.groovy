@@ -12,11 +12,10 @@
  *************************************************************************/
 package org.certificateservices.messages.utils
 
-import org.junit.Test
 import spock.lang.Specification
 
 class DefaultSystemTimeSpec extends Specification{
-	 @Test
+
 	 def "Test default system time works"(){
 		 expect:
 		 (new DefaultSystemTime()).getSystemTimeMS() != 0

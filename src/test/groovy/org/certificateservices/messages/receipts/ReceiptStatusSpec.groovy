@@ -12,18 +12,12 @@
 *************************************************************************/
 package org.certificateservices.messages.receipts;
 
-import org.certificateservices.messages.receipts.ReceiptStatus;
-import org.junit.Test
-
 import spock.lang.Specification
 import spock.lang.Unroll
 
-public class ReceiptStatusSpec extends Specification{
+class ReceiptStatusSpec extends Specification{
 
 
-
-	
-	@Test
 	@Unroll
 	def "Test findById return returns correct status #expectedStatus for id #id"(){
 		when:

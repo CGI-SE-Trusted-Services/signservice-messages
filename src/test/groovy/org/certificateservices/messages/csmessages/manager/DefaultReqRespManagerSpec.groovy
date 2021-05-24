@@ -2,11 +2,7 @@ package org.certificateservices.messages.csmessages.manager
 
 import org.bouncycastle.jce.provider.BouncyCastleProvider
 import org.certificateservices.messages.csmessages.CSMessageParserManager
-
-import java.io.IOException
 import java.security.Security;
-import java.util.Set;
-
 import org.certificateservices.messages.DummyMessageSecurityProvider;
 import org.certificateservices.messages.MessageContentException;
 import org.certificateservices.messages.MessageProcessingException;
@@ -18,15 +14,9 @@ import org.certificateservices.messages.csmessages.PayloadParserRegistry;
 import org.certificateservices.messages.csmessages.jaxb.CSMessage;
 import org.certificateservices.messages.csmessages.jaxb.CSResponse;
 import org.certificateservices.messages.csmessages.jaxb.CredentialRequest;
-import org.certificateservices.messages.csmessages.jaxb.IsApprovedResponseType;
 import org.certificateservices.messages.csmessages.jaxb.ObjectFactory;
 import org.certificateservices.messages.csmessages.jaxb.TokenRequest;
 import org.certificateservices.messages.utils.MessageGenerateUtils;
-import org.junit.BeforeClass
-import org.junit.Ignore;
-import org.junit.Test
-
-import spock.lang.IgnoreRest;
 import spock.lang.Shared
 import spock.lang.Specification
 
