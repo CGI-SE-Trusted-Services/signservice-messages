@@ -370,6 +370,8 @@ public class PKCS11MessageSecurityProvider implements ContextMessageSecurityProv
     public boolean isValidAndAuthorized(Context context, X509Certificate signCertificate, String organisation) throws IllegalArgumentException, MessageProcessingException {
         log.fine("Checking if valid and authorized: " + signCertificate.getSubjectDN().getName());
 
+        // TODO Fix Here
+
         if(!XMLSigner.checkBasicCertificateValidation(signCertificate)){
             return false;
         }

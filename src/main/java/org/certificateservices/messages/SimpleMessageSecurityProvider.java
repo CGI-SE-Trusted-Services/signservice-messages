@@ -12,6 +12,7 @@
 *************************************************************************/
 package org.certificateservices.messages;
 
+import org.bouncycastle.asn1.ASN1ObjectIdentifier;
 import org.certificateservices.messages.utils.*;
 
 import java.io.File;
@@ -24,6 +25,8 @@ import java.security.KeyStoreException;
 import java.security.PrivateKey;
 import java.security.cert.*;
 import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 
 /**
@@ -38,7 +41,8 @@ import java.util.*;
 public class SimpleMessageSecurityProvider implements
 		ContextMessageSecurityProvider {
 
-	
+	Logger log = Logger.getLogger(SimpleMessageSecurityProvider.class.getName());
+
 	/**
 	 * Setting indicating the path to the signing JKS key store (required) 
 	 */
@@ -134,7 +138,8 @@ public class SimpleMessageSecurityProvider implements
 	 */
 	public static final String SETTING_ENCRYPTION_ALGORITHM_SCHEME = "simplesecurityprovider.encryption.algorithm";
 	public static final EncryptionAlgorithmScheme DEFAULT_ENCRYPTION_ALGORITHM_SCHEME = EncryptionAlgorithmScheme.RSA_OAEP_WITH_AES256;
-	
+
+	protected SystemTime systemTime = new DefaultSystemTime();
 	private KeyStore trustStore = null;
 	PrivateKey signPrivateKey = null;
 	X509Certificate signCertificate = null;
@@ -148,7 +153,7 @@ public class SimpleMessageSecurityProvider implements
 
 	private final String trustStoreType;
 	private boolean trustStoreMatchSubject;
-	private String trustStoreMatchField;
+	private ASN1ObjectIdentifier trustStoreMatchField;
 	private String trustStoreMatchValue;
 
 
@@ -325,22 +330,11 @@ public class SimpleMessageSecurityProvider implements
 			return false;
 		}
 
-		boolean foundMatching = false;
-		try{
-			Enumeration<String> aliases = trustStore.aliases();
-			while(aliases.hasMoreElements()){
-				if(PKCS11MessageSecurityProvider.isEqual(signCertificate, (X509Certificate) trustStore.getCertificate(aliases.nextElement()))){
-					foundMatching = true;
-					break;
-				}
-			}
-		}catch(CertificateEncodingException e){
-			throw new MessageProcessingException("Error reading certificates from truststore: " + e.getMessage());
-		} catch (KeyStoreException e) {
-			throw new MessageProcessingException("Error reading certificates from truststore: " + e.getMessage());
+		if(trustStoreType.equals(TRUSTKEYSTORE_TYPE_ENDENTITY)) {
+			return checkCertificateMatchFromTruststore(signCertificate);
+		}else{
+			return validateCertificateChain(signCertificate) && matchCertificateField(signCertificate);
 		}
-
-		return foundMatching;
 	}
 
 	/**
@@ -587,11 +581,10 @@ public class SimpleMessageSecurityProvider implements
 	 * @return the configured dn value to use when matching subject.
 	 * @throws MessageProcessingException if setting wasn't set of invalid value.
 	 */
-	protected String getMatchSubjectField(Properties config) throws MessageProcessingException{
+	protected ASN1ObjectIdentifier getMatchSubjectField(Properties config) throws MessageProcessingException{
 		String val = SettingsUtils.getRequiredProperty(config, SETTING_TRUSTKEYSTORE_MATCHDNFIELD).trim().toUpperCase();
 		try {
-			new SubjectDNMatcher.AvailableDNFields().getIdentifier(val);
-			return val;
+			return new SubjectDNMatcher.AvailableDNFields().getIdentifier(val);
 		}catch(IllegalArgumentException e){
 			throw new MessageProcessingException("Invalid DN field " + val + " configured in setting " + SETTING_TRUSTKEYSTORE_MATCHDNFIELD + ".");
 		}
@@ -607,16 +600,64 @@ public class SimpleMessageSecurityProvider implements
 		return SettingsUtils.getRequiredProperty(config, SETTING_TRUSTKEYSTORE_MATCHDNVALUE).trim();
 	}
 
-	protected void validateCertificateChain(X509Certificate certificate) throws MessageProcessingException{
+	/**
+	 * Help method to validate the certificate chain related to
+	 * @param certificate the certificate to validate against the trust store.
+	 * @return true if chain validates successfully.
+	 */
+	protected boolean validateCertificateChain(X509Certificate certificate) {
 		try {
 			CertPath path = CertUtils.getCertificateFactory().generateCertPath(Collections.singletonList(certificate));
 			CertPathValidator validator = CertPathValidator.getInstance("PKIX","BC");
 			PKIXParameters params = new PKIXParameters(trustStore);
+			params.setDate(systemTime.getSystemTime());
 			params.setRevocationEnabled(false);
 			validator.validate(path, params);
-			// TODO HERE
+			return true;
 		}catch(Exception e){
-			throw new MessageProcessingException("TODO");
+			log.log(Level.SEVERE,"Error validating certificate chain of CSMessage signing certificate: " + e.getMessage(),e);
 		}
+		return false;
+	}
+
+
+	/**
+	 * Help method to check if a certificate contains a specific field value.
+	 * @param certificate the certificate to match against configuration.
+	 * @return true if fields match
+	 */
+	protected boolean matchCertificateField(X509Certificate certificate) {
+		if(trustStoreMatchSubject){
+			List<String> fieldValues = CertUtils.getSubjectDNFields(CertUtils.getSubject(certificate), trustStoreMatchField);
+			return fieldValues.contains(trustStoreMatchValue);
+		}else{
+			return true;
+		}
+	}
+
+	/**
+	 * Method to check that given certificate exist in related trust store. Used
+	 * if truststore mode is ENDENTITY.
+	 * @param certificate the certificate to lookup.
+	 * @return true if the certificate exists in trust store.
+	 * @throws MessageProcessingException if problems detected checking the trust store.
+	 */
+	protected boolean checkCertificateMatchFromTruststore(X509Certificate certificate) throws MessageProcessingException{
+		boolean foundMatching = false;
+		try {
+			Enumeration<String> aliases = trustStore.aliases();
+			while (aliases.hasMoreElements()) {
+				if (PKCS11MessageSecurityProvider.isEqual(signCertificate, (X509Certificate) trustStore.getCertificate(aliases.nextElement()))) {
+					foundMatching = true;
+					break;
+				}
+			}
+		} catch (CertificateEncodingException e) {
+			throw new MessageProcessingException("Error reading certificates from truststore: " + e.getMessage());
+		} catch (KeyStoreException e) {
+			throw new MessageProcessingException("Error reading certificates from truststore: " + e.getMessage());
+		}
+
+		return foundMatching;
 	}
 }
