@@ -498,6 +498,7 @@ public class XMLSigner {
 	public static boolean checkBasicCertificateValidation(X509Certificate cert){
 		boolean[] keyUsage = cert.getKeyUsage();
 		if (keyUsage != null && keyUsage[0] == false) {
+			log.severe("Error processing Certificate Services message signing certificate expired has not keyUsage digitalSignature.");
 			return false;
 		}
 

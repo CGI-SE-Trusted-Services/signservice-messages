@@ -13,6 +13,7 @@
 package org.certificateservices.messages;
 
 import org.bouncycastle.asn1.ASN1ObjectIdentifier;
+import org.bouncycastle.asn1.x500.style.BCStyle;
 import org.certificateservices.messages.utils.*;
 
 import java.io.File;
@@ -41,94 +42,54 @@ import java.util.logging.Logger;
 public class SimpleMessageSecurityProvider implements
 		ContextMessageSecurityProvider {
 
-	Logger log = Logger.getLogger(SimpleMessageSecurityProvider.class.getName());
+	public static final String SETTING_PREFIX = "simplesecurityprovider";
 
 	/**
 	 * Setting indicating the path to the signing JKS key store (required) 
 	 */
-	public static final String SETTING_SIGNINGKEYSTORE_PATH = "simplesecurityprovider.signingkeystore.path";
+	public static final String SETTING_SIGNINGKEYSTORE_PATH = SETTING_PREFIX + ".signingkeystore.path";
 	
 	/**
 	 * Setting indicating the password to the signing key store (required) 
 	 */
-	public static final String SETTING_SIGNINGKEYSTORE_PASSWORD = "simplesecurityprovider.signingkeystore.password";
+	public static final String SETTING_SIGNINGKEYSTORE_PASSWORD = SETTING_PREFIX + ".signingkeystore.password";
 	
 	/**
 	 * Setting indicating the alias of the certificate to use in the signing key store (required) 
 	 */
-	public static final String SETTING_SIGNINGKEYSTORE_ALIAS = "simplesecurityprovider.signingkeystore.alias";
+	public static final String SETTING_SIGNINGKEYSTORE_ALIAS = SETTING_PREFIX + ".signingkeystore.alias";
 	
 	/**
 	 * Setting indicating the path to the decrypt JKS key store (optional, if not set is signing keystore used for both signing and encryption) 
 	 */
-	public static final String SETTING_DECRYPTKEYSTORE_PATH = "simplesecurityprovider.decryptkeystore.path";
+	public static final String SETTING_DECRYPTKEYSTORE_PATH =  SETTING_PREFIX + ".decryptkeystore.path";
 	
 	/**
 	 * Setting indicating the password to the decrypt key store (required, if encrypt key store is specified.) 
 	 */
-	public static final String SETTING_DECRYPTKEYSTORE_PASSWORD = "simplesecurityprovider.decryptkeystore.password";
+	public static final String SETTING_DECRYPTKEYSTORE_PASSWORD = SETTING_PREFIX + ".decryptkeystore.password";
 	
 	/**
 	 *  Setting indicating the alias of the decryption key to use if no specific key is known. (optional, if not set is same as signing keystore alias used.) 
 	 */
-	public static final String SETTING_DECRYPTKEYSTORE_DEFAULTKEY_ALIAS = "simplesecurityprovider.decryptkeystore.defaultkey.alias";
-
-	public static String TRUSTKEYSTORE_TYPE_ENDENTITY = "ENDENTITY";
-	public static String TRUSTKEYSTORE_TYPE_CA = "CA";
+	public static final String SETTING_DECRYPTKEYSTORE_DEFAULTKEY_ALIAS = SETTING_PREFIX + ".decryptkeystore.defaultkey.alias";
 
 	/**
-	 * Setting defining the type of trust store used, can be either CA or ENDENTITY depending on trust policy used.
-	 * If CA should the trust store contain the issuer of a received signing certificate (from other parties) and
-	 * if ENDENTITY it should contain the actual trusted signing certificates.
-	 * <br>
-	 * If CA is used should settings: simplesecurityprovider.trustkeystore.matchdnfield and
-	 * simplesecurityprovider.trustkeystore.matchdnvalue be set to authorize who can send messages.
-	 *
-	 * Default value: ENDENTITY
+	 * Setting indicating the path to the trust JKS key store (required)
 	 */
-	public static final String SETTING_TRUSTKEYSTORE_TYPE = "simplesecurityprovider.trustkeystore.type";
-	public static final String DEFAULT_TRUSTKEYSTORE_TYPE = TRUSTKEYSTORE_TYPE_ENDENTITY;
+	public static final String SETTING_TRUSTKEYSTORE_PATH = SETTING_PREFIX + TruststoreHelper.SETTING_TRUSTKEYSTORE_PATH;
 
 	/**
-	 * Setting indicating the path to the trust JKS key store (required) 
+	 * Setting indicating the password to the trust JKS key store (required)
 	 */
-	public static final String SETTING_TRUSTKEYSTORE_PATH = "simplesecurityprovider.trustkeystore.path";
-	
-	/**
-	 * Setting indicating the password to the trust JKS key store (required) 
-	 */
-	public static final String SETTING_TRUSTKEYSTORE_PASSWORD = "simplesecurityprovider.trustkeystore.password";
+	public static final String SETTING_TRUSTKEYSTORE_PASSWORD = SETTING_PREFIX + TruststoreHelper.SETTING_TRUSTKEYSTORE_PASSWORD;
 
-	/**
-	 * Setting used if truststore type is CA and indicates that a subject DN check should be added to authorize the
-	 * sender. If setting below is false will all connections that is trusted by the TLS configuration be accepted.
-	 * Default: true
-	 */
-	public static final String SETTING_TRUSTKEYSTORE_MATCHSUBJECT = "simplesecurityprovider.trustkeystore.matchsubject";
-	public static final String DEFAULT_TRUSTKEYSTORE_MATCHSUBJECT = "true";
-
-	/**
-	 * Setting indicating which field in client certificate subject dn that should be matched.
-	 * Example "OU","O" or "CN".
-	 *
-	 * Required if truststore type is CA and matchsubject is true
-	 */
-	public static final String SETTING_TRUSTKEYSTORE_MATCHDNFIELD = "simplesecurityprovider.trustkeystore.matchdnfield";
-
-	/**
-	 * Setting indicating the value that should be matched (case-sensitive) in the subject dn.
-	 * Example if set to "frontend" and matchdnfield is "OU" only systems that have a trusted client
-	 * certificate with a subjectdn containing "OU=frontend" will be accepted.
-	 *
-	 * Required if truststore type is CA and matchsubject is true
-	 */
-	public static final String SETTING_TRUSTKEYSTORE_MATCHDNVALUE = "simplesecurityprovider.trustkeystore.matchdnvalue";
 
 	/**
 	 * Setting indicating the Signature algorithm scheme to use, possible values are:
 	 * <li>RSAWithSHA256 (Default if not set).
 	 */
-	public static final String SETTING_SIGNATURE_ALGORITHM_SCHEME = "simplesecurityprovider.signature.algorithm";
+	public static final String SETTING_SIGNATURE_ALGORITHM_SCHEME = SETTING_PREFIX +".signature.algorithm";
 	public static final SigningAlgorithmScheme DEFAULT_SIGNATURE_ALGORITHM_SCHEME = SigningAlgorithmScheme.RSAWithSHA256;
 	
 	/**
@@ -136,11 +97,10 @@ public class SimpleMessageSecurityProvider implements
 	 * <li>RSA_OAEP_WITH_AES256 (Default if not set).
 	 * <li>RSA_PKCS1_5_WITH_AES256
 	 */
-	public static final String SETTING_ENCRYPTION_ALGORITHM_SCHEME = "simplesecurityprovider.encryption.algorithm";
+	public static final String SETTING_ENCRYPTION_ALGORITHM_SCHEME = SETTING_PREFIX + ".encryption.algorithm";
 	public static final EncryptionAlgorithmScheme DEFAULT_ENCRYPTION_ALGORITHM_SCHEME = EncryptionAlgorithmScheme.RSA_OAEP_WITH_AES256;
 
-	protected SystemTime systemTime = new DefaultSystemTime();
-	private KeyStore trustStore = null;
+
 	PrivateKey signPrivateKey = null;
 	X509Certificate signCertificate = null;
 	
@@ -151,11 +111,7 @@ public class SimpleMessageSecurityProvider implements
 	private SigningAlgorithmScheme signingAlgorithmScheme;
 	private EncryptionAlgorithmScheme encryptionAlgorithmScheme;
 
-	private final String trustStoreType;
-	private boolean trustStoreMatchSubject;
-	private ASN1ObjectIdentifier trustStoreMatchField;
-	private String trustStoreMatchValue;
-
+	protected TruststoreHelper truststoreHelper;
 
 	/**
 	 * Configures and set's up the security provider with truststore from configuration.
@@ -164,7 +120,7 @@ public class SimpleMessageSecurityProvider implements
 	 * @throws MessageProcessingException if not all required settings were set correctly.
 	 */
 	public SimpleMessageSecurityProvider(Properties config) throws MessageProcessingException {
-		this(config, getKeyStore(config, SETTING_TRUSTKEYSTORE_PATH, SETTING_TRUSTKEYSTORE_PASSWORD));
+		this(config, getKeyStore(config, SETTING_PREFIX + TruststoreHelper.SETTING_TRUSTKEYSTORE_PATH, SETTING_PREFIX + TruststoreHelper.SETTING_TRUSTKEYSTORE_PASSWORD));
 	}
 	
 	/**
@@ -194,8 +150,6 @@ public class SimpleMessageSecurityProvider implements
 		if(signCertificate == null || signPrivateKey == null){
 			throw new MessageProcessingException("Error finding signing certificate and key for alias : " + signKeystoreAlias + ", in key store: " + signKeystorePath);
 		}
-
-		this.trustStore = trustStore;
 
 		String decKeystorePath = SettingsUtils.getRequiredProperty(config, SETTING_DECRYPTKEYSTORE_PATH, SETTING_SIGNINGKEYSTORE_PATH);
 		KeyStore decKS = getDecryptionKeyStore(config);
@@ -247,14 +201,7 @@ public class SimpleMessageSecurityProvider implements
 			encryptionAlgorithmScheme = DEFAULT_ENCRYPTION_ALGORITHM_SCHEME;
 		}
 
-		trustStoreType = getTrustStoreType(config);
-		if(trustStoreType == TRUSTKEYSTORE_TYPE_CA) {
-			trustStoreMatchSubject = useSubjectMatch(config);
-			if(trustStoreMatchSubject) {
-				trustStoreMatchField = getMatchSubjectField(config);
-				trustStoreMatchValue = getMatchSubjectValue(config);
-			}
-		}
+		truststoreHelper = new TruststoreHelper(config,trustStore, SETTING_PREFIX);
 	}
 	
 
@@ -330,11 +277,7 @@ public class SimpleMessageSecurityProvider implements
 			return false;
 		}
 
-		if(trustStoreType.equals(TRUSTKEYSTORE_TYPE_ENDENTITY)) {
-			return checkCertificateMatchFromTruststore(signCertificate);
-		}else{
-			return validateCertificateChain(signCertificate) && matchCertificateField(signCertificate);
-		}
+		return truststoreHelper.isTrusted(context,signCertificate);
 	}
 
 	/**
@@ -540,124 +483,4 @@ public class SimpleMessageSecurityProvider implements
 		}
 	}
 
-	/*
-	   TODO - Validate Chain
-	          Add code to main validate
-	 */
-
-	/**
-	 * Help method to parse truststore type used.
-	 *
-	 * @param config the message security provider configuration
-	 * @return one of accepted type CA or ENDENTIY
-	 * @throws MessageProcessingException if invalid type configuration was found.
-	 */
-	protected String getTrustStoreType(Properties config) throws MessageProcessingException {
-		String type = config.getProperty(SETTING_TRUSTKEYSTORE_TYPE,DEFAULT_TRUSTKEYSTORE_TYPE).trim().toUpperCase();
-		if(type.equals(TRUSTKEYSTORE_TYPE_CA) || type.equals(TRUSTKEYSTORE_TYPE_ENDENTITY)){
-			return type;
-		}
-		throw new MessageProcessingException("Invalid setting for simple message security provider, setting " + SETTING_TRUSTKEYSTORE_TYPE + " should have a value of either " + TRUSTKEYSTORE_TYPE_CA + " or " + TRUSTKEYSTORE_TYPE_ENDENTITY + " not: " + type);
-	}
-
-	/**
-	 * Help method to parse truststore subject match should be used.
-	 *
-	 * @param config the message security provider configuration
-	 * @return true if subject match should be used.
-	 * @throws MessageProcessingException if invalid type configuration was found.
-	 */
-	protected boolean useSubjectMatch(Properties config) throws MessageProcessingException {
-		String val = config.getProperty(SETTING_TRUSTKEYSTORE_MATCHSUBJECT,DEFAULT_TRUSTKEYSTORE_MATCHSUBJECT).trim().toLowerCase();
-		if(val.equals("true") || val.equals("false")){
-			return Boolean.parseBoolean(val);
-		}
-		throw new MessageProcessingException("Invalid setting for simple message security provider, setting " + SETTING_TRUSTKEYSTORE_MATCHSUBJECT + " should have a value of either true or false not: " + val);
-	}
-
-	/**
-	 * Help method to fetch configured match subject field from configuration.
-	 * @param config the message security provider configuration
-	 * @return the configured dn value to use when matching subject.
-	 * @throws MessageProcessingException if setting wasn't set of invalid value.
-	 */
-	protected ASN1ObjectIdentifier getMatchSubjectField(Properties config) throws MessageProcessingException{
-		String val = SettingsUtils.getRequiredProperty(config, SETTING_TRUSTKEYSTORE_MATCHDNFIELD).trim().toUpperCase();
-		try {
-			return new SubjectDNMatcher.AvailableDNFields().getIdentifier(val);
-		}catch(IllegalArgumentException e){
-			throw new MessageProcessingException("Invalid DN field " + val + " configured in setting " + SETTING_TRUSTKEYSTORE_MATCHDNFIELD + ".");
-		}
-	}
-
-	/**
-	 * Help method to fetch configured match subject value from configuration.
-	 * @param config the message security provider configuration
-	 * @return the configured dn value to use when matching subject.
-	 * @throws MessageProcessingException if setting wasn't set of invalid value.
-	 */
-	protected String getMatchSubjectValue(Properties config) throws MessageProcessingException{
-		return SettingsUtils.getRequiredProperty(config, SETTING_TRUSTKEYSTORE_MATCHDNVALUE).trim();
-	}
-
-	/**
-	 * Help method to validate the certificate chain related to
-	 * @param certificate the certificate to validate against the trust store.
-	 * @return true if chain validates successfully.
-	 */
-	protected boolean validateCertificateChain(X509Certificate certificate) {
-		try {
-			CertPath path = CertUtils.getCertificateFactory().generateCertPath(Collections.singletonList(certificate));
-			CertPathValidator validator = CertPathValidator.getInstance("PKIX","BC");
-			PKIXParameters params = new PKIXParameters(trustStore);
-			params.setDate(systemTime.getSystemTime());
-			params.setRevocationEnabled(false);
-			validator.validate(path, params);
-			return true;
-		}catch(Exception e){
-			log.log(Level.SEVERE,"Error validating certificate chain of CSMessage signing certificate: " + e.getMessage(),e);
-		}
-		return false;
-	}
-
-
-	/**
-	 * Help method to check if a certificate contains a specific field value.
-	 * @param certificate the certificate to match against configuration.
-	 * @return true if fields match
-	 */
-	protected boolean matchCertificateField(X509Certificate certificate) {
-		if(trustStoreMatchSubject){
-			List<String> fieldValues = CertUtils.getSubjectDNFields(CertUtils.getSubject(certificate), trustStoreMatchField);
-			return fieldValues.contains(trustStoreMatchValue);
-		}else{
-			return true;
-		}
-	}
-
-	/**
-	 * Method to check that given certificate exist in related trust store. Used
-	 * if truststore mode is ENDENTITY.
-	 * @param certificate the certificate to lookup.
-	 * @return true if the certificate exists in trust store.
-	 * @throws MessageProcessingException if problems detected checking the trust store.
-	 */
-	protected boolean checkCertificateMatchFromTruststore(X509Certificate certificate) throws MessageProcessingException{
-		boolean foundMatching = false;
-		try {
-			Enumeration<String> aliases = trustStore.aliases();
-			while (aliases.hasMoreElements()) {
-				if (PKCS11MessageSecurityProvider.isEqual(signCertificate, (X509Certificate) trustStore.getCertificate(aliases.nextElement()))) {
-					foundMatching = true;
-					break;
-				}
-			}
-		} catch (CertificateEncodingException e) {
-			throw new MessageProcessingException("Error reading certificates from truststore: " + e.getMessage());
-		} catch (KeyStoreException e) {
-			throw new MessageProcessingException("Error reading certificates from truststore: " + e.getMessage());
-		}
-
-		return foundMatching;
-	}
 }

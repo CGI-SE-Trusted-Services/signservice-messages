@@ -66,17 +66,94 @@ the following settings.
 |===
 |Key |Description |Default value 
 
-|simplesecurityprovider.signingkeystore.path |Setting indicating the path to the signing JKS key store _(Required)_ |No Default 
-|simplesecurityprovider.signingkeystore.password |Setting indicating the password to the signing key store _(Required)_ |No Default 
-|simplesecurityprovider.signingkeystore.alias |The alias of the certificate to use in the signing key store _(Required)_ |No Default 
-|simplesecurityprovider.decryptkeystore.path |The path to the decrypt JKS key store (optional, if not set is signing keystore used for both signing and encryption) |No Default 
-|simplesecurityprovider.decryptkeystore.password |The password to the decrypt JKS key store (optional, if not set is signing keystore used for both signing and encryption) |No Default 
-|simplesecurityprovider.decryptkeystore.defaultkey.alias |the alias of the decryption key to use if no specific key is known. (optional, if not set is same as signing keystore alias used.) |No Default 
-|simplesecurityprovider.trustkeystore.path |The path to the trust JKS key store _(Required)_ |No Default 
-|simplesecurityprovider.trustkeystore.password |The password to the trust JKS key store _(Required)_ |No Default 
-|simplesecurityprovider.signature.algorithm |Signature algorithm scheme to use, possible values are: RSAWithSHA256, RSAWithSHA512, ECDSAWithSHA256, ECDSAWithSHA512 |RSAWithSHA256 
-|simplesecurityprovider.encryption.algorithm |Encryption algorithm scheme to use, possible values are: RSA_PKCS1_5_WITH_AES128, RSA_OAEP_WITH_AES128, RSA_PKCS1_5_WITH_AES192, RSA_OAEP_WITH_AES192, RSA_PKCS1_5_WITH_AES256, RSA_OAEP_WITH_AES256 |RSA_OAEP_WITH_AES256 
+|simplesecurityprovider.signingkeystore.path
+|Setting indicating the path to the signing JKS key store _(Required)_
+|No Default
+
+|simplesecurityprovider.signingkeystore.password
+|Setting indicating the password to the signing key store _(Required)_
+|No Default
+
+|simplesecurityprovider.signingkeystore.alias
+|The alias of the certificate to use in the signing key store _(Required)_
+|No Default
+
+|simplesecurityprovider.decryptkeystore.path
+|The path to the decrypt JKS key store (optional, if not set is signing keystore used for both signing and encryption)
+|No Default
+
+|simplesecurityprovider.decryptkeystore.password
+|The password to the decrypt JKS key store (optional, if not set is signing keystore used for both signing and encryption)
+|No Default
+
+|simplesecurityprovider.decryptkeystore.defaultkey.alias
+|the alias of the decryption key to use if no specific key is known. (optional, if not set is same as signing keystore alias used.)
+|No Default
+
+|simplesecurityprovider.signature.algorithm
+|Signature algorithm scheme to use, possible values are: RSAWithSHA256, RSAWithSHA512, ECDSAWithSHA256, ECDSAWithSHA512
+|RSAWithSHA256
+
+|simplesecurityprovider.encryption.algorithm
+|Encryption algorithm scheme to use, possible values are: RSA_PKCS1_5_WITH_AES128, RSA_OAEP_WITH_AES128, RSA_PKCS1_5_WITH_AES192, RSA_OAEP_WITH_AES192, RSA_PKCS1_5_WITH_AES256, RSA_OAEP_WITH_AES256
+|RSA_OAEP_WITH_AES256
+
+|simplesecurityprovider.trustkeystore.type
+| The type of trust store used, can be either CA or ENDENTITY depending on trust policy used.
+  If CA should the trust store contain the issuers (the entire chain) of a received signing certificate (from other parties) and
+  if ENDENTITY it should contain the actual trusted signing certificates.
+
+  If CA is used should settings: simplesecurityprovider.trustkeystore.matchdnfield and
+  simplesecurityprovider.trustkeystore.matchdnvalue is recommended be set to authorize who can send messages. _(Optional)_
+
+| ENDENTITY
+
+|simplesecurityprovider.trustkeystore.path
+|The path to the trust JKS key store _(Required)_
+|No Default
+
+|simplesecurityprovider.trustkeystore.password
+|The password to the trust JKS key store _(Required)_
+|No Default
+
+|simplesecurityprovider.trustkeystore.matchsubject
+|Setting used if truststore type is CA and indicates that a subject DN check should be added to authorize the
+sender. If setting is false will all messages that is issued by any trusted CA by the configuration be accepted.
+_(Optional)_
+|true
+
+|simplesecurityprovider.trustkeystore.matchdnfield
+|Setting indicating which field in client certificate subject dn that should be matched.
+Example "OU","O" or "CN".
+_(Required if truststore type is CA and matchsubject is true)_
+|No Default
+
+|simplesecurityprovider.trustkeystore.matchdnvalue
+|Setting indicating the value that should be matched (case-sensitive) in the subject dn.
+Example if set to "frontend" and matchdnfield is "OU" only systems that have a trusted client
+certificate with a subjectdn containing "OU=frontend" will be accepted.
+_(Required if truststore type is CA and matchsubject is true)_
+|No Default
+
 |===
+
+=== Example Configuration using the truststore type CA
+
+First make sure that you have a truststore JKS file that contains the complete chain of all CA certificates
+that should be trusted. CS message only contains the end entity certificate.
+
+Then define a policy for your application that all certificate that should be trusted should have for example OU=FRONTEND.
+
+To configure this use the following trust store settings
+
+[source, properties]
+------
+simplesecurityprovider.trustkeystore.type=CA
+simplesecurityprovider.trustkeystore.path=<truststore jks path>
+simplesecurityprovider.trustkeystore.password=<password>
+simplesecurityprovider.trustkeystore.matchdnfield=OU
+simplesecurityprovider.trustkeystore.matchdnvalue=FRONTEND
+------
 
 == PKCS11MessageSecurityProvider Settings.
 
@@ -85,15 +162,70 @@ PKCS#11 message security provider supports the use of a hardware security module
 |===
 |Key |Description |Default value 
 
-|pkcs11securityprovider.library.path |Path to PKCS#11 library to use when communicating with the hardware token. _(Required)_ |No default 
-|pkcs11securityprovider.slot |PKCS#11 Slot to use when connecting to the token. _(Required)_ |No default 
-|pkcs11securityprovider.slot.password |Password that is used when logging in to token. _(Required)_ |No default 
-|pkcs11securityprovider.signingkey.alias |Alias of key to use for signature operations. If not specified the first key found will be used. |No default 
-|pkcs11securityprovider.decryptkey.default.alias |Alias of default key to use for decryption operations. If not specified the signing key will be used. |_Sign key alias_ 
-|pkcs11securityprovider.truststore.path |Path to separate truststore to use when validating certificates. If not specified the PKCS#11 token is used as truststore. |No default 
-|pkcs11securityprovider.truststore.password |Password that is used when loading separate truststore. |No default 
-|pkcs11securityprovider.signature.algorithm |Signature algorithm scheme to use, possible values are: RSAWithSHA256, RSAWithSHA512, ECDSAWithSHA256, ECDSAWithSHA512 |RSAWithSHA256 
-|pkcs11securityprovider.encryption.algorithm |Encryption algorithm scheme to use, possible values are: RSA_PKCS1_5_WITH_AES128, RSA_OAEP_WITH_AES128, RSA_PKCS1_5_WITH_AES192, RSA_OAEP_WITH_AES192, RSA_PKCS1_5_WITH_AES256, RSA_OAEP_WITH_AES256 |RSA_OAEP_WITH_AES256 
+|pkcs11securityprovider.library.path
+|Path to PKCS#11 library to use when communicating with the hardware token. _(Required)_
+|No default
+
+|pkcs11securityprovider.slot
+|PKCS#11 Slot to use when connecting to the token. _(Required)_
+|No default
+
+|pkcs11securityprovider.slot.password
+|Password that is used when logging in to token. _(Required)_
+|No default
+
+|pkcs11securityprovider.signingkey.alias
+|Alias of key to use for signature operations. If not specified the first key found will be used.
+|No default
+
+|pkcs11securityprovider.decryptkey.default.alias
+|Alias of default key to use for decryption operations. If not specified the signing key will be used.
+|_Sign key alias_
+
+|pkcs11securityprovider.signature.algorithm
+|Signature algorithm scheme to use, possible values are: RSAWithSHA256, RSAWithSHA512, ECDSAWithSHA256, ECDSAWithSHA512
+|RSAWithSHA256
+
+|pkcs11securityprovider.encryption.algorithm
+|Encryption algorithm scheme to use, possible values are: RSA_PKCS1_5_WITH_AES128, RSA_OAEP_WITH_AES128, RSA_PKCS1_5_WITH_AES192, RSA_OAEP_WITH_AES192, RSA_PKCS1_5_WITH_AES256, RSA_OAEP_WITH_AES256
+|RSA_OAEP_WITH_AES256
+
+|pkcs11securityprovider.trustkeystore.type
+| The type of trust store used, can be either CA or ENDENTITY depending on trust policy used.
+If CA should the trust store contain the issuers (the entire chain) of a received signing certificate (from other parties) and
+if ENDENTITY it should contain the actual trusted signing certificates.
+
+  If CA is used should settings: simplesecurityprovider.trustkeystore.matchdnfield and
+  simplesecurityprovider.trustkeystore.matchdnvalue is recommended be set to authorize who can send messages. _(Optional)_
+
+| ENDENTITY
+
+|pkcs11securityprovider.trustkeystore.path
+|The path to the trust JKS key store _(Required)_
+|No Default
+
+|pkcs11securityprovider.trustkeystore.password
+|The password to the trust JKS key store _(Required)_
+|No Default
+
+|pkcs11securityprovider.trustkeystore.matchsubject
+|Setting used if truststore type is CA and indicates that a subject DN check should be added to authorize the
+sender. If setting is false will all messages that is issued by any trusted CA by the configuration be accepted.
+_(Optional)_
+|true
+
+|pkcs11securityprovider.trustkeystore.matchdnfield
+|Setting indicating which field in client certificate subject dn that should be matched.
+Example "OU","O" or "CN".
+_(Required if truststore type is CA and matchsubject is true)_
+|No Default
+
+|pkcs11securityprovider.trustkeystore.matchdnvalue
+|Setting indicating the value that should be matched (case-sensitive) in the subject dn.
+Example if set to "frontend" and matchdnfield is "OU" only systems that have a trusted client
+certificate with a subjectdn containing "OU=frontend" will be accepted.
+_(Required if truststore type is CA and matchsubject is true)_
+|No Default
 |===
 
 == Generating CS 2.0 Messages using payload parser.
