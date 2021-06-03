@@ -12,61 +12,95 @@
  *************************************************************************/
 package org.certificateservices.messages
 
+import org.bouncycastle.asn1.x500.style.BCStyle
 import org.bouncycastle.jce.provider.BouncyCastleProvider
+import org.certificateservice.testutils.TestPKIA
+import org.certificateservices.messages.utils.DefaultSystemTime
 import org.certificateservices.messages.utils.XMLSigner
+import spock.lang.Shared
+import spock.lang.Unroll
 
 import java.security.Security
+import java.util.logging.Level
+import java.util.logging.Logger
 
 import static org.certificateservices.messages.SimpleMessageSecurityProvider.*
+import static org.certificateservices.messages.TruststoreHelper.*
 
 import java.security.KeyStore
 import java.security.PrivateKey
 import java.security.cert.CertificateFactory
 import java.security.cert.X509Certificate
 import java.security.interfaces.RSAPrivateKey
-import java.text.SimpleDateFormat
 
 import org.apache.xml.security.utils.Base64
-import org.certificateservices.messages.utils.SystemTime
 import org.certificateservices.messages.utils.XMLEncrypter
 
 import spock.lang.Specification
 
+
+/**
+ * Unit tests for SimplePKIMessageSecurityProvider
+ */
 class SimplePKIMessageSecurityProviderSpec extends Specification {
 	
 	SimpleMessageSecurityProvider prov
 	
-	X509Certificate testCert
-	X509Certificate testCertWithKeyUsage
+	@Shared X509Certificate testCert
+	@Shared X509Certificate testCertWithKeyUsage
+	@Shared X509Certificate untrustedCert
+
+	@Shared X509Certificate rootCA
+	@Shared X509Certificate policyCA
+	@Shared X509Certificate serverCA
+	@Shared X509Certificate serverCert
 	Properties config
 	String signKeyKeyId
 
 	def setupSpec(){
 		Security.addProvider(new BouncyCastleProvider())
-	}
-	def setup(){
-
 		CertificateFactory cf = CertificateFactory.getInstance("X.509","BC")
 		testCert = cf.generateCertificate(new ByteArrayInputStream(Base64.decode(TestData.base64Cert)))
 		testCertWithKeyUsage = cf.generateCertificate(new ByteArrayInputStream(Base64.decode(TestData.base64CertWithKeyUsage)))
-		
-		config = new Properties();
-		config.setProperty(SETTING_SIGNINGKEYSTORE_PATH, this.getClass().getResource("/dummykeystore.jks").getPath())
-		config.setProperty(SETTING_SIGNINGKEYSTORE_PASSWORD, "tGidBq0Eep")
-		config.setProperty(SETTING_SIGNINGKEYSTORE_ALIAS, "test")
-		
-		config.setProperty(SETTING_TRUSTKEYSTORE_PATH, this.getClass().getResource("/testtruststore.jks").getPath())
-		config.setProperty(SETTING_TRUSTKEYSTORE_PASSWORD, "foo123")
-		config.setProperty(SETTING_ENCRYPTION_ALGORITHM_SCHEME, " RSA_pkcs1_5_WITH_AES256 ")
-		prov = new SimpleMessageSecurityProvider(config);
+		untrustedCert = cf.generateCertificate(new ByteArrayInputStream(Base64.decode(TestPKIA.TEST_OCSP_POLICY_CA_CERT_BASE64)))
+		rootCA = cf.generateCertificate(new ByteArrayInputStream(Base64.decode(TestPKIA.TEST_ROOT_CA_CERT_BASE64)))
+		policyCA = cf.generateCertificate(new ByteArrayInputStream(Base64.decode(TestPKIA.TEST_POLICY_CA_CERT_BASE64)))
+		serverCA = cf.generateCertificate(new ByteArrayInputStream(Base64.decode(TestPKIA.TEST_SERVER_CA_CERT_BASE64)))
+		serverCert = cf.generateCertificate(new ByteArrayInputStream(Base64.decode(TestPKIA.TEST_SERVER_CERT_BASE64)))
+	}
+	def setup(){
+
+
+		prov = newSimpleMessageSecurityProvider([:])
 		
 		signKeyKeyId = XMLEncrypter.generateKeyId(prov.getSigningCertificate().getPublicKey())
+	}
+
+	def cleanupSpec(){
+		XMLSigner.systemTime = new DefaultSystemTime()
 	}
 	
 	def "Verify that provider is initialized properly"(){
 		expect:
 		prov.signingAlgorithmScheme == SigningAlgorithmScheme.RSAWithSHA256
 		prov.encryptionAlgorithmScheme == EncryptionAlgorithmScheme.RSA_PKCS1_5_WITH_AES256
+	}
+
+	def "Verify that if truststore type is CA the provider throws MessageProcessingException, if match subject is true but trust store match field or match value settings"(){
+		when:
+		newSimpleMessageSecurityProvider([(SETTING_TRUSTKEYSTORE_TYPE): TRUSTKEYSTORE_TYPE_CA,
+										  (SETTING_TRUSTKEYSTORE_MATCHSUBJECT): "true",
+										  (SETTING_TRUSTKEYSTORE_MATCHDNVALUE): "Tommy"])
+		then:
+		def e = thrown(MessageProcessingException)
+		e.message == "Error required configuration property simplesecurityprovider.trustkeystore.matchdnfield not set."
+		when:
+		newSimpleMessageSecurityProvider([(SETTING_TRUSTKEYSTORE_TYPE): TRUSTKEYSTORE_TYPE_CA,
+										  (SETTING_TRUSTKEYSTORE_MATCHSUBJECT): "true",
+										  (SETTING_TRUSTKEYSTORE_MATCHDNFIELD): "CN"])
+		then:
+		e = thrown(MessageProcessingException)
+		e.message == "Error required configuration property simplesecurityprovider.trustkeystore.matchdnvalue not set."
 	}
 	
 	def "Test that getSigningKey() returns a valid signing key"(){
@@ -96,11 +130,11 @@ class SimplePKIMessageSecurityProviderSpec extends Specification {
 	}
 	
 	
-	def "Test that isValidAndAuthorized() does not trust an untrusted certificate"(){
+	def "Test that isValidAndAuthorized() does not trust an untrusted certificate for mode ENDENTITY."(){
 		setup:
-		XMLSigner.systemTime = TestUtils.mockSystemTime("2017-12-01")
+		XMLSigner.systemTime = TestUtils.mockSystemTime("2019-12-01")
 		expect:
-		  !prov.isValidAndAuthorized(testCertWithKeyUsage, "someorg")
+		!prov.isValidAndAuthorized(untrustedCert, "someorg")
 	}
 
 	def "Test that isValidAndAuthorized() does accept certificate with wrong key usage"(){
@@ -120,7 +154,7 @@ class SimplePKIMessageSecurityProviderSpec extends Specification {
 	}
 	
 	
-	def "Test that isValidAndAuthorized() does not trust an not yet valid certificate"(){
+	def "Test that isValidAndAuthorized() does not trust an not yet valid certificate for mode ENDENTITY."(){
 		setup:
 		XMLSigner.systemTime = TestUtils.mockSystemTime("2001-10-01")
 		when:
@@ -128,8 +162,51 @@ class SimplePKIMessageSecurityProviderSpec extends Specification {
 		then:
 		!prov.isValidAndAuthorized(cert, "someorg")
 	}
+
+	def "Verify that isValidAndAuthorized in mode CA accepts trusted certificates by issuer and matches dn"(){
+		setup:
+		XMLSigner.systemTime = TestUtils.mockSystemTime("2021-01-01")
+		prov = newSimpleMessageSecurityProvider([(SETTING_TRUSTKEYSTORE_TYPE): TRUSTKEYSTORE_TYPE_CA,
+												 (SETTING_TRUSTKEYSTORE_MATCHDNFIELD): "CN",
+												 (SETTING_TRUSTKEYSTORE_MATCHDNVALUE): "server.dummy.org",
+												 (SETTING_TRUSTKEYSTORE_PATH): genTrustStore()])
+		expect:
+		prov.isValidAndAuthorized(serverCert, "someorg")
+	}
+
+	def "Verify that isValidAndAuthorized in mode CA does not accepts trusted certificates with invalid certificate match"(){
+		setup:
+		XMLSigner.systemTime = TestUtils.mockSystemTime("2021-01-01")
+		prov = newSimpleMessageSecurityProvider([(SETTING_TRUSTKEYSTORE_TYPE): TRUSTKEYSTORE_TYPE_CA,
+												 (SETTING_TRUSTKEYSTORE_MATCHDNFIELD): "CN",
+												 (SETTING_TRUSTKEYSTORE_MATCHDNVALUE): "sometest",
+												 (SETTING_TRUSTKEYSTORE_PATH): genTrustStore()])
+		prov.truststoreHelper.systemTime = TestUtils.mockSystemTime("2021-01-01")
+		prov.truststoreHelper.log = Mock(Logger)
+		when:
+		def result = prov.isValidAndAuthorized(serverCert, "someorg")
+		then:
+		!result
+		1 * prov.truststoreHelper.log.severe("Error validating certificate CN=server.dummy.org,L=Kista,O=Certificate Services,OU=Security, does not match configured truststore value of CN = sometest")
+	}
+
+	def "Verify that isValidAndAuthorized in mode CA does not accepts untrusted certificates."(){
+		setup:
+		prov = newSimpleMessageSecurityProvider([(SETTING_TRUSTKEYSTORE_TYPE): TRUSTKEYSTORE_TYPE_CA,
+												 (SETTING_TRUSTKEYSTORE_MATCHDNFIELD): "CN",
+												 (SETTING_TRUSTKEYSTORE_MATCHDNVALUE): "sometest",
+												 (SETTING_TRUSTKEYSTORE_PATH): genTrustStore()])
+		XMLSigner.systemTime = TestUtils.mockSystemTime("2019-01-01")
+		prov.truststoreHelper.systemTime = TestUtils.mockSystemTime("2019-01-01")
+		prov.truststoreHelper.log = Mock(Logger)
+		when:
+		def result = prov.isValidAndAuthorized(testCertWithKeyUsage, "someorg")
+		then:
+		!result
+		1 * prov.truststoreHelper.log.log(Level.SEVERE,"Error validating certificate chain of CSMessage signing certificate: Trust anchor for certification path not found.",_)
+	}
 	
-	def "Verify that signature key is used as decryption key if no decrytion key has been specified."(){
+	def "Verify that signature key is used as decryption key if no decryption key has been specified."(){
 		expect:
 		prov.defaultDecryptionKeyId == signKeyKeyId
 		prov.getDecryptionKeyIds().size() == 1
@@ -243,5 +320,40 @@ class SimplePKIMessageSecurityProviderSpec extends Specification {
 		then:
 		thrown MessageProcessingException
 		
+	}
+
+	def newSimpleMessageSecurityProvider(Map m) {
+		config = new Properties()
+		config.setProperty(SETTING_SIGNINGKEYSTORE_PATH, this.getClass().getResource("/dummykeystore.jks").getPath())
+		config.setProperty(SETTING_SIGNINGKEYSTORE_PASSWORD, "tGidBq0Eep")
+		config.setProperty(SETTING_SIGNINGKEYSTORE_ALIAS, "test")
+
+		if(m[SETTING_TRUSTKEYSTORE_TYPE]){
+			config.setProperty(SETTING_PREFIX + SETTING_TRUSTKEYSTORE_TYPE, m[SETTING_TRUSTKEYSTORE_TYPE])
+		}
+		config.setProperty(SETTING_TRUSTKEYSTORE_PATH, (String) (m[SETTING_TRUSTKEYSTORE_PATH] ? m[SETTING_TRUSTKEYSTORE_PATH] : this.getClass().getResource("/testtruststore.jks").getPath()))
+		config.setProperty(SETTING_TRUSTKEYSTORE_PASSWORD, "foo123")
+		if(m[SETTING_TRUSTKEYSTORE_MATCHSUBJECT]){
+			config.setProperty(SETTING_PREFIX + SETTING_TRUSTKEYSTORE_MATCHSUBJECT, m[SETTING_TRUSTKEYSTORE_MATCHSUBJECT])
+		}
+		if(m[SETTING_TRUSTKEYSTORE_MATCHDNFIELD]){
+			config.setProperty(SETTING_PREFIX + SETTING_TRUSTKEYSTORE_MATCHDNFIELD, m[SETTING_TRUSTKEYSTORE_MATCHDNFIELD])
+		}
+		if(m[SETTING_TRUSTKEYSTORE_MATCHDNVALUE]){
+			config.setProperty(SETTING_PREFIX + SETTING_TRUSTKEYSTORE_MATCHDNVALUE, m[SETTING_TRUSTKEYSTORE_MATCHDNVALUE])
+		}
+		config.setProperty(SETTING_ENCRYPTION_ALGORITHM_SCHEME, " RSA_pkcs1_5_WITH_AES256 ")
+		return  new SimpleMessageSecurityProvider(config)
+	}
+
+	String genTrustStore(){
+		File tempFile = new File("build/tmp/testtruststore.jks")
+		KeyStore keyStore = KeyStore.getInstance("JKS")
+		keyStore.load(null,null)
+		keyStore.setCertificateEntry("rootca", rootCA)
+		keyStore.setCertificateEntry("policyCA", policyCA)
+		keyStore.setCertificateEntry("serverCA", serverCA)
+		keyStore.store(new FileOutputStream(tempFile), "foo123".toCharArray())
+		return tempFile.getPath()
 	}
 }

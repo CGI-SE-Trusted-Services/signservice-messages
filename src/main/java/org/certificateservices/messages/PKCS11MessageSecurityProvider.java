@@ -31,47 +31,48 @@ import java.util.logging.Logger;
 public class PKCS11MessageSecurityProvider implements ContextMessageSecurityProvider {
     Logger log = Logger.getLogger(PKCS11MessageSecurityProvider.class.getName());
 
+
+    public static final String SETTING_PREFIX = "pkcs11securityprovider";
     /**
      * Setting indicating the path to the PKCS#11 library to use (required)
      */
-    static final String SETTING_PKCS11_LIBRARY = "pkcs11securityprovider.library.path";
+    static final String SETTING_PKCS11_LIBRARY = SETTING_PREFIX + ".library.path";
 
     /**
      * Setting indicating the slot to use (required)
      */
-    static final String SETTING_PKCS11_SLOT = "pkcs11securityprovider.slot";
+    static final String SETTING_PKCS11_SLOT = SETTING_PREFIX + ".slot";
 
     /**
      * Setting indicating the PKCS#11 pin/password for given slot (required)
      */
-    static final String SETTING_PKCS11_SLOT_PASSWORD = "pkcs11securityprovider.password";
+    static final String SETTING_PKCS11_SLOT_PASSWORD = SETTING_PREFIX + ".password";
 
     /**
      * Setting indicating the alias of signing key to use (optional, if not set the first key entry found will be used)
      */
-    static final String SETTING_SIGNINGKEY_ALIAS = "pkcs11securityprovider.signingkey.alias";
+    static final String SETTING_SIGNINGKEY_ALIAS = SETTING_PREFIX + ".signingkey.alias";
 
     /**
      * Setting indicating the default alias of decryption key to use (optional, if not set the signing key entry is used for both signing and decryption)
      */
-    static final String SETTING_DECRYPTKEY_DEFAULT_ALIAS = "pkcs11securityprovider.decryptkey.default.alias";
+    static final String SETTING_DECRYPTKEY_DEFAULT_ALIAS = SETTING_PREFIX + ".decryptkey.default.alias";
 
     /**
-     * Setting indicating the truststore to use (optional, if not set the pkcs11 token is used as truststore)
+     * Setting indicating the path to the trust JKS key store (required)
      */
-    static final String SETTING_TRUSTSTORE_PATH = "pkcs11securityprovider.truststore.path";
+    public static final String SETTING_TRUSTSTORE_PATH = SETTING_PREFIX + TruststoreHelper.SETTING_TRUSTKEYSTORE_PATH;
 
     /**
-     * Setting indicating the password of truststore to use.
+     * Setting indicating the password to the trust JKS key store (required)
      */
-    static final String SETTING_TRUSTSTORE_PASSWORD = "pkcs11securityprovider.truststore.password";
-
+    public static final String SETTING_TRUSTSTORE_PASSWORD = SETTING_PREFIX + TruststoreHelper.SETTING_TRUSTKEYSTORE_PASSWORD;
 
     /**
      * Setting indicating the Signature algorithm scheme to use, possible values are:
      * <li>RSAWithSHA256 (Default if not set).
      */
-    static final String SETTING_SIGNATURE_ALGORITHM_SCHEME = "pkcs11securityprovider.signature.algorithm";
+    static final String SETTING_SIGNATURE_ALGORITHM_SCHEME = SETTING_PREFIX + ".signature.algorithm";
     static final SigningAlgorithmScheme DEFAULT_SIGNATURE_ALGORITHM_SCHEME = SigningAlgorithmScheme.RSAWithSHA256;
 
     /**
@@ -79,7 +80,7 @@ public class PKCS11MessageSecurityProvider implements ContextMessageSecurityProv
      * <li>RSA_OAEP_WITH_AES256 (Default if not set).
      * <li>RSA_PKCS1_5_WITH_AES256
      */
-    static final String SETTING_ENCRYPTION_ALGORITHM_SCHEME = "pkcs11securityprovider.encryption.algorithm";
+    static final String SETTING_ENCRYPTION_ALGORITHM_SCHEME = SETTING_PREFIX + ".encryption.algorithm";
     static final EncryptionAlgorithmScheme DEFAULT_ENCRYPTION_ALGORITHM_SCHEME = EncryptionAlgorithmScheme.RSA_OAEP_WITH_AES256;
 
     private KeyStore pkcs11Keystore;
@@ -97,6 +98,8 @@ public class PKCS11MessageSecurityProvider implements ContextMessageSecurityProv
     private String defaultDecryptionKeyId = null;
 
     private PKCS11ProviderManager providerManager = null;
+
+    protected TruststoreHelper truststoreHelper;
 
     public PKCS11MessageSecurityProvider(Properties config) throws MessageProcessingException {
         this(config, new DefaultPKCS11ProviderManager());
@@ -195,10 +198,12 @@ public class PKCS11MessageSecurityProvider implements ContextMessageSecurityProv
                 log.fine("Using truststore: " + trustStorePath);
                 trustStore = KeyStore.getInstance("JKS");
                 trustStore.load(new FileInputStream(trustStorePath), trustStorePassword.toCharArray());
+
             } catch(Exception e){
                 log.log(Level.FINE,"Failed to load truststore: " + trustStorePath, e);
             }
         }
+        truststoreHelper = new TruststoreHelper(config, trustStore != null ? trustStore : pkcs11Keystore, SETTING_PREFIX);
     }
 
     /**
@@ -374,26 +379,7 @@ public class PKCS11MessageSecurityProvider implements ContextMessageSecurityProv
             return false;
         }
 
-        KeyStore ks = (trustStore != null ? trustStore : pkcs11Keystore);
-        boolean foundMatching = false;
-
-        try {
-            Enumeration<String> aliases = ks.aliases();
-            while(aliases.hasMoreElements()){
-                X509Certificate trustedCertificate = (X509Certificate)ks.getCertificate(aliases.nextElement());
-                if(isEqual(signCertificate, trustedCertificate)){
-                    log.fine("Found signing certificate in truststore");
-                    foundMatching = true;
-                    break;
-                }
-            }
-        } catch(CertificateEncodingException e){
-            throw new MessageProcessingException("Error reading certificates from truststore: " + e.getMessage());
-        } catch (KeyStoreException e) {
-            throw new MessageProcessingException("Error reading certificates from truststore: " + e.getMessage());
-        }
-
-        return foundMatching;
+        return truststoreHelper.isTrusted(context,signCertificate);
     }
 
     /**

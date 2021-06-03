@@ -32,6 +32,11 @@ import static org.certificateservices.messages.PKCS11MessageSecurityProvider.SET
 import static org.certificateservices.messages.PKCS11MessageSecurityProvider.SETTING_TRUSTSTORE_PASSWORD
 import static org.certificateservices.messages.PKCS11MessageSecurityProvider.SETTING_ENCRYPTION_ALGORITHM_SCHEME
 
+/**
+ * Unit tests for PKCS11MessageSecurityProvider
+ *
+ * @author Tobias
+ */
 class PKCS11MessageSecurityProviderSpec extends Specification {
     def mockedProviderManager
     PKCS11MessageSecurityProvider prov
