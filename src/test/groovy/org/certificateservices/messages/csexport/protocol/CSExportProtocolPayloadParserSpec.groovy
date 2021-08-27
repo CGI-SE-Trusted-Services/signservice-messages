@@ -57,7 +57,7 @@ class CSExportProtocolPayloadParserSpec extends Specification {
 		when:
 		csMessageParser.sourceId = "SOMEREQUESTER"
 		byte[] requestMessage = pp.genGetCSExportRequest(org.certificateservices.messages.csmessages.DefaultCSMessageParserSpec.TEST_ID, "SOMESOURCEID", "someorg","1.0",null, org.certificateservices.messages.csmessages.DefaultCSMessageParserSpec.createOriginatorCredential( ), null)
-        printXML(requestMessage)
+        //printXML(requestMessage)
 		def xml = org.certificateservices.messages.TestUtils.slurpXml(requestMessage)
 		def payloadObject = xml.payload.GetCSExportRequest
 		then:
