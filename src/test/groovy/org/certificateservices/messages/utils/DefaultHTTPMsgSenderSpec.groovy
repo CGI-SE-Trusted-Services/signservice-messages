@@ -139,7 +139,7 @@ class DefaultHTTPMsgSenderSpec extends Specification{
         msgSender.sendMsg("".getBytes())
         then:
         def e = thrown (SpamProtectionException)
-        e.message == "Error sending message to http://localhost:8089/messageprocessor/spam, got response code :429 message: Too Many Requests"
+        e.message =~ "Error sending message to http://localhost:8089/messageprocessor/spam, got response code :429"
     }
 
     def "Verify that SpamProtectionException is thrown if server returns 429 (Too many requests) response code for asynchronous call."(){
@@ -155,7 +155,7 @@ class DefaultHTTPMsgSenderSpec extends Specification{
             Thread.sleep(100)
         }
         asyncCallBack.error instanceof SpamProtectionException
-        asyncCallBack.error.message == "Error sending message to http://localhost:8089/messageprocessor/spam, got response code :429 message: Too Many Requests"
+        asyncCallBack.error.message =~ "Error sending message to http://localhost:8089/messageprocessor/spam, got response code :429"
     }
 
 
