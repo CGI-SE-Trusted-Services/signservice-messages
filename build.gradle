@@ -11,7 +11,10 @@ certserviceSettings {
 
 dependencies {
     compile "org.bouncycastle:bcprov-jdk15on:${bcprovJdk15onVersion}"
-    compile "org.apache.santuario:xmlsec:${xmlsecVersion}"
+    compile ("org.apache.santuario:xmlsec:2.2.3"){
+        exclude(module: "woodstox-core")
+        exclude(module: "commons-codec")
+    }
 
     testCompile project(':certservice-testutils')
 }

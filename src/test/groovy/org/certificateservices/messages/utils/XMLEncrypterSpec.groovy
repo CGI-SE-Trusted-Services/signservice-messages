@@ -13,6 +13,7 @@
 package org.certificateservices.messages.utils
 
 import org.bouncycastle.jce.provider.BouncyCastleProvider
+import org.bouncycastle.util.encoders.Base64
 import org.certificateservices.messages.ContextMessageSecurityProvider
 import org.certificateservices.messages.HSMMessageSecurityProvider
 import org.certificateservices.messages.MessageSecurityProvider
@@ -33,7 +34,6 @@ import javax.xml.transform.stream.StreamResult
 
 import org.apache.xml.security.Init
 import org.apache.xml.security.encryption.XMLCipher
-import org.apache.xml.security.utils.Base64
 import org.apache.xml.security.utils.EncryptionConstants
 import org.certificateservices.messages.EncryptionAlgorithmScheme
 import org.certificateservices.messages.MessageContentException
@@ -131,7 +131,8 @@ class XMLEncrypterSpec extends Specification {
 		xml.EncryptionMethod.@Algorithm == encScheme.getDataEncryptionAlgorithmURI()
 		xml.KeyInfo.EncryptedKey.size() == 3
 		xml.KeyInfo.EncryptedKey[0].EncryptionMethod.@Algorithm == encScheme.getKeyEncryptionAlgorithmURI()
-		xml.KeyInfo.EncryptedKey[0].KeyInfo.X509Data.X509Certificate.toString().trim() == testcertdata1
+
+	    Base64.decode(xml.KeyInfo.EncryptedKey[0].KeyInfo.X509Data.X509Certificate.toString()) == testcertdata1
 		xml.KeyInfo.EncryptedKey[0].CipherData.toString().length() > 0
 		xml.CipherData.toString().length() > 0
 		true
@@ -682,7 +683,7 @@ class XMLEncrypterSpec extends Specification {
 		return assertionPayloadParser.marshallAndSignAssertion(assertion)
 	}
 
-	def testcertdata1 = """MIIDcTCCAlmgAwIBAgIEZf08dzANBgkqhkiG9w0BAQsFADBpMRAwDgYDVQQGEwdVbmtub3duMRAw
+	def testcertdata1 = Base64.decode("""MIIDcTCCAlmgAwIBAgIEZf08dzANBgkqhkiG9w0BAQsFADBpMRAwDgYDVQQGEwdVbmtub3duMRAw
 DgYDVQQIEwdVbmtub3duMRAwDgYDVQQHEwdVbmtub3duMRAwDgYDVQQKEwd0ZXN0b3JnMRAwDgYD
 VQQLEwdVbmtub3duMQ0wCwYDVQQDEwRrZXkxMB4XDTE1MDcwNjEwNDYwMloXDTM1MDMyMzEwNDYw
 MlowaTEQMA4GA1UEBhMHVW5rbm93bjEQMA4GA1UECBMHVW5rbm93bjEQMA4GA1UEBxMHVW5rbm93
@@ -697,7 +698,7 @@ AQCPuSHK/1NX+nWby67SRC/xYpYenLqyjh6vdrxA8AfqOuZq0HNoGPmAQc6HQn3aX1FJ+6sViohl
 1SqI38F9raB8Opqg8e0zONEZV1FNtS2V7Sx/IA0WcxnsoMuWReYKqVR+yffqsgn89q3MUWwuD9Yx
 sSRjPxCeBd7arAgZv72PriiqxvvFCGoXrX5Prng8euS/gIeDQZBNEWC3MzbLty8QwMqKFd0+V2fz
 LaRMArYLp0nS3TwF24KdgaKuSyA0nq1j/ZNyi/TowrNPA4FLE2f/1akjn3mvgpn62XQoPO1BfZCq
-utkUJrOx5P7ZIr91erXUfsQbPDsQkcjAi3IPJFAr"""
+utkUJrOx5P7ZIr91erXUfsQbPDsQkcjAi3IPJFAr""")
 	
 	def testchipherdata1 = """DOFOukwwk3Xj0J0LJ3op/MLQh/HeeGj4KkKKUchLOKc6LJvGfLIpN1QqT9DAY1rmpMQYu0H7JOPu
         JRAX63XUD5XV5KXfSXS2G23/oQcVelRbUjtdDa9RivbkNZo2SjkgsNxyhj2kVkUDok7yT5Qxrg85

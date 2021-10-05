@@ -8,12 +8,11 @@ It mainly consists of the following parts:
 CS Message 2.0 (core message format) with a set of Payload Parsers (which also are generators).
 
 ** Credential Management Payload Parser
-** Key Store Managment Payload Parser
+** Key Store Management Payload Parser
 ** System Configuration Payload Parser
 ** Assertion Payload Parser
 ** Authorization Payload Parser
 ** Encrypted CS Message Payload Parser
-
 
 PKI Message generator (Older core message format) containing messages for credential management. 
 
@@ -22,6 +21,18 @@ Framework for generating and parsing Receipt Messages (but no actual message imp
 
 
 Framework for generating and parsing Heartbeat Messages (but no actual message implementation exists in this project. See org.certificateservices.messages.heartbeat package for details. To implement a custom kind of receipt message used by certservice-ejbcacomponents or certservice-ejbcaproviders implement a custom HeartBeatParser, add the jar to the main applications classpath and use settings defined in certservice-ejbcacomponents or certservice-ejbcaproviders to specify your implementation.
+
+== Updated Dependencies
+
+In order to mitigate security vulnerabilties in XMLSEC 1.5.7 it has been upgraded to 2.2.3 which
+updated a few dependencies to the build of this library:
+
+ * slf4j-api-1.7.30.jar
+ * xmlsec-2.2.3.jar
+
+Other dependencies are:
+
+ * bcprov-jdk15on-1.47.jar
 
 == Message Specification Documentation
 
