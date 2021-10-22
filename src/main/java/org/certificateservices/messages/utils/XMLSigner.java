@@ -599,16 +599,20 @@ public class XMLSigner {
 
 					XMLSignature signature = fac.newXMLSignature(signedInfo, ki);
 
-					// Check if we are using a HSMMessageSecurityProvider. If this is the case we
-					// explicitly specify tha Java Security Provider to use that should handle the
-					// signature operation.
+					// Check if we are using a HSMMessageSecurityProvider or PKCS11MessageSecurityProvider.
+					// If this is the case we explicitly specify tha Java Security Provider to use that should
+					// handle the signature operation.
+					Provider customProvider = null;
 					if(messageSecurityProvider instanceof HSMMessageSecurityProvider){
-						Provider hsmProvider = Security.getProvider(((HSMMessageSecurityProvider) messageSecurityProvider).getHSMProvider());
-						if(hsmProvider != null){
-							signContext.setProperty("org.jcp.xml.dsig.internal.dom.SignatureProvider", hsmProvider);
-						}
+						customProvider = Security.getProvider(((HSMMessageSecurityProvider) messageSecurityProvider).getHSMProvider());
+						log.fine("Performing signature using HSM provider: " + customProvider.getName());
+					} else if(messageSecurityProvider instanceof PKCS11MessageSecurityProvider){
+						customProvider = Security.getProvider(((PKCS11MessageSecurityProvider)messageSecurityProvider).getPKCS11Provider());
+						log.fine("Performing signature using PKCS#11 provider: " + customProvider.getName());
 					}
-
+					if(customProvider != null){
+						signContext.setProperty("org.jcp.xml.dsig.internal.dom.SignatureProvider", customProvider);
+					}
 					signature.sign(signContext);
 				}
 			}

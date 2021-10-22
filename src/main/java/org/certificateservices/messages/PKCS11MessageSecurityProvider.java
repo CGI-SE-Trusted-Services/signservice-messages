@@ -15,8 +15,6 @@ package org.certificateservices.messages;
 import org.certificateservices.messages.utils.SettingsUtils;
 import org.certificateservices.messages.utils.XMLEncrypter;
 import org.certificateservices.messages.utils.XMLSigner;
-import sun.security.pkcs11.wrapper.PKCS11;
-import sun.security.pkcs11.wrapper.PKCS11Exception;
 
 import java.io.*;
 import java.security.*;
@@ -86,6 +84,7 @@ public class PKCS11MessageSecurityProvider implements ContextMessageSecurityProv
     private KeyStore pkcs11Keystore;
     private KeyStore trustStore;
     private String pkcs11Password;
+    private String pkcs11Provider;
 
     private SigningAlgorithmScheme signingAlgorithmScheme;
     private EncryptionAlgorithmScheme encryptionAlgorithmScheme;
@@ -452,7 +451,7 @@ public class PKCS11MessageSecurityProvider implements ContextMessageSecurityProv
      * @throws NoSuchAlgorithmException If the algorithm used to check the integrity of the keystore cannot be found
      * @throws CertificateException If any of the certificates in the keystore could not be loaded
      */
-    protected KeyStore getPKCS11Keystore(String pkcs11Library, int slot, String slotPassword) throws IOException, KeyStoreException, NoSuchAlgorithmException, CertificateException, PKCS11Exception {
+    protected KeyStore getPKCS11Keystore(String pkcs11Library, int slot, String slotPassword) throws IOException, KeyStoreException, NoSuchAlgorithmException, CertificateException {
         if(!new File(pkcs11Library).exists()){
             throw new IOException("PKCS#11 library does not exist: " + pkcs11Library);
         }
@@ -465,17 +464,9 @@ public class PKCS11MessageSecurityProvider implements ContextMessageSecurityProv
         pkcs11Config.append("library = " + pkcs11Library + "\n");
         pkcs11Config.append("slot = " + slot + "\n");
 
-        if (log.isLoggable(Level.FINE)) {
-            PKCS11 p11 = PKCS11.getInstance(pkcs11Library, "C_GetFunctionList", null, false);
-            long[] slots = p11.C_GetSlotList(true);
-            for (long s : slots) {
-                log.fine("Found available PKCS#11 slot: " + s);
-            }
-        }
-
         log.fine("Using PKCS#11 configuration: " + pkcs11Config.toString());
         configStream = new ByteArrayInputStream(pkcs11Config.toString().getBytes("UTF-8"));
-        providerManager.addPKCS11Provider(configStream);
+        pkcs11Provider = providerManager.addPKCS11Provider(configStream);
         keyStore = providerManager.loadPKCS11Keystore(slotPassword == null ? null : slotPassword.toCharArray());
 
         log.fine("PKCS#11 Keystore successfully loaded");
@@ -489,5 +480,9 @@ public class PKCS11MessageSecurityProvider implements ContextMessageSecurityProv
         }
 
         return keyStore;
+    }
+
+    public String getPKCS11Provider(){
+        return pkcs11Provider;
     }
 }

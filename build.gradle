@@ -11,6 +11,10 @@ certserviceSettings {
 
 dependencies {
     compile "org.bouncycastle:bcprov-jdk15on:${bcprovJdk15onVersion}"
+    compile "javax.xml.bind:jaxb-api:2.2.11"
+    compile "jakarta.xml.bind:jakarta.xml.bind-api:2.3.3"
+    compile "com.sun.xml.bind:jaxb-ri:2.3.3"
+
     compile ("org.apache.santuario:xmlsec:2.2.3"){
         exclude(module: "woodstox-core")
         exclude(module: "commons-codec")
