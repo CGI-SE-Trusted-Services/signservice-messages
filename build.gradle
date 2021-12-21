@@ -1,8 +1,9 @@
 group = 'org.certificateservices.messages'
 description = 'certservice-messages'
 
-sourceCompatibility = 1.8
-targetCompatibility = 1.8
+ext.javaVer = project.hasProperty('javaVer') ? project.getProperty('javaVer') : '1.8'
+sourceCompatibility = javaVer
+targetCompatibility = javaVer
 
 certserviceSettings {
     signjar = true
