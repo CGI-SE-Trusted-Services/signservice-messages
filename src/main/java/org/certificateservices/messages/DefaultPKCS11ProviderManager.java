@@ -28,6 +28,23 @@ public class DefaultPKCS11ProviderManager implements PKCS11ProviderManager {
 
     private Provider pkcs11Provider = null;
 
+    public static Provider createPKCS11Provider(InputStream config) throws SecurityException, NullPointerException, ProviderException {
+        try {
+            if(isJavaVersion9OrHigher()){
+                Provider prototypeProvider = Security.getProvider("SunPKCS11");
+                String configString = readInputStream(config);
+                Method configureMethod = prototypeProvider.getClass().getDeclaredMethod("configure", String.class);
+                return (Provider)configureMethod.invoke(prototypeProvider, "--" + configString);
+            } else {
+                Class SunPKCS11 = DefaultPKCS11ProviderManager.class.getClassLoader().loadClass("sun.security.pkcs11.SunPKCS11");
+                Constructor<Provider> constructor = SunPKCS11.getConstructor(InputStream.class);
+                return constructor.newInstance(config);
+            }
+        } catch(Exception e){
+            throw new ProviderException("Failed to create instance of SunPKCS11: " + e.getMessage(), e);
+        }
+    }
+
     /**
      * Create and add a PKCS#11 provider to the system
      *
@@ -39,16 +56,7 @@ public class DefaultPKCS11ProviderManager implements PKCS11ProviderManager {
      */
     public String addPKCS11Provider(InputStream config) throws SecurityException, NullPointerException, ProviderException {
         try {
-            if(isJavaVersion9OrHigher()){
-                Provider prototypeProvider = Security.getProvider("SunPKCS11");
-                String configString = readInputStream(config);
-                Method configureMethod = prototypeProvider.getClass().getDeclaredMethod("configure", String.class);
-                pkcs11Provider = (Provider)configureMethod.invoke(prototypeProvider, "--" + configString);
-            } else {
-                Class SunPKCS11 = DefaultPKCS11ProviderManager.class.getClassLoader().loadClass("sun.security.pkcs11.SunPKCS11");
-                Constructor<Provider> constructor = SunPKCS11.getConstructor(InputStream.class);
-                pkcs11Provider = constructor.newInstance(config);
-            }
+            pkcs11Provider = createPKCS11Provider(config);
         } catch(Exception e){
             throw new ProviderException("Failed to create instance of SunPKCS11: " + e.getMessage(), e);
         }
@@ -82,7 +90,7 @@ public class DefaultPKCS11ProviderManager implements PKCS11ProviderManager {
      *
      * @return true if java version is >= 9 otherwise false.
      */
-    private boolean isJavaVersion9OrHigher(){
+    private static boolean isJavaVersion9OrHigher(){
         String version = System.getProperty("java.version");
         return (Integer.parseInt(version.split("\\.")[0]) >= 9);
     }
@@ -94,7 +102,7 @@ public class DefaultPKCS11ProviderManager implements PKCS11ProviderManager {
      * @return UTF-8 string based on all bytes from the input stream.
      * @throws IOException If error occured when reading from the input stream.
      */
-    private String readInputStream(InputStream inputStream) throws IOException {
+    private static String readInputStream(InputStream inputStream) throws IOException {
         ByteArrayOutputStream result = new ByteArrayOutputStream();
         byte[] buffer = new byte[1024];
         for (int length; (length = inputStream.read(buffer)) != -1; ) {
