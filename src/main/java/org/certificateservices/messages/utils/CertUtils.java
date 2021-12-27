@@ -592,7 +592,7 @@ public class CertUtils {
 		try {
 			byte[] extentionData = crl.getExtensionValue(X509Extension.cRLNumber.getId());
 			if(extentionData != null){
-				DERInteger crlNumber = (DERInteger) X509ExtensionUtil.fromExtensionValue(extentionData);
+				ASN1Integer crlNumber = (ASN1Integer) X509ExtensionUtil.fromExtensionValue(extentionData);
 				return crlNumber.getValue().longValue();
 			}
 			return null;
