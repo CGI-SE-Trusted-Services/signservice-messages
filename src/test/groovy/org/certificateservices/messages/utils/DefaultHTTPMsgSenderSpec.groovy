@@ -12,8 +12,11 @@
  *************************************************************************/
 package org.certificateservices.messages.utils
 
+import org.certificateservice.testutils.TestHTTPServer
 import org.certificateservices.messages.SpamProtectionException
 
+import javax.servlet.ServletException
+import javax.servlet.http.HttpServlet
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 
@@ -23,59 +26,46 @@ import spock.lang.Shared
 import spock.lang.Specification
 import spock.lang.Unroll
 
-import org.eclipse.jetty.server.Request
-import org.eclipse.jetty.server.Server
-import org.eclipse.jetty.server.handler.AbstractHandler
-import org.eclipse.jetty.server.handler.ContextHandler
-
 /**
  * Unit tests for DefaultHTTPMsgSender
  *
  * @author Philip Vendil
  */
-class DefaultHTTPMsgSenderSpec extends Specification{
+class DefaultHTTPMsgSenderSpec extends Specification {
 
-
-    DefaultHTTPMsgSender msgSender;
-    @Shared Server jettyServer;
-    @Shared int defaultJettyHTTPPort = 8089;
+    @Shared DefaultHTTPMsgSender msgSender;
+    @Shared TestHTTPServer server
+    @Shared int defaultServerHTTPPort = 8089;
 
     def setupSpec(){
-
-        // Here start a test jetty server at some given port (not 8080) and add handlers that
+        // Here start a test server at some given port (not 8080) and add handlers that
         // verify it's a POST and the contenttype is text/xml and returns some byte data.
-
         String responseData = "Response data"
-        jettyServer = new Server(defaultJettyHTTPPort)
+        server = new TestHTTPServer(defaultServerHTTPPort)
+        server.addHandler(new HttpServlet() {
+            @Override
+            protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+                String requestURL = request.getRequestURL()
+                if (requestURL.contains("/messageprocessor/spam")) {
+                    response.sendError(429, "SPAM message detected.")
+                    return
+                }
 
-        ContextHandler context = new ContextHandler()
-        context.setContextPath("/messageprocessor")
-
-        def defaultHandler = [handle:{String target, Request baseRequest, HttpServletRequest request, HttpServletResponse response ->
-
-            byte[] requestBodyInput =  request.getInputStream().getBytes()
-            if(target == "/messageprocessor/spam"){
-                response.sendError(429, "SPAM message detected.")
-            }else {
+                byte[] requestBodyInput =  request.getInputStream().getBytes()
                 if (request.getMethod() != "POST") {
                     response.sendError(HttpServletResponse.SC_METHOD_NOT_ALLOWED, "Only supporting POST request method.")
-                } else if (request.getContentType() != "text/xml; charset=UTF-8") {
+                } else if (request.getContentType().toLowerCase() != "text/xml; charset=utf-8") {
                     response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Only supporting content type text/xml.")
                 } else if (!requestBodyInput) {
                     response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid message")
                 } else {
                     response.setContentType("text/xml")
                     response.setStatus(HttpServletResponse.SC_OK)
-                    baseRequest.setHandled(true)
                     response.getOutputStream().write(responseData.bytes)
                 }
             }
-
-        }] as AbstractHandler
-
-        jettyServer.setHandler(defaultHandler)
-        jettyServer.start()
-
+        }, "/")
+        server.start()
     }
 
     def setup(){
@@ -160,9 +150,9 @@ class DefaultHTTPMsgSenderSpec extends Specification{
 
 
     def cleanupSpec(){
-        if(jettyServer!=null && jettyServer.isRunning()){
-            jettyServer.stop()
-            jettyServer = null
+        if(server!=null && server.isRunning()){
+            server.stop()
+            server = null
 
         }
     }
