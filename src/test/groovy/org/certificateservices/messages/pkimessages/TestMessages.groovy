@@ -1,6 +1,6 @@
-package org.certificateservices.messages.pkimessages;
+package org.certificateservices.messages.pkimessages
 
-import org.junit.Ignore;
+import spock.lang.Ignore
 
 @Ignore
 public class TestMessages {

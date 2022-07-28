@@ -18,6 +18,7 @@ import org.certificateservices.messages.csmessages.DefaultCSMessageParser
 import org.certificateservices.messages.csmessages.jaxb.Attribute
 import org.certificateservices.messages.utils.SystemTime
 
+import groovy.xml.XmlSlurper
 import groovy.xml.XmlUtil
 import org.w3c.dom.Document
 

@@ -9,6 +9,7 @@ import org.certificateservices.messages.sensitivekeys.jaxb.KeyData
 import org.certificateservices.messages.sensitivekeys.jaxb.ObjectFactory
 import spock.lang.Specification
 
+import groovy.xml.XmlSlurper
 import javax.crypto.KeyGenerator
 import java.security.*
 import java.security.cert.X509Certificate

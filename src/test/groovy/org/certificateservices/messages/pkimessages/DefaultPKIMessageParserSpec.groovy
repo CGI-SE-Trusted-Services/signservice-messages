@@ -1,6 +1,8 @@
 package org.certificateservices.messages.pkimessages
 
-import groovy.util.slurpersupport.GPathResult
+import groovy.xml.XmlSlurper
+import groovy.xml.slurpersupport.GPathResult
+
 import java.security.KeyStore;
 import java.security.cert.X509Certificate;
 import javax.xml.crypto.dsig.XMLSignature

@@ -19,6 +19,7 @@ import org.certificateservices.messages.xenc.jaxb.EncryptedDataType
 import org.w3c.dom.Document
 import spock.lang.IgnoreIf
 
+import groovy.xml.XmlSlurper
 import javax.xml.bind.JAXBElement
 
 import static org.certificateservices.messages.TestUtils.slurpXml

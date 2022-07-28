@@ -14,19 +14,30 @@ certserviceSettings {
 }
 
 dependencies {
-    compile "org.bouncycastle:bcprov-jdk15on:${bcprovJdk15onVersion}"
-    compile('javax.xml.bind:jaxb-api:2.3.0')
-    compile('javax.activation:javax.activation-api:1.2.0')
+    implementation "org.bouncycastle:bcprov-jdk15on:${bcprovJdk15onVersion}"
+    implementation('javax.xml.bind:jaxb-api:2.3.0')
+    implementation('javax.activation:javax.activation-api:1.2.0')
+    implementation "org.codehaus.groovy:groovy-xml:${groovyVersion}"
 
-    compile ("org.apache.santuario:xmlsec:2.2.3"){
+    implementation ("org.apache.santuario:xmlsec:2.2.3"){
         exclude(module: "woodstox-core")
         exclude(module: "commons-codec")
     }
 
-    testCompile project(':certservice-testutils')
+    testImplementation project(':certservice-testutils')
+    testImplementation platform("org.spockframework:spock-bom:2.1-groovy-3.0")
+    testImplementation "org.spockframework:spock-core"
+    testImplementation "org.apache.tomcat.embed:tomcat-embed-core:9.0.65"
+    testImplementation "org.apache.tomcat.embed:tomcat-embed-websocket:9.0.65"
 }
-
 
 tasks.withType(JavaCompile) {
     options.encoding = 'UTF-8'
+}
+
+test {
+    useJUnitPlatform()
+    beforeTest { descriptor ->
+        logger.lifecycle("Running test: " + descriptor)
+    }
 }
