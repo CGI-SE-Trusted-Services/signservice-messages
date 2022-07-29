@@ -12,16 +12,14 @@
  *************************************************************************/
 package org.certificateservices.messages.csmessages;
 
-import groovy.util.slurpersupport.GPathResult
 import org.bouncycastle.jce.provider.BouncyCastleProvider
 import org.certificateservices.messages.MessageSecurityProvider
 
 import java.security.Security
 import java.security.cert.X509Certificate
-import javax.xml.bind.JAXBElement;
-import javax.xml.bind.Marshaller;
-import javax.xml.datatype.DatatypeFactory;
-import javax.xml.parsers.DocumentBuilder;
+import javax.xml.bind.JAXBElement
+import javax.xml.bind.Marshaller
+import javax.xml.datatype.DatatypeFactory
 
 import org.apache.xml.security.Init
 import org.certificateservices.messages.DummyMessageSecurityProvider;

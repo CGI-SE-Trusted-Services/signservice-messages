@@ -18,7 +18,6 @@ dependencies {
     implementation('javax.xml.bind:jaxb-api:2.3.0')
     implementation('javax.activation:javax.activation-api:1.2.0')
     implementation "org.codehaus.groovy:groovy-xml:${groovyVersion}"
-
     implementation ("org.apache.santuario:xmlsec:2.2.3"){
         exclude(module: "woodstox-core")
         exclude(module: "commons-codec")
