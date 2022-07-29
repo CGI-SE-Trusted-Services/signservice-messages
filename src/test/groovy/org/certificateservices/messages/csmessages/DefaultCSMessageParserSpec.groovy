@@ -10,8 +10,9 @@
  *  See terms of license at gnu.org.                                     *
  *                                                                       *
  *************************************************************************/
-package org.certificateservices.messages.csmessages;
+package org.certificateservices.messages.csmessages
 
+import groovy.xml.slurpersupport.GPathResult
 import org.bouncycastle.jce.provider.BouncyCastleProvider
 import org.certificateservices.messages.MessageSecurityProvider
 

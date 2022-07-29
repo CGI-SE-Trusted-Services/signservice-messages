@@ -20,7 +20,7 @@ import static org.certificateservices.messages.SigningAlgorithmScheme.*
 class SigningAlgorithmSchemeSpec extends Specification{
 	
 	@Unroll
-	def "Verify that signature algorithm #algorithm has hash URI #hashurivalue and a signature algorithm URI: #urivalue"(){
+	def "Verify that signature algorithm #algorithm has hash URI #hashurivalue and a signature algorithm URI: #signurivalue"(){
 		expect:
 		algorithm.getHashAlgorithmURI() == hashurivalue
 		algorithm.getSignatureAlgorithmURI() == signurivalue
