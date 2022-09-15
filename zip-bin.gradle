@@ -26,7 +26,7 @@ task zipBin(type: Zip) {
         into(projectBaseName)
     }
 
-    from(configurations.runtime) {
+    from(configurations.default) {
         exclude('*-sources.jar')
         exclude('*-javadoc.jar')
         into(projectBaseName + '/lib/')
