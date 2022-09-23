@@ -17,7 +17,6 @@ dependencies {
     implementation "org.bouncycastle:bcprov-jdk15on:${bcprovJdk15onVersion}"
     implementation('javax.xml.bind:jaxb-api:2.3.0')
     implementation('javax.activation:javax.activation-api:1.2.0')
-    implementation "org.codehaus.groovy:groovy-xml:${groovyVersion}"
     implementation ("org.apache.santuario:xmlsec:2.2.3"){
         exclude(module: "woodstox-core")
         exclude(module: "commons-codec")
@@ -28,6 +27,7 @@ dependencies {
     testImplementation "org.spockframework:spock-core"
     testImplementation "org.apache.tomcat.embed:tomcat-embed-core:9.0.65"
     testImplementation "org.apache.tomcat.embed:tomcat-embed-websocket:9.0.65"
+    testImplementation "org.codehaus.groovy:groovy-xml:${groovyVersion}"
 }
 
 tasks.withType(JavaCompile) {
