@@ -1102,7 +1102,7 @@ public class DefaultPKIMessageParser implements PKIMessageParser {
     			retval.setSchema(generatePKIMessageSchema(version)); 
     			pkixMessageMarshallers.put(version, retval);
     		}catch(Exception e){
-    			throw new MessageException("Error creating XML Marshaller for PKI Message version: " + version);
+    			throw new MessageException("Error creating XML Marshaller for PKI Message version: " + version, e);
     		}
     	}
     	return retval;
