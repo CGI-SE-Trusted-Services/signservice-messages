@@ -3,6 +3,7 @@ package org.certificateservices.messages.utils;
 import org.certificateservices.messages.MessageContentException;
 import org.certificateservices.messages.MessageProcessingException;
 import org.certificateservices.messages.SpamProtectionException;
+import org.certificateservices.messages.TimeoutException;
 
 import java.io.*;
 import java.net.HttpURLConnection;
@@ -70,14 +71,18 @@ public abstract class BaseHTTPSender {
      * @throws MessageProcessingException if internal problems occurred processing the request at the server.
      * @throws IOException if communication problems occurred.
      * @throws SpamProtectionException if server side regarded call as a SPAM request and denied it.
+     * @throws TimeoutException if timeout was detected when calling service.
      */
-    protected byte[] sendMsg(byte[] request) throws MessageContentException, MessageProcessingException, IOException, SpamProtectionException {
+    protected byte[] sendMsg(byte[] request) throws MessageContentException, MessageProcessingException, IOException, SpamProtectionException, TimeoutException {
         BaseHTTPSender.SynchronousCallback callback = new BaseHTTPSender.SynchronousCallback();
         BaseHTTPSender.SendMsgRunnable sendMsgRunnable = new BaseHTTPSender.SendMsgRunnable(request, callback);
         sendMsgRunnable.run(); // Run syncronically
         if(callback.error != null){
             if(callback.error instanceof MessageContentException){
                 throw (MessageContentException) callback.error;
+            }
+            if(callback.error instanceof TimeoutException){
+                throw (TimeoutException) callback.error;
             }
             if(callback.error instanceof MessageProcessingException){
                 throw (MessageProcessingException) callback.error;
@@ -132,6 +137,9 @@ public abstract class BaseHTTPSender {
         if(callback.error != null){
             if(callback.error instanceof MessageContentException){
                 throw (MessageContentException) callback.error;
+            }
+            if(callback.error instanceof TimeoutException){
+                throw (TimeoutException) callback.error;
             }
             if(callback.error instanceof MessageProcessingException){
                 throw (MessageProcessingException) callback.error;
@@ -222,7 +230,11 @@ public abstract class BaseHTTPSender {
                         if (responseCode == 4) {
                             callback.errorOccurred(new MessageContentException("Error sending message to " + url + ", got response code :" + con.getResponseCode() + " message: " + con.getResponseMessage()));
                         } else {
-                            callback.errorOccurred(new MessageProcessingException("Error sending message to " + url + ", got response code :" + con.getResponseCode() + " message: " + con.getResponseMessage()));
+                            if(httpStatus == 503){
+                                callback.errorOccurred(new TimeoutException("Timeout sending message to " + url + ", got response code :" + con.getResponseCode() + " message: " + con.getResponseMessage()));
+                            }else {
+                                callback.errorOccurred(new MessageProcessingException("Error sending message to " + url + ", got response code :" + con.getResponseCode() + " message: " + con.getResponseMessage()));
+                            }
                         }
                     }
                 }

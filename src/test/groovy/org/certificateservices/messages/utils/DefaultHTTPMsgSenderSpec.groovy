@@ -13,7 +13,9 @@
 package org.certificateservices.messages.utils
 
 import org.certificateservice.testutils.TestHTTPServer
+import org.certificateservices.messages.MessageProcessingException
 import org.certificateservices.messages.SpamProtectionException
+import org.certificateservices.messages.TimeoutException
 
 import javax.servlet.ServletException
 import javax.servlet.http.HttpServlet
@@ -48,6 +50,10 @@ class DefaultHTTPMsgSenderSpec extends Specification {
                 String requestURL = request.getRequestURL()
                 if (requestURL.contains("/messageprocessor/spam")) {
                     response.sendError(429, "SPAM message detected.")
+                    return
+                }
+                if (requestURL.contains("/messageprocessor/timeout")) {
+                    response.sendError(503, "Timeout detected.")
                     return
                 }
 
@@ -146,6 +152,33 @@ class DefaultHTTPMsgSenderSpec extends Specification {
         }
         asyncCallBack.error instanceof SpamProtectionException
         asyncCallBack.error.message =~ "Error sending message to http://localhost:8089/messageprocessor/spam, got response code :429"
+    }
+
+    def "Verify that TimeoutException is thrown if server returns 503 (Service Unavailable) response code for synchronous call."(){
+        when:
+
+        msgSender = new DefaultHTTPMsgSender("http://localhost:8089/messageprocessor/timeout", "POST")
+        msgSender.sendMsg("".getBytes())
+        then:
+        def e = thrown (TimeoutException)
+        e.message =~ "Timeout sending message to http://localhost:8089/messageprocessor/timeout, got response code :503"
+    }
+
+    def "Verify that TimeoutException is thrown if server returns 503 (Service Unavailable) response code for asynchronous call."(){
+        setup:
+        def asyncCallBack = new TestMsgCallback()
+
+        when:
+        msgSender = new DefaultHTTPMsgSender("http://localhost:8089/messageprocessor/timeout", "POST")
+        msgSender.sendMsg("".getBytes(), asyncCallBack)
+        then:
+        int retries = 0
+        while(!asyncCallBack.error && (retries++) < 50){
+            Thread.sleep(100)
+        }
+        asyncCallBack.error instanceof TimeoutException
+        asyncCallBack.error instanceof MessageProcessingException
+        asyncCallBack.error.message =~ "Timeout sending message to http://localhost:8089/messageprocessor/timeout, got response code :503"
     }
 
 
