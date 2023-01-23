@@ -25,7 +25,7 @@ dependencies {
     testImplementation project(':certservice-testutils')
     testImplementation platform("org.spockframework:spock-bom:2.1-groovy-3.0")
     testImplementation "org.spockframework:spock-core"
-    testImplementation "org.apache.tomcat.embed:tomcat-embed-core:${tomcatEmbedVersion}8"
+    testImplementation "org.apache.tomcat.embed:tomcat-embed-core:${tomcatEmbedVersion}"
     testImplementation "org.apache.tomcat.embed:tomcat-embed-websocket:${tomcatEmbedVersion}"
     testImplementation "org.codehaus.groovy:groovy-xml:${groovyVersion}"
 }
