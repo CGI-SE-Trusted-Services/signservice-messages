@@ -59,6 +59,10 @@ class SimplePKIMessageSecurityProviderSpec extends Specification {
 
 	def setupSpec(){
 		Security.addProvider(new BouncyCastleProvider())
+
+		// Make sure temporary directory exists.
+		new File("build/tmp").mkdirs()
+
 		CertificateFactory cf = CertificateFactory.getInstance("X.509","BC")
 		testCert = cf.generateCertificate(new ByteArrayInputStream(Base64.decode(TestData.base64Cert)))
 		testCertWithKeyUsage = cf.generateCertificate(new ByteArrayInputStream(Base64.decode(TestData.base64CertWithKeyUsage)))
