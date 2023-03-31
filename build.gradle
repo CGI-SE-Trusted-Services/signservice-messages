@@ -1,35 +1,48 @@
-group = 'org.certificateservices.messages'
-description = 'certservice-messages'
+apply plugin: "java"
+apply plugin: "maven-publish"
+apply plugin: "groovy"
+apply plugin: "idea"
+apply plugin: "project-report"
 
-ext.javaVer = project.hasProperty('javaVer') ? project.getProperty('javaVer') : '1.8'
+group = "org.certificateservices.messages"
+description = "certservice-messages"
+
+ext {
+    bcprovJdk15onVersion = "1.70"
+    groovyVersion = "3.0.15"
+    tomcatEmbedVersion = "9.0.69"
+    commonsIOVersion = "2.11.0"
+    javaVer = project.hasProperty("javaVer") ? project.getProperty("javaVer") : "1.8"
+}
 sourceCompatibility = javaVer
 targetCompatibility = javaVer
 
-certserviceSettings {
-    signjar = true
-    signjarFolder = "/tmp"
-    useMavenCentral = true
-    licenseName = "GNU Lesser General Public License v3.0 or later"
-    licenseURL = "https://www.gnu.org/licenses/lgpl-3.0-standalone.html"
+repositories {
+    mavenCentral()
 }
 
 dependencies {
     implementation "org.bouncycastle:bcprov-jdk15on:${bcprovJdk15onVersion}"
-    implementation('javax.xml.bind:jaxb-api:2.3.0')
-    implementation('javax.activation:javax.activation-api:1.2.0')
+    implementation("javax.xml.bind:jaxb-api:2.3.0")
+    implementation("javax.activation:javax.activation-api:1.2.0")
+
     implementation ("org.apache.santuario:xmlsec:2.2.3"){
         exclude(module: "woodstox-core")
         exclude(module: "commons-codec")
     }
-
-    testImplementation project(':certservice-testutils')
+    testRuntime 'com.sun.xml.bind:jaxb-core:2.3.0'
+    testRuntime 'com.sun.xml.bind:jaxb-impl:2.3.1'
     testImplementation platform("org.spockframework:spock-bom:2.1-groovy-3.0")
+    testImplementation "commons-io:commons-io:${commonsIOVersion}"
     testImplementation "org.spockframework:spock-core"
     testImplementation "org.apache.tomcat.embed:tomcat-embed-core:${tomcatEmbedVersion}"
-    testImplementation "org.apache.tomcat.embed:tomcat-embed-websocket:${tomcatEmbedVersion}"
     testImplementation "org.codehaus.groovy:groovy-xml:${groovyVersion}"
 }
 
 tasks.withType(JavaCompile) {
     options.encoding = 'UTF-8'
+}
+
+test {
+    useJUnitPlatform()
 }
