@@ -24,7 +24,7 @@ task zipSrc(type: Zip) {
         include('certservice-messages*.jar')
         into(projectBaseName)
     }
-    from(configurations.runtime) {
+    from(configurations.default) {
         exclude('*-sources.jar')
         exclude('*-javadoc.jar')
         into(projectBaseName + '/lib')

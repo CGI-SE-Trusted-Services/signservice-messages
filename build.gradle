@@ -40,8 +40,8 @@ dependencies {
         exclude(module: "woodstox-core")
         exclude(module: "commons-codec")
     }
-    testRuntime 'com.sun.xml.bind:jaxb-core:2.3.0'
-    testRuntime 'com.sun.xml.bind:jaxb-impl:2.3.1'
+    testRuntimeOnly 'com.sun.xml.bind:jaxb-core:2.3.0'
+    testRuntimeOnly 'com.sun.xml.bind:jaxb-impl:2.3.1'
     testImplementation platform("org.spockframework:spock-bom:2.1-groovy-3.0")
     testImplementation "commons-io:commons-io:${commonsIOVersion}"
     testImplementation "org.spockframework:spock-core"
