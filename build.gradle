@@ -1,12 +1,12 @@
+group "org.certificateservices.messages"
+description "certservice-messages"
+
 apply plugin: "java"
 apply plugin: "maven-publish"
 apply plugin: "groovy"
 apply plugin: "idea"
 apply plugin: "project-report"
 apply plugin: "certificateservices.remotesign.gradle"
-
-group = "org.certificateservices.messages"
-description = "certservice-messages"
 
 ext {
     bcprovJdk15onVersion = "1.70"
