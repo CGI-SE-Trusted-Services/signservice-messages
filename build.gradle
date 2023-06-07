@@ -3,6 +3,7 @@ apply plugin: "maven-publish"
 apply plugin: "groovy"
 apply plugin: "idea"
 apply plugin: "project-report"
+apply plugin: "certificateservices.remotesign.gradle"
 
 group = "org.certificateservices.messages"
 description = "certservice-messages"
@@ -24,7 +25,28 @@ pluginManager.withPlugin('org.certificateservices.gradle.certservice-gradle-plug
         useMavenCentral = true
         licenseName = "GNU Lesser General Public License v3.0 or later"
         licenseURL = "https://www.gnu.org/licenses/lgpl-3.0-standalone.html"
+        useDeveloperPOM = true
+        useScmPOM = true
+        scmConnection = "https://github.com/CGI-SE-Trusted-Services/certservice-messages.git"
+        scmDeveloperConnection = "https://github.com/CGI-SE-Trusted-Services/certservice-messages.git"
+        scmUrl = "https://github.com/CGI-SE-Trusted-Services/certservice-messages"
+        projectUrl = "https://github.com/CGI-SE-Trusted-Services/certservice-messages"
     }
+}
+
+certserviceRemoteSign {
+    signType = getGradleProperty("remotesign.signtype")
+    keyId = getGradleProperty("remotesign.keyid")
+    orgShortName = getGradleProperty("remotesign.org")
+    baseURL = getGradleProperty("remotesign.baseurl")
+    authCode = getEnvironmentProperty("bamboo_remotesign_api_password")
+    SSLKeyStore = getFile(getGradleProperty("remotesign.keystore.path"))
+    SSLKeyStorePass = getGradleProperty("remotesign.keystore.password")
+    SSLTrustStore = getFile(getGradleProperty("remotesign.truststore.path"))
+    PGPSign = true
+    PGPPublicKey = getFile(getGradleProperty("remotesign.pgppublickey.path"))
+    sigFile = "CODESIGN"
+    sign publishing.publications
 }
 
 repositories {
@@ -55,4 +77,17 @@ tasks.withType(JavaCompile) {
 
 test {
     useJUnitPlatform()
+}
+
+publishing{
+    repositories{
+        maven {
+            name 'mavenCentral'
+            url 'https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/'
+            credentials {
+                username = getGradleProperty("repository.sonatype.username")
+                password = getGradleProperty("repository.sonatype.password")
+            }
+        }
+    }
 }
