@@ -83,7 +83,7 @@ publishing{
     repositories{
         maven {
             name 'mavenCentral'
-            url 'https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/'
+            url (project.version =~ "SNAPSHOT"? "https://s01.oss.sonatype.org/content/repositories/snapshots/" : 'https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/')
             credentials {
                 username = getGradleProperty("repository.sonatype.username")
                 password = getGradleProperty("repository.sonatype.password")
