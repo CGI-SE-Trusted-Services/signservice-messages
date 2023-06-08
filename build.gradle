@@ -91,3 +91,24 @@ publishing{
         }
     }
 }
+
+task verifyRemoteSignProperties {
+    doFirst {
+        verifyGradleProperties([
+                "remotesign.signtype",
+                "remotesign.keyid",
+                "remotesign.org",
+                "remotesign.baseurl",
+                "remotesign.keystore.path",
+                "remotesign.keystore.password",
+                "remotesign.truststore.path",
+                "remotesign.pgppublickey.path"
+        ])
+
+        verifyEnvironmentProperty("bamboo_remotesign_api_password")
+    }
+}
+
+tasks.matching { it.name == 'signMavenPublication' }.all { Task task ->
+    task.dependsOn verifyRemoteSignProperties
+}
