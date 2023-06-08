@@ -880,7 +880,7 @@ public class SweEID2DSSExtensionsMessageParser extends DSS1CoreMessageParser{
      *                   value MUST be returned in the corresponding SignTaskData element in the response that holds
      *                   corresponding signature result data. (Optional, use null not to set)
      * @param sigType Enumerated identifier of the type of signature format the canonicalized signed information
-     *                octets in the ToBeSignedBytes> element are associated with. This MUST be one of the enumerated
+     *                octets in the ToBeSignedBytes element are associated with. This MUST be one of the enumerated
      *                values "XML", "PDF", "CMS" of "ASiC". (Required)
      * @param adESType Specifies the type of AdES signature. BES means that the signing certificate hash must be
      *                 covered by the signature. EPES means that the signing certificate hash and a signature

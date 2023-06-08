@@ -54,7 +54,7 @@ import javax.xml.crypto.dsig.keyinfo.X509IssuerSerial;
  * information.
  *
  * <p>NOTE!: This X509KeySelector requires J2SE 1.4 because it uses the
- * java.security.cert.X509CertSelector & javax.security.auth.x500.X500Principal
+ * java.security.cert.X509CertSelector and javax.security.auth.x500.X500Principal
  * classes to parse X.500 DNs and match on certificate attributes.
  *
  * @author Sean Mullan
@@ -109,7 +109,7 @@ public class X509KeySelector extends KeySelector {
 	 * @param method the algorithm method that this key is to be used for.
 	 *    Only keys that are compatible with the algorithm and meet the
 	 *    constraints of the specified algorithm should be returned.
-	 * @param an <code>XMLCryptoContext</code> that may contain additional
+	 * @param context <code>XMLCryptoContext</code> that may contain additional
 	 *    useful information for finding an appropriate key
 	 * @return a key selector result
 	 * @throws KeySelectorException if an exceptional condition occurs while

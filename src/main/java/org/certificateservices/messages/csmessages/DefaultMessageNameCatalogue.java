@@ -65,11 +65,10 @@ public class DefaultMessageNameCatalogue implements MessageNameCatalogue {
 	 * Method that looks up the name for a specific setting used to populate the 'name' attribute
 	 * in the header, the name is equivalent to the settings starting with "pkimessage.name.'messagename'"
 	 *   
-	 * @param request name
+	 * @param requestName name
 	 * @param payLoadObject the setting to look-up the name for. 
-	 * @param defaultName the default name of the message.
 	 * @return the name of the message to use.
-	 * @throws MessageException if name lookup failed etc.
+	 * @throws MessageProcessingException if name lookup failed etc.
 	 */
 	public String lookupName(String requestName, Object payLoadObject) throws MessageProcessingException, IllegalArgumentException{
 		if(payLoadObject == null){

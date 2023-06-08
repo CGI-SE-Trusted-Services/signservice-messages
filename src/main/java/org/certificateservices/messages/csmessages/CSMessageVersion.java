@@ -63,8 +63,8 @@ public class CSMessageVersion {
 	}
 	
 	/**
-	 * 
-	 * @return returns the pay load version of the message.
+	 *
+	 * sets the pay load version of the message.
 	 */
 	public void setPayLoadVersion(String payLoadVersion) {
 		this.payLoadVersion = payLoadVersion;

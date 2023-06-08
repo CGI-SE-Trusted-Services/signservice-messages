@@ -896,7 +896,6 @@ public class DefaultCSMessageParser implements CSMessageParser {
 	 *
 	 * CSMessageVersion is automatically set to the latest version.
 	 *
-	 * @return the CS Message Version used.
 	 */
 	public void setCSMessageVersion(String csMessageVersion){
 		DefaultCSMessageParser.csMessageVersion = csMessageVersion;

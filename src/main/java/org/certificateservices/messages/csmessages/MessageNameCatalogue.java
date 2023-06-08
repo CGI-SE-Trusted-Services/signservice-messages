@@ -27,8 +27,8 @@ public interface MessageNameCatalogue {
 	
 	/**
 	 * Default constructor
-	 * @param properties the properties file of the PKI message parser.
-	 * @throws MessageException if 
+	 * @param config the properties file of the PKI message parser.
+	 * @throws MessageProcessingException if an error occurred
 	 */
 	public void init(Properties config) throws MessageProcessingException;
 
