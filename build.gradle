@@ -71,7 +71,7 @@ dependencies {
     testImplementation "org.codehaus.groovy:groovy-xml:${groovyVersion}"
 }
 
-tasks.withType(JavaCompile) {
+tasks.withType(JavaCompile).configureEach {
     options.encoding = 'UTF-8'
 }
 
@@ -92,7 +92,7 @@ publishing{
     }
 }
 
-task verifyRemoteSignProperties {
+tasks.register('verifyRemoteSignProperties') {
     doFirst {
         verifyGradleProperties([
                 "remotesign.signtype",
@@ -109,6 +109,6 @@ task verifyRemoteSignProperties {
     }
 }
 
-tasks.matching { it.name == 'signMavenPublication' }.all { Task task ->
+tasks.matching { it.name == 'signMavenPublication' }.configureEach { Task task ->
     task.dependsOn verifyRemoteSignProperties
 }
