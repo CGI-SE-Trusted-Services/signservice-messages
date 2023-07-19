@@ -14,6 +14,10 @@ import org.certificateservices.messages.csexport.data.jaxb.TokenType
 import org.certificateservices.messages.utils.MessageGenerateUtils
 import spock.lang.Specification
 
+import javax.xml.bind.JAXBContext
+import javax.xml.bind.Marshaller
+import javax.xml.bind.Unmarshaller
+import javax.xml.validation.Schema
 import java.security.Security
 
 import static org.certificateservices.messages.TestUtils.*
@@ -200,6 +204,46 @@ class CSExportDataParserSpec extends Specification {
 		def o = p.parse(test)
 		then:
 		o  != null
+	}
+
+	def "Verify that JAXBContext is cached"(){
+		setup:
+		p = new CSExportDataParser(new DummyMessageSecurityProvider(), false)
+		when:
+		JAXBContext context1 = p.getJAXBContext()
+		JAXBContext context2 = p.getJAXBContext()
+		then:
+		context1 == context2
+	}
+
+	def "Verify that Schema is cached"(){
+		setup:
+		p = new CSExportDataParser(new DummyMessageSecurityProvider(), false)
+		when:
+		Schema schema1 = p.getSchema("1.3")
+		Schema schema2 = p.getSchema("1.3")
+		then:
+		schema1 == schema2
+	}
+
+	def "Verify that marshaller is not cached"(){
+		setup:
+		p = new CSExportDataParser(new DummyMessageSecurityProvider(), false)
+		when:
+		Marshaller marshaller1 = p.getMarshaller()
+		Marshaller marshaller2 = p.getMarshaller()
+		then:
+		marshaller1 != marshaller2
+	}
+
+	def "Verify that unmarshaller is not cached"(){
+		setup:
+		p = new CSExportDataParser(new DummyMessageSecurityProvider(), false)
+		when:
+		Unmarshaller unmarshaller1 = p.getUnmarshaller("1.3")
+		Unmarshaller unmarshaller2 = p.getUnmarshaller("1.3")
+		then:
+		unmarshaller1 != unmarshaller2
 	}
 
 	public static Organisation genOrganisation(String version="1.1"){

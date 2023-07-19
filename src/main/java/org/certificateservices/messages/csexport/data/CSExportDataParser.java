@@ -275,54 +275,77 @@ public class CSExportDataParser {
 
 		return dbf.newDocumentBuilder();
 	}
-	
-	private Marshaller marshaller = null;
+
+	/**
+	 * Help method to get marshaller for a given version. Marshaller are
+	 * NOT thread safe and should be created for each operation.
+	 *
+	 * @return Marshaller for given version
+	 * @throws JAXBException If error related to JAXB context
+	 */
 	Marshaller getMarshaller() throws JAXBException{
-		if(marshaller == null){
-			marshaller = getJAXBContext().createMarshaller();
-			marshaller.setProperty(Marshaller.JAXB_FRAGMENT, Boolean.TRUE);
-		}
+		Marshaller marshaller = getJAXBContext().createMarshaller();
+		marshaller.setProperty(Marshaller.JAXB_FRAGMENT, Boolean.TRUE);
 		return marshaller;
 	}
-	
-	private Map<String,Unmarshaller> unmarshallers = new HashMap<String,Unmarshaller>();
+
+	/**
+	 * Help method to get unmarshaller for a given version. Unmarshaller are
+	 * NOT thread safe and should be created for each operation.
+	 *
+	 * @param version Schema version to get unmarshaller for
+	 * @return Unmarshaller for given version
+	 * @throws JAXBException If error related to JAXB context
+	 * @throws SAXException If error related to schema
+	 */
 	Unmarshaller getUnmarshaller(String version) throws JAXBException, SAXException{
-		Unmarshaller retval = unmarshallers.get(version);
-		if(retval == null){
-			retval = getJAXBContext().createUnmarshaller();
-			retval.setSchema(generateSchema(version));
-			unmarshallers.put(version,retval);
-		}
+		Unmarshaller retval = getJAXBContext().createUnmarshaller();
+		retval.setSchema(getSchema(version));
 		return retval;
 	}
-	
+
 	private JAXBContext jaxbContext = null;
-    /**
-     * Help method maintaining the Assertion JAXB Context.
-     */
+
+	/**
+	 * Help method to get the Assertion JAXB Context. JAXB Context is thread safe
+	 * and is cached and can be shared across threads for improved performance.
+	 *
+	 * @return JAXBContext to use when marshalling/unmarshalling CS Export Data
+	 * @throws JAXBException If JAXBContext could not be created
+	 */
     private JAXBContext getJAXBContext() throws JAXBException{
     	if(jaxbContext== null){
     		String jaxbClassPath = "org.certificateservices.messages.csexport.data.jaxb:org.certificateservices.messages.xmldsig.jaxb";
-    			    		
     		jaxbContext = JAXBContext.newInstance(jaxbClassPath);
-    		
     	}
     	return jaxbContext;
     }
-    
 
-    private Schema generateSchema(String version) throws SAXException{
-    	SchemaFactory schemaFactory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
-    	
-    	schemaFactory.setResourceResolver(new CSExportLSResourceResolver(version));
-		
-        Source[] sources = new Source[2];
-        sources[0] = new StreamSource(getClass().getResourceAsStream(DefaultCSMessageParser.XMLDSIG_XSD_SCHEMA_RESOURCE_LOCATION));
-        sources[1] = new StreamSource(getClass().getResourceAsStream(versionToSchemaMap.get(version)));
+	private Map<String,Schema> schemas = new HashMap<String,Schema>();
 
-        Schema schema = schemaFactory.newSchema(sources);       
+	/**
+	 * Help method to get the validation schema instance. Schema is thread safe
+	 * and is cached and can be shared across threads for improved performance.
+	 *
+	 * @param version Version if schema to get.
+	 * @return Schema instance for given version.
+	 * @throws SAXException If schema could not be created for given version.
+	 */
+    private Schema getSchema(String version) throws SAXException{
+		Schema retval = schemas.get(version);
+		if(retval == null) {
+			SchemaFactory schemaFactory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
+			schemaFactory.setResourceResolver(new CSExportLSResourceResolver(version));
+
+			Source[] sources = new Source[2];
+			sources[0] = new StreamSource(getClass().getResourceAsStream(DefaultCSMessageParser.XMLDSIG_XSD_SCHEMA_RESOURCE_LOCATION));
+			sources[1] = new StreamSource(getClass().getResourceAsStream(versionToSchemaMap.get(version)));
+
+			retval = schemaFactory.newSchema(sources);
+			schemas.put(version, retval);
+		}
         
-        return schema;
+        return retval;
     }
 
     
