@@ -195,6 +195,14 @@ public abstract class BaseSAMLMessageParser {
 	protected abstract String lookupSchemaForElement(String type, String namespaceURI,
 												  String publicId, String systemId, String baseURI);
 
+	private Schema schema = null;
+	private Schema getSchema() throws SAXException {
+		if(schema == null){
+			schema = generateSchema();
+		}
+		return schema;
+	}
+
 	public Schema generateSchema() throws SAXException {
 		SchemaFactory schemaFactory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
 
@@ -662,32 +670,22 @@ public abstract class BaseSAMLMessageParser {
 		}
 	}
 	
-	private Marshaller marshaller = null;
 	protected Marshaller getMarshaller() throws JAXBException{
-		if(marshaller == null){
-			marshaller = getJAXBContext().createMarshaller();
-			marshaller.setProperty(Marshaller.JAXB_FRAGMENT, Boolean.TRUE);
-		}
+		Marshaller marshaller = getJAXBContext().createMarshaller();
+		marshaller.setProperty(Marshaller.JAXB_FRAGMENT, Boolean.TRUE);
 		return marshaller;
 	}
 	
-	private Unmarshaller unmarshaller = null;
 	protected Unmarshaller getUnmarshaller() throws JAXBException, SAXException{
-		if(unmarshaller == null){
-			unmarshaller = getJAXBContext().createUnmarshaller();
-			unmarshaller.setSchema(generateSchema());
-		}
+		Unmarshaller unmarshaller = getJAXBContext().createUnmarshaller();
+		unmarshaller.setSchema(getSchema());
 		return unmarshaller;
 	}
 
-
-    
     /**
      * Converter that replaces all decrypted EncryptedAttributes with Attributes
      */
     public static class EncryptedAttributeXMLConverter implements DecryptedXMLConverter{
-
-
 		public Document convert(Document doc) throws MessageContentException {
 			NodeList nodeList = doc.getElementsByTagNameNS(BaseSAMLMessageParser.ASSERTION_NAMESPACE, "Attribute");
 			for(int i =0; i < nodeList.getLength(); i++){
@@ -701,14 +699,9 @@ public abstract class BaseSAMLMessageParser {
 
 			return doc;
 		}
-		
 	}
-    
-    
-    
+
     public static class AssertionSignatureLocationFinder implements SignatureLocationFinder{
-
-
 		public Element[] getSignatureLocations(Document doc)
 				throws MessageContentException {
 			try{
