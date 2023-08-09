@@ -811,45 +811,49 @@ public class AssertionPayloadParser extends BasePayloadParser {
 		return dbf.newDocumentBuilder();
 	}
 	
-	private Marshaller assertionMarshaller = null;
 	Marshaller getAssertionMarshaller() throws JAXBException{
-		if(assertionMarshaller == null){
-			assertionMarshaller = getJAXBContext().createMarshaller();
-			assertionMarshaller.setProperty(Marshaller.JAXB_FRAGMENT, Boolean.TRUE);
-		}
+		Marshaller assertionMarshaller = getJAXBContext().createMarshaller();
+		assertionMarshaller.setProperty(Marshaller.JAXB_FRAGMENT, Boolean.TRUE);
 		return assertionMarshaller;
 	}
 	
-	private Unmarshaller assertionUnmarshaller = null;
 	Unmarshaller getAssertionUnmarshaller() throws JAXBException, SAXException{
-		if(assertionUnmarshaller == null){
-			assertionUnmarshaller = getJAXBContext().createUnmarshaller();
-			assertionUnmarshaller.setSchema(generateAssertionSchema());
-		}
+		Unmarshaller assertionUnmarshaller = getJAXBContext().createUnmarshaller();
+		assertionUnmarshaller.setSchema(getAssertionSchema());
 		return assertionUnmarshaller;
 	}
-	
-	private Marshaller userDataMarshaller = null;
-	Marshaller getUserDataMarshaller() throws JAXBException{
-		if(userDataMarshaller == null){
-			userDataMarshaller = getUserDataJAXBContext().createMarshaller();
-			userDataMarshaller.setProperty(Marshaller.JAXB_FRAGMENT, Boolean.TRUE);
+
+	private Schema assertionSchema = null;
+	Schema getAssertionSchema() throws SAXException {
+		if(assertionSchema == null){
+			assertionSchema = generateAssertionSchema();
 		}
+		return assertionSchema;
+	}
+	
+	Marshaller getUserDataMarshaller() throws JAXBException{
+		Marshaller userDataMarshaller = getUserDataJAXBContext().createMarshaller();
+		userDataMarshaller.setProperty(Marshaller.JAXB_FRAGMENT, Boolean.TRUE);
 		return userDataMarshaller;
 	}
 	
-	private Unmarshaller userDataUnmarshaller = null;
 	Unmarshaller getUserDataUnmarshaller() throws JAXBException, SAXException{
-		if(userDataUnmarshaller == null){
-			userDataUnmarshaller = getUserDataJAXBContext().createUnmarshaller();
-			userDataUnmarshaller.setSchema(generateUserDataSchema());
-		}
+		Unmarshaller userDataUnmarshaller = getUserDataJAXBContext().createUnmarshaller();
+		userDataUnmarshaller.setSchema(getUserDataSchema());
 		return userDataUnmarshaller;
 	}
-	
+
+	private Schema userDataSchema = null;
+	Schema getUserDataSchema() throws SAXException {
+		if(userDataSchema == null){
+			userDataSchema = generateUserDataSchema();
+		}
+		return userDataSchema;
+	}
 	
 	private JAXBContext jaxbContext = null;
-    /**
+
+	/**
      * Help method maintaining the Assertion JAXB Context.
      */
     private JAXBContext getJAXBContext() throws JAXBException{

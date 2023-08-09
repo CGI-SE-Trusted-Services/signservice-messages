@@ -343,26 +343,21 @@ public class EncryptedCSMessagePayloadParser extends BasePayloadParser {
 		return dbf.newDocumentBuilder();
 	}
 	
-	private Marshaller marshaller = null;
 	Marshaller getMarshaller() throws JAXBException{
-		if(marshaller == null){
-			marshaller = getJAXBContext().createMarshaller();
-			marshaller.setProperty(Marshaller.JAXB_FRAGMENT, Boolean.TRUE);
-		}
+		Marshaller marshaller = getJAXBContext().createMarshaller();
+		marshaller.setProperty(Marshaller.JAXB_FRAGMENT, Boolean.TRUE);
 		return marshaller;
 	}
 	
-	private Unmarshaller unmarshaller = null;
 	Unmarshaller getUnmarshaller() throws JAXBException, SAXException{
-		if(unmarshaller == null){
-			unmarshaller = getJAXBContext().createUnmarshaller();
-			unmarshaller.setSchema(generateSchema());
-		}
+		Unmarshaller unmarshaller = getJAXBContext().createUnmarshaller();
+		unmarshaller.setSchema(getSchema());
 		return unmarshaller;
 	}
 	
 	private JAXBContext jaxbContext = null;
-    /**
+
+	/**
      * Help method maintaining the Assertion JAXB Context.
      */
     private JAXBContext getJAXBContext() throws JAXBException{
@@ -374,20 +369,27 @@ public class EncryptedCSMessagePayloadParser extends BasePayloadParser {
     	}
     	return jaxbContext;
     }
-    
+
+	private Schema schema = null;
+	private Schema getSchema() throws SAXException {
+		if(schema == null){
+			schema = generateSchema();
+		}
+		return schema;
+	}
 
     private Schema generateSchema() throws SAXException{
     	SchemaFactory schemaFactory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
-    	
+
     	schemaFactory.setResourceResolver(new EncryptionParserLSResourceResolver());
-		
+
         Source[] sources = new Source[3];
         sources[0] = new StreamSource(getClass().getResourceAsStream(DefaultCSMessageParser.XMLDSIG_XSD_SCHEMA_RESOURCE_LOCATION));
         sources[1] = new StreamSource(getClass().getResourceAsStream(DefaultCSMessageParser.XMLENC_XSD_SCHEMA_RESOURCE_LOCATION));
         sources[2] = new StreamSource(getClass().getResourceAsStream(XSD_SCHEMA_2_0_RESOURCE_LOCATION));
-        
-        Schema schema = schemaFactory.newSchema(sources);       
-        
+
+        Schema schema = schemaFactory.newSchema(sources);
+
         return schema;
     }
     

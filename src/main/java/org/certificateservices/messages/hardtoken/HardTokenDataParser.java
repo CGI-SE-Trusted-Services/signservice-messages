@@ -243,25 +243,20 @@ public class HardTokenDataParser {
 		return dbf.newDocumentBuilder();
 	}
 	
-	private Marshaller marshaller = null;
 	Marshaller getMarshaller() throws JAXBException{
-		if(marshaller == null){
-			marshaller = getJAXBContext().createMarshaller();
-			marshaller.setProperty(Marshaller.JAXB_FRAGMENT, Boolean.TRUE);
-		}
+		Marshaller marshaller = getJAXBContext().createMarshaller();
+		marshaller.setProperty(Marshaller.JAXB_FRAGMENT, Boolean.TRUE);
 		return marshaller;
 	}
 	
-	private Unmarshaller unmarshaller = null;
 	Unmarshaller getUnmarshaller() throws JAXBException, SAXException{
-		if(unmarshaller == null){
-			unmarshaller = getJAXBContext().createUnmarshaller();
-			unmarshaller.setSchema(generateSchema());
-		}
+		Unmarshaller unmarshaller = getJAXBContext().createUnmarshaller();
+		unmarshaller.setSchema(getSchema());
 		return unmarshaller;
 	}
 	
 	private JAXBContext jaxbContext = null;
+
     /**
      * Help method maintaining the Assertion JAXB Context.
      */
@@ -274,7 +269,14 @@ public class HardTokenDataParser {
     	}
     	return jaxbContext;
     }
-    
+
+	private Schema schema = null;
+	private Schema getSchema() throws SAXException {
+		if(schema == null){
+			schema = generateSchema();
+		}
+		return schema;
+	}
 
     private Schema generateSchema() throws SAXException{
     	SchemaFactory schemaFactory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);

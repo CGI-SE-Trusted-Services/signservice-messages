@@ -912,16 +912,14 @@ public class DefaultCSMessageParser implements CSMessageParser {
 		private JAXBContext jaxbContext = null;
 		private HashMap<String, Validator> payLoadValidatorCache = new HashMap<String, Validator>();
 	    private JAXBIntrospector jaxbIntrospector = null;
-		private Map<String,Marshaller> csMessageMarshallers = new HashMap<String, Marshaller>();
-		private Map<String,Unmarshaller> csMessageUnmarshallers = new HashMap<String, Unmarshaller>();
+		private Map<String, Schema> csMessageSchemaCache = new HashMap<String, Schema>();
 		private String jaxbClassPath = "";
 		
 		void clearAllJAXBData(){
 			jaxbClassPath = "";
 			jaxbContext = null;
 			payLoadValidatorCache.clear();
-			csMessageMarshallers.clear();
-			csMessageUnmarshallers.clear();
+			csMessageSchemaCache.clear();
 			jaxbIntrospector = null;
 		}
 		
@@ -986,9 +984,8 @@ public class DefaultCSMessageParser implements CSMessageParser {
 	    	return jaxbIntrospector;
 	    }
 		
-		Marshaller createMarshaller(String schemaLocation) throws JAXBException{
-			Marshaller retval = jaxbContext.createMarshaller();
-			
+		Marshaller createMarshaller(String schemaLocation) throws JAXBException, MessageProcessingException {
+			Marshaller retval = getJAXBContext().createMarshaller();
 			retval.setProperty(Marshaller.JAXB_SCHEMA_LOCATION, schemaLocation);
 			retval.setProperty(Marshaller.JAXB_FRAGMENT, Boolean.TRUE);
 			return retval;
@@ -1028,19 +1025,16 @@ public class DefaultCSMessageParser implements CSMessageParser {
 	    		throw new MessageContentException("Invalid CS Message, version is missing.");
 	    	}
 	    	
-	    	Marshaller retval = csMessageMarshallers.get(version);
-	    	if(retval == null){
-	    		String schemaURL = csMessageSchemaUriMap.get(version);
-	    		try{
-	    			retval = createMarshaller(schemaURL);
-	    			retval.setSchema(generateCSMessageSchema(version)); 
-	    			csMessageMarshallers.put(version, retval);
-	    		}catch(Exception e){
-	    			throw new MessageProcessingException("Error creating XML Marshaller for CS Message version: " + version);
-	    		}
-	    	}
+			Marshaller retval;
+			String schemaURL = csMessageSchemaUriMap.get(version);
+			try{
+				retval = createMarshaller(schemaURL);
+				retval.setSchema(getCSMessageSchema(version));
+			} catch(Exception e){
+				throw new MessageProcessingException("Error creating XML Marshaller for CS Message version: " + version);
+			}
+
 	    	return retval;
-	    	
 	    }
 		
 	    /**
@@ -1055,18 +1049,14 @@ public class DefaultCSMessageParser implements CSMessageParser {
 	    		throw new MessageContentException("Invalid CS Message, version is missing.");
 	    	}
 	    	
-	    	Unmarshaller retval = csMessageUnmarshallers.get(version);
-	    	if(retval == null){
-	    		try{
-	    			retval = getJAXBContext().createUnmarshaller();
-	    			retval.setSchema(generateCSMessageSchema(version));
-	    			csMessageUnmarshallers.put(version, retval);
-	    		}catch(Exception e){
-	    			throw new MessageProcessingException("Error creating XML Unmarshaller for CS Message version: " + version);
-	    		}
-	    	}
+	    	Unmarshaller retval;
+			try{
+				retval = getJAXBContext().createUnmarshaller();
+				retval.setSchema(getCSMessageSchema(version));
+			} catch(Exception e){
+				throw new MessageProcessingException("Error creating XML Unmarshaller for CS Message version: " + version);
+			}
 	    	return retval;
-	    	
 	    }
 
 	    
@@ -1078,17 +1068,20 @@ public class DefaultCSMessageParser implements CSMessageParser {
 	     * @throws SAXException
 	     * @throws MessageProcessingException
 	     */
-	    Schema generateCSMessageSchema(String version) throws MessageContentException, SAXException, MessageProcessingException{
-	    	String schemaLocation = csMessageSchemaMap.get(version);
-			SchemaFactory schemaFactory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
-			
-	        Source[] sources = new Source[2];
-	        sources[0] = new StreamSource(getClass().getResourceAsStream(XMLDSIG_XSD_SCHEMA_RESOURCE_LOCATION));
-	        sources[1] = new StreamSource(getClass().getResourceAsStream(schemaLocation));
-	        
-	        Schema schema = schemaFactory.newSchema(sources);       
-	        
-	        return schema;
+	    Schema getCSMessageSchema(String version) throws MessageContentException, SAXException, MessageProcessingException{
+			Schema retval = csMessageSchemaCache.get(version);
+			if(retval == null) {
+				String schemaLocation = csMessageSchemaMap.get(version);
+				SchemaFactory schemaFactory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
+
+				Source[] sources = new Source[2];
+				sources[0] = new StreamSource(getClass().getResourceAsStream(XMLDSIG_XSD_SCHEMA_RESOURCE_LOCATION));
+				sources[1] = new StreamSource(getClass().getResourceAsStream(schemaLocation));
+
+				retval = schemaFactory.newSchema(sources);
+				csMessageSchemaCache.put(version, retval);
+			}
+	        return retval;
 	    }
 	}
 
