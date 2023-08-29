@@ -984,7 +984,6 @@ public class SweEID2DSSExtensionsMessageParser extends DSS1CoreMessageParser{
      */
     public static class SignMessageXMLConverter implements XMLEncrypter.DecryptedXMLConverter {
 
-
         public Document convert(Document doc) throws MessageContentException {
             NodeList nodeList = doc.getElementsByTagNameNS(NAMESPACE, "EncryptedMessage");
             for(int i =0; i < nodeList.getLength(); i++){
@@ -1003,7 +1002,6 @@ public class SweEID2DSSExtensionsMessageParser extends DSS1CoreMessageParser{
 
     }
 
-
     protected Document marshallToDSSDoc(Object object) throws MessageProcessingException {
         try {
             Document doc = getDocumentBuilder().newDocument();
@@ -1014,16 +1012,14 @@ public class SweEID2DSSExtensionsMessageParser extends DSS1CoreMessageParser{
         }
     }
 
-    private Marshaller dssMarshaller = null;
     protected Marshaller getDSSMarshaller() throws JAXBException{
-        if(dssMarshaller == null){
-            dssMarshaller = getDSSJAXBContext().createMarshaller();
-            dssMarshaller.setProperty(Marshaller.JAXB_FRAGMENT, Boolean.TRUE);
-        }
+        Marshaller dssMarshaller = getDSSJAXBContext().createMarshaller();
+        dssMarshaller.setProperty(Marshaller.JAXB_FRAGMENT, Boolean.TRUE);
         return dssMarshaller;
     }
 
     private JAXBContext dssJaxbContext = null;
+
     /**
      * Help method maintaining the Extension specific JAXB Context to handle multiple SAML namespaces.
      */
@@ -1045,16 +1041,14 @@ public class SweEID2DSSExtensionsMessageParser extends DSS1CoreMessageParser{
         }
     }
 
-    private Marshaller sweEID2Marshaller = null;
     protected Marshaller getSweEID2ExtensionMarshaller() throws JAXBException{
-        if(sweEID2Marshaller == null){
-            sweEID2Marshaller = getSweEID2ExtensionJAXBContext().createMarshaller();
-            sweEID2Marshaller.setProperty(Marshaller.JAXB_FRAGMENT, Boolean.TRUE);
-        }
+        Marshaller sweEID2Marshaller = getSweEID2ExtensionJAXBContext().createMarshaller();
+        sweEID2Marshaller.setProperty(Marshaller.JAXB_FRAGMENT, Boolean.TRUE);
         return sweEID2Marshaller;
     }
 
     private JAXBContext sweEID2JaxbContext = null;
+
     /**
      * Help method maintaining the Extension specific JAXB Context to handle multiple SAML namespaces.
      */
@@ -1065,6 +1059,4 @@ public class SweEID2DSSExtensionsMessageParser extends DSS1CoreMessageParser{
         }
         return sweEID2JaxbContext;
     }
-
-
 }

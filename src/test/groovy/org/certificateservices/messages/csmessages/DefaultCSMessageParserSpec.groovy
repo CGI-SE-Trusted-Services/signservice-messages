@@ -115,8 +115,6 @@ public class DefaultCSMessageParserSpec extends Specification{
 		mp.securityProvider instanceof DummyMessageSecurityProvider
 		mp.messageNameCatalogue != null
 		mp.jaxbData.jaxbContext != null
-		mp.jaxbData.csMessageMarshallers.size() == SUPPORTED_CSMESSAGE_VERSIONS.length
-		mp.jaxbData.csMessageUnmarshallers.size() == SUPPORTED_CSMESSAGE_VERSIONS.length
 		mp.sourceId == "SOMESOURCEID"
 	}
 	
@@ -555,9 +553,6 @@ public class DefaultCSMessageParserSpec extends Specification{
 		mp.jaxbData.jaxbClassPath =~ ":org.certificateservices.messages.sysconfig.jaxb"
 		mp.jaxbData.jaxbContext != null
 		mp.jaxbData.jaxbIntrospector != null
-		mp.jaxbData.csMessageMarshallers.size() != 0
-		mp.jaxbData.csMessageUnmarshallers.size() != 0
-		
 		
 		when:
 		mp.jaxbData.clearAllJAXBData()
@@ -567,9 +562,7 @@ public class DefaultCSMessageParserSpec extends Specification{
 		mp.jaxbData.jaxbContext == null
 		mp.jaxbData.payLoadValidatorCache.size() == 0
 		mp.jaxbData.jaxbIntrospector == null
-		mp.jaxbData.csMessageMarshallers.size() == 0
-		mp.jaxbData.csMessageUnmarshallers.size() == 0
-		
+
 		mp.jaxbData.getJAXBContext() != null
 		mp.jaxbData.getJAXBIntrospector() != null
 		mp.jaxbData.getCSMessageMarshaller("2.0") != null 
@@ -579,8 +572,6 @@ public class DefaultCSMessageParserSpec extends Specification{
 		mp.jaxbData.jaxbClassPath =~ "org.certificateservices.messages.csmessages.jaxb"
 		mp.jaxbData.jaxbContext !=null
 		mp.jaxbData.jaxbIntrospector != null
-		mp.jaxbData.csMessageMarshallers.size() == 1
-		mp.jaxbData.csMessageUnmarshallers.size() == 1
 
 		when: "Try to add a dummy payload parser"
 		
@@ -600,8 +591,6 @@ public class DefaultCSMessageParserSpec extends Specification{
 		mp.jaxbData.jaxbClassPath =~ "org.certificateservices.messages.dummy.jaxb"
 		mp.jaxbData.jaxbContext != null
 		mp.jaxbData.jaxbIntrospector != null
-		mp.jaxbData.csMessageMarshallers.size() == 1
-		mp.jaxbData.csMessageUnmarshallers.size() == 1
 		when: "Try to generate new payload with registered dummy parser"
 		// Test to generate and parse new payload parser
 		DummyPayloadParser dp = PayloadParserRegistry.getParser(DummyPayloadParser.NAMESPACE)
@@ -627,9 +616,7 @@ public class DefaultCSMessageParserSpec extends Specification{
 		mp.jaxbData.jaxbClassPath !=~ "org.certificateservices.messages.dummy.jaxb"
 		mp.jaxbData.jaxbContext != null
 		mp.jaxbData.jaxbIntrospector != null
-		mp.jaxbData.csMessageMarshallers.size() == 1
-		mp.jaxbData.csMessageUnmarshallers.size() == 1
-		
+
 		when: "Verify that parsing a message with dummy data throws MessageContentException"
 		mp.parseMessage(data)
 		then:
