@@ -40,11 +40,11 @@ certserviceRemoteSign {
     orgShortName = getGradleProperty("remotesign.org")
     baseURL = getGradleProperty("remotesign.baseurl")
     authCode = getEnvironmentProperty("bamboo_remotesign_api_password")
-    SSLKeyStore = getFile(getGradleProperty("remotesign.keystore.path"))
+    SSLKeyStore = getGradleProperty("remotesign.keystore.path")
     SSLKeyStorePass = getGradleProperty("remotesign.keystore.password")
-    SSLTrustStore = getFile(getGradleProperty("remotesign.truststore.path"))
+    SSLTrustStore = getGradleProperty("remotesign.truststore.path")
     PGPSign = true
-    PGPPublicKey = getFile(getGradleProperty("remotesign.pgppublickey.path"))
+    PGPPublicKey = getGradleProperty("remotesign.pgppublickey.path")
     sigFile = "CODESIGN"
     sign publishing.publications
 }
