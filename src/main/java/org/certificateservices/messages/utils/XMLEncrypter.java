@@ -710,7 +710,9 @@ public class XMLEncrypter {
 				EncryptionAlgorithmScheme scheme = getScheme(context);
 				switch(scheme){
 					case RSA_OAEP_WITH_AES256:
+					case RSA_OAEP_WITH_AES256_GCM:
 					case RSA_PKCS1_5_WITH_AES256:
+					case RSA_PKCS1_5_WITH_AES256_GCM:
 						retval = KeyGenerator.getInstance("AES");
 						retval.init(256);
 						break;
