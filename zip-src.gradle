@@ -1,6 +1,6 @@
-task zipSrc(type: Zip) {
+tasks.register('zipSrc', Zip) {
     String projectBaseName = project.name + "-${project.ext.get('shortVersionNumber')}"
-    archiveName = projectBaseName + '-src.zip'
+    archiveFileName = projectBaseName + '-src.zip'
 
     from(projectDir) {
         include('src/**')

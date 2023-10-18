@@ -12,7 +12,7 @@ ext {
     bcprovJdk15onVersion = "1.70"
     groovyVersion = "3.0.19"
     tomcatEmbedVersion = "9.0.82"
-    commonsIOVersion = "2.11.0"
+    commonsIOVersion = "2.14.0"
     javaVer = project.hasProperty("javaVer") ? project.getProperty("javaVer") : "1.8"
 }
 sourceCompatibility = javaVer
