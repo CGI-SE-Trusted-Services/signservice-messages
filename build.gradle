@@ -10,7 +10,7 @@ apply plugin: "certificateservices.remotesign.gradle"
 
 ext {
     bcprovJdk15onVersion = "1.70"
-    groovyVersion = "3.0.19"
+    groovyVersion = "3.0.15"
     tomcatEmbedVersion = "9.0.82"
     commonsIOVersion = "2.14.0"
     javaVer = project.hasProperty("javaVer") ? project.getProperty("javaVer") : "1.8"
@@ -64,7 +64,7 @@ dependencies {
     }
     testRuntimeOnly 'com.sun.xml.bind:jaxb-core:2.3.0'
     testRuntimeOnly 'com.sun.xml.bind:jaxb-impl:2.3.1'
-    testImplementation platform("org.spockframework:spock-bom:2.1-groovy-3.0")
+    testImplementation platform("org.spockframework:spock-bom:2.3-groovy-3.0")
     testImplementation "commons-io:commons-io:${commonsIOVersion}"
     testImplementation "org.spockframework:spock-core"
     testImplementation "org.apache.tomcat.embed:tomcat-embed-core:${tomcatEmbedVersion}"
