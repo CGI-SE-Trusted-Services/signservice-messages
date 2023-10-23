@@ -316,7 +316,7 @@ public class AutoEnrollPayloadParser extends BasePayloadParser {
 	/**
 	 * Method to generate a PerformedFetchExistingTokensAction for advanced use cases where a transport key
 	 * exists in the clients computer
-	 * @param wrappingCredential certificate that the client want’s the proxy to wrap the returned private keys with.
+	 * @param wrappingCredential certificate that the client want's the proxy to wrap the returned private keys with.
 	 *                           This is used in advanced use cases when the client might use TMP chip with an
 	 *                           existing wrapping key. If not set should the proxy return the keys unencrypted.
 	 */

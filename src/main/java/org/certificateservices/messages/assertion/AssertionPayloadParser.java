@@ -330,7 +330,7 @@ public class AssertionPayloadParser extends BasePayloadParser {
 	 * @param subjectId the subject id string having the approval.
 	 * @param approvalId  the request unique approval id
 	 * @param approvalRequests containing one or more AttributeValue with the digest values of the calculated request actions. 
-	 * It’s up to the approval workflow engine to to determine how the digest is calculated from an approval request and how to verify that subsequent 
+	 * It's up to the approval workflow engine to to determine how the digest is calculated from an approval request and how to verify that subsequent
 	 * request matches the given approval.
 	 * @param destinationId the id to the target system processing the ticket. null for ANY destination.
 	 * @param approvers if encrypted approver data should be included, used to send information about an approval to more sensitive inner systems for audit purposes.

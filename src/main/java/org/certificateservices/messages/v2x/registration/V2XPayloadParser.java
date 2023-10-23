@@ -107,7 +107,7 @@ public class V2XPayloadParser extends BasePayloadParser {
 	 * @param atProfile Name of profile to use for the authorization ticket. The profile determines Service Permissions,
 	 *                  default region and validity. If not set is default profile for default AA used.
 	 * @param atAppPermissions list of app permissions to use in generate Authorization Tickets (Required).
-	 * @param itssValidFrom The date time when the related ITS station will have it’s initial EC certificate start date.
+	 * @param itssValidFrom The date time when the related ITS station will have it's initial EC certificate start date.
 	 *                     The start date of any EC or AT certificates cannot be before this date.
 	 * @param itssValidTo Field to define an end life of an ITS station, no certificate (EC or AT) can have a validity after this date.
 	 *                   Use case could be a test fleet where no vehicles should be used after a specific date.
@@ -156,7 +156,7 @@ public class V2XPayloadParser extends BasePayloadParser {
 	 * @param atProfile Name of profile to use for the authorization ticket. The profile determines Service Permissions,
 	 *                  default region and validity. If not set is default profile for default AA used.
 	 * @param atAppPermissions list of app permissions to use in generate Authorization Tickets.
-	 * @param itssValidFrom The date time when the related ITS station will have it’s initial EC certificate start date.
+	 * @param itssValidFrom The date time when the related ITS station will have it's initial EC certificate start date.
 	 *                     The start date of any EC or AT certificates cannot be before this date.
 	 * @param itssValidTo Field to define an end life of an ITS station, no certificate (EC or AT) can have a validity after this date.
 	 *                   Use case could be a test fleet where no vehicles should be used after a specific date.
@@ -215,7 +215,7 @@ public class V2XPayloadParser extends BasePayloadParser {
 	 * @param atProfile Name of profile to use for the authorization ticket. The profile determines Service Permissions,
 	 *                  default region and validity. If not set is default profile for default AA used.
 	 * @param atAppPermissions list of app permissions to use in generate Authorization Tickets.
-	 * @param itssValidFrom The date time when the related ITS station will have it’s initial EC certificate start date.
+	 * @param itssValidFrom The date time when the related ITS station will have it's initial EC certificate start date.
 	 *                     The start date of any EC or AT certificates cannot be before this date.
 	 * @param itssValidTo Field to define an end life of an ITS station, no certificate (EC or AT) can have a validity after this date.
 	 *                   Use case could be a test fleet where no vehicles should be used after a specific date.
@@ -266,7 +266,7 @@ public class V2XPayloadParser extends BasePayloadParser {
 	 * @param atProfile Name of profile to use for the authorization ticket. The profile determines Service Permissions,
 	 *                  default region and validity. If not set is default profile for default AA used.
 	 * @param atAppPermissions list of app permissions to use in generate Authorization Tickets.
-	 * @param itssValidFrom The date time when the related ITS station will have it’s initial EC certificate start date.
+	 * @param itssValidFrom The date time when the related ITS station will have it's initial EC certificate start date.
 	 *                     The start date of any EC or AT certificates cannot be before this date.
 	 * @param itssValidTo Field to define an end life of an ITS station, no certificate (EC or AT) can have a validity after this date.
 	 *                   Use case could be a test fleet where no vehicles should be used after a specific date.
@@ -357,7 +357,7 @@ public class V2XPayloadParser extends BasePayloadParser {
 	 * @param atProfile Name of profile to use for the authorization ticket. The profile determines Service Permissions,
 	 *                  default region and validity. If not set is default profile for default AA used.
 	 * @param atAppPermissions list of app permissions to use in generate Authorization Tickets.
-	 * @param itssValidFrom The date time when the related ITS station will have it’s initial EC certificate start date.
+	 * @param itssValidFrom The date time when the related ITS station will have it's initial EC certificate start date.
 	 *                     The start date of any EC or AT certificates cannot be before this date.
 	 * @param itssValidTo Field to define an end life of an ITS station, no certificate (EC or AT) can have a validity after this date.
 	 *                   Use case could be a test fleet where no vehicles should be used after a specific date.
@@ -446,7 +446,7 @@ public class V2XPayloadParser extends BasePayloadParser {
 	 * @param atProfile Name of profile to use for the authorization ticket. The profile determines Service Permissions,
 	 *                  default region and validity. If not set is default profile for default AA used.
 	 * @param atAppPermissions list of app permissions to use in generate Authorization Tickets.
-	 * @param itssValidFrom The date time when the related ITS station will have it’s initial EC certificate start date.
+	 * @param itssValidFrom The date time when the related ITS station will have it's initial EC certificate start date.
 	 *                     The start date of any EC or AT certificates cannot be before this date.
 	 * @param itssValidTo Field to define an end life of an ITS station, no certificate (EC or AT) can have a validity after this date.
 	 *                   Use case could be a test fleet where no vehicles should be used after a specific date.
@@ -532,7 +532,7 @@ public class V2XPayloadParser extends BasePayloadParser {
 	 * @param atProfile Name of profile to use for the authorization ticket. The profile determines Service Permissions,
 	 *                  default region and validity. If not set is default profile for default AA used.
 	 * @param atAppPermissions list of app permissions to use in generate Authorization Tickets.
-	 * @param itssValidFrom The date time when the related ITS station will have it’s initial EC certificate start date.
+	 * @param itssValidFrom The date time when the related ITS station will have it's initial EC certificate start date.
 	 *                     The start date of any EC or AT certificates cannot be before this date.
 	 * @param itssValidTo Field to define an end life of an ITS station, no certificate (EC or AT) can have a validity after this date.
 	 *                   Use case could be a test fleet where no vehicles should be used after a specific date.

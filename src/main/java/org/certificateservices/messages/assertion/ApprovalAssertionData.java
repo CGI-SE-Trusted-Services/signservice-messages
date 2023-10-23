@@ -102,7 +102,7 @@ public class ApprovalAssertionData extends AssertionData {
 
 	/**
 	 * @return list containing one or more AttributeValue with the digest values of the calculated request actions. 
-	 * It’s up to the approval workflow engine to to determine how the digest is calculated from an approval request and how to verify that subsequent 
+	 * It's up to the approval workflow engine to determine how the digest is calculated from an approval request and how to verify that subsequent
 	 * request matches the given approval.
 	 */
 	public List<String> getApprovalRequests() {

@@ -234,7 +234,7 @@ public class SignRequestPayloadParser extends BasePayloadParser {
 	 * @param keyId Identifier of the key pair that should be used to perform the signing operation.
 	 * @param attributes a list of meta data attribute to further describe the signature task. Can contain customly defined values used for a specific sighType. Optional
 	 * @param signResponseData Base64 Encoded Signing Data containing the signing result. The actual data is defined per signType.
-	 * @param certificateChain A List of X509 certificate data in Base64encoded DER encoding. It’s up to the signType definition if no certificate, only end entity certificate or entire chain should be included. But list should be ordered so end entity certificate is first and top most certificate in chain is last. Optional
+	 * @param certificateChain A List of X509 certificate data in Base64encoded DER encoding. It's up to the signType definition if no certificate, only end entity certificate or entire chain should be included. But list should be ordered so end entity certificate is first and top most certificate in chain is last. Optional
 	 * @param publicKey used to sign the data, actual encoding is up to signType.
 	 * @return return a newly populated SignResponseTask.
 	 * @throws MessageContentException if invalid parameters found.
@@ -268,7 +268,7 @@ public class SignRequestPayloadParser extends BasePayloadParser {
 	 * @param signType String identifying the type of signing operation. i.e algorithm and encoding used. Should be a descriptive name of the use case of the key.
 	 * @param keyId Identifier of the key pair that should be used to perform the signing operation.
 	 * @param attributes a list of meta data attribute to further describe the signature task. Can contain customly defined values used for a specific sighType. Optional
-	 * @param certificateChain A List of X509 certificate data in Base64encoded DER encoding. It’s up to the signType definition if no certificate, only end entity certificate or entire chain should be included. But list should be ordered so end entity certificate is first and top most certificate in chain is last. Optional
+	 * @param certificateChain A List of X509 certificate data in Base64encoded DER encoding. It's up to the signType definition if no certificate, only end entity certificate or entire chain should be included. But list should be ordered so end entity certificate is first and top most certificate in chain is last. Optional
 	 * @param publicKey used to sign the data, actual encoding is up to signType.
 	 * @return return a newly populated SignResponseTask.
 	 * @throws MessageContentException if invalid parameters found.
