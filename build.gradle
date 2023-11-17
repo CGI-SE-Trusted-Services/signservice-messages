@@ -13,10 +13,9 @@ ext {
     groovyVersion = "3.0.15"
     tomcatEmbedVersion = "9.0.82"
     commonsIOVersion = "2.14.0"
-    javaVer = project.hasProperty("javaVer") ? project.getProperty("javaVer") : "1.8"
 }
-sourceCompatibility = javaVer
-targetCompatibility = javaVer
+sourceCompatibility = "1.8"
+targetCompatibility = "1.8"
 
 pluginManager.withPlugin('org.certificateservices.gradle.certservice-gradle-plugin') {
     certserviceSettings {
@@ -58,7 +57,7 @@ dependencies {
     implementation("javax.xml.bind:jaxb-api:2.3.0")
     implementation("javax.activation:javax.activation-api:1.2.0")
 
-    implementation ("org.apache.santuario:xmlsec:2.2.3"){
+    implementation ("org.apache.santuario:xmlsec:2.2.6"){
         exclude(module: "woodstox-core")
         exclude(module: "commons-codec")
     }
