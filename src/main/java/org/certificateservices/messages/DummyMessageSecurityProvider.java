@@ -248,8 +248,29 @@ public class DummyMessageSecurityProvider implements
 		return getSigningAlgorithmScheme(DEFAULT_CONTEXT);
 	}
 
+	/**
+	 * Method to retrieve JCA provider that should be used with keys provided by this provider.
+	 *
+	 * @return name of an JCA Provider that should be installed prior to usage of this MessageSecurityProvider
+	 */
+	@Override
+	public String getProvider() {
+		return "BC";
+	}
+
 	@Override
 	public SigningAlgorithmScheme getSigningAlgorithmScheme(Context context) throws MessageProcessingException {
 		return SigningAlgorithmScheme.RSAWithSHA256;
+	}
+
+	/**
+	 * Method to retrieve JCA provider that should be used with keys provided by this provider and context.
+	 *
+	 * @param context
+	 * @return name of an JCA Provider that should be installed prior to usage of this MessageSecurityProvider
+	 */
+	@Override
+	public String getProvider(Context context) {
+		return getProvider();
 	}
 }

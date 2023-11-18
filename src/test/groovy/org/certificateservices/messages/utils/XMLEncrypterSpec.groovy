@@ -416,6 +416,7 @@ class XMLEncrypterSpec extends Specification {
 		then:
 		2 * securityProvider.getDecryptionKeyIds(c) >> xmlEncrypter.securityProvider.getDecryptionKeyIds()
 		2 * securityProvider.getDecryptionKey(c,!null) >> xmlEncrypter.securityProvider.getDecryptionKey(null)
+		securityProvider.getProvider(_) >> "BC"
 
 	}
 
@@ -436,6 +437,7 @@ class XMLEncrypterSpec extends Specification {
 		then:
 		2 * securityProvider.getDecryptionKeyIds(c) >> xmlEncrypter.securityProvider.getDecryptionKeyIds()
 		2 * securityProvider.getDecryptionKey(c,!null) >> xmlEncrypter.securityProvider.getDecryptionKey(null)
+		securityProvider.getProvider(_) >> "BC"
 
 	}
 
@@ -456,6 +458,7 @@ class XMLEncrypterSpec extends Specification {
 		then:
 		2 * securityProvider.getDecryptionKeyIds() >> xmlEncrypter.securityProvider.getDecryptionKeyIds()
 		2 * securityProvider.getDecryptionKey(!null) >> xmlEncrypter.securityProvider.getDecryptionKey(null)
+		securityProvider.getProvider() >> "BC"
 
 	}
 
@@ -476,7 +479,7 @@ class XMLEncrypterSpec extends Specification {
 		then:
 		2 * securityProvider.getDecryptionKeyIds(_) >> xmlEncrypter.securityProvider.getDecryptionKeyIds()
 		2 * securityProvider.getDecryptionKey(_,!null) >> xmlEncrypter.securityProvider.getDecryptionKey(null)
-		2 * securityProvider.getHSMProvider() >> "BC"
+		2 * securityProvider.getProvider(_) >> "BC"
 	}
 
 	def "Verify getScheme() calls correct method in message security provider"(){

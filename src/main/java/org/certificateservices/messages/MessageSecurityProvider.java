@@ -102,4 +102,10 @@ public interface MessageSecurityProvider {
 	 * @throws MessageProcessingException if internal error determining algorithm scheme to use
 	 */
 	SigningAlgorithmScheme getSigningAlgorithmScheme() throws MessageProcessingException;
+
+	/**
+	 * Method to retrieve JCA provider that should be used with keys provided by this provider.
+	 * @return name of an JCA Provider that should be installed prior to usage of this MessageSecurityProvider
+	 */
+	String getProvider();
 }

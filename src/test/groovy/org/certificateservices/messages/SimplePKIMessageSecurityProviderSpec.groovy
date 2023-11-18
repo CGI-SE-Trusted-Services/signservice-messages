@@ -326,6 +326,11 @@ class SimplePKIMessageSecurityProviderSpec extends Specification {
 		
 	}
 
+	def "Verify that BC is returned as provider"(){
+		expect:
+		prov.getProvider(null) == "BC"
+	}
+
 	def newSimpleMessageSecurityProvider(Map m) {
 		config = new Properties()
 		config.setProperty(SETTING_SIGNINGKEYSTORE_PATH, this.getClass().getResource("/dummykeystore.jks").getPath())

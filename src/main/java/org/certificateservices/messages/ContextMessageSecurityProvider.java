@@ -119,6 +119,12 @@ public interface ContextMessageSecurityProvider extends MessageSecurityProvider{
 	SigningAlgorithmScheme getSigningAlgorithmScheme(Context context) throws MessageProcessingException;
 
 	/**
+	 * Method to retrieve JCA provider that should be used with keys provided by this provider and context.
+	 * @return name of an JCA Provider that should be installed prior to usage of this MessageSecurityProvider
+	 */
+	String getProvider(Context context);
+
+	/**
 	 * Class representing a context in which a ContextMessageSecurityProvider should
 	 * determine keys and validation logic to return.
 	 */

@@ -344,18 +344,18 @@ public class XMLEncrypter {
 				verifyCiphers(encryptedElement);
 				Key kekKey = findKEK(context,encryptedElement);
 
-				String customProvider = null;
-				if(securityProvider instanceof HSMMessageSecurityProvider){
-					customProvider = ((HSMMessageSecurityProvider) securityProvider).getHSMProvider();
-				} else if(securityProvider instanceof PKCS11MessageSecurityProvider){
-					customProvider = ((PKCS11MessageSecurityProvider) securityProvider).getPKCS11Provider();
+				String encProvider;
+				if(securityProvider instanceof ContextMessageSecurityProvider){
+					encProvider = ((ContextMessageSecurityProvider) securityProvider).getProvider(context);
+
+				} else{
+					encProvider = securityProvider.getProvider();
 				}
-				
-				if(customProvider == null){
+				if(encProvider.equals("BC")){
 					decChiper.init(XMLCipher.DECRYPT_MODE, null);
 					decChiper.setKEK(kekKey);
 				} else {
-					Key encKey = resolveKey(encryptedElement, kekKey, customProvider);
+					Key encKey = resolveKey(encryptedElement, kekKey, encProvider);
 					decChiper.init(XMLCipher.DECRYPT_MODE, encKey);
 				}
 

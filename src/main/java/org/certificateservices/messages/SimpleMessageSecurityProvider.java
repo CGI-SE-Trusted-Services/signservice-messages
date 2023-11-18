@@ -113,6 +113,7 @@ public class SimpleMessageSecurityProvider implements
 
 	protected TruststoreHelper truststoreHelper;
 
+
 	/**
 	 * Configures and set's up the security provider with truststore from configuration.
 	 *
@@ -391,6 +392,15 @@ public class SimpleMessageSecurityProvider implements
 	}
 
 	/**
+	 * Method to retrieve JCA provider that should be used with keys provided by this provider.
+	 * @return name of an JCA Provider that should be installed prior to usage of this MessageSecurityProvider
+	 */
+	@Override
+	public String getProvider() {
+		return "BC";
+	}
+
+	/**
 	 * Method to fetch the SigningAlgorithmScheme to use when signing messages.
 	 *
 	 * @param context is currently ignored.
@@ -400,6 +410,15 @@ public class SimpleMessageSecurityProvider implements
 	@Override
 	public SigningAlgorithmScheme getSigningAlgorithmScheme(Context context) throws MessageProcessingException {
 		return signingAlgorithmScheme;
+	}
+
+	/**
+	 * Method to retrieve JCA provider that should be used with keys provided by this provider.
+	 * @return name of an JCA Provider that should be installed prior to usage of this MessageSecurityProvider
+	 */
+	@Override
+	public String getProvider(Context context) {
+		return getProvider();
 	}
 
 	/**
