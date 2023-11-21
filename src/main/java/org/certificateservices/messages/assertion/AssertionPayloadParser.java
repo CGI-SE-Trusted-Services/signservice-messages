@@ -119,7 +119,7 @@ public class AssertionPayloadParser extends BasePayloadParser {
 		try {
 			xmlEncrypter = new XMLEncrypter(secProv, getDocumentBuilder(), getAssertionMarshaller(), getAssertionUnmarshaller());
 			userDataXmlEncrypter = new XMLEncrypter(secProv, getDocumentBuilder(), getUserDataMarshaller(), getUserDataUnmarshaller());
-			xmlSigner = new XMLSigner(secProv,getDocumentBuilder(), true, assertionSignatureLocationFinder, new CSMessageOrganisationLookup());
+			xmlSigner = new XMLSigner(secProv, true, assertionSignatureLocationFinder, new CSMessageOrganisationLookup());
 			cf = CertificateFactory.getInstance("X.509");
 			
 			assertionSchemaValidator = generateUserDataSchema().newValidator();

@@ -135,7 +135,7 @@ public abstract class BaseSAMLMessageParser {
 			}
 			messageSecurityProvider = secProv;
 			xmlEncrypter = new XMLEncrypter(secProv, getDocumentBuilder(), getMarshaller(), getUnmarshaller());
-			xmlSigner = new XMLSigner(secProv,getDocumentBuilder(), true, getSignatureLocationFinder(), getOrganisationLookup());
+			xmlSigner = new XMLSigner(secProv, true, getSignatureLocationFinder(), getOrganisationLookup());
 			cf = CertificateFactory.getInstance("X.509");
 
 			schemaValidator = generateSchema().newValidator();

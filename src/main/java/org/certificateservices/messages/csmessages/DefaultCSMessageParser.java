@@ -206,11 +206,9 @@ public class DefaultCSMessageParser implements CSMessageParser {
 		}
 		
 		try {
-			xmlSigner = new XMLSigner(securityProvider,
-					getDocumentBuilder(),signMessages(),
-					 cSMessageSignatureLocationFinder,
-					 new CSMessageOrganisationLookup());
-		} catch (ParserConfigurationException e) {
+			xmlSigner = new XMLSigner(securityProvider, signMessages(),
+				cSMessageSignatureLocationFinder,new CSMessageOrganisationLookup());
+		} catch (Exception e) {
 			throw new MessageProcessingException("Error initizalizing XML Signer " + e.getMessage(),e);
 		}
 	}

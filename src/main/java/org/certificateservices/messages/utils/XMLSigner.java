@@ -41,6 +41,8 @@ import javax.xml.crypto.dsig.spec.C14NMethodParameterSpec;
 import javax.xml.crypto.dsig.spec.TransformParameterSpec;
 import javax.xml.namespace.QName;
 import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
@@ -73,6 +75,7 @@ public class XMLSigner {
 	static Logger log = Logger.getLogger(XMLSigner.class.getName());
 
 	static SystemTime systemTime = new DefaultSystemTime();
+	private DocumentBuilderFactory documentBuilderFactory;
 	private DocumentBuilder documentBuilder;
 	private CertificateFactory cf;
 	private SignatureLocationFinder defaultSignatureLocationFinder;
@@ -84,12 +87,39 @@ public class XMLSigner {
 	private Transformer transformer;
 	private boolean signMessages;
 
+	/**
+	 * Constructor used for context based message security providers using
+	 * an existing DocumentBuilder instance.
+	 *
+	 * @param messageSecurityProvider MessageSecurityProvider instance to use.
+	 * @param documentBuilder DocumentBuilder to use when processing and parsing XML
+	 * @param signMessages If messages should be signed or not.
+	 * @param defaultSignatureLocationFinder SignatureLocationFinder instance to use.
+	 * @param defaultOrganisationLookup OrganisationLookup instance to use.
+	 * @throws MessageProcessingException If an error occurs while performing signature operation.
+	 * @deprecated This constructor will result in an XMLSigner instance that is not thread safe,
+	 * please use constructor that does not explicitly specify an existing DocumentBuilder instance.
+	 */
+	@Deprecated
+	public XMLSigner(MessageSecurityProvider messageSecurityProvider,
+					 DocumentBuilder documentBuilder,
+					 boolean signMessages,
+					 SignatureLocationFinder defaultSignatureLocationFinder,
+					 OrganisationLookup defaultOrganisationLookup) throws MessageProcessingException{
+		this(messageSecurityProvider, signMessages, defaultSignatureLocationFinder, defaultOrganisationLookup);
+		this.documentBuilder = documentBuilder;
+	}
 
 	/**
 	 * Constructor used for context based message security providers.
-     */
+	 *
+	 * @param messageSecurityProvider MessageSecurityProvider instance to use.
+	 * @param signMessages If messages should be signed or not.
+	 * @param defaultSignatureLocationFinder SignatureLocationFinder instance to use.
+	 * @param defaultOrganisationLookup OrganisationLookup instance to use.
+	 * @throws MessageProcessingException If an error occurs while performing signature operation.
+	 */
 	public XMLSigner(MessageSecurityProvider messageSecurityProvider,
-					 DocumentBuilder documentBuilder,
 					 boolean signMessages,
 					 SignatureLocationFinder defaultSignatureLocationFinder,
 					 OrganisationLookup defaultOrganisationLookup) throws MessageProcessingException{
@@ -97,14 +127,14 @@ public class XMLSigner {
 		this.messageSecurityProvider = messageSecurityProvider;
 		this.defaultSignatureLocationFinder = defaultSignatureLocationFinder;
 		this.defaultOrganisationLookup = defaultOrganisationLookup;
-		this.documentBuilder = documentBuilder;
 		this.signMessages = signMessages;
-
+		this.documentBuilderFactory = DocumentBuilderFactory.newInstance();
+		this.documentBuilderFactory.setNamespaceAware(true);
 
 		try {
 			cf = CertificateFactory.getInstance("X.509");
 		} catch (CertificateException e) {
-			throw new MessageProcessingException("Error instanciating CertificateFactory for XMLSigner: " + e.getMessage(),e);
+			throw new MessageProcessingException("Error instantiating CertificateFactory for XMLSigner: " + e.getMessage(),e);
 		}
 
 		supportedDigestsAlgorithm = new HashSet<String>();
@@ -196,7 +226,7 @@ public class XMLSigner {
 	public void verifyEnvelopedSignature(Context context, byte[] message, boolean authorizeAgainstOrganisation) throws MessageContentException, MessageProcessingException{
 		Document doc;
 		try{
-			doc = documentBuilder.parse(new ByteArrayInputStream(message));		
+			doc = getDocumentBuilder().parse(new ByteArrayInputStream(message));
 		}catch(Exception e){
 			throw new MessageContentException("Error validating signature of message: " + e.getMessage(),e);
 		}
@@ -322,7 +352,7 @@ public class XMLSigner {
 	public void verifyEnvelopedSignature(Context context, byte[] message, SignatureLocationFinder signatureLocationFinder, OrganisationLookup organisationLookup) throws MessageContentException, MessageProcessingException {
 		Document doc;
 		try{
-			doc = documentBuilder.parse(new ByteArrayInputStream(message));
+			doc = getDocumentBuilder().parse(new ByteArrayInputStream(message));
 		}catch(Exception e){
 			throw new MessageContentException("Error validating signature of message: " + e.getMessage(),e);
 		}
@@ -457,7 +487,7 @@ public class XMLSigner {
 	 */
 	public X509Certificate findSignerCertificate(byte[] message, SignatureLocationFinder signatureLocationFinder)  throws MessageContentException, MessageProcessingException{
 		try{
-			Document doc = documentBuilder.parse(new ByteArrayInputStream(message));
+			Document doc = getDocumentBuilder().parse(new ByteArrayInputStream(message));
 
 			Element signedElement = signatureLocationFinder.getSignatureLocations(doc)[0];
 			Element signature = findSignatureElementInObject(signedElement);
@@ -723,6 +753,21 @@ public class XMLSigner {
 			}
 			throw new MessageContentException("Error checking Reference URI with the signed object: " + e.getMessage(),e);
 		}
+	}
+
+	/**
+	 * Method that returns DocumentBuilder instance to use. This is either an explicit
+	 * instance specified when XMLSigner was constructed, or a new instance is created
+	 * each time.
+	 *
+	 * @return DocumentBuilder instance to use.
+	 * @throws ParserConfigurationException If an error occurs while retrieving DocumentBuilder.
+	 */
+	private DocumentBuilder getDocumentBuilder() throws ParserConfigurationException {
+		if(documentBuilder != null){
+			return documentBuilder;
+		}
+		return documentBuilderFactory.newDocumentBuilder();
 	}
 
 	/**

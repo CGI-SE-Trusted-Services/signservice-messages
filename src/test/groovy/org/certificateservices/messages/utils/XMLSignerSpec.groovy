@@ -46,7 +46,7 @@ import static org.certificateservices.messages.TestUtils.printXML
 import static org.certificateservices.messages.TestUtils.setupRegisteredPayloadParser
 import static org.certificateservices.messages.SigningAlgorithmScheme.*
 
-public class XMLSignerSpec extends Specification {
+class XMLSignerSpec extends Specification {
 	
 	ObjectFactory of = new ObjectFactory()
 	AssertionPayloadParser assertionPayloadParser
@@ -64,11 +64,12 @@ public class XMLSignerSpec extends Specification {
 		assertionPayloadParser = PayloadParserRegistry.getParser(AssertionPayloadParser.NAMESPACE);
 
 		xmlSigner = assertionPayloadParser.xmlSigner
-		csXMLSigner = new XMLSigner(CSMessageParserManager.getCSMessageParser().messageSecurityProvider,
-			assertionPayloadParser.getDocumentBuilder(), true,
-				CSMessageParserManager.getCSMessageParser().cSMessageSignatureLocationFinder,
-			new CSMessageOrganisationLookup())
-		
+		csXMLSigner = new XMLSigner(
+				CSMessageParserManager.getCSMessageParser().messageSecurityProvider,
+				true,
+				CSMessageParserManager.getCSMessageParser().cSMessageSignatureLocationFinder as XMLSigner.SignatureLocationFinder,
+				new CSMessageOrganisationLookup()
+		)
 	}
 
 	/*
@@ -231,7 +232,7 @@ public class XMLSignerSpec extends Specification {
 		ContextMessageSecurityProvider securityProvider = Mock(ContextMessageSecurityProvider)
 		when:
 
-		XMLSigner x = new XMLSigner(securityProvider, assertionPayloadParser.getDocumentBuilder(), true,
+		XMLSigner x = new XMLSigner(securityProvider, true,
 				xmlSigner.defaultSignatureLocationFinder,
 				xmlSigner.defaultOrganisationLookup)
 		x.verifyEnvelopedSignature(c,validSignatureSAMLP)
@@ -253,7 +254,7 @@ public class XMLSignerSpec extends Specification {
 		MessageSecurityProvider securityProvider = Mock(MessageSecurityProvider)
 		when:
 
-		XMLSigner x = new XMLSigner(securityProvider, assertionPayloadParser.getDocumentBuilder(), true,
+		XMLSigner x = new XMLSigner(securityProvider, true,
 				xmlSigner.defaultSignatureLocationFinder,
 				xmlSigner.defaultOrganisationLookup)
 		x.verifyEnvelopedSignature(validSignatureSAMLP)
@@ -270,12 +271,35 @@ public class XMLSignerSpec extends Specification {
 
 	}
 
+	def "Verify that deprecated XMLSigner works for backward compatibility"(){
+		setup:
+		ContextMessageSecurityProvider.Context c = new ContextMessageSecurityProvider.Context("SomeUsage")
+		ContextMessageSecurityProvider securityProvider = Mock(ContextMessageSecurityProvider)
+		when:
+
+		XMLSigner x = new XMLSigner(securityProvider, assertionPayloadParser.getDocumentBuilder(), true,
+				xmlSigner.defaultSignatureLocationFinder,
+				xmlSigner.defaultOrganisationLookup)
+		x.verifyEnvelopedSignature(c,validSignatureSAMLP)
+		then:
+		1 * securityProvider.isValidAndAuthorized(c,!null,_) >> true
+
+		when:
+		Document doc = xmlSigner.documentBuilder.parse(new ByteArrayInputStream(sAMLPWithNoSignature))
+		x.sign(c,doc, xmlSigner.defaultSignatureLocationFinder)
+		then:
+		1 * securityProvider.getSigningAlgorithmScheme(c) >> SigningAlgorithmScheme.RSAWithSHA256
+		1 * securityProvider.getSigningCertificate(c) >> xmlSigner.messageSecurityProvider.getSigningCertificate()
+		1 * securityProvider.getSigningKey(c) >> xmlSigner.messageSecurityProvider.getSigningKey()
+
+	}
+
 	def "Verify that getHSMProvider is called if message security provider is HSMMessageSecurityProvider"(){
 		setup:
 		MessageSecurityProvider securityProvider = Mock(HSMMessageSecurityProvider)
 		when:
 
-		XMLSigner x = new XMLSigner(securityProvider, assertionPayloadParser.getDocumentBuilder(), true,
+		XMLSigner x = new XMLSigner(securityProvider, true,
 				xmlSigner.defaultSignatureLocationFinder,
 				xmlSigner.defaultOrganisationLookup)
 		Document doc = xmlSigner.documentBuilder.parse(new ByteArrayInputStream(sAMLPWithNoSignature))
@@ -305,6 +329,33 @@ public class XMLSignerSpec extends Specification {
 		signAlg << SigningAlgorithmScheme.values()
 
 
+	}
+
+	def "Verify that parsing messages is thread safe"(){
+		setup:
+		Exception exception
+		List<Thread> threads = []
+		ContextMessageSecurityProvider.Context context = new ContextMessageSecurityProvider.Context("SomeUsage")
+
+		when:
+		for(int i=0;i<10;i++){
+			threads.add(Thread.start {
+				try {
+					for (int j = 0; j < 1000; j++) {
+						csXMLSigner.findSignerCertificate(validCSMessage)
+						xmlSigner.verifyEnvelopedSignature(context, validSignatureSAMLP)
+					}
+				} catch(Exception e){
+					exception = e
+				}
+			})
+		}
+		threads.each {
+			it.join()
+		}
+
+		then:
+		exception == null
 	}
 
 	private void useAlgorithm(SigningAlgorithmScheme algo){

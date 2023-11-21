@@ -109,7 +109,7 @@ public class CSExportDataParser {
 	public CSExportDataParser(MessageSecurityProvider securityProvider,boolean requireSignature) throws MessageProcessingException{
 		this.requireSignature = requireSignature;
 		try {
-			xmlSigner = new XMLSigner(securityProvider,getDocumentBuilder(), true, new CSExportDataSignatureLocationFinder(), null);
+			xmlSigner = new XMLSigner(securityProvider, true, new CSExportDataSignatureLocationFinder(), null);
 		} catch (Exception e) {
 			throw new MessageProcessingException("Error initializing HardTokenDataParser: " + e.getMessage(),e);
 		}
