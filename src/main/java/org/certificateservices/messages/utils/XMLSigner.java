@@ -602,13 +602,14 @@ public class XMLSigner {
 					Provider signProvider;
 					if(messageSecurityProvider instanceof ContextMessageSecurityProvider){
 						signProvider = Security.getProvider(((ContextMessageSecurityProvider) messageSecurityProvider).getProvider(context));
-
 					} else{
 						signProvider = Security.getProvider(messageSecurityProvider.getProvider());
 					}
 
 					log.fine("Performing xml signature using provider: " + signProvider.getName());
-					signContext.setProperty("org.jcp.xml.dsig.internal.dom.SignatureProvider", signProvider);
+					if(signProvider != null) {
+						signContext.setProperty("org.jcp.xml.dsig.internal.dom.SignatureProvider", signProvider);
+					}
 					signature.sign(signContext);
 				}
 			}

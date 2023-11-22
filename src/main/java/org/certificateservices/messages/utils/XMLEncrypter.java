@@ -351,7 +351,7 @@ public class XMLEncrypter {
 				} else{
 					encProvider = securityProvider.getProvider();
 				}
-				if(encProvider.equals("BC")){
+				if(encProvider == null || encProvider.equals("BC")){
 					decChiper.init(XMLCipher.DECRYPT_MODE, null);
 					decChiper.setKEK(kekKey);
 				} else {
