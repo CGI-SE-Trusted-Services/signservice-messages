@@ -246,6 +246,7 @@ class XMLSignerSpec extends Specification {
 		1 * securityProvider.getSigningAlgorithmScheme(c) >> SigningAlgorithmScheme.RSAWithSHA256
 		1 * securityProvider.getSigningCertificate(c) >> xmlSigner.messageSecurityProvider.getSigningCertificate()
 		1 * securityProvider.getSigningKey(c) >> xmlSigner.messageSecurityProvider.getSigningKey()
+		1 * securityProvider.getProvider(_) >> "BC"
 
 	}
 
@@ -268,6 +269,7 @@ class XMLSignerSpec extends Specification {
 		1 * securityProvider.getSigningAlgorithmScheme() >> SigningAlgorithmScheme.RSAWithSHA256
 		1 * securityProvider.getSigningCertificate() >> xmlSigner.messageSecurityProvider.getSigningCertificate()
 		1 * securityProvider.getSigningKey() >> xmlSigner.messageSecurityProvider.getSigningKey()
+		1 * securityProvider.getProvider() >> "BC"
 
 	}
 
@@ -294,7 +296,7 @@ class XMLSignerSpec extends Specification {
 
 	}
 
-	def "Verify that getHSMProvider is called if message security provider is HSMMessageSecurityProvider"(){
+	def "Verify that getProvider is called if message security provider is HSMMessageSecurityProvider"(){
 		setup:
 		MessageSecurityProvider securityProvider = Mock(HSMMessageSecurityProvider)
 		when:
@@ -308,7 +310,7 @@ class XMLSignerSpec extends Specification {
 		1 * securityProvider.getSigningAlgorithmScheme(_) >> SigningAlgorithmScheme.RSAWithSHA256
 		1 * securityProvider.getSigningCertificate(_) >> xmlSigner.messageSecurityProvider.getSigningCertificate()
 		1 * securityProvider.getSigningKey(_) >> xmlSigner.messageSecurityProvider.getSigningKey()
-		1 * securityProvider.getHSMProvider() >> "BC"
+		1 * securityProvider.getProvider(_) >> "BC"
 	}
 
 	@Unroll

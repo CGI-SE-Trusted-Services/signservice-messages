@@ -26,5 +26,6 @@ public interface HSMMessageSecurityProvider extends ContextMessageSecurityProvid
      * Get provider name to use when performing cryptographic operations.
      * @return
      */
+    @Deprecated
     String getHSMProvider();
 }

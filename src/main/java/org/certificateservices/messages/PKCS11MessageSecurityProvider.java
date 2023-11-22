@@ -416,6 +416,16 @@ public class PKCS11MessageSecurityProvider implements ContextMessageSecurityProv
     }
 
     /**
+     * Method to retrieve JCE provider that should be used with keys provided by this provider.
+     * @return name of an JCE Provider that should be installed prior to usage of this MessageSecurityProvider
+     * if null should the JRE configured list of security providers be used.
+     */
+    @Override
+    public String getProvider() {
+        return pkcs11Provider;
+    }
+
+    /**
      * Method to fetch the SigningAlgorithmScheme to use when signing messages.
      *
      * @param context the related context, null for default context. (Parameter is currently ignored)
@@ -425,6 +435,16 @@ public class PKCS11MessageSecurityProvider implements ContextMessageSecurityProv
     @Override
     public SigningAlgorithmScheme getSigningAlgorithmScheme(Context context) throws MessageProcessingException {
         return signingAlgorithmScheme;
+    }
+
+    /**
+     * Method to retrieve JCE provider that should be used with keys provided by this provider.
+     * @return name of an JCE Provider that should be installed prior to usage of this MessageSecurityProvider
+     * if null should the JRE configured list of security providers be used.
+     */
+    @Override
+    public String getProvider(Context context) {
+       return getProvider();
     }
 
     /**
@@ -482,7 +502,8 @@ public class PKCS11MessageSecurityProvider implements ContextMessageSecurityProv
         return keyStore;
     }
 
+    @Deprecated
     public String getPKCS11Provider(){
-        return pkcs11Provider;
+        return getProvider();
     }
 }

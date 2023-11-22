@@ -102,4 +102,11 @@ public interface MessageSecurityProvider {
 	 * @throws MessageProcessingException if internal error determining algorithm scheme to use
 	 */
 	SigningAlgorithmScheme getSigningAlgorithmScheme() throws MessageProcessingException;
+
+	/**
+	 * Method to retrieve JCE provider that should be used with keys provided by this provider.
+	 * @return name of an JCE Provider that should be installed prior to usage of this MessageSecurityProvider
+	 * if null should the JRE configured list of security providers be used.
+	 */
+	String getProvider();
 }
