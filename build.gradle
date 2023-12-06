@@ -9,7 +9,7 @@ apply plugin: "project-report"
 apply plugin: "certificateservices.remotesign.gradle"
 
 ext {
-    bcprovJdk15onVersion = "1.70"
+    bcprovJdk15onVersion = "1.77"
     groovyVersion = "3.0.15"
     tomcatEmbedVersion = "9.0.82"
     commonsIOVersion = "2.14.0"
@@ -53,15 +53,15 @@ repositories {
 }
 
 dependencies {
-    implementation "org.bouncycastle:bcprov-jdk15on:${bcprovJdk15onVersion}"
-    implementation("javax.xml.bind:jaxb-api:2.3.0")
+    implementation "org.bouncycastle:bcprov-jdk18on:${bcprovJdk15onVersion}"
+    implementation("javax.xml.bind:jaxb-api:2.3.1")
     implementation("javax.activation:javax.activation-api:1.2.0")
 
     implementation ("org.apache.santuario:xmlsec:2.2.6"){
         exclude(module: "woodstox-core")
         exclude(module: "commons-codec")
     }
-    testRuntimeOnly 'com.sun.xml.bind:jaxb-core:2.3.0'
+    testRuntimeOnly 'com.sun.xml.bind:jaxb-core:2.3.0.1'
     testRuntimeOnly 'com.sun.xml.bind:jaxb-impl:2.3.1'
     testImplementation platform("org.spockframework:spock-bom:2.3-groovy-3.0")
     testImplementation "commons-io:commons-io:${commonsIOVersion}"
