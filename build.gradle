@@ -9,10 +9,10 @@ apply plugin: "project-report"
 apply plugin: "certificateservices.remotesign.gradle"
 
 ext {
-    bcprovJdk15onVersion = "1.77"
+    bcprovJdk18onVersion = "1.73"
     groovyVersion = "3.0.15"
-    tomcatEmbedVersion = "9.0.82"
-    commonsIOVersion = "2.14.0"
+    tomcatEmbedVersion = "9.0.83"
+    commonsIOVersion = "2.15.1"
 }
 sourceCompatibility = "1.8"
 targetCompatibility = "1.8"
@@ -53,7 +53,7 @@ repositories {
 }
 
 dependencies {
-    implementation "org.bouncycastle:bcprov-jdk18on:${bcprovJdk15onVersion}"
+    implementation "org.bouncycastle:bcprov-jdk18on:${bcprovJdk18onVersion}"
     implementation("javax.xml.bind:jaxb-api:2.3.1")
     implementation("javax.activation:javax.activation-api:1.2.0")
 
