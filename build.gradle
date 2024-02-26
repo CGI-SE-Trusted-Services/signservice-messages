@@ -38,7 +38,7 @@ certserviceRemoteSign {
     keyId = getGradleProperty("remotesign.keyid")
     orgShortName = getGradleProperty("remotesign.org")
     baseURL = getGradleProperty("remotesign.baseurl")
-    authCode = getEnvironmentProperty("bamboo_remotesign_api_password")
+    authCode = getEnvironmentProperty("REMOTESIGN_API_PASSWORD")
     SSLKeyStore = getGradleProperty("remotesign.keystore.path")
     SSLKeyStorePass = getGradleProperty("remotesign.keystore.password")
     SSLTrustStore = getGradleProperty("remotesign.truststore.path")
@@ -104,7 +104,7 @@ tasks.register('verifyRemoteSignProperties') {
                 "remotesign.pgppublickey.path"
         ])
 
-        verifyEnvironmentProperty("bamboo_remotesign_api_password")
+        verifyEnvironmentProperty("REMOTESIGN_API_PASSWORD")
     }
 }
 
