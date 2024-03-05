@@ -1,3 +1,7 @@
+import org.certificateservices.remotesign.gradle.signing.RemoteSignTask
+
+import static org.certificateservices.gradleplugin.utils.TextUtils.getProjectOrSystemProperty
+
 group "org.certificateservices.messages"
 description "certservice-messages"
 
@@ -19,8 +23,6 @@ targetCompatibility = "1.8"
 
 pluginManager.withPlugin('org.certificateservices.gradle.certservice-gradle-plugin') {
     certserviceSettings {
-        signjar = true
-        signjarFolder = "/tmp"
         useMavenCentral = true
         licenseName = "GNU Lesser General Public License v3.0 or later"
         licenseURL = "https://www.gnu.org/licenses/lgpl-3.0-standalone.html"
@@ -33,9 +35,21 @@ pluginManager.withPlugin('org.certificateservices.gradle.certservice-gradle-plug
     }
 }
 
+tasks.register('remoteSignJar', RemoteSignTask) {
+    signType = getGradleProperty("remotesign.jar.signtype")
+    keyId = getGradleProperty("remotesign.jar.keyid")
+    orgShortName = getGradleProperty("remotesign.org")
+    baseURL = getGradleProperty("remotesign.baseurl")
+    authCode = getEnvironmentProperty("REMOTESIGN_API_PASSWORD")
+    SSLKeyStore = getGradleProperty("remotesign.keystore.path")
+    SSLKeyStorePass = getGradleProperty("remotesign.keystore.password")
+    SSLTrustStore = getGradleProperty("remotesign.truststore.path")
+    sign configurations.archives
+}
+
 certserviceRemoteSign {
-    signType = getGradleProperty("remotesign.signtype")
-    keyId = getGradleProperty("remotesign.keyid")
+    signType = getGradleProperty("remotesign.gpg.signtype")
+    keyId = getGradleProperty("remotesign.gpg.keyid")
     orgShortName = getGradleProperty("remotesign.org")
     baseURL = getGradleProperty("remotesign.baseurl")
     authCode = getEnvironmentProperty("REMOTESIGN_API_PASSWORD")
@@ -47,6 +61,9 @@ certserviceRemoteSign {
     sigFile = "CODESIGN"
     sign publishing.publications
 }
+
+remoteSignJar.onlyIf {getProjectOrSystemProperty(project, "release.sign")}
+jar.finalizedBy(remoteSignJar)
 
 repositories {
     mavenCentral()
