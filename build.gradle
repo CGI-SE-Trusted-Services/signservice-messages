@@ -15,9 +15,10 @@ apply plugin: "certificateservices.remotesign.gradle"
 ext {
     bcprovJdk18onVersion = "1.74"
     groovyVersion = "3.0.15"
-    tomcatEmbedVersion = "9.0.83"
+    tomcatEmbedVersion = "9.0.86"
     commonsIOVersion = "2.15.1"
 }
+
 sourceCompatibility = "1.8"
 targetCompatibility = "1.8"
 
@@ -62,7 +63,7 @@ certserviceRemoteSign {
     sign publishing.publications
 }
 
-remoteSignJar.onlyIf {getProjectOrSystemProperty(project, "release.sign")}
+remoteSignJar.onlyIf { getProjectOrSystemProperty(project, "release.sign") }
 jar.finalizedBy(remoteSignJar)
 
 repositories {
@@ -73,8 +74,7 @@ dependencies {
     implementation "org.bouncycastle:bcprov-jdk18on:${bcprovJdk18onVersion}"
     implementation("javax.xml.bind:jaxb-api:2.3.0")
     implementation("javax.activation:javax.activation-api:1.2.0")
-
-    implementation ("org.apache.santuario:xmlsec:2.2.6"){
+    implementation("org.apache.santuario:xmlsec:2.2.6") {
         exclude(module: "woodstox-core")
         exclude(module: "commons-codec")
     }
@@ -95,11 +95,11 @@ test {
     useJUnitPlatform()
 }
 
-publishing{
-    repositories{
+publishing {
+    repositories {
         maven {
             name 'mavenCentral'
-            url (project.version =~ "SNAPSHOT"? "https://s01.oss.sonatype.org/content/repositories/snapshots/" : 'https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/')
+            url(project.version =~ "SNAPSHOT" ? "https://s01.oss.sonatype.org/content/repositories/snapshots/" : 'https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/')
             credentials {
                 username = getGradleProperty("repository.sonatype.username")
                 password = getGradleProperty("repository.sonatype.password")
