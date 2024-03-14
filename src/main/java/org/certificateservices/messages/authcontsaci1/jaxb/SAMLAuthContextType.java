@@ -15,24 +15,23 @@ import javax.xml.bind.annotation.XmlType;
 
 
 /**
- * <p>Java class for SAMLAuthContextType complex type.
- * 
- * <p>The following schema fragment specifies the expected content contained within this class.
- * 
+ * Java class for SAMLAuthContextType complex type.
+ *
+ * The following schema fragment specifies the expected content contained within this class.
+ *
  * <pre>
- * &lt;complexType name="SAMLAuthContextType">
- *   &lt;complexContent>
- *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
- *       &lt;sequence>
- *         &lt;element ref="{http://id.elegnamnden.se/auth-cont/1.0/saci}AuthContextInfo" minOccurs="0"/>
- *         &lt;element ref="{http://id.elegnamnden.se/auth-cont/1.0/saci}IdAttributes" minOccurs="0"/>
- *       &lt;/sequence>
- *     &lt;/restriction>
- *   &lt;/complexContent>
- * &lt;/complexType>
+ * &amp;lt;complexType name="SAMLAuthContextType"&amp;gt;
+ *   &amp;lt;complexContent&amp;gt;
+ *     &amp;lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&amp;gt;
+ *       &amp;lt;sequence&amp;gt;
+ *         &amp;lt;element ref="{http://id.elegnamnden.se/auth-cont/1.0/saci}AuthContextInfo" minOccurs="0"/&amp;gt;
+ *         &amp;lt;element ref="{http://id.elegnamnden.se/auth-cont/1.0/saci}IdAttributes" minOccurs="0"/&amp;gt;
+ *       &amp;lt;/sequence&amp;gt;
+ *     &amp;lt;/restriction&amp;gt;
+ *   &amp;lt;/complexContent&amp;gt;
+ * &amp;lt;/complexType&amp;gt;
  * </pre>
- * 
- * 
+ *
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "SAMLAuthContextType", propOrder = {
