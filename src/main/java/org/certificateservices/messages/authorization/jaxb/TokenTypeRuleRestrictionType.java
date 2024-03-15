@@ -18,12 +18,12 @@ import javax.xml.bind.annotation.XmlType;
  * <p>The following schema fragment specifies the expected content contained within this class.
  * <p>
  * <pre>
- * &lt;simpleType name="TokenTypeRuleRestrictionType">
- *   &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
- *     &lt;enumeration value="TOKENCONTAINER"/>
- *     &lt;enumeration value="TOKENCLASS"/>
- *   &lt;/restriction>
- * &lt;/simpleType>
+ * &lt;simpleType name="TokenTypeRuleRestrictionType"&gt;
+ *   &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string"&gt;
+ *     &lt;enumeration value="TOKENCONTAINER"/&gt;
+ *     &lt;enumeration value="TOKENCLASS"/&gt;
+ *   &lt;/restriction&gt;
+ * &lt;/simpleType&gt;
  * </pre>
  * 
  */

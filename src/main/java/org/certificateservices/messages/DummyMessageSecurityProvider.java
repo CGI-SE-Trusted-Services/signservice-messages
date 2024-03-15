@@ -129,7 +129,7 @@ public class DummyMessageSecurityProvider implements
 		}
 
 		boolean[] keyUsage = signCertificate.getKeyUsage();
-		if (keyUsage[0] == false) {
+		if (!keyUsage[0]) {
 			return false;
 		}
 

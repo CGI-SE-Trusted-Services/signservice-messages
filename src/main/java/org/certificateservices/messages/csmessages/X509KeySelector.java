@@ -223,7 +223,7 @@ public class X509KeySelector extends KeySelector {
 			SignatureMethod sm) throws KeyStoreException {
 		// skip non-signer certs
 		boolean[] keyUsage = xcert.getKeyUsage();
-		if (keyUsage[0] == false) {
+		if (!keyUsage[0]) {
 			return null;
 		}
 		String alias = ks.getCertificateAlias(xcert);
