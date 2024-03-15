@@ -18,22 +18,22 @@ import javax.xml.bind.annotation.XmlType;
  * <p>The following schema fragment specifies the expected content contained within this class.
  * <p>
  * <pre>
- * &lt;simpleType name="TokenTypePermissionType"&gt;
- *   &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string"&gt;
- *     &lt;enumeration value="ALL"/&gt;
- *     &lt;enumeration value="VIEW"/&gt;
- *     &lt;enumeration value="VIEWANDMONITOR"/&gt;
- *     &lt;enumeration value="MODIFYANDISSUE"/&gt;
- *     &lt;enumeration value="CHANGESTATUS"/&gt;
- *     &lt;enumeration value="PUTONHOLD"/&gt;
- *     &lt;enumeration value="DELETE"/&gt;
- *     &lt;enumeration value="REQUEST"/&gt;
- *     &lt;enumeration value="BATCHUPDATE"/&gt;
- *     &lt;enumeration value="EXPORT"/&gt;
- *     &lt;enumeration value="IMPORT"/&gt;
- *     &lt;enumeration value="UNBLOCK"/&gt;
- *   &lt;/restriction&gt;
- * &lt;/simpleType&gt;
+ * &lt;simpleType name="TokenTypePermissionType">
+ *   &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+ *     &lt;enumeration value="ALL"/>
+ *     &lt;enumeration value="VIEW"/>
+ *     &lt;enumeration value="VIEWANDMONITOR"/>
+ *     &lt;enumeration value="MODIFYANDISSUE"/>
+ *     &lt;enumeration value="CHANGESTATUS"/>
+ *     &lt;enumeration value="PUTONHOLD"/>
+ *     &lt;enumeration value="DELETE"/>
+ *     &lt;enumeration value="REQUEST"/>
+ *     &lt;enumeration value="BATCHUPDATE"/>
+ *     &lt;enumeration value="EXPORT"/>
+ *     &lt;enumeration value="IMPORT"/>
+ *     &lt;enumeration value="UNBLOCK"/>
+ *   &lt;/restriction>
+ * &lt;/simpleType>
  * </pre>
  * 
  */
