@@ -1,7 +1,3 @@
-import org.certificateservices.remotesign.gradle.signing.RemoteSignTask
-
-import static org.certificateservices.gradleplugin.utils.TextUtils.getProjectOrSystemProperty
-
 group "org.certificateservices.messages"
 description "certservice-messages"
 
@@ -10,12 +6,11 @@ apply plugin: "maven-publish"
 apply plugin: "groovy"
 apply plugin: "idea"
 apply plugin: "project-report"
-apply plugin: "certificateservices.remotesign.gradle"
 
 ext {
     bcprovJdk18onVersion = "1.74"
     groovyVersion = "3.0.15"
-    tomcatEmbedVersion = "9.0.86"
+    tomcatEmbedVersion = "9.0.87"
     commonsIOVersion = "2.15.1"
 }
 
@@ -35,36 +30,6 @@ pluginManager.withPlugin('org.certificateservices.gradle.certservice-gradle-plug
         projectUrl = "https://github.com/CGI-SE-Trusted-Services/certservice-messages"
     }
 }
-
-tasks.register('remoteSignJar', RemoteSignTask) {
-    signType = getGradleProperty("remotesign.jar.signtype")
-    keyId = getGradleProperty("remotesign.jar.keyid")
-    orgShortName = getGradleProperty("remotesign.org")
-    baseURL = getGradleProperty("remotesign.baseurl")
-    authCode = getEnvironmentProperty("REMOTESIGN_API_PASSWORD")
-    SSLKeyStore = getGradleProperty("remotesign.keystore.path")
-    SSLKeyStorePass = getGradleProperty("remotesign.keystore.password")
-    SSLTrustStore = getGradleProperty("remotesign.truststore.path")
-    sign configurations.archives
-}
-
-certserviceRemoteSign {
-    signType = getGradleProperty("remotesign.gpg.signtype")
-    keyId = getGradleProperty("remotesign.gpg.keyid")
-    orgShortName = getGradleProperty("remotesign.org")
-    baseURL = getGradleProperty("remotesign.baseurl")
-    authCode = getEnvironmentProperty("REMOTESIGN_API_PASSWORD")
-    SSLKeyStore = getGradleProperty("remotesign.keystore.path")
-    SSLKeyStorePass = getGradleProperty("remotesign.keystore.password")
-    SSLTrustStore = getGradleProperty("remotesign.truststore.path")
-    PGPSign = true
-    PGPPublicKey = getGradleProperty("remotesign.pgppublickey.path")
-    sigFile = "CODESIGN"
-    sign publishing.publications
-}
-
-remoteSignJar.onlyIf { getProjectOrSystemProperty(project, "release.sign") }
-jar.finalizedBy(remoteSignJar)
 
 repositories {
     mavenCentral()
@@ -93,38 +58,4 @@ tasks.withType(JavaCompile).configureEach {
 
 test {
     useJUnitPlatform()
-}
-
-publishing {
-    repositories {
-        maven {
-            name 'mavenCentral'
-            url(project.version =~ "SNAPSHOT" ? "https://s01.oss.sonatype.org/content/repositories/snapshots/" : 'https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/')
-            credentials {
-                username = getGradleProperty("repository.sonatype.username")
-                password = getGradleProperty("repository.sonatype.password")
-            }
-        }
-    }
-}
-
-tasks.register('verifyRemoteSignProperties') {
-    doFirst {
-        verifyGradleProperties([
-                "remotesign.signtype",
-                "remotesign.keyid",
-                "remotesign.org",
-                "remotesign.baseurl",
-                "remotesign.keystore.path",
-                "remotesign.keystore.password",
-                "remotesign.truststore.path",
-                "remotesign.pgppublickey.path"
-        ])
-
-        verifyEnvironmentProperty("REMOTESIGN_API_PASSWORD")
-    }
-}
-
-tasks.matching { it.name == 'signMavenPublication' }.configureEach { Task task ->
-    task.dependsOn verifyRemoteSignProperties
 }
