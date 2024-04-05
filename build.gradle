@@ -45,6 +45,9 @@ dependencies {
     }
     testRuntimeOnly 'com.sun.xml.bind:jaxb-core:2.3.0'
     testRuntimeOnly 'com.sun.xml.bind:jaxb-impl:2.3.1'
+    testRuntimeOnly 'net.bytebuddy:byte-buddy:1.14.13'
+
+    testImplementation 'org.objenesis:objenesis:3.3'
     testImplementation platform("org.spockframework:spock-bom:2.3-groovy-3.0")
     testImplementation "commons-io:commons-io:${commonsIOVersion}"
     testImplementation "org.spockframework:spock-core"
