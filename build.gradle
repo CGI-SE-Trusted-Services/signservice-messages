@@ -10,12 +10,12 @@ apply plugin: "project-report"
 ext {
     bcprovJdk18onVersion = "1.74"
     groovyVersion = "3.0.15"
-    tomcatEmbedVersion = "9.0.87"
+    tomcatEmbedVersion = "9.0.88"
     commonsIOVersion = "2.15.1"
 }
 
-sourceCompatibility = "1.8"
-targetCompatibility = "1.8"
+sourceCompatibility = JavaVersion.VERSION_1_8
+targetCompatibility = JavaVersion.VERSION_1_8
 
 pluginManager.withPlugin('org.certificateservices.gradle.certservice-gradle-plugin') {
     certserviceSettings {
@@ -37,14 +37,14 @@ repositories {
 
 dependencies {
     implementation "org.bouncycastle:bcprov-jdk18on:${bcprovJdk18onVersion}"
-    implementation("javax.xml.bind:jaxb-api:2.3.0")
+    implementation("javax.xml.bind:jaxb-api:2.3.1")
     implementation("javax.activation:javax.activation-api:1.2.0")
     implementation("org.apache.santuario:xmlsec:2.2.6") {
         exclude(module: "woodstox-core")
         exclude(module: "commons-codec")
     }
-    testRuntimeOnly 'com.sun.xml.bind:jaxb-core:2.3.0'
-    testRuntimeOnly 'com.sun.xml.bind:jaxb-impl:2.3.1'
+    testRuntimeOnly 'com.sun.xml.bind:jaxb-core:2.3.0.1'
+    testRuntimeOnly 'com.sun.xml.bind:jaxb-impl:2.3.9'
     testRuntimeOnly 'net.bytebuddy:byte-buddy:1.14.13'
 
     testImplementation 'org.objenesis:objenesis:3.3'
