@@ -1,0 +1,9 @@
+= Changelog
+
+This document provides information about changes that have been made for each new version
+of the Certificate Service Messages Library.
+
+== Version 2404.1
+
+=== Improvements and bug fixes
+* Upgraded JAXB API from 2.3.0 to 2.3.1

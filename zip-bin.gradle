@@ -5,6 +5,7 @@ tasks.register('zipBin', Zip) {
     from(projectDir) {
         include('README.adoc')
         include('LICENSE.txt')
+        include('CHANGELOG.adoc')
         into(projectBaseName)
     }
     from('src/main/resources/') {
