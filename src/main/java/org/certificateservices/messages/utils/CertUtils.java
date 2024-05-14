@@ -639,11 +639,9 @@ public class CertUtils {
 			if (id.getId().equals(GUID_OBJECTID)) {
 				ASN1TaggedObject oobj = (ASN1TaggedObject) seq.getObjectAt(1);
 				// Due to bug in java cert.getSubjectAltName regarding OtherName, it can be tagged an extra time...
-				ASN1Primitive obj = oobj.getObject();
-				if (obj instanceof ASN1TaggedObject) {
-					obj = ASN1TaggedObject.getInstance(obj).getObject();
-				}
-				ASN1OctetString str = ASN1OctetString.getInstance(obj);
+				ASN1Primitive obj = oobj.toASN1Primitive();
+                obj = ASN1TaggedObject.getInstance(obj).toASN1Primitive();
+                ASN1OctetString str = ASN1OctetString.getInstance(obj);
 				ret = new String(Hex.encode(str.getOctets()));
 			}
 		}
@@ -673,7 +671,7 @@ public class CertUtils {
 			throw new RuntimeException("Could not read ASN1InputStream", e);
 		}
 		if (oct instanceof ASN1TaggedObject) {
-			oct = ((ASN1TaggedObject)oct).getObject();
+			oct = ((ASN1TaggedObject)oct).toASN1Primitive();
 		}
 		ASN1Sequence seq = ASN1Sequence.getInstance(oct);
 		return seq;

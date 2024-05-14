@@ -8,7 +8,7 @@ apply plugin: "idea"
 apply plugin: "project-report"
 
 ext {
-    bcJdk18onVersion = "1.74"
+    bcJdk18onVersion = "1.78.1"
     groovyVersion = "3.0.15"
     tomcatEmbedVersion = "9.0.88"
     commonsIOVersion = "2.15.1"
