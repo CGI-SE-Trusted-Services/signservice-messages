@@ -287,7 +287,6 @@ public class CertUtils {
 	 * @param certData the certificate data.
 	 * @return the certificate or null of no certificate could be parsed.
 	 */
-
 	public static X509Certificate getX509CertificateFromPEMorDER(byte[] certData){
 		if(certData == null){
 			return null;
@@ -295,18 +294,16 @@ public class CertUtils {
 		X509Certificate retval = null;
 		try{
 			retval = getCertfromByteArray(certData);
-		}catch(CertificateException e){}
+		}catch(CertificateException ignored){}
 
 		if(retval == null){
 			try{
 				retval = getCertfromByteArray(getBytesFromPEM(certData, BEGIN_CERTIFICATE, END_CERTIFICATE));
-			}catch(IOException e){
-			}catch(CertificateException e){}
+			}catch(IOException | CertificateException ignored){
+			}
 		}
-
 		return retval;
 	}
-
 
 	/**
 	 * Method that installs the BC provider into java. Should be called
@@ -315,7 +312,6 @@ public class CertUtils {
 	public static synchronized void installBCProvider() {
 		Security.removeProvider("BC");
 		Security.addProvider(new BouncyCastleProvider());
-		//X509Name.DefaultSymbols.put(X509Name.SN, "SN");
 	}
 
 	/**
@@ -610,42 +606,36 @@ public class CertUtils {
 	 */
 	public static String getGUIDFromAlternativeName(X509Certificate cert)
 			throws IOException, CertificateParsingException {
-		if (cert instanceof X509Certificate) {        	
-			X509Certificate x509cert = (X509Certificate) cert;
-			Collection<?> altNames = x509cert.getSubjectAlternativeNames();
+		if (cert != null) {
+			Collection<?> altNames = cert.getSubjectAlternativeNames();
 			if (altNames != null) {
-				Iterator<?> i = altNames.iterator();
-				while (i.hasNext()) {	            	
-					ASN1Sequence seq = getAltnameSequence((List<?>)i.next());	                
+				for (Object altName : altNames) {
+					ASN1Sequence seq = getAltnameSequence((List<?>) altName);
 					String retval = getGUIDStringFromSequence(seq);
-					if(retval != null){
+					if (retval != null) {
 						return retval;
 					}
 				}
 			}
 		}
 		return null;
-	} 
+	}
 
 	/** 
 	 * Helper method for fetching the GUID alternative name.
 	 * @param seq the OtherName sequence
 	 */
 	private static String getGUIDStringFromSequence(ASN1Sequence seq) {
-		String ret = null;
 		if (seq != null) {
 			// First in sequence is the object identifier, that we must check
 			ASN1ObjectIdentifier id = ASN1ObjectIdentifier.getInstance(seq.getObjectAt(0));
 			if (id.getId().equals(GUID_OBJECTID)) {
-				ASN1TaggedObject oobj = (ASN1TaggedObject) seq.getObjectAt(1);
-				// Due to bug in java cert.getSubjectAltName regarding OtherName, it can be tagged an extra time...
-				ASN1Primitive obj = oobj.toASN1Primitive();
-                obj = ASN1TaggedObject.getInstance(obj).toASN1Primitive();
-                ASN1OctetString str = ASN1OctetString.getInstance(obj);
-				ret = new String(Hex.encode(str.getOctets()));
+				ASN1TaggedObject obj = (ASN1TaggedObject) seq.getObjectAt(1);
+				ASN1OctetString str = ASN1OctetString.getInstance(obj.getBaseObject());
+				return new String(Hex.encode(str.getOctets()));
 			}
 		}
-		return ret;
+		return null;
 	}
 
 	/** 
@@ -653,28 +643,28 @@ public class CertUtils {
 	 */
 	private static ASN1Sequence getAltnameSequence(List<?> listitem) throws IOException {
 		Integer no = (Integer) listitem.get(0);
-		if (no.intValue() == 0) {
+		if (no == 0) {
 			byte[] altName = (byte[]) listitem.get(1);
 			return getAltnameSequence(altName);
 		}
 		return null;
 	}
 
-	/** 
+	/**
 	 * Help method for fetching alternative name from an ASN1Sequence
 	 */
 	private static ASN1Sequence getAltnameSequence(byte[] value) throws IOException {
-		ASN1Primitive oct = null;
-		try {
-			oct = (new ASN1InputStream(new ByteArrayInputStream(value)).readObject());
+		ASN1Object oct = null;
+		try (ASN1InputStream ais = new ASN1InputStream(new ByteArrayInputStream(value))) {
+			oct = ais.readObject();
 		} catch (IOException e) {
 			throw new RuntimeException("Could not read ASN1InputStream", e);
 		}
+
 		if (oct instanceof ASN1TaggedObject) {
-			oct = ((ASN1TaggedObject)oct).toASN1Primitive();
+			oct = ((ASN1TaggedObject)oct).getBaseObject();
 		}
-		ASN1Sequence seq = ASN1Sequence.getInstance(oct);
-		return seq;
+		return ASN1Sequence.getInstance(oct);
 	}
 
 	/**
