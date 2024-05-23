@@ -835,68 +835,43 @@ public class CertUtils {
 	 * @throws CertificateException if the byte array does not contain proper certificate chain.
 	 * @throws IOException if the byte array cannot be read.
 	 */
-	public static List<X509Certificate> getCertificateChainfromPem(byte[] certChain) throws CertificateException,IOException {
+	public static List<X509Certificate> getCertificateChainfromPem(byte[] certChain) throws CertificateException, IOException {
+		List<X509Certificate> ret = new ArrayList<>();
 
-
-		List<X509Certificate> ret = new ArrayList<X509Certificate>();
-		BufferedReader bufRdr = null;
-		ByteArrayOutputStream ostr = null;
-		PrintStream opstr = null;
-
-		try {
-			bufRdr = new BufferedReader(new InputStreamReader( new ByteArrayInputStream(certChain)));
-			while (bufRdr.ready()) {
-				ostr = new ByteArrayOutputStream();
-				opstr = new PrintStream(ostr);
-				String temp;
-				while ((temp = bufRdr.readLine()) != null && !(temp.equals(BEGIN_CERTIFICATE))) {
-					continue;
+		try (BufferedReader bufRdr = new BufferedReader(new InputStreamReader(new ByteArrayInputStream(certChain)))) {
+			String temp;
+			while ((temp = bufRdr.readLine()) != null) {
+				while (temp != null && !temp.equals(BEGIN_CERTIFICATE)) {
+					temp = bufRdr.readLine();
 				}
 
 				if (temp == null) {
-					if (ret.size() == 0) {
-						// There was no certificate in the file
-						throw new IOException("Error in input buffer, missing"  +BEGIN_CERTIFICATE + " boundary");											
+					if (ret.isEmpty()) {
+						throw new IOException("Error in input buffer, missing " + BEGIN_CERTIFICATE + " boundary");
 					} else {
-						// There were certificates, but some blank lines or something in the end
-						// anyhow, the file has ended so we can break here.
-						break;
+						break; // End of file reached after processing some certificates
 					}
 				}
-				while ((temp = bufRdr.readLine()) != null && !(temp.equals(END_CERTIFICATE) )) {
-					opstr.print(temp);
+
+				try (ByteArrayOutputStream ostr = new ByteArrayOutputStream();
+					 PrintStream opstr = new PrintStream(ostr, true)) {
+
+					while ((temp = bufRdr.readLine()) != null && !temp.equals(END_CERTIFICATE)) {
+						opstr.print(temp);
+					}
+
+					if (temp == null) {
+						throw new IOException("Error in input buffer, missing " + END_CERTIFICATE + " boundary");
+					}
+
+					byte[] certbuf = Base64.decode(ostr.toByteArray());
+					X509Certificate certificate = getCertfromByteArray(certbuf);
+					ret.add(certificate);
 				}
-				if (temp == null) {
-					throw new IOException("Error in input buffer, missing" + END_CERTIFICATE + " boundary");
-				}
-				opstr.close();
-
-				byte[] certbuf = Base64.decode(ostr.toByteArray());
-
-				X509Certificate certificate = getCertfromByteArray(certbuf);
-
-				ret.add(certificate);
 			}
-		} finally {
-			if (bufRdr != null) {
-				bufRdr.close();
-			}
-			if (opstr != null) {
-				opstr.close();
-			}
-			if (ostr != null) {
-				ostr.close();
-			}
-		}  
-
-
-
-
+		}
 		return ret;
 	}
-
-
-
 
 	/**
 	 * Helper method to read public key length from certificate.
