@@ -10,6 +10,7 @@ import org.certificateservices.messages.credmanagement.jaxb.CredentialAvailableA
 import org.certificateservices.messages.credmanagement.jaxb.CredentialAvailableActionsOperation
 import org.certificateservices.messages.credmanagement.jaxb.CredentialFilter
 import org.certificateservices.messages.credmanagement.jaxb.FieldValue
+import org.certificateservices.messages.credmanagement.jaxb.GetEjbcaUserCredentialsRequest
 import org.certificateservices.messages.credmanagement.jaxb.GetTokensResponse
 import org.certificateservices.messages.credmanagement.jaxb.GetUsersRequest
 import org.certificateservices.messages.credmanagement.jaxb.GetUsersResponse
@@ -66,8 +67,9 @@ class CredManagementPayloadParserSpec extends Specification {
 		pp.getSchemaAsInputStream("2.1") != null
 		pp.getSchemaAsInputStream("2.2") != null
 		pp.getSchemaAsInputStream("2.3") != null
-		pp.getDefaultPayloadVersion() == "2.3"
-		pp.getSupportedVersions() == ["2.0","2.1","2.2","2.3"] as String[]
+		pp.getSchemaAsInputStream("2.4") != null
+		pp.getDefaultPayloadVersion() == "2.4"
+		pp.getSupportedVersions() == ["2.0","2.1","2.2","2.3","2.4"] as String[]
 	}
 
 	def "Verify that init using customCSMessageParser returns custom message parser with getCSMessageParser"(){
@@ -856,6 +858,56 @@ class CredManagementPayloadParserSpec extends Specification {
 		payloadObject.users.user.size() == 2
 		payloadObject.startIndex == 5
 		payloadObject.totalMatching == 19
+
+	}
+
+	def "Verify that genGetEjbcaUserCredentialsRequest() generates a valid xml message and genGetEjbcaUserCredentialsResponse() generates a valid CSMessageResponseData"(){
+		when:
+		csMessageParser.sourceId = "SOMEREQUESTER"
+		byte[] requestMessage = pp.genGetEjbcaUserCredentialsRequest(TEST_ID, "SOMESOURCEID", "someorg", "someejbcausername", 5,10,createOriginatorCredential(), null)
+        printXML(requestMessage)
+		def xml = slurpXml(requestMessage)
+		def payloadObject = xml.payload.GetEjbcaUserCredentialsRequest
+		then:
+		messageContainsPayload requestMessage, "credmanagement:GetEjbcaUserCredentialsRequest"
+		verifyCSHeaderMessage(requestMessage, xml, "SOMEREQUESTER", "SOMESOURCEID", "someorg","GetEjbcaUserCredentialsRequest", createOriginatorCredential(), csMessageParser)
+
+		payloadObject.ejbcaUsername == "someejbcausername"
+		payloadObject.startIndex == 5
+		payloadObject.resultSize == 10
+
+
+		when:
+		csMessageParser.sourceId = "SOMESOURCEID"
+		CSMessage request = pp.parseMessage(requestMessage)
+		GetEjbcaUserCredentialsRequest pl = CSMessageUtils.getPayload(request)
+		then:
+		pl.ejbcaUsername == "someejbcausername"
+		pl.startIndex == 5
+		pl.resultSize == 10
+
+		when:
+		CSMessageResponseData rd = pp.genGetEjbcaUserCredentialsResponse("SomeRelatedEndEntity", request, createCredentials(), 5,9,null)
+
+		xml = slurpXml(rd.responseData)
+		payloadObject = xml.payload.GetEjbcaUserCredentialsResponse
+
+		then:
+		messageContainsPayload rd.responseData, "credmanagement:GetEjbcaUserCredentialsResponse"
+
+		verifyCSMessageResponseData  rd, "SOMEREQUESTER", TEST_ID, false, "GetEjbcaUserCredentialsResponse", "SomeRelatedEndEntity"
+		verifyCSHeaderMessage(rd.responseData, xml, "SOMESOURCEID", "SOMEREQUESTER", "someorg","GetEjbcaUserCredentialsResponse", createOriginatorCredential(), csMessageParser)
+		verifySuccessfulBasePayload(payloadObject, TEST_ID)
+
+		payloadObject.credentials.credential.size() == 1
+		payloadObject.startIndex == 5
+		payloadObject.totalMatching == 9
+
+		expect:
+		pp.parseMessage(rd.responseData)
+
+
+
 
 	}
 

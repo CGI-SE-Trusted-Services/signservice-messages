@@ -46,6 +46,7 @@ public class CredManagementPayloadParser extends BasePayloadParser {
 	public static final String CREDMANAGEMENT_XSD_SCHEMA_2_1_RESOURCE_LOCATION = "/credmanagement_schema2_1.xsd";
 	public static final String CREDMANAGEMENT_XSD_SCHEMA_2_2_RESOURCE_LOCATION = "/credmanagement_schema2_2.xsd";
 	public static final String CREDMANAGEMENT_XSD_SCHEMA_2_3_RESOURCE_LOCATION = "/credmanagement_schema2_3.xsd";
+	public static final String CREDMANAGEMENT_XSD_SCHEMA_2_4_RESOURCE_LOCATION = "/credmanagement_schema2_4.xsd";
 
 	private ObjectFactory of = new ObjectFactory();
 
@@ -54,10 +55,12 @@ public class CredManagementPayloadParser extends BasePayloadParser {
 	private static final String CREDMANAGEMENT_VERSION_2_1 = "2.1";
 	private static final String CREDMANAGEMENT_VERSION_2_2 = "2.2";
 	private static final String CREDMANAGEMENT_VERSION_2_3 = "2.3";
+	private static final String CREDMANAGEMENT_VERSION_2_4 = "2.4";
 
-	private static final String[] SUPPORTED_CREDMANAGEMENT_VERSIONS = {CREDMANAGEMENT_VERSION_2_0,CREDMANAGEMENT_VERSION_2_1,CREDMANAGEMENT_VERSION_2_2,CREDMANAGEMENT_VERSION_2_3};
+	private static final String[] SUPPORTED_CREDMANAGEMENT_VERSIONS = {CREDMANAGEMENT_VERSION_2_0,CREDMANAGEMENT_VERSION_2_1,
+			CREDMANAGEMENT_VERSION_2_2,CREDMANAGEMENT_VERSION_2_3,CREDMANAGEMENT_VERSION_2_4};
 
-	private static final String DEFAULT_CREDMANAGEMENT_VERSION = CREDMANAGEMENT_VERSION_2_3;
+	private static final String DEFAULT_CREDMANAGEMENT_VERSION = CREDMANAGEMENT_VERSION_2_4;
 	
 	
 	/**
@@ -90,6 +93,9 @@ public class CredManagementPayloadParser extends BasePayloadParser {
 		}
 		if(payLoadVersion.equals("2.3")){
 			return getClass().getResourceAsStream(CREDMANAGEMENT_XSD_SCHEMA_2_3_RESOURCE_LOCATION);
+		}
+		if(payLoadVersion.equals("2.4")){
+			return getClass().getResourceAsStream(CREDMANAGEMENT_XSD_SCHEMA_2_4_RESOURCE_LOCATION);
 		}
     	
     	throw new MessageContentException("Error unsupported Credential Management Payload version: " + payLoadVersion);
@@ -945,6 +951,57 @@ public class CredManagementPayloadParser extends BasePayloadParser {
 				}
 			}
 		}
+
+		return getCSMessageParser().generateCSResponseMessage(relatedEndEntity, request, request.getPayLoadVersion(), response);
+	}
+
+
+	/**
+	 * Method to generate a GetEjbcaUserCredentialsRequest with pagination support (2.4)
+	 *
+	 * @param requestId the id of the request
+	 * @param destinationId the destinationId used in the CSMessage.
+	 * @param organisation the related organisation
+	 * @param ejbcaUsername The unique and full EJBCA Username to fetch certificate for.
+	 *
+	 * @param startIndex the index to fetch the resulting user data.
+	 * @param resultSize the maximum number of entries to return, should not be larger that the maximum setting in server.
+	 * @param originator the original requester of a message, null if not applicable.
+	 * @param assertions a list of related authorization assertions, or null if no authorization assertions is available.
+	 * @return a generated message.
+	 * @throws MessageContentException if CS message contained invalid data not conforming to the standard.
+	 * @throws MessageProcessingException if internal state occurred when processing the CSMessage
+	 */
+	public byte[] genGetEjbcaUserCredentialsRequest(String requestId, String destinationId, String organisation, String ejbcaUsername,
+									 Integer startIndex, Integer resultSize, Credential originator, List<Object> assertions)  throws MessageContentException, MessageProcessingException{
+		GetEjbcaUserCredentialsRequest payload = of.createGetEjbcaUserCredentialsRequest();
+		payload.setEjbcaUsername(ejbcaUsername);
+		payload.setStartIndex(startIndex);
+		payload.setResultSize(resultSize);
+
+		return getCSMessageParser().generateCSRequestMessage(requestId, destinationId, organisation, getPayloadVersion(), payload, originator, assertions);
+	}
+
+	/**
+	 * Method to generate a GetUsersResponse used for pagination (pagination elements are only populated if request is 2.1 or above
+	 *
+	 * @param relatedEndEntity the name of the related end entity (such as username of the related user)
+	 * @param request the request this message is a response to.
+	 * @param credentials a list of matching credentials issued for related EJBCA User.
+	 * @param startIndex the start index of the page in the result set. Is only set if request is 2.1 or above
+	 * @param totalMatching the total matching users in query. Is only set if request is 2.1 or above
+	 * @param assertions a list of related authorization assertions, or null if no authorization assertions is available.
+	 * @return a generated message.
+	 * @throws MessageContentException if CS message contained invalid data not conforming to the standard.
+	 * @throws MessageProcessingException if internal state occurred when processing the CSMessage
+	 */
+	public CSMessageResponseData genGetEjbcaUserCredentialsResponse(String relatedEndEntity, CSMessage request, List<Credential> credentials, Integer startIndex, Integer totalMatching, List<Object> assertions)  throws MessageContentException, MessageProcessingException{
+		GetEjbcaUserCredentialsResponse response = of.createGetEjbcaUserCredentialsResponse();
+		GetEjbcaUserCredentialsResponse.Credentials credentialsElement = of.createGetEjbcaUserCredentialsResponseCredentials();
+		credentialsElement.getCredential().addAll(credentials);
+		response.setCredentials(credentialsElement);
+		response.setStartIndex(startIndex);
+		response.setTotalMatching(totalMatching);
 
 		return getCSMessageParser().generateCSResponseMessage(relatedEndEntity, request, request.getPayLoadVersion(), response);
 	}

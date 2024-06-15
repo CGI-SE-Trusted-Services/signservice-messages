@@ -3,6 +3,16 @@
 This document provides information about changes that have been made for each new version
 of the Certificate Service Messages Library.
 
+== Version 2405.1
+
+=== Improvements and bug fixes
+
+* Added GetEjbcaUserCredentialsRequest/GetEjbcaUserCredentialsResponse messages
+to retrieve all certificate associated with an EJBCA username.
+
+CredentialManagement Protocol have been updated to 2.4. See updated specification document
+for details.
+
 == Version 2404.1
 
 === Improvements and bug fixes
