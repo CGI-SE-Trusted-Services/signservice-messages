@@ -3,7 +3,7 @@
 This document provides information about changes that have been made for each new version
 of the Certificate Service Messages Library.
 
-== Version 2405.1
+== Version 2405.2
 
 === Improvements and bug fixes
 

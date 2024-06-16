@@ -22,4 +22,9 @@ public class Constants {
 	 */
 	public static final String RELATED_END_ENTITY_UNKNOWN = "UNKNOWN";
 
+	/**
+	 * Constant used for credential sub type.
+	 */
+	public static final String CREDENTIAL_SUBTYPE_UNKNOWN = "UNKNOWN";
+
 }
