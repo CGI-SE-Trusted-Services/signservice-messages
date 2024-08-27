@@ -10,7 +10,7 @@ apply plugin: "project-report"
 ext {
     bcJdk18onVersion = "1.76"
     groovyVersion = "3.0.21"
-    tomcatEmbedVersion = "9.0.89"
+    tomcatEmbedVersion = "9.0.93"
     commonsIOVersion = "2.16.1"
 }
 
@@ -45,9 +45,9 @@ dependencies {
     }
     testRuntimeOnly 'com.sun.xml.bind:jaxb-core:2.3.0.1'
     testRuntimeOnly 'com.sun.xml.bind:jaxb-impl:2.3.9'
-    testRuntimeOnly 'net.bytebuddy:byte-buddy:1.14.17'
+    testRuntimeOnly 'net.bytebuddy:byte-buddy:1.14.19'
 
-    testImplementation 'org.objenesis:objenesis:3.3'
+    testImplementation 'org.objenesis:objenesis:3.4'
     testImplementation platform("org.spockframework:spock-bom:2.3-groovy-3.0")
     testImplementation "commons-io:commons-io:${commonsIOVersion}"
     testImplementation "org.spockframework:spock-core"
