@@ -279,6 +279,33 @@ public interface CSMessageParser {
 	CSMessageResponseData generateGetApprovalResponse(String relatedEndEntity, CSMessage request, String approvalId, ApprovalStatus approvalStatus, List<Object> assertions) throws MessageContentException, MessageProcessingException;
 
 	/**
+	 * Method generate a Ping Request,
+	 *
+	 * @param requestId  id of request to send.
+	 * @param destinationId the destination Id to use.
+	 * @param organisation the related organisation (short name).
+	 * @param originator the credential of the original requester, null if this is the origin of the request.
+	 * @param assertions a list of related authorization assertions, or null if no authorization assertions is available.
+	 * @return  a generated and signed (if configured) message.
+	 *
+	 * @throws MessageContentException if input data contained invalid format.
+	 * @throws MessageProcessingException if internal problems occurred processing the cs message.
+	 */
+	byte[] generatePingRequest(String requestId, String destinationId, String organisation, Credential originator, List<Object> assertions) throws MessageContentException, MessageProcessingException;
+
+	/**
+	 * Method to generate a Ping Response.
+	 *
+	 * @param request the request data.
+	 * @param assertions a list of related authorization assertions, or null if no authorization assertions is available.
+	 * @return a generated and signed (if configured) message.
+	 *
+	 * @throws MessageContentException if input data contained invalid format.
+	 * @throws MessageProcessingException if internal problems occurred processing the cs message.
+	 */
+	CSMessageResponseData generatePingResponse(CSMessage request, List<Object> assertions) throws MessageContentException, MessageProcessingException;
+
+	/**
 	 * Method to add an originator and assertions to a CSMessage and add a signature. If signature exists it is removed.
 	 *
 	 * @param message the message to populate.

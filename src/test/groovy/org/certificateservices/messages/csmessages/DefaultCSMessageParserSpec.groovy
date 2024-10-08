@@ -197,6 +197,30 @@ public class DefaultCSMessageParserSpec extends Specification{
 
 	}
 
+	def "Verify that generatePingRequest() generates a valid xml message and generatePingResponse() generates a valid CSMessageResponseData"(){
+		when:
+		byte[] requestMessage = requestMessageParser.generatePingRequest(TEST_ID, "SOMESOURCEID", "someorg", createOriginatorCredential(), null);
+		//printXML(requestMessage)
+		def xml = slurpXml(requestMessage)
+		def payloadObject = xml.payload.PingRequest
+		then:
+		payloadObject.children.size() == 0
+		messageContainsPayload requestMessage, "cs:PingRequest"
+		verifyCSHeaderMessage(requestMessage, xml, "SOMEREQUESTER", "SOMESOURCEID", "someorg","PingRequest", createOriginatorCredential())
+
+		when:
+		CSMessage request = mp.parseMessage(requestMessage)
+		CSMessageResponseData rd = mp.generatePingResponse(request, createAssertions())
+		//printXML(rd.responseData)
+		xml = slurpXml(rd.responseData)
+		payloadObject = xml.payload.PingResponse
+		then:
+		payloadObject.children.size() == 0
+		messageContainsPayload rd.responseData, "cs:PingResponse"
+		verifyCSMessageResponseData  rd, "SOMEREQUESTER", TEST_ID, false, "PingResponse", "UNKNOWN"
+		verifyCSHeaderMessage(rd.responseData, xml, "SOMESOURCEID", "SOMEREQUESTER", "someorg","PingResponse", createOriginatorCredential())
+	}
+
 	
 	def "Verify that genCSFailureResponse() generates correct failure response message"(){
 		setup:

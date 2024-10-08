@@ -100,6 +100,14 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link PingRequest }
+     *
+     */
+    public PingRequest createPingRequest() {
+        return new PingRequest();
+    }
+
+    /**
      * Create an instance of {@link CSResponse }
      * 
      */
@@ -145,6 +153,14 @@ public class ObjectFactory {
      */
     public IsApprovedResponseType createIsApprovedResponseType() {
         return new IsApprovedResponseType();
+    }
+
+    /**
+     * Create an instance of {@link PingResponse }
+     *
+     */
+    public PingResponse createPingResponse() {
+        return new PingResponse();
     }
 
     /**

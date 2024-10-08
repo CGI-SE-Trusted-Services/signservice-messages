@@ -108,6 +108,16 @@ public class TestCSMessageParser implements CSMessageParser {
 	}
 
 	@Override
+	public byte[] generatePingRequest(String requestId, String destinationId, String organisation, Credential originator, List<Object> assertions) throws MessageContentException, MessageProcessingException {
+		return null;
+	}
+
+	@Override
+	public CSMessageResponseData generatePingResponse(CSMessage request, List<Object> assertions) throws MessageContentException, MessageProcessingException {
+		return null;
+	}
+
+	@Override
 	public byte[] populateOriginatorAssertionsAndSignCSMessage(CSMessage message, String destinationId, Credential originator, List<Object> assertions) throws MessageContentException, MessageProcessingException {
 		return null;
 	}

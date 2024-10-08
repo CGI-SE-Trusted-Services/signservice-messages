@@ -60,6 +60,8 @@ import org.certificateservices.messages.csmessages.jaxb.Credential;
 import org.certificateservices.messages.csmessages.jaxb.GetApprovalRequest;
 import org.certificateservices.messages.csmessages.jaxb.IsApprovedRequest;
 import org.certificateservices.messages.csmessages.jaxb.IsApprovedResponseType;
+import org.certificateservices.messages.csmessages.jaxb.PingRequest;
+import org.certificateservices.messages.csmessages.jaxb.PingResponse;
 import org.certificateservices.messages.csmessages.jaxb.ObjectFactory;
 import org.certificateservices.messages.csmessages.jaxb.Originator;
 import org.certificateservices.messages.csmessages.jaxb.Payload;
@@ -98,18 +100,21 @@ public class DefaultCSMessageParser implements CSMessageParser {
 	private static final String CSMESSAGE_VERSION_2_0 = "2.0";
 	private static final String CSMESSAGE_VERSION_2_1 = "2.1";
 	private static final String CSMESSAGE_VERSION_2_2 = "2.2";
+	private static final String CSMESSAGE_VERSION_2_3 = "2.3";
 	
 	public static final String CSMESSAGE_XSD_SCHEMA_2_0_RESOURCE_LOCATION = "/csmessages_schema2_0.xsd";
 	public static final String CSMESSAGE_XSD_SCHEMA_2_1_RESOURCE_LOCATION = "/csmessages_schema2_1.xsd";
 	public static final String CSMESSAGE_XSD_SCHEMA_2_2_RESOURCE_LOCATION = "/csmessages_schema2_2.xsd";
-	
-	private static final String CSMESSAGE_XSD_SCHEMA_2_0_URI = "http://certificateservices.org/xsd/csmessages2_0 csmessages_schema2_0.xsd";	
-	
+	public static final String CSMESSAGE_XSD_SCHEMA_2_3_RESOURCE_LOCATION = "/csmessages_schema2_3.xsd";
+
+	private static final String CSMESSAGE_XSD_SCHEMA_2_0_URI = "http://certificateservices.org/xsd/csmessages2_0 csmessages_schema2_0.xsd";
+
 	private static final Map<String,String> csMessageSchemaMap = new HashMap<String,String>();
 	static{
 		csMessageSchemaMap.put(CSMESSAGE_VERSION_2_0, CSMESSAGE_XSD_SCHEMA_2_0_RESOURCE_LOCATION);
 		csMessageSchemaMap.put(CSMESSAGE_VERSION_2_1, CSMESSAGE_XSD_SCHEMA_2_1_RESOURCE_LOCATION);
 		csMessageSchemaMap.put(CSMESSAGE_VERSION_2_2, CSMESSAGE_XSD_SCHEMA_2_2_RESOURCE_LOCATION);
+		csMessageSchemaMap.put(CSMESSAGE_VERSION_2_3, CSMESSAGE_XSD_SCHEMA_2_3_RESOURCE_LOCATION);
 	}
 	
 	private static final Map<String,String> csMessageSchemaUriMap = new HashMap<String,String>();
@@ -117,6 +122,7 @@ public class DefaultCSMessageParser implements CSMessageParser {
 		csMessageSchemaUriMap.put(CSMESSAGE_VERSION_2_0, CSMESSAGE_XSD_SCHEMA_2_0_URI);
 		csMessageSchemaUriMap.put(CSMESSAGE_VERSION_2_1, CSMESSAGE_XSD_SCHEMA_2_0_URI);
 		csMessageSchemaUriMap.put(CSMESSAGE_VERSION_2_2, CSMESSAGE_XSD_SCHEMA_2_0_URI);
+		csMessageSchemaUriMap.put(CSMESSAGE_VERSION_2_3, CSMESSAGE_XSD_SCHEMA_2_0_URI);
 	}
 	
 	public static final String XMLDSIG_XSD_SCHEMA_RESOURCE_LOCATION = "/xmldsig-core-schema.xsd";
@@ -125,7 +131,7 @@ public class DefaultCSMessageParser implements CSMessageParser {
 	public static final String XMLDSIG_NAMESPACE = "http://www.w3.org/2000/09/xmldsig#";
 	public static final String XMLENC_NAMESPACE = "http://www.w3.org/2001/04/xmlenc#";
 	
-	private static final String[] SUPPORTED_CSMESSAGE_VERSIONS = {CSMESSAGE_VERSION_2_0,CSMESSAGE_VERSION_2_1,CSMESSAGE_VERSION_2_2};
+	private static final String[] SUPPORTED_CSMESSAGE_VERSIONS = {CSMESSAGE_VERSION_2_0,CSMESSAGE_VERSION_2_1,CSMESSAGE_VERSION_2_2,CSMESSAGE_VERSION_2_3};
 	
 	private ObjectFactory objectFactory = new ObjectFactory();
 	
@@ -138,7 +144,7 @@ public class DefaultCSMessageParser implements CSMessageParser {
 	private String sourceId = null;
 	private XMLSigner xmlSigner;
 
-	public static final String DEFAULT_CSMESSAGE_PROTOCOL = CSMESSAGE_VERSION_2_2;
+	public static final String DEFAULT_CSMESSAGE_PROTOCOL = CSMESSAGE_VERSION_2_3;
 
 	private static String csMessageVersion = DEFAULT_CSMESSAGE_PROTOCOL;
 
@@ -393,7 +399,20 @@ public class DefaultCSMessageParser implements CSMessageParser {
 		
 		return generateCSResponseMessage(relatedEndEntity, request, request.getPayLoadVersion(), objectFactory.createGetApprovalResponse(responseType));
 	}
-	
+
+	/**
+	 * @see org.certificateservices.messages.csmessages.CSMessageParser#generatePingRequest(String, String, String, Credential, List)
+	 */
+	public byte[] generatePingRequest(String requestId, String destinationId, String organisation, Credential originator, List<Object> assertions) throws MessageContentException, MessageProcessingException {
+		return generateCSRequestMessage(requestId, destinationId, organisation, csMessageVersion, new PingRequest(), originator, assertions);
+	}
+
+	/**
+	 * @see org.certificateservices.messages.csmessages.CSMessageParser#generatePingResponse(CSMessage,List)
+	 */
+	public CSMessageResponseData generatePingResponse(CSMessage request, List<Object> assertions) throws MessageContentException, MessageProcessingException {
+		return generateCSResponseMessage(null, request, request.getPayLoadVersion(), new PingResponse());
+	}
 
 	/**
 	 * @see org.certificateservices.messages.csmessages.CSMessageParser#genCSFailureResponse(String, byte[], RequestStatus, String, String, Credential)
