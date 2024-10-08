@@ -805,10 +805,7 @@ public class AssertionPayloadParser extends BasePayloadParser {
 	}
 
 	private DocumentBuilder getDocumentBuilder() throws ParserConfigurationException {
-		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-		dbf.setNamespaceAware(true);
-
-		return dbf.newDocumentBuilder();
+		return XMLUtils.createDocumentBuilderFactory().newDocumentBuilder();
 	}
 	
 	Marshaller getAssertionMarshaller() throws JAXBException{

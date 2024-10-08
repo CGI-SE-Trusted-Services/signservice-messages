@@ -12,25 +12,15 @@
  *************************************************************************/
 package org.certificateservices.messages.authcontsaci1;
 
-import org.certificateservices.messages.ContextMessageSecurityProvider;
 import org.certificateservices.messages.MessageContentException;
 import org.certificateservices.messages.MessageProcessingException;
-import org.certificateservices.messages.NoDecryptionKeyFoundException;
 import org.certificateservices.messages.authcontsaci1.jaxb.*;
 import org.certificateservices.messages.csmessages.DefaultCSMessageParser;
 import org.certificateservices.messages.csmessages.XSDLSInput;
-import org.certificateservices.messages.hardtoken.HardTokenDataParser;
-import org.certificateservices.messages.saml2.BaseSAMLMessageParser;
 import org.certificateservices.messages.saml2.assertion.SAMLAssertionMessageParser;
-import org.certificateservices.messages.saml2.assertion.jaxb.*;
 import org.certificateservices.messages.sweeid2.dssextenstions1_1.jaxb.ContextInfoType;
-import org.certificateservices.messages.utils.MessageGenerateUtils;
-import org.certificateservices.messages.utils.XMLEncrypter;
-import org.certificateservices.messages.utils.XMLSigner;
-import org.certificateservices.messages.xenc.jaxb.EncryptedDataType;
+import org.certificateservices.messages.utils.XMLUtils;
 import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.NodeList;
 import org.w3c.dom.ls.LSInput;
 import org.w3c.dom.ls.LSResourceResolver;
 import org.xml.sax.SAXException;
@@ -38,7 +28,6 @@ import org.xml.sax.SAXException;
 import javax.xml.XMLConstants;
 import javax.xml.bind.*;
 import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.Source;
 import javax.xml.transform.Transformer;
@@ -50,8 +39,6 @@ import javax.xml.validation.SchemaFactory;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.security.cert.X509Certificate;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -132,10 +119,7 @@ public class AuthContSaciMessageParser {
 
 
     private DocumentBuilder getDocumentBuilder() throws ParserConfigurationException {
-        DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-        dbf.setNamespaceAware(true);
-
-        return dbf.newDocumentBuilder();
+        return XMLUtils.createDocumentBuilderFactory().newDocumentBuilder();
     }
 
     Marshaller getMarshaller() throws JAXBException{

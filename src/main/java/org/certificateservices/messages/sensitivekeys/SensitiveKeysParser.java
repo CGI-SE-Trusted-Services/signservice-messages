@@ -23,6 +23,7 @@ import org.certificateservices.messages.sensitivekeys.jaxb.EncodedKey;
 import org.certificateservices.messages.sensitivekeys.jaxb.KeyData;
 import org.certificateservices.messages.sensitivekeys.jaxb.ObjectFactory;
 import org.certificateservices.messages.utils.XMLEncrypter;
+import org.certificateservices.messages.utils.XMLUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.ls.LSInput;
 import org.w3c.dom.ls.LSResourceResolver;
@@ -36,7 +37,6 @@ import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.*;
 import javax.xml.transform.dom.DOMSource;
@@ -324,10 +324,7 @@ public class SensitiveKeysParser {
 	
 
 	private DocumentBuilder getDocumentBuilder() throws ParserConfigurationException {
-		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-		dbf.setNamespaceAware(true);
-
-		return dbf.newDocumentBuilder();
+		return XMLUtils.createDocumentBuilderFactory().newDocumentBuilder();
 	}
 	
 	Marshaller getMarshaller() throws JAXBException{

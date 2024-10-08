@@ -31,7 +31,6 @@ import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.util.JAXBSource;
 import javax.xml.namespace.QName;
 import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.Source;
 import javax.xml.transform.stream.StreamSource;
@@ -845,10 +844,7 @@ public class DefaultCSMessageParser implements CSMessageParser {
 	}
 
 	private DocumentBuilder getDocumentBuilder() throws ParserConfigurationException {
-		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-		dbf.setNamespaceAware(true);
-
-		return dbf.newDocumentBuilder();
+		return XMLUtils.createDocumentBuilderFactory().newDocumentBuilder();
 	}
 	
 

@@ -128,8 +128,12 @@ public class XMLSigner {
 		this.defaultSignatureLocationFinder = defaultSignatureLocationFinder;
 		this.defaultOrganisationLookup = defaultOrganisationLookup;
 		this.signMessages = signMessages;
-		this.documentBuilderFactory = DocumentBuilderFactory.newInstance();
-		this.documentBuilderFactory.setNamespaceAware(true);
+
+		try {
+			this.documentBuilderFactory = XMLUtils.createDocumentBuilderFactory();
+		} catch(ParserConfigurationException e){
+			throw new MessageProcessingException("Error creating document builder factory: " + e.getMessage(), e);
+		}
 
 		try {
 			cf = CertificateFactory.getInstance("X.509");

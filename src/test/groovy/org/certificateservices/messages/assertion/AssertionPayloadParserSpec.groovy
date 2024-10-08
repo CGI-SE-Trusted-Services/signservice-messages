@@ -23,6 +23,7 @@ import org.certificateservices.messages.saml2.protocol.jaxb.ResponseType
 import org.certificateservices.messages.utils.MessageGenerateUtils
 import org.certificateservices.messages.utils.SystemTime
 import org.certificateservices.messages.utils.XMLSigner
+import org.certificateservices.messages.utils.XMLUtils
 import org.w3c.dom.Document
 import org.w3c.dom.Element
 import org.w3c.dom.NodeList
@@ -35,7 +36,6 @@ import javax.xml.crypto.dsig.XMLSignature
 import javax.xml.crypto.dsig.XMLSignatureFactory
 import javax.xml.crypto.dsig.dom.DOMValidateContext
 import javax.xml.parsers.DocumentBuilder
-import javax.xml.parsers.DocumentBuilderFactory
 import javax.xml.transform.OutputKeys
 import javax.xml.transform.Transformer
 import javax.xml.transform.TransformerFactory
@@ -541,9 +541,7 @@ class AssertionPayloadParserSpec extends Specification {
 
     private void verifySignature(byte[] message) throws Exception{
 		try{
-			DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-			factory.setNamespaceAware(true);
-			DocumentBuilder builder = factory.newDocumentBuilder();
+			DocumentBuilder builder = XMLUtils.createDocumentBuilderFactory().newDocumentBuilder();
 			Document doc = builder.parse(new InputSource(new ByteArrayInputStream(message)));
 
 			Element signature = doc.getElementsByTagName("ds:Signature").item(0);

@@ -57,7 +57,6 @@ import javax.xml.crypto.dsig.keyinfo.X509Data;
 import javax.xml.crypto.dsig.spec.C14NMethodParameterSpec;
 import javax.xml.crypto.dsig.spec.TransformParameterSpec;
 import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerException;
@@ -109,6 +108,7 @@ import org.certificateservices.messages.pkimessages.jaxb.StoreHardTokenDataRespo
 import org.certificateservices.messages.pkimessages.jaxb.TokenRequest;
 import org.certificateservices.messages.utils.MessageGenerateUtils;
 import org.certificateservices.messages.utils.SettingsUtils;
+import org.certificateservices.messages.utils.XMLUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.ls.LSInput;
@@ -283,9 +283,7 @@ public class DefaultPKIMessageParser implements PKIMessageParser {
 	private void validateSignature(String message) throws IllegalArgumentException, MessageException {
 		if(requireSignature()){
 			try{
-				DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-				factory.setNamespaceAware(true);
-				DocumentBuilder builder = factory.newDocumentBuilder();
+				DocumentBuilder builder = XMLUtils.createDocumentBuilderFactory().newDocumentBuilder();
 				Document doc = builder.parse(new InputSource(new StringReader(message)));
 
 				Node signature = doc.getElementsByTagName("ds:Signature").item(0);
@@ -718,9 +716,7 @@ public class DefaultPKIMessageParser implements PKIMessageParser {
 			String failureMessage, String destinationID, Credential originator) throws IllegalArgumentException,
 			MessageException {
 		try {
-			DocumentBuilderFactory domFactory = DocumentBuilderFactory.newInstance();
-			domFactory.setNamespaceAware(true);
-			DocumentBuilder builder = domFactory.newDocumentBuilder();
+			DocumentBuilder builder = XMLUtils.createDocumentBuilderFactory().newDocumentBuilder();
 			Document doc = builder.parse(new ByteArrayInputStream(request));
 			
     		Node pkiMessageNode = doc.getFirstChild();
@@ -789,9 +785,7 @@ public class DefaultPKIMessageParser implements PKIMessageParser {
 		X509Certificate retval = null;
 		if(requireSignature()){
 			try{
-				DocumentBuilderFactory domFactory = DocumentBuilderFactory.newInstance();
-				domFactory.setNamespaceAware(true);
-				DocumentBuilder builder = domFactory.newDocumentBuilder();
+				DocumentBuilder builder = XMLUtils.createDocumentBuilderFactory().newDocumentBuilder();
 				Document doc = builder.parse(new ByteArrayInputStream(request));
 
 				XPathFactory factory = XPathFactory.newInstance();
@@ -1000,10 +994,7 @@ public class DefaultPKIMessageParser implements PKIMessageParser {
 	
 
 	private DocumentBuilder getDocumentBuilder() throws ParserConfigurationException {
-		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-		dbf.setNamespaceAware(true);
-
-		return dbf.newDocumentBuilder();
+		return XMLUtils.createDocumentBuilderFactory().newDocumentBuilder();
 	}
 	
 	

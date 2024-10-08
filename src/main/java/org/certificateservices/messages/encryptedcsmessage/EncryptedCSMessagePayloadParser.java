@@ -28,7 +28,6 @@ import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.Source;
 import javax.xml.transform.Transformer;
@@ -46,7 +45,6 @@ import org.certificateservices.messages.MessageProcessingException;
 import org.certificateservices.messages.MessageSecurityProvider;
 import org.certificateservices.messages.NoDecryptionKeyFoundException;
 import org.certificateservices.messages.csmessages.BasePayloadParser;
-import org.certificateservices.messages.csmessages.CSMessageParser;
 import org.certificateservices.messages.csmessages.DefaultCSMessageParser;
 import org.certificateservices.messages.csmessages.XSDLSInput;
 import org.certificateservices.messages.csmessages.jaxb.CSMessage;
@@ -54,10 +52,7 @@ import org.certificateservices.messages.csmessages.jaxb.Credential;
 import org.certificateservices.messages.csmessages.jaxb.RequestStatus;
 import org.certificateservices.messages.encryptedcsmessage.jaxb.EncryptedCSMessageType;
 import org.certificateservices.messages.encryptedcsmessage.jaxb.ObjectFactory;
-import org.certificateservices.messages.utils.DefaultSystemTime;
-import org.certificateservices.messages.utils.MessageGenerateUtils;
-import org.certificateservices.messages.utils.SystemTime;
-import org.certificateservices.messages.utils.XMLEncrypter;
+import org.certificateservices.messages.utils.*;
 import org.certificateservices.messages.utils.XMLEncrypter.DecryptedXMLConverter;
 import org.certificateservices.messages.xenc.jaxb.EncryptedDataType;
 import org.w3c.dom.Document;
@@ -337,10 +332,7 @@ public class EncryptedCSMessagePayloadParser extends BasePayloadParser {
 	}
 
 	private DocumentBuilder getDocumentBuilder() throws ParserConfigurationException {
-		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-		dbf.setNamespaceAware(true);
-
-		return dbf.newDocumentBuilder();
+		return XMLUtils.createDocumentBuilderFactory().newDocumentBuilder();
 	}
 	
 	Marshaller getMarshaller() throws JAXBException{

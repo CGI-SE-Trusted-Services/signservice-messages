@@ -35,7 +35,6 @@ import javax.xml.bind.*;
 import javax.xml.bind.util.JAXBSource;
 import javax.xml.namespace.QName;
 import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.Source;
 import javax.xml.transform.stream.StreamSource;
@@ -661,10 +660,7 @@ public abstract class BaseSAMLMessageParser {
 
 	protected DocumentBuilder getDocumentBuilder() throws MessageProcessingException {
 		try {
-			DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-			dbf.setNamespaceAware(true);
-
-			return dbf.newDocumentBuilder();
+			return XMLUtils.createDocumentBuilderFactory().newDocumentBuilder();
 		}catch(ParserConfigurationException e){
 			throw new MessageProcessingException("Internal error creating Documentbuilder, ParserConfigurationException: " + e.getMessage());
 		}

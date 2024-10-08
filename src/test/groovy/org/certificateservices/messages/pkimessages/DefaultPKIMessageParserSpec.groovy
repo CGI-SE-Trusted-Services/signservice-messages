@@ -2,6 +2,7 @@ package org.certificateservices.messages.pkimessages
 
 import groovy.xml.XmlSlurper
 import groovy.xml.slurpersupport.GPathResult
+import org.certificateservices.messages.utils.XMLUtils
 
 import java.security.KeyStore;
 import java.security.cert.X509Certificate;
@@ -10,7 +11,6 @@ import javax.xml.crypto.dsig.XMLSignatureFactory
 import javax.xml.crypto.dsig.dom.DOMValidateContext
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.parsers.DocumentBuilder
-import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.certificateservices.messages.pkimessages.jaxb.Attribute
 import org.certificateservices.messages.pkimessages.jaxb.ChangeCredentialStatusRequest
@@ -820,9 +820,7 @@ class DefaultPKIMessageParserSpec extends Specification {
 	}
 	
 	private void verifySignature(String message){
-		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-		factory.setNamespaceAware(true)
-		DocumentBuilder builder = factory.newDocumentBuilder();
+		DocumentBuilder builder = XMLUtils.createDocumentBuilderFactory().newDocumentBuilder();
 		Document doc = builder.parse(new InputSource(new StringReader(message)));
 	
 		Element signature = doc.getElementsByTagName("ds:Signature").item(0)

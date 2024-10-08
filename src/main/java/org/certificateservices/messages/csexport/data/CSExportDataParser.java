@@ -22,10 +22,7 @@ import org.certificateservices.messages.csexport.data.jaxb.Organisation;
 import org.certificateservices.messages.csexport.data.jaxb.TokenType;
 import org.certificateservices.messages.csmessages.DefaultCSMessageParser;
 import org.certificateservices.messages.csmessages.XSDLSInput;
-import org.certificateservices.messages.utils.DefaultSystemTime;
-import org.certificateservices.messages.utils.MessageGenerateUtils;
-import org.certificateservices.messages.utils.SystemTime;
-import org.certificateservices.messages.utils.XMLSigner;
+import org.certificateservices.messages.utils.*;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.ls.LSInput;
@@ -39,7 +36,6 @@ import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.namespace.QName;
 import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.Source;
 import javax.xml.transform.stream.StreamSource;
@@ -270,10 +266,7 @@ public class CSExportDataParser {
 	}
 
 	private DocumentBuilder getDocumentBuilder() throws ParserConfigurationException {
-		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-		dbf.setNamespaceAware(true);
-
-		return dbf.newDocumentBuilder();
+		return XMLUtils.createDocumentBuilderFactory().newDocumentBuilder();
 	}
 
 	/**
