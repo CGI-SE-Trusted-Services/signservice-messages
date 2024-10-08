@@ -541,7 +541,7 @@ class AssertionPayloadParserSpec extends Specification {
 
     private void verifySignature(byte[] message) throws Exception{
 		try{
-			DocumentBuilder builder = XMLUtils.createDocumentBuilderFactory().newDocumentBuilder();
+			DocumentBuilder builder = XMLUtils.createSecureDocumentBuilderFactory().newDocumentBuilder();
 			Document doc = builder.parse(new InputSource(new ByteArrayInputStream(message)));
 
 			Element signature = doc.getElementsByTagName("ds:Signature").item(0);

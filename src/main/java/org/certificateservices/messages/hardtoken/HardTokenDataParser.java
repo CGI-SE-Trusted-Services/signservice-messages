@@ -237,7 +237,7 @@ public class HardTokenDataParser {
 	}
 
 	private DocumentBuilder getDocumentBuilder() throws ParserConfigurationException {
-		return XMLUtils.createDocumentBuilderFactory().newDocumentBuilder();
+		return XMLUtils.createSecureDocumentBuilderFactory().newDocumentBuilder();
 	}
 	
 	Marshaller getMarshaller() throws JAXBException{

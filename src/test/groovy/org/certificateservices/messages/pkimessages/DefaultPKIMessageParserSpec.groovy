@@ -820,7 +820,7 @@ class DefaultPKIMessageParserSpec extends Specification {
 	}
 	
 	private void verifySignature(String message){
-		DocumentBuilder builder = XMLUtils.createDocumentBuilderFactory().newDocumentBuilder();
+		DocumentBuilder builder = XMLUtils.createSecureDocumentBuilderFactory().newDocumentBuilder();
 		Document doc = builder.parse(new InputSource(new StringReader(message)));
 	
 		Element signature = doc.getElementsByTagName("ds:Signature").item(0)

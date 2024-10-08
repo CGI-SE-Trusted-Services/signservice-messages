@@ -21,6 +21,7 @@ import org.certificateservices.messages.csmessages.CSMessageParserManager
 import org.w3c.dom.NodeList
 
 import javax.crypto.KeyGenerator
+import javax.xml.parsers.DocumentBuilderFactory
 import java.security.MessageDigest
 import java.security.Security
 import java.security.cert.CertificateFactory
@@ -362,6 +363,7 @@ class XMLEncrypterSpec extends Specification {
 		properties.setProperty("prop2", "somevalue22")
 		properties.setProperty("prop3", "somevalue33")
 		properties.setProperty("prop4", "somevalue44")
+		xmlEncrypter.documentBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder()
 		when:
 		Document encDocument = xmlEncrypter.encryptProperties(properties, threeReceipients, true)
 		Properties decProperties = xmlEncrypter.decryptProperties(encDocument)
@@ -370,6 +372,8 @@ class XMLEncrypterSpec extends Specification {
 		decProperties.getProperty("prop2") == "somevalue22"
 		decProperties.getProperty("prop3") == "somevalue33"
 		decProperties.getProperty("prop4") == "somevalue44"
+		cleanup:
+		xmlEncrypter.documentBuilder = XMLUtils.createSecureDocumentBuilderFactory().newDocumentBuilder()
 	}
 	
 	def "Verify that generateKeyId generates a valid id as Base64 encoded SHA-256 hash or throws MessageProcessingException if generation fails"(){

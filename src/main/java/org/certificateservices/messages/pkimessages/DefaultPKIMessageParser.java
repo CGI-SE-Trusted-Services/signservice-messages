@@ -283,7 +283,7 @@ public class DefaultPKIMessageParser implements PKIMessageParser {
 	private void validateSignature(String message) throws IllegalArgumentException, MessageException {
 		if(requireSignature()){
 			try{
-				DocumentBuilder builder = XMLUtils.createDocumentBuilderFactory().newDocumentBuilder();
+				DocumentBuilder builder = XMLUtils.createSecureDocumentBuilderFactory().newDocumentBuilder();
 				Document doc = builder.parse(new InputSource(new StringReader(message)));
 
 				Node signature = doc.getElementsByTagName("ds:Signature").item(0);
@@ -716,7 +716,7 @@ public class DefaultPKIMessageParser implements PKIMessageParser {
 			String failureMessage, String destinationID, Credential originator) throws IllegalArgumentException,
 			MessageException {
 		try {
-			DocumentBuilder builder = XMLUtils.createDocumentBuilderFactory().newDocumentBuilder();
+			DocumentBuilder builder = XMLUtils.createSecureDocumentBuilderFactory().newDocumentBuilder();
 			Document doc = builder.parse(new ByteArrayInputStream(request));
 			
     		Node pkiMessageNode = doc.getFirstChild();
@@ -785,7 +785,7 @@ public class DefaultPKIMessageParser implements PKIMessageParser {
 		X509Certificate retval = null;
 		if(requireSignature()){
 			try{
-				DocumentBuilder builder = XMLUtils.createDocumentBuilderFactory().newDocumentBuilder();
+				DocumentBuilder builder = XMLUtils.createSecureDocumentBuilderFactory().newDocumentBuilder();
 				Document doc = builder.parse(new ByteArrayInputStream(request));
 
 				XPathFactory factory = XPathFactory.newInstance();
@@ -994,7 +994,7 @@ public class DefaultPKIMessageParser implements PKIMessageParser {
 	
 
 	private DocumentBuilder getDocumentBuilder() throws ParserConfigurationException {
-		return XMLUtils.createDocumentBuilderFactory().newDocumentBuilder();
+		return XMLUtils.createSecureDocumentBuilderFactory().newDocumentBuilder();
 	}
 	
 	

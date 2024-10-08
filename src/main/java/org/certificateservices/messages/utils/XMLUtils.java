@@ -25,13 +25,14 @@ import javax.xml.parsers.ParserConfigurationException;
 public class XMLUtils {
 
     /**
-     * Create new instance of a document builder factory with secure
-     * features enabled.
+     * Create new instance of a document builder factory with secure features
+     * enabled. The document builder created by this method will not allow DOCTYPE or
+     * external DTDs.
      *
      * @return New instance of DocumentBuilderFactory.
      * @throws ParserConfigurationException If DocumentBuilderFactory could not be created due to unsupported features.
      */
-    public static DocumentBuilderFactory createDocumentBuilderFactory() throws ParserConfigurationException {
+    public static DocumentBuilderFactory createSecureDocumentBuilderFactory() throws ParserConfigurationException {
         DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
         documentBuilderFactory.setNamespaceAware(true);
         documentBuilderFactory.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true);

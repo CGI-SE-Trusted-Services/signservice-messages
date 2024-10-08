@@ -11,7 +11,7 @@ class XMLUtilsSpec extends Specification{
     def "Verify that createDocumentBuilderFactory creates a factory that prevents XXE"(){
         setup:
         String maliciousXML= "<?xml version=\"1.0\"?><!DOCTYPE root [<!ENTITY test SYSTEM 'file:///etc/shadow'>]><root>&test;</root>"
-        DocumentBuilder documentBuilder = XMLUtils.createDocumentBuilderFactory().newDocumentBuilder()
+        DocumentBuilder documentBuilder = XMLUtils.createSecureDocumentBuilderFactory().newDocumentBuilder()
 
         when:
         Document document = documentBuilder.parse(new ByteArrayInputStream(maliciousXML.bytes))

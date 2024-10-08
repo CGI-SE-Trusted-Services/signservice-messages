@@ -130,7 +130,7 @@ public class XMLSigner {
 		this.signMessages = signMessages;
 
 		try {
-			this.documentBuilderFactory = XMLUtils.createDocumentBuilderFactory();
+			this.documentBuilderFactory = XMLUtils.createSecureDocumentBuilderFactory();
 		} catch(ParserConfigurationException e){
 			throw new MessageProcessingException("Error creating document builder factory: " + e.getMessage(), e);
 		}

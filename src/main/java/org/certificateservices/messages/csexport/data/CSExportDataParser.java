@@ -266,7 +266,7 @@ public class CSExportDataParser {
 	}
 
 	private DocumentBuilder getDocumentBuilder() throws ParserConfigurationException {
-		return XMLUtils.createDocumentBuilderFactory().newDocumentBuilder();
+		return XMLUtils.createSecureDocumentBuilderFactory().newDocumentBuilder();
 	}
 
 	/**

@@ -660,7 +660,7 @@ public abstract class BaseSAMLMessageParser {
 
 	protected DocumentBuilder getDocumentBuilder() throws MessageProcessingException {
 		try {
-			return XMLUtils.createDocumentBuilderFactory().newDocumentBuilder();
+			return XMLUtils.createSecureDocumentBuilderFactory().newDocumentBuilder();
 		}catch(ParserConfigurationException e){
 			throw new MessageProcessingException("Internal error creating Documentbuilder, ParserConfigurationException: " + e.getMessage());
 		}
