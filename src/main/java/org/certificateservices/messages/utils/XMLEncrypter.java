@@ -19,7 +19,7 @@ import org.apache.xml.security.encryption.XMLEncryptionException;
 import org.apache.xml.security.keys.KeyInfo;
 import org.apache.xml.security.keys.content.KeyName;
 import org.apache.xml.security.keys.content.X509Data;
-import org.apache.xml.security.utils.Base64;
+import org.bouncycastle.util.encoders.Base64;
 import org.apache.xml.security.utils.EncryptionConstants;
 import org.certificateservices.messages.*;
 import org.certificateservices.messages.ContextMessageSecurityProvider.Context;
