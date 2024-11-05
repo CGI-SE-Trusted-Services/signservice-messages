@@ -28,10 +28,8 @@ import org.bouncycastle.x509.extension.X509ExtensionUtil;
 
 import java.io.*;
 import java.nio.charset.Charset;
-import java.security.GeneralSecurityException;
-import java.security.NoSuchProviderException;
-import java.security.Provider;
-import java.security.Security;
+import java.security.*;
+import java.security.cert.Certificate;
 import java.security.cert.*;
 import java.security.interfaces.DSAPublicKey;
 import java.security.interfaces.ECPublicKey;
@@ -45,15 +43,13 @@ import java.util.logging.Logger;
  * Certificate related utilities. Most of the method is copied from EJBCA 3.5 branch
  * since 3.9 and up is dependent of cvs libs that isn't necessary.
  *
- *
  * @author Philip Vendil 22 Jan 2010
- *
  * @version $Id$
  */
 
 @SuppressWarnings( "deprecation" )
 public class CertUtils {
-	private static Logger log = Logger.getLogger(CertUtils.class.getName());
+    private static final Logger log = Logger.getLogger(CertUtils.class.getName());
 
 	public static final  String BEGIN_CERTIFICATE_REQUEST  = "-----BEGIN CERTIFICATE REQUEST-----";
 	public static final  String END_CERTIFICATE_REQUEST     = "-----END CERTIFICATE REQUEST-----";
@@ -240,9 +236,7 @@ public class CertUtils {
 
 		opstr.close();
 
-		byte[] bytes = Base64.decode(ostr.toByteArray());
-
-		return bytes;
+		return Base64.decode(ostr.toByteArray());
 	}
 
 	/**
@@ -267,7 +261,7 @@ public class CertUtils {
 				// IE PKCS10 Base64 coded request
 				try{
 					buffer = Base64.decode(b64Encoded);
-				}catch(Exception e2){}
+				}catch(Exception ignored){}
 			}
 		}
 		if (buffer == null) {
@@ -544,22 +538,20 @@ public class CertUtils {
 	 * @param certificate the certificate to find email address from subject alternative name.
 	 * @return the email address or null if no found.
 	 */
-	public static String getEmailFromAlternativeName(X509Certificate certificate) throws CertificateParsingException {
-		if (certificate != null) {
-			if (certificate.getSubjectAlternativeNames() != null) {
-				Iterator iter = certificate.getSubjectAlternativeNames().iterator();
+    public static String getEmailFromAlternativeName(X509Certificate certificate) throws CertificateParsingException {
+        if (certificate != null) {
+            if (certificate.getSubjectAlternativeNames() != null) {
 
-				while (iter.hasNext()) {
-					List<?> item = (List) iter.next();
-					Integer type = (Integer) item.get(0);
-					if (type == 1) {
-						return (String) item.get(1);
-					}
-				}
-			}
-		}
-		return null;
-	}
+                for (List<?> objects : certificate.getSubjectAlternativeNames()) {
+                    Integer type = (Integer) objects.get(0);
+                    if (type == 1) {
+                        return (String) objects.get(1);
+                    }
+                }
+            }
+        }
+        return null;
+    }
 
 	/**
 	 * Returns true if the given CRL is a delta CRL, i.e have and extension  X509Extensions.DeltaCRLIndicator
@@ -702,7 +694,7 @@ public class CertUtils {
 	/**
 	 * Checks if a certificate is self signed by verifying if subject and issuer are the same.
 	 *
-	 * @param cert the certificate that skall be checked.
+	 * @param cert the certificate that shall be checked.
 	 *
 	 * @return boolean true if the certificate has the same issuer and subject, false otherwise.
 	 */
@@ -727,8 +719,8 @@ public class CertUtils {
 	public static List<X509Certificate> buildCertificateChain(Collection<X509Certificate> certificates) throws GeneralSecurityException{
 
 
-		List< X509Certificate> resultChain = new ArrayList< X509Certificate>();
-		List<X509Certificate> certificateList = new ArrayList< X509Certificate>(certificates);
+		List< X509Certificate> resultChain = new ArrayList<>();
+		List<X509Certificate> certificateList = new ArrayList<>(certificates);
 		if(certificateList.size()==1){
 			if(isSelfSigned(certificateList.get(0))){
 				resultChain.add(certificateList.get(0));
@@ -737,11 +729,11 @@ public class CertUtils {
 				throw new GeneralSecurityException("Bad Certificate chain: certificate chain in not complete");
 
 			}
-		}else if (certificateList.size()==0){
+        } else if (certificateList.isEmpty()) {
 			throw new GeneralSecurityException("Bad Certificate chain: certificate chain in empty");
 		}
-		Set<X509Certificate> rootCAs = new HashSet< X509Certificate>();
-		Set<X509Certificate> subCAs= new HashSet< X509Certificate>();
+		Set<X509Certificate> rootCAs = new HashSet<>();
+		Set<X509Certificate> subCAs= new HashSet<>();
 		X509Certificate cert =null;
 		boolean certExists = false;
 		for(X509Certificate certificate : certificates){
@@ -765,7 +757,7 @@ public class CertUtils {
 					cert = certificate;
 					certExists=true;
 
-				}else if(!isSubCa && certExists){
+                } else if (!isSubCa) {
 
 					throw new GeneralSecurityException("Bad Certificate chain: more than one end certificates exist in the chain.");
 				}
@@ -778,7 +770,7 @@ public class CertUtils {
 		// Selector for starting certificate
 		X509CertSelector selector = new X509CertSelector();
 		selector.setCertificate(cert);
-		Set<TrustAnchor> trustAnchors = new HashSet<TrustAnchor>();
+		Set<TrustAnchor> trustAnchors = new HashSet<>();
 		//Trust Anchors
 		for(X509Certificate trustCertificate : rootCAs){
 			trustAnchors.add(new TrustAnchor(trustCertificate, null));
@@ -866,7 +858,7 @@ public class CertUtils {
 	/**
 	 * Helper method to read public key length from certificate.
 	 *
-	 * @param certificate
+	 * @param certificate Certificate
 	 * @return public key length
 	 * @throws CertificateException if problem occurs when getting public key length from certificate.
 	 */
@@ -889,7 +881,64 @@ public class CertUtils {
 			throw new CertificateException(e);
 		}
 
-		return bitLength;
+        return bitLength;
+    }
 
-	}
+    /**
+     * Helper method to create a certFingerprint as a Base64 encoded SHA-256 string.
+     * This method maintains backward compatibility and uses SHA-256 by default.
+     *
+     * @param certificate the certificate to generate fingerprint of.
+     * @return Base64 encoded SHA-256 fingerprint as a string.
+     * @throws CertificateException if an encoding error occurs.
+     */
+    public static String genCertFingerprint(X509Certificate certificate) throws CertificateException {
+        return genCertFingerprint(certificate, "SHA-256");
+    }
+
+    /**
+     * Helper method to create a certFingerprint as a Base64 encoded string using the specified algorithm.
+     *
+     * @param certificate the certificate to generate fingerprint of.
+     * @param algorithm   the hash algorithm to use ("SHA-1", "SHA-256", etc.).
+     * @return Base64 encoded fingerprint as a string.
+     * @throws CertificateException if an encoding error occurs.
+     */
+    public static String genCertFingerprint(X509Certificate certificate, String algorithm) throws CertificateException {
+        try {
+            MessageDigest md = MessageDigest.getInstance(algorithm);
+            byte[] digest = md.digest(certificate.getEncoded());
+            return new String(org.bouncycastle.util.encoders.Base64.encode(digest));
+        } catch (NoSuchAlgorithmException e) {
+            throw new RuntimeException("Internal Error constructing " + algorithm + " Digest: " + e.getMessage(), e);
+        }
+    }
+
+    /**
+     * Generates a certificate fingerprint (thumbprint) as an uppercase hexadecimal string using the specified hash algorithm.
+     *
+     * @param certificateData the certificate data as a byte array
+     * @param algorithm       the hash algorithm to use (e.g., "SHA-1", "SHA-256")
+     * @return the certificate fingerprint as an uppercase hexadecimal string
+     * @throws RuntimeException if the specified algorithm is not available
+     */
+    public static String genCertFingerprint(byte[] certificateData, String algorithm) {
+        try {
+            MessageDigest md = MessageDigest.getInstance(algorithm);
+            byte[] digest = md.digest(certificateData);
+            return new String(Hex.encode(digest)).toUpperCase();
+        } catch (NoSuchAlgorithmException e) {
+            throw new RuntimeException("Internal error constructing " + algorithm + " digest: " + e.getMessage(), e);
+        }
+    }
+
+    /**
+     * Method returning true if related certificate is a CA Certificate.
+     *
+     * @param certificate the certificate to check
+     * @return true if related certificate is a CA certificate.
+     */
+    public static boolean isCACert(X509Certificate certificate) {
+        return certificate.getBasicConstraints() != -1;
+    }
 }
