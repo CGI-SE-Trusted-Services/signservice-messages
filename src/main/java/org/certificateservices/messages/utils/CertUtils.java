@@ -14,30 +14,23 @@
 package org.certificateservices.messages.utils;
 
 import org.bouncycastle.asn1.*;
-import org.bouncycastle.asn1.pkcs.PKCSObjectIdentifiers;
 import org.bouncycastle.asn1.x500.AttributeTypeAndValue;
 import org.bouncycastle.asn1.x500.RDN;
 import org.bouncycastle.asn1.x500.X500Name;
 import org.bouncycastle.asn1.x500.style.BCStyle;
-import org.bouncycastle.asn1.x509.*;
-import org.bouncycastle.asn1.x509.Extension;
 import org.bouncycastle.asn1.x509.X509Extension;
+import org.bouncycastle.asn1.x509.X509NameTokenizer;
 import org.bouncycastle.jce.PKCS10CertificationRequest;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
-import org.bouncycastle.operator.ContentSigner;
-import org.bouncycastle.operator.jcajce.JcaContentSignerBuilder;
-import org.bouncycastle.pkcs.jcajce.JcaPKCS10CertificationRequestBuilder;
 import org.bouncycastle.util.encoders.Base64;
 import org.bouncycastle.util.encoders.Hex;
 import org.bouncycastle.x509.extension.X509ExtensionUtil;
-import org.bouncycastle.pkcs.PKCS10CertificationRequestBuilder;
 
-import javax.security.auth.x500.X500Principal;
 import java.io.*;
 import java.nio.charset.Charset;
 import java.security.*;
-import java.security.cert.Certificate;
 import java.security.cert.*;
+import java.security.cert.Certificate;
 import java.security.interfaces.DSAPublicKey;
 import java.security.interfaces.ECPublicKey;
 import java.security.interfaces.RSAPublicKey;
@@ -939,76 +932,13 @@ public class CertUtils {
         }
     }
 
-    /**
-     * Method returning true if related certificate is a CA Certificate.
-     *
-     * @param certificate the certificate to check
-     * @return true if related certificate is a CA certificate.
-     */
-    public static boolean isCACert(X509Certificate certificate) {
-        return certificate.getBasicConstraints() != -1;
-    }
-
 	/**
-	 * Generates a key pair using the specified algorithm and key size.
+	 * Method returning true if related certificate is a CA Certificate.
 	 *
-	 * @param algorithm the name of the algorithm (e.g., "RSA").
-	 * @param keySize   the key size in bits.
-	 * @return a KeyPair containing the generated public and private keys.
-	 * @throws NoSuchAlgorithmException if the specified algorithm is not available.
+	 * @param certificate the certificate to check
+	 * @return true if related certificate is a CA certificate.
 	 */
-	public static KeyPair generateKeyPair(String algorithm, int keySize) throws NoSuchAlgorithmException {
-		if (algorithm == null || algorithm.isEmpty()) {
-			throw new IllegalArgumentException("Algorithm must not be null or empty.");
-		}
-		if (keySize <= 0) {
-			throw new IllegalArgumentException("Key size must be a positive integer.");
-		}
-
-		try {
-			KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance(algorithm);
-			keyPairGenerator.initialize(keySize, new SecureRandom());
-			return keyPairGenerator.generateKeyPair();
-		} catch(Exception e){
-			log.log(Level.SEVERE, "ERROR when generating keypair: " + e.getMessage());
-		}
-
-		return null;
-	}
-
-	/**
-	 * Generates a PKCS#10 certification request.
-	 *
-	 * @param dn          the distinguished name for the certificate subject.
-	 * @param publicKey   the public key to include in the request.
-	 * @param privateKey  the private key used to sign the request.
-	 * @param namesList   a list of GeneralName objects for Subject Alternative Names.
-	 * @return a PKCS10CertificationRequest object representing the CSR.
-	 * @throws Exception if an error occurs during request generation.
-	 */
-	public static org.bouncycastle.pkcs.PKCS10CertificationRequest generatePKCS10(
-			String dn,
-			PublicKey publicKey,
-			PrivateKey privateKey,
-			List<GeneralName> namesList) throws Exception {
-
-		if (dn == null || publicKey == null || privateKey == null) {
-			throw new IllegalArgumentException("Distinguished Name, Public Key, and Private Key must not be null.");
-		}
-
-		PKCS10CertificationRequestBuilder p10Builder = new JcaPKCS10CertificationRequestBuilder(
-				new X500Principal(dn), publicKey);
-
-		JcaContentSignerBuilder csBuilder = new JcaContentSignerBuilder("SHA256withRSA");
-		ContentSigner signer = csBuilder.build(privateKey);
-
-		if (namesList != null && !namesList.isEmpty()) {
-			ExtensionsGenerator extGen = new ExtensionsGenerator();
-			GeneralNames subjectAltNames = new GeneralNames(namesList.toArray(new GeneralName[0]));
-			extGen.addExtension(Extension.subjectAlternativeName, false, subjectAltNames);
-			p10Builder.addAttribute(PKCSObjectIdentifiers.pkcs_9_at_extensionRequest, extGen.generate());
-		}
-
-		return p10Builder.build(signer);
+	public static boolean isCACert(X509Certificate certificate) {
+		return certificate.getBasicConstraints() != -1;
 	}
 }
