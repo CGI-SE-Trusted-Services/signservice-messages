@@ -10,8 +10,8 @@ apply plugin: "project-report"
 ext {
     bcJdk18onVersion = "1.76"
     groovyVersion = "3.0.21"
-    tomcatEmbedVersion = "9.0.93"
-    commonsIOVersion = "2.16.1"
+    tomcatEmbedVersion = "9.0.97"
+    commonsIOVersion = "2.18.0"
 }
 
 sourceCompatibility = JavaVersion.VERSION_1_8
