@@ -13,6 +13,7 @@ of the Certificate Service Messages Library.
 * Upgraded Apache Commons IO from 2.16.1 to 2.18.0
 * Upgraded Snakeyaml from 2.2 to 2.3.
 * Upgraded Guava: Google Core Libraries For Java from 33.2.1-jre to 33.3.1-jre.
+* Upgraded Gradle to 7.6.4.
 
 == Version 2408.1
 
