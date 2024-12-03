@@ -9,7 +9,7 @@ apply plugin: "project-report"
 
 ext {
     bcJdk18onVersion = "1.76"
-    groovyVersion = "3.0.21"
+    groovyVersion = "3.0.23"
     tomcatEmbedVersion = "9.0.97"
     commonsIOVersion = "2.18.0"
 }
