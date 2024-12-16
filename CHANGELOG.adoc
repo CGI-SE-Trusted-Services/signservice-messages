@@ -9,7 +9,7 @@ of the Certificate Service Messages Library.
 
 * Upgraded Grails from 6.2.0 to 6.2.2.
 * Upgraded Groovy to 3.0.23.
-* Upgraded Tomcat from 9.0.93 to 9.0.97.
+* Upgraded Tomcat from 9.0.93 to 9.0.98.
 * Upgraded Apache Commons IO from 2.16.1 to 2.18.0
 * Upgraded Snakeyaml from 2.2 to 2.3.
 * Upgraded Guava: Google Core Libraries For Java from 33.2.1-jre to 33.3.1-jre.
