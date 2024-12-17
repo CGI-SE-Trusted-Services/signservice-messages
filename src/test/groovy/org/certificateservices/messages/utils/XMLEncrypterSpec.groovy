@@ -12,6 +12,7 @@
  *************************************************************************/
 package org.certificateservices.messages.utils
 
+import groovy.xml.XmlSlurper
 import org.bouncycastle.jce.provider.BouncyCastleProvider
 import org.bouncycastle.util.encoders.Base64
 import org.certificateservices.messages.ContextMessageSecurityProvider

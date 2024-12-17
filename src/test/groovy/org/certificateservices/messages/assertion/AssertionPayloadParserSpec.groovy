@@ -1,5 +1,6 @@
 package org.certificateservices.messages.assertion
 
+import groovy.xml.XmlSlurper
 import org.apache.xml.security.Init
 import org.apache.xml.security.utils.Base64
 import org.bouncycastle.jce.provider.BouncyCastleProvider
