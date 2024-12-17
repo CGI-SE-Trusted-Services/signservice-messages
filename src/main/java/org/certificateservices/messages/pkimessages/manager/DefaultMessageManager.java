@@ -300,7 +300,7 @@ public class DefaultMessageManager implements MessageManager, MessageResponseCal
 			}			
 			Class<?> c = Thread.currentThread().getContextClassLoader().loadClass(classPath);
 			
-			MessageHandler retval = (MessageHandler) c.newInstance();
+			MessageHandler retval = (MessageHandler) c.getDeclaredConstructor().newInstance();
 			retval.init(config, parser, this);
 			return retval;
 		}catch(Exception e){

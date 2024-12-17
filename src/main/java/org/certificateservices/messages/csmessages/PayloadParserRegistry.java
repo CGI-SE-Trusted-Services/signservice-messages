@@ -91,7 +91,7 @@ public class PayloadParserRegistry {
 				throw new MessageProcessingException("Error no parser registered for payload with namespace: " + namespace);
 			}
 			try {
-				retval = registeredClass.newInstance();
+				retval = registeredClass.getDeclaredConstructor().newInstance();
 			} catch (Exception e) {
 			  throw new MessageProcessingException("Error occurred creating a payload parser implementation: " + registeredClass + " : " + e.getMessage(),e);
 			}

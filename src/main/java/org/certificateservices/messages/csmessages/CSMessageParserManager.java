@@ -85,7 +85,7 @@ public class CSMessageParserManager {
 		String cp = config.getProperty(SETTING_CSMESSAGEPARSER_IMPL, DEFAULT_IMPLEMENTATION);
 		try{
 			Class<?> c = CSMessageParserManager.class.getClassLoader().loadClass(cp);
-			CSMessageParser parser = (CSMessageParser) c.newInstance();
+			CSMessageParser parser = (CSMessageParser) c.getDeclaredConstructor().newInstance();
 			parser.init(securityProvider, config);
 			return parser;
 		}catch(Exception e){

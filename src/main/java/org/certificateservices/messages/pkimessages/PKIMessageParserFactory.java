@@ -49,7 +49,7 @@ public class PKIMessageParserFactory {
 		String cp = config.getProperty(SETTING_PKIMESSAGEPARSER_IMPL, DEFAULT_IMPLEMENTATION);
 		try{
 			Class<?> c = PKIMessageParserFactory.class.getClassLoader().loadClass(cp);
-			PKIMessageParser retval = (PKIMessageParser) c.newInstance();
+			PKIMessageParser retval = (PKIMessageParser) c.getDeclaredConstructor().newInstance();
 			retval.init(securityProvider, config);
 			return retval;
 		}catch(Exception e){

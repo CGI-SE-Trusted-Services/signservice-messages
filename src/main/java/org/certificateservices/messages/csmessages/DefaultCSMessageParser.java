@@ -858,7 +858,7 @@ public class DefaultCSMessageParser implements CSMessageParser {
 	 */
     private MessageNameCatalogue getMessageNameCatalogue(Properties config) throws MessageProcessingException{
     	try{
-    		MessageNameCatalogue retval =  (MessageNameCatalogue) this.getClass().getClassLoader().loadClass(config.getProperty(SETTING_MESSAGE_NAME_CATALOGUE_IMPL, DEFAULT_MESSAGE_NAME_CATALOGUE_IMPL)).newInstance();
+    		MessageNameCatalogue retval =  (MessageNameCatalogue) this.getClass().getClassLoader().loadClass(config.getProperty(SETTING_MESSAGE_NAME_CATALOGUE_IMPL, DEFAULT_MESSAGE_NAME_CATALOGUE_IMPL)).getDeclaredConstructor().newInstance();
     		retval.init(config);
     		return retval;
     	}catch(Exception e){
