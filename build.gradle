@@ -1,11 +1,13 @@
+plugins {
+    id("java")
+    id("maven-publish")
+    id("groovy")
+    id("idea")
+    id("project-report")
+}
+
 group "org.certificateservices.messages"
 description "certservice-messages"
-
-apply plugin: "java"
-apply plugin: "maven-publish"
-apply plugin: "groovy"
-apply plugin: "idea"
-apply plugin: "project-report"
 
 ext {
     bcJdk18onVersion = "1.76"
@@ -38,21 +40,20 @@ repositories {
 dependencies {
     implementation "org.bouncycastle:bcprov-jdk18on:${bcJdk18onVersion}"
     implementation("javax.xml.bind:jaxb-api:2.3.1")
-    implementation("javax.activation:javax.activation-api:1.2.0")
-    implementation("org.apache.santuario:xmlsec:2.3.4") {
+    implementation("org.apache.santuario:xmlsec:2.3.5") {
         exclude(module: "woodstox-core")
         exclude(module: "commons-codec")
     }
     testRuntimeOnly 'com.sun.xml.bind:jaxb-core:2.3.0.1'
     testRuntimeOnly 'com.sun.xml.bind:jaxb-impl:2.3.9'
-    testRuntimeOnly 'net.bytebuddy:byte-buddy:1.14.19'
+    testRuntimeOnly 'net.bytebuddy:byte-buddy:1.16.1'
 
     testImplementation 'org.objenesis:objenesis:3.4'
-    testImplementation platform("org.spockframework:spock-bom:2.3-groovy-3.0")
     testImplementation "commons-io:commons-io:${commonsIOVersion}"
-    testImplementation "org.spockframework:spock-core"
     testImplementation "org.apache.tomcat.embed:tomcat-embed-core:${tomcatEmbedVersion}"
     testImplementation "org.codehaus.groovy:groovy-xml:${groovyVersion}"
+    testImplementation platform("org.spockframework:spock-bom:2.3-groovy-3.0")
+    testImplementation "org.spockframework:spock-core"
 }
 
 tasks.withType(JavaCompile).configureEach {
