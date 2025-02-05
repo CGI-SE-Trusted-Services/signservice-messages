@@ -3,6 +3,13 @@
 This document provides information about changes that have been made for each new version
 of the Certificate Service Messages Library.
 
+== Version 2502.1
+
+=== Dependency upgrades
+
+* Upgraded Byte Buddy to 1.16.1.
+* Upgraded XmlSec to 2.3.5.
+
 == Version 2411.1
 
 === Dependency upgrades
