@@ -88,7 +88,7 @@ public class UnsignedXadesParser {
      */
     protected JAXBContext getJAXBContext() throws JAXBException{
         if(jaxbContext== null){
-            jaxbContext = JAXBContext.newInstance("org.certificateservices.messages.xades.v132.jaxb:org.certificateservices.messages.xmldsig.jaxb");
+            jaxbContext = JAXBContext.newInstance("org.signatureservice.messages.xades.v132.jaxb:org.signatureservice.messages.xmldsig.jaxb");
 
         }
         return jaxbContext;

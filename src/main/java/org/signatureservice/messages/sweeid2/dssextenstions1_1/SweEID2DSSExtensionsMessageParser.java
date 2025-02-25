@@ -6,11 +6,8 @@ import org.signatureservice.messages.MessageProcessingException;
 import org.signatureservice.messages.NoDecryptionKeyFoundException;
 import org.signatureservice.messages.csmessages.DefaultCSMessageParser;
 import org.signatureservice.messages.dss1.core.DSS1CoreMessageParser;
-import org.certificateservices.messages.dss1.core.jaxb.*;
 import org.signatureservice.messages.dss1.core.jaxb.*;
 import org.signatureservice.messages.saml2.BaseSAMLMessageParser;
-import org.certificateservices.messages.saml2.assertion.jaxb.*;
-import org.certificateservices.messages.sweeid2.dssextenstions1_1.jaxb.*;
 import org.signatureservice.messages.saml2.assertion.jaxb.*;
 import org.signatureservice.messages.sweeid2.dssextenstions1_1.jaxb.*;
 import org.signatureservice.messages.sweeid2.dssextenstions1_1.jaxb.AnyType;
@@ -45,7 +42,7 @@ public class SweEID2DSSExtensionsMessageParser extends DSS1CoreMessageParser{
 
     public static final String NAMESPACE = "http://id.elegnamnden.se/csig/1.1/dss-ext/ns";
 
-    private static final String BASE_JAXB_CONTEXT = "org.certificateservices.messages.sweeid2.dssextenstions1_1.jaxb:org.certificateservices.messages.saml2.assertion.jaxb:org.certificateservices.messages.xenc.jaxb";
+    private static final String BASE_JAXB_CONTEXT = "org.signatureservice.messages.sweeid2.dssextenstions1_1.jaxb:org.signatureservice.messages.saml2.assertion.jaxb:org.signatureservice.messages.xenc.jaxb";
 
     private static final String SWEEID_DSS_EXTENSTIONS_XSD_SCHEMA_1_1_RESOURCE_LOCATION = "/eid-dss-extensions-1.1.2.xsd";
 

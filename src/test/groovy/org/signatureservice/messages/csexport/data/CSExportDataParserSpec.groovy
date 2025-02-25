@@ -19,6 +19,8 @@ import javax.xml.bind.Unmarshaller
 import javax.xml.validation.Schema
 import java.security.Security
 
+import static org.signatureservice.messages.TestUtils.*
+
 class CSExportDataParserSpec extends Specification {
 	
 	CSExportDataParser p;

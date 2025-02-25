@@ -63,7 +63,7 @@ public class KeystoreMgmtPayloadParser extends BasePayloadParser {
 	 * @see PayloadParser#getJAXBPackage()
 	 */
 	public String getJAXBPackage() {
-		return "org.certificateservices.messages.keystoremgmt.jaxb";
+		return "org.signatureservice.messages.keystoremgmt.jaxb";
 	}
 
 	/**

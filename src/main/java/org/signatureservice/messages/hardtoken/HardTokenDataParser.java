@@ -259,7 +259,7 @@ public class HardTokenDataParser {
      */
     private JAXBContext getJAXBContext() throws JAXBException{
     	if(jaxbContext== null){
-    		String jaxbClassPath = "org.certificateservices.messages.hardtoken.jaxb:org.certificateservices.messages.xenc.jaxb:org.certificateservices.messages.xmldsig.jaxb";
+    		String jaxbClassPath = "org.signatureservice.messages.hardtoken.jaxb:org.signatureservice.messages.xenc.jaxb:org.signatureservice.messages.xmldsig.jaxb";
     			    		
     		jaxbContext = JAXBContext.newInstance(jaxbClassPath);
     		

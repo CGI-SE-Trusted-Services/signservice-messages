@@ -25,6 +25,8 @@ import spock.lang.Specification
 
 import java.security.Security
 
+import static org.signatureservice.messages.TestUtils.*
+
 class KerberosUtilsSpec extends Specification{
 
 

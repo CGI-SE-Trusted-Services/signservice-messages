@@ -51,7 +51,6 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
 import org.apache.xml.security.utils.Base64;
-import org.certificateservices.messages.*;
 import org.signatureservice.messages.*;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;

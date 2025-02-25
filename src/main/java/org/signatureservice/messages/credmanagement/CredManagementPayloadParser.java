@@ -19,7 +19,6 @@ import java.util.List;
 
 import org.signatureservice.messages.MessageContentException;
 import org.signatureservice.messages.MessageProcessingException;
-import org.certificateservices.messages.credmanagement.jaxb.*;
 import org.signatureservice.messages.credmanagement.jaxb.*;
 import org.signatureservice.messages.credmanagement.jaxb.IssueTokenCredentialsRequest.FieldValues;
 import org.signatureservice.messages.credmanagement.jaxb.IssueTokenCredentialsResponse.Credentials;
@@ -28,7 +27,6 @@ import org.signatureservice.messages.credmanagement.jaxb.ObjectFactory;
 import org.signatureservice.messages.csmessages.BasePayloadParser;
 import org.signatureservice.messages.csmessages.CSMessageResponseData;
 import org.signatureservice.messages.csmessages.PayloadParser;
-import org.certificateservices.messages.csmessages.jaxb.*;
 import org.signatureservice.messages.csmessages.jaxb.*;
 import org.signatureservice.messages.utils.MessageGenerateUtils;
 
@@ -68,7 +66,7 @@ public class CredManagementPayloadParser extends BasePayloadParser {
 	 * @see PayloadParser#getJAXBPackage()
 	 */
 	public String getJAXBPackage() {
-		return "org.certificateservices.messages.credmanagement.jaxb";
+		return "org.signatureservice.messages.credmanagement.jaxb";
 	}
 
 	/**

@@ -15,8 +15,6 @@ package org.signatureservice.messages.autoenroll;
 
 import org.signatureservice.messages.MessageContentException;
 import org.signatureservice.messages.MessageProcessingException;
-import org.certificateservices.messages.autoenroll.jaxb.*;
-import org.certificateservices.messages.csmessages.*;
 import org.signatureservice.messages.autoenroll.jaxb.*;
 import org.signatureservice.messages.csmessages.*;
 import org.signatureservice.messages.csmessages.jaxb.Attribute;
@@ -54,7 +52,7 @@ public class AutoEnrollPayloadParser extends BasePayloadParser {
 	 * @see PayloadParser#getJAXBPackage()
 	 */
 	public String getJAXBPackage() {
-		return "org.certificateservices.messages.autoenroll.jaxb";
+		return "org.signatureservice.messages.autoenroll.jaxb";
 	}
 
 	/**

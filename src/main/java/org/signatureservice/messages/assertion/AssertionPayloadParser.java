@@ -12,7 +12,6 @@
  *************************************************************************/
 package org.signatureservice.messages.assertion;
 
-import org.certificateservices.messages.*;
 import org.signatureservice.messages.*;
 import org.signatureservice.messages.credmanagement.CredManagementPayloadParser;
 import org.signatureservice.messages.credmanagement.jaxb.FieldValue;
@@ -24,14 +23,12 @@ import org.signatureservice.messages.csmessages.jaxb.Approver;
 import org.signatureservice.messages.csmessages.jaxb.CSMessage;
 import org.signatureservice.messages.saml2.BaseSAMLMessageParser;
 import org.signatureservice.messages.saml2.assertion.SAMLAssertionMessageParser;
-import org.certificateservices.messages.saml2.assertion.jaxb.*;
 import org.signatureservice.messages.saml2.assertion.jaxb.*;
 import org.signatureservice.messages.saml2.protocol.jaxb.AttributeQueryType;
 import org.signatureservice.messages.saml2.protocol.jaxb.ObjectFactory;
 import org.signatureservice.messages.saml2.protocol.jaxb.ResponseType;
 import org.signatureservice.messages.saml2.protocol.jaxb.StatusCodeType;
 import org.signatureservice.messages.saml2.protocol.jaxb.StatusType;
-import org.certificateservices.messages.utils.*;
 import org.signatureservice.messages.utils.*;
 import org.signatureservice.messages.xenc.jaxb.EncryptedDataType;
 import org.w3c.dom.Document;
@@ -144,7 +141,7 @@ public class AssertionPayloadParser extends BasePayloadParser {
 	 * @see PayloadParser#getJAXBPackage()
 	 */
 	public String getJAXBPackage() {
-		return "org.certificateservices.messages.saml2.assertion.jaxb";
+		return "org.signatureservice.messages.saml2.assertion.jaxb";
 	}
 
 	/**
@@ -859,7 +856,7 @@ public class AssertionPayloadParser extends BasePayloadParser {
      */
     private JAXBContext getJAXBContext() throws JAXBException{
     	if(jaxbContext== null){
-    		String jaxbClassPath = "org.certificateservices.messages.saml2.assertion.jaxb:org.certificateservices.messages.saml2.protocol.jaxb:org.certificateservices.messages.xenc.jaxb:org.certificateservices.messages.xmldsig.jaxb";
+    		String jaxbClassPath = "org.signatureservice.messages.saml2.assertion.jaxb:org.signatureservice.messages.saml2.protocol.jaxb:org.signatureservice.messages.xenc.jaxb:org.signatureservice.messages.xmldsig.jaxb";
     			    		
     		jaxbContext = JAXBContext.newInstance(jaxbClassPath);
     		
@@ -873,7 +870,7 @@ public class AssertionPayloadParser extends BasePayloadParser {
      */
     private JAXBContext getUserDataJAXBContext() throws JAXBException{
     	if(userDataJaxbContext== null){
-    		String jaxbClassPath = "org.certificateservices.messages.saml2.assertion.jaxb:org.certificateservices.messages.saml2.protocol.jaxb:org.certificateservices.messages.xenc.jaxb:org.certificateservices.messages.xmldsig.jaxb:org.certificateservices.messages.credmanagement.jaxb";
+    		String jaxbClassPath = "org.signatureservice.messages.saml2.assertion.jaxb:org.signatureservice.messages.saml2.protocol.jaxb:org.signatureservice.messages.xenc.jaxb:org.signatureservice.messages.xmldsig.jaxb:org.signatureservice.messages.credmanagement.jaxb";
     			    		
     		userDataJaxbContext = JAXBContext.newInstance(jaxbClassPath);
     		

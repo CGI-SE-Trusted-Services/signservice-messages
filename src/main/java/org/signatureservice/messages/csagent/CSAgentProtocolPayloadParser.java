@@ -15,7 +15,6 @@ package org.signatureservice.messages.csagent;
 
 import org.signatureservice.messages.MessageContentException;
 import org.signatureservice.messages.MessageProcessingException;
-import org.certificateservices.messages.csagent.jaxb.*;
 import org.signatureservice.messages.csagent.jaxb.*;
 import org.signatureservice.messages.csmessages.BasePayloadParser;
 import org.signatureservice.messages.csmessages.CSMessageResponseData;
@@ -53,7 +52,7 @@ public class CSAgentProtocolPayloadParser extends BasePayloadParser {
 	 * @see PayloadParser#getJAXBPackage()
 	 */
 	public String getJAXBPackage() {
-		return "org.certificateservices.messages.csagent.jaxb";
+		return "org.signatureservice.messages.csagent.jaxb";
 	}
 
 	/**

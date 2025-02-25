@@ -4,7 +4,6 @@ import org.signatureservice.messages.ContextMessageSecurityProvider;
 import org.signatureservice.messages.MessageContentException;
 import org.signatureservice.messages.MessageProcessingException;
 import org.signatureservice.messages.csmessages.DefaultCSMessageParser;
-import org.certificateservices.messages.dss1.core.jaxb.*;
 import org.signatureservice.messages.dss1.core.jaxb.*;
 import org.signatureservice.messages.saml2.BaseSAMLMessageParser;
 import org.signatureservice.messages.utils.XMLSigner;
@@ -27,7 +26,7 @@ public class DSS1CoreMessageParser extends BaseSAMLMessageParser{
     public static final String NAMESPACE = "urn:oasis:names:tc:dss:1.0:core:schema";
     public static final String SAML_1_1_NAMESPACE = "urn:oasis:names:tc:SAML:1.0:assertion";
 
-    protected static final String BASE_JAXB_CONTEXT = "org.certificateservices.messages.saml1_1.assertions.jaxb:org.certificateservices.messages.dss1.core.jaxb:org.certificateservices.messages.xmldsig.jaxb";
+    protected static final String BASE_JAXB_CONTEXT = "org.signatureservice.messages.saml1_1.assertions.jaxb:org.signatureservice.messages.dss1.core.jaxb:org.signatureservice.messages.xmldsig.jaxb";
 
     protected static final String ASSERTION_XSD_SCHEMA_1_1_RESOURCE_LOCATION = "/cs-message-oasis-sstc-saml-schema-protocol-1.1.xsd";
     protected static final String DSS_XSD_SCHEMA_1_0_RESOURCE_LOCATION = "/cs-message-oasis-dss-core-schema-v1.0-os.xsd";

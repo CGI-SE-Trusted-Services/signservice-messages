@@ -16,6 +16,8 @@ import org.signatureservice.messages.hardtoken.jaxb.PINData;
 import org.signatureservice.messages.utils.MessageGenerateUtils;
 import spock.lang.Specification
 
+import static org.signatureservice.messages.TestUtils.*
+
 class HardTokenDataParserSpec extends Specification {
 	
 	HardTokenDataParser pp;

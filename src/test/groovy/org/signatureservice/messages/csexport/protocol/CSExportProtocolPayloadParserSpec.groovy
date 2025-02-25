@@ -5,9 +5,8 @@ import org.bouncycastle.jce.provider.BouncyCastleProvider
 import org.signatureservice.messages.MessageContentException
 import org.signatureservice.messages.MessageProcessingException
 import org.signatureservice.messages.csexport.data.CSExportDataParser
-import org.certificateservices.messages.csexport.data.CSExportDataParserSpec
+import org.signatureservice.messages.csexport.data.CSExportDataParserSpec
 import org.signatureservice.messages.csexport.data.jaxb.CSExport
-import org.certificateservices.messages.csexport.protocol.jaxb.*
 import org.signatureservice.messages.csexport.protocol.jaxb.GetCSExportResponse
 import org.signatureservice.messages.csexport.protocol.jaxb.QueryParameter
 import org.signatureservice.messages.csmessages.CSMessageParserManager
@@ -36,7 +35,7 @@ class CSExportProtocolPayloadParserSpec extends Specification {
 	DefaultCSMessageParser csMessageParser
 
 	def setup(){
-		org.certificateservices.messages.TestUtils.setupRegisteredPayloadParser();
+		org.signatureservice.messages.TestUtils.setupRegisteredPayloadParser();
 		csMessageParser = CSMessageParserManager.getCSMessageParser()
 		pp = PayloadParserRegistry.getParser(CSExportProtocolPayloadParser.NAMESPACE);
 		csExportDataParser = new CSExportDataParser(csMessageParser.messageSecurityProvider, true)
@@ -44,7 +43,7 @@ class CSExportProtocolPayloadParserSpec extends Specification {
 	
 	def "Verify that JAXBPackage(), getNameSpace(), getSchemaAsInputStream(), getSupportedVersions(), getDefaultPayloadVersion() returns the correct values"(){
 		expect:
-		pp.getJAXBPackage() == "org.certificateservices.messages.csexport.protocol.jaxb"
+		pp.getJAXBPackage() == "org.signatureservice.messages.csexport.protocol.jaxb"
 		pp.getNameSpace() == "http://certificateservices.org/xsd/cs_export_protocol2_0"
 		pp.getSchemaAsInputStream("2.0") != null
 		pp.getDefaultPayloadVersion() == "2.0"
@@ -55,13 +54,13 @@ class CSExportProtocolPayloadParserSpec extends Specification {
 	def "Verify that genGetCSExportRequest() generates a valid xml message and genGetCSExportResponse() generates a valid CSMessageResponseData without any query paramters"(){
 		when:
 		csMessageParser.sourceId = "SOMEREQUESTER"
-		byte[] requestMessage = pp.genGetCSExportRequest(org.certificateservices.messages.csmessages.DefaultCSMessageParserSpec.TEST_ID, "SOMESOURCEID", "someorg","1.0",null, org.certificateservices.messages.csmessages.DefaultCSMessageParserSpec.createOriginatorCredential( ), null)
+		byte[] requestMessage = pp.genGetCSExportRequest(org.signatureservice.messages.csmessages.DefaultCSMessageParserSpec.TEST_ID, "SOMESOURCEID", "someorg","1.0",null, org.signatureservice.messages.csmessages.DefaultCSMessageParserSpec.createOriginatorCredential( ), null)
         //printXML(requestMessage)
-		def xml = org.certificateservices.messages.TestUtils.slurpXml(requestMessage)
+		def xml = org.signatureservice.messages.TestUtils.slurpXml(requestMessage)
 		def payloadObject = xml.payload.GetCSExportRequest
 		then:
-        org.certificateservices.messages.TestUtils.messageContainsPayload requestMessage, "csexp:GetCSExportRequest"
-        org.certificateservices.messages.csmessages.DefaultCSMessageParserSpec.verifyCSHeaderMessage(requestMessage, xml, "SOMEREQUESTER", "SOMESOURCEID", "someorg","GetCSExportRequest", org.certificateservices.messages.csmessages.DefaultCSMessageParserSpec.createOriginatorCredential(), csMessageParser)
+        org.signatureservice.messages.TestUtils.messageContainsPayload requestMessage, "csexp:GetCSExportRequest"
+        org.signatureservice.messages.csmessages.DefaultCSMessageParserSpec.verifyCSHeaderMessage(requestMessage, xml, "SOMEREQUESTER", "SOMESOURCEID", "someorg","GetCSExportRequest", org.signatureservice.messages.csmessages.DefaultCSMessageParserSpec.createOriginatorCredential(), csMessageParser)
 		payloadObject.@exportDataVersion == "1.0"
 		payloadObject.queryParameters.size() == 0
 		when:
@@ -70,15 +69,15 @@ class CSExportProtocolPayloadParserSpec extends Specification {
 		CSExport csExportData = csExportDataParser.genCSExport_1_xAsObject("1.0",[CSExportDataParserSpec.genOrganisation()], [CSExportDataParserSpec.genTokenType()])
 		CSMessageResponseData rd = pp.genGetCSExportResponse("SomeRelatedEndEntity", request, "1.0", csExportData, null)
 		//printXML(rd.responseData)
-		xml = org.certificateservices.messages.TestUtils.slurpXml(rd.responseData)
+		xml = org.signatureservice.messages.TestUtils.slurpXml(rd.responseData)
 		payloadObject = xml.payload.GetCSExportResponse
 		
 		then:
-        org.certificateservices.messages.TestUtils.messageContainsPayload rd.responseData, "csexp:GetCSExportResponse"
+        org.signatureservice.messages.TestUtils.messageContainsPayload rd.responseData, "csexp:GetCSExportResponse"
 
-        org.certificateservices.messages.TestUtils.verifyCSMessageResponseData  rd, "SOMEREQUESTER", org.certificateservices.messages.csmessages.DefaultCSMessageParserSpec.TEST_ID, false, "GetCSExportResponse", "SomeRelatedEndEntity"
-        org.certificateservices.messages.csmessages.DefaultCSMessageParserSpec.verifyCSHeaderMessage(rd.responseData, xml, "SOMESOURCEID", "SOMEREQUESTER", "someorg","GetCSExportResponse", org.certificateservices.messages.csmessages.DefaultCSMessageParserSpec.createOriginatorCredential(), csMessageParser)
-        org.certificateservices.messages.csmessages.DefaultCSMessageParserSpec.verifySuccessfulBasePayload(payloadObject, org.certificateservices.messages.csmessages.DefaultCSMessageParserSpec.TEST_ID)
+        org.signatureservice.messages.TestUtils.verifyCSMessageResponseData  rd, "SOMEREQUESTER", org.signatureservice.messages.csmessages.DefaultCSMessageParserSpec.TEST_ID, false, "GetCSExportResponse", "SomeRelatedEndEntity"
+        org.signatureservice.messages.csmessages.DefaultCSMessageParserSpec.verifyCSHeaderMessage(rd.responseData, xml, "SOMESOURCEID", "SOMEREQUESTER", "someorg","GetCSExportResponse", org.signatureservice.messages.csmessages.DefaultCSMessageParserSpec.createOriginatorCredential(), csMessageParser)
+        org.signatureservice.messages.csmessages.DefaultCSMessageParserSpec.verifySuccessfulBasePayload(payloadObject, org.signatureservice.messages.csmessages.DefaultCSMessageParserSpec.TEST_ID)
 
 
 		when:
@@ -138,9 +137,9 @@ class CSExportProtocolPayloadParserSpec extends Specification {
 		q2.type = "SomeType2"
 
 		when:
-		byte[] requestMessage = pp.genGetCSExportRequest(org.certificateservices.messages.csmessages.DefaultCSMessageParserSpec.TEST_ID, "SOMESOURCEID", "someorg","1.0",[q1, q2], org.certificateservices.messages.csmessages.DefaultCSMessageParserSpec.createOriginatorCredential( ), null)
+		byte[] requestMessage = pp.genGetCSExportRequest(org.signatureservice.messages.csmessages.DefaultCSMessageParserSpec.TEST_ID, "SOMESOURCEID", "someorg","1.0",[q1, q2], org.signatureservice.messages.csmessages.DefaultCSMessageParserSpec.createOriginatorCredential( ), null)
 		//printXML(requestMessage)
-		def xml = org.certificateservices.messages.TestUtils.slurpXml(requestMessage)
+		def xml = org.signatureservice.messages.TestUtils.slurpXml(requestMessage)
 		def payloadObject = xml.payload.GetCSExportRequest
 		then:
 		payloadObject.queryParameters.size() == 1
@@ -150,7 +149,7 @@ class CSExportProtocolPayloadParserSpec extends Specification {
 		payloadObject.queryParameters.queryParameter[1].type == "SomeType2"
 
 		when:
-		pp.parseMessage(pp.genGetCSExportRequest(org.certificateservices.messages.csmessages.DefaultCSMessageParserSpec.TEST_ID, "SOMESOURCEID", "someorg","1.0",[new QueryParameter()], org.certificateservices.messages.csmessages.DefaultCSMessageParserSpec.createOriginatorCredential( ), null));
+		pp.parseMessage(pp.genGetCSExportRequest(org.signatureservice.messages.csmessages.DefaultCSMessageParserSpec.TEST_ID, "SOMESOURCEID", "someorg","1.0",[new QueryParameter()], org.signatureservice.messages.csmessages.DefaultCSMessageParserSpec.createOriginatorCredential( ), null));
 		then:
 		thrown MessageContentException
 	}

@@ -18,7 +18,9 @@ import java.security.KeyPair
 import java.security.KeyPairGenerator
 import java.security.Security
 
-import static org.certificateservices.messages.v2x.registration.V2XPayloadParserSpec.genRegions
+import static org.signatureservice.messages.TestUtils.*
+import static org.signatureservice.messages.v2x.registration.V2XPayloadParserSpec.genRegions
+import static org.signatureservice.messages.csmessages.DefaultCSMessageParserSpec.*
 
 /**
  * Unit tests for V2XBackendPayloadParser
@@ -55,7 +57,7 @@ class V2XBackendPayloadParserSpec extends Specification {
 
     def "Verify that JAXBPackage(), getNameSpace(), getSchemaAsInputStream(), getSupportedVersions(), getDefaultPayloadVersion() returns the correct values"(){
         expect:
-        pp.getJAXBPackage() == "org.certificateservices.messages.v2x.backend.jaxb"
+        pp.getJAXBPackage() == "org.signatureservice.messages.v2x.backend.jaxb"
         pp.getNameSpace() == "http://certificateservices.org/xsd/v2x_backend_2_0"
         pp.getSchemaAsInputStream("2.0") != null
         pp.getDefaultPayloadVersion() == "2.0"

@@ -3,13 +3,12 @@ package org.signatureservice.messages.saml2.protocol
 import org.signatureservice.messages.MessageContentException
 import org.signatureservice.messages.assertion.ResponseStatusCodes
 import org.signatureservice.messages.saml2.BaseSAMLMessageParser
-import org.certificateservices.messages.saml2.CommonSAMLMessageParserSpecification
+import org.signatureservice.messages.saml2.CommonSAMLMessageParserSpecification
 import org.signatureservice.messages.saml2.assertion.SAMLAssertionMessageParser
 import org.signatureservice.messages.saml2.assertion.jaxb.AssertionType
 import org.signatureservice.messages.saml2.assertion.jaxb.ConditionsType
 import org.signatureservice.messages.saml2.assertion.jaxb.NameIDType
 import org.signatureservice.messages.saml2.assertion.jaxb.SubjectType
-import org.certificateservices.messages.saml2.protocol.jaxb.*
 import org.signatureservice.messages.saml2.protocol.jaxb.AuthnContextComparisonType
 import org.signatureservice.messages.saml2.protocol.jaxb.AuthnRequestType
 import org.signatureservice.messages.saml2.protocol.jaxb.ExtensionsType
@@ -25,7 +24,7 @@ import org.signatureservice.messages.sweeid2.pricipalselection1_0.jaxb.ObjectFac
 
 import javax.xml.bind.JAXBElement
 
-import static org.certificateservices.messages.TestUtils.slurpXml
+import static org.signatureservice.messages.TestUtils.*
 import static org.signatureservice.messages.ContextMessageSecurityProvider.DEFAULT_CONTEXT
 
 class SAMLProtocolMessageParserSpec extends CommonSAMLMessageParserSpecification {

@@ -22,7 +22,6 @@ import org.signatureservice.messages.csexport.data.jaxb.Organisation;
 import org.signatureservice.messages.csexport.data.jaxb.TokenType;
 import org.signatureservice.messages.csmessages.DefaultCSMessageParser;
 import org.signatureservice.messages.csmessages.XSDLSInput;
-import org.certificateservices.messages.utils.*;
 import org.signatureservice.messages.utils.*;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -309,7 +308,7 @@ public class CSExportDataParser {
 	 */
     private JAXBContext getJAXBContext() throws JAXBException{
     	if(jaxbContext== null){
-    		String jaxbClassPath = "org.certificateservices.messages.csexport.data.jaxb:org.certificateservices.messages.xmldsig.jaxb";
+    		String jaxbClassPath = "org.signatureservice.messages.csexport.data.jaxb:org.signatureservice.messages.xmldsig.jaxb";
     		jaxbContext = JAXBContext.newInstance(jaxbClassPath);
     	}
     	return jaxbContext;

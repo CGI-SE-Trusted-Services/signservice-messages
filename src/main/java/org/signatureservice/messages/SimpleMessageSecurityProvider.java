@@ -12,7 +12,6 @@
 *************************************************************************/
 package org.signatureservice.messages;
 
-import org.certificateservices.messages.utils.*;
 import org.signatureservice.messages.utils.SettingsUtils;
 import org.signatureservice.messages.utils.XMLEncrypter;
 import org.signatureservice.messages.utils.XMLSigner;

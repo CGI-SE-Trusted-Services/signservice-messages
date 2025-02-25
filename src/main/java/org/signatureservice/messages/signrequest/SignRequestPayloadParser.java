@@ -21,7 +21,6 @@ import org.signatureservice.messages.csmessages.PayloadParser;
 import org.signatureservice.messages.csmessages.jaxb.Attribute;
 import org.signatureservice.messages.csmessages.jaxb.CSMessage;
 import org.signatureservice.messages.csmessages.jaxb.Credential;
-import org.certificateservices.messages.signrequest.jaxb.*;
 import org.signatureservice.messages.signrequest.jaxb.*;
 
 import java.io.InputStream;
@@ -54,7 +53,7 @@ public class SignRequestPayloadParser extends BasePayloadParser {
 	 * @see PayloadParser#getJAXBPackage()
 	 */
 	public String getJAXBPackage() {
-		return "org.certificateservices.messages.signrequest.jaxb";
+		return "org.signatureservice.messages.signrequest.jaxb";
 	}
 
 	/**

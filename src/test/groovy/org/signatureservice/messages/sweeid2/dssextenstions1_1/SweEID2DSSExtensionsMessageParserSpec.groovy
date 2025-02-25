@@ -8,12 +8,11 @@ import org.signatureservice.messages.dss1.core.ResultMajorValues
 import org.signatureservice.messages.dss1.core.jaxb.SignRequest
 import org.signatureservice.messages.dss1.core.jaxb.SignResponse
 import org.signatureservice.messages.saml2.BaseSAMLMessageParser
-import org.certificateservices.messages.saml2.CommonSAMLMessageParserSpecification
+import org.signatureservice.messages.saml2.CommonSAMLMessageParserSpecification
 import org.signatureservice.messages.saml2.assertion.jaxb.AttributeStatementType
 import org.signatureservice.messages.saml2.assertion.jaxb.AttributeType
 import org.signatureservice.messages.saml2.assertion.jaxb.ConditionsType
 import org.signatureservice.messages.saml2.assertion.jaxb.NameIDType
-import org.certificateservices.messages.sweeid2.dssextenstions1_1.jaxb.*
 import org.signatureservice.messages.sweeid2.dssextenstions1_1.jaxb.AdESObjectType
 import org.signatureservice.messages.sweeid2.dssextenstions1_1.jaxb.CertRequestPropertiesType
 import org.signatureservice.messages.sweeid2.dssextenstions1_1.jaxb.ContextInfoType
@@ -32,7 +31,7 @@ import org.w3c.dom.Element
 import javax.xml.bind.JAXBElement
 import javax.xml.namespace.QName
 
-import static org.certificateservices.messages.TestUtils.slurpXml
+import static org.signatureservice.messages.TestUtils.*
 import static org.signatureservice.messages.ContextMessageSecurityProvider.DEFAULT_CONTEXT
 
 class SweEID2DSSExtensionsMessageParserSpec extends CommonSAMLMessageParserSpecification {

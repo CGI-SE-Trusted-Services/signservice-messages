@@ -32,6 +32,7 @@ import spock.lang.Specification
 import java.security.Security
 import java.security.cert.Certificate
 
+import static org.signatureservice.messages.TestUtils.*
 import static org.signatureservice.messages.csmessages.DefaultCSMessageParserSpec.*
 
 /**
@@ -79,7 +80,7 @@ class SignRequestPayloadParserSpec extends Specification {
 
     def "Verify that JAXBPackage(), getNameSpace(), getSchemaAsInputStream(), getSupportedVersions(), getDefaultPayloadVersion() returns the correct values"(){
         expect:
-        pp.getJAXBPackage() == "org.certificateservices.messages.signrequest.jaxb"
+        pp.getJAXBPackage() == "org.signatureservice.messages.signrequest.jaxb"
         pp.getNameSpace() == "http://certificateservices.org/xsd/signrequest2_0"
         pp.getSchemaAsInputStream("2.0") != null
         pp.getSchemaAsInputStream("2.1") != null

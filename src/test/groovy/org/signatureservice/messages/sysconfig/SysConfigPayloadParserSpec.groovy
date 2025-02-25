@@ -17,6 +17,8 @@ import spock.lang.Specification
 
 import java.security.Security
 
+import static org.signatureservice.messages.TestUtils.*
+import static org.signatureservice.messages.TestUtils.*
 import static org.signatureservice.messages.csmessages.DefaultCSMessageParserSpec.*
 
 class SysConfigPayloadParserSpec extends Specification {
@@ -40,7 +42,7 @@ class SysConfigPayloadParserSpec extends Specification {
 	
 	def "Verify that JAXBPackage(), getNameSpace(), getSchemaAsInputStream(), getSupportedVersions(), getDefaultPayloadVersion() returns the correct values"(){
 		expect:
-		pp.getJAXBPackage() == "org.certificateservices.messages.sysconfig.jaxb"
+		pp.getJAXBPackage() == "org.signatureservice.messages.sysconfig.jaxb"
 		pp.getNameSpace() == "http://certificateservices.org/xsd/sysconfig2_0"
 		pp.getSchemaAsInputStream("2.0") != null
 		pp.getDefaultPayloadVersion() == "2.0"

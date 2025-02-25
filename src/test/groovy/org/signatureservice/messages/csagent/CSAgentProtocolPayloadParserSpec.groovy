@@ -30,6 +30,8 @@ import spock.lang.Specification
 import java.security.MessageDigest
 import java.security.Security
 
+import static org.signatureservice.messages.TestUtils.*
+import static org.signatureservice.messages.TestUtils.*
 import static org.signatureservice.messages.csmessages.DefaultCSMessageParserSpec.*
 
 class CSAgentProtocolPayloadParserSpec extends Specification {
@@ -60,7 +62,7 @@ class CSAgentProtocolPayloadParserSpec extends Specification {
 	
 	def "Verify that JAXBPackage(), getNameSpace(), getSchemaAsInputStream(), getSupportedVersions(), getDefaultPayloadVersion() returns the correct values"(){
 		expect:
-		pp.getJAXBPackage() == "org.certificateservices.messages.csagent.jaxb"
+		pp.getJAXBPackage() == "org.signatureservice.messages.csagent.jaxb"
 		pp.getNameSpace() == "http://certificateservices.org/xsd/cs_agent_protocol2_0"
 		pp.getSchemaAsInputStream("2.0") != null
 		pp.getDefaultPayloadVersion() == "2.0"

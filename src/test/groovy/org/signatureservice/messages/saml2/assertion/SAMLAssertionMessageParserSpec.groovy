@@ -3,7 +3,7 @@ package org.signatureservice.messages.saml2.assertion
 import org.signatureservice.messages.ContextMessageSecurityProvider
 import org.signatureservice.messages.SimpleMessageSecurityProvider
 import org.signatureservice.messages.saml2.BaseSAMLMessageParser
-import org.certificateservices.messages.saml2.CommonSAMLMessageParserSpecification
+import org.signatureservice.messages.saml2.CommonSAMLMessageParserSpecification
 import org.signatureservice.messages.saml2.assertion.jaxb.AssertionType
 import org.signatureservice.messages.saml2.protocol.SAMLProtocolMessageParser
 import org.signatureservice.messages.saml2.protocol.jaxb.ResponseType

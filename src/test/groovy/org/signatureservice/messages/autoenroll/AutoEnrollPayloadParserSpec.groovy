@@ -3,7 +3,6 @@ package org.signatureservice.messages.autoenroll
 import org.apache.xml.security.Init
 import org.bouncycastle.jce.provider.BouncyCastleProvider
 import org.signatureservice.messages.MessageContentException
-import org.certificateservices.messages.autoenroll.jaxb.*
 import org.signatureservice.messages.autoenroll.jaxb.CheckStatusResponse
 import org.signatureservice.messages.autoenroll.jaxb.ClientActionRequest
 import org.signatureservice.messages.autoenroll.jaxb.ObjectFactory
@@ -29,6 +28,8 @@ import spock.lang.Specification
 
 import java.security.Security
 
+import static org.signatureservice.messages.TestUtils.*
+import static org.signatureservice.messages.TestUtils.*
 import static org.signatureservice.messages.csmessages.DefaultCSMessageParserSpec.*
 
 /**
@@ -61,7 +62,7 @@ class AutoEnrollPayloadParserSpec extends Specification {
 
     def "Verify that JAXBPackage(), getNameSpace(), getSchemaAsInputStream(), getSupportedVersions(), getDefaultPayloadVersion() returns the correct values"(){
         expect:
-        pp.getJAXBPackage() == "org.certificateservices.messages.autoenroll.jaxb"
+        pp.getJAXBPackage() == "org.signatureservice.messages.autoenroll.jaxb"
         pp.getNameSpace() == "http://certificateservices.org/xsd/autoenroll2_x"
         pp.getSchemaAsInputStream("2.0") != null
         pp.getDefaultPayloadVersion() == "2.0"

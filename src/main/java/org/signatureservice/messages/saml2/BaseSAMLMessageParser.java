@@ -12,15 +12,11 @@
 *************************************************************************/
 package org.signatureservice.messages.saml2;
 
-import org.certificateservices.messages.*;
 import org.signatureservice.messages.*;
 import org.signatureservice.messages.assertion.ResponseStatusCodes;
 import org.signatureservice.messages.csmessages.DefaultCSMessageParser;
 import org.signatureservice.messages.csmessages.XSDLSInput;
-import org.certificateservices.messages.saml2.assertion.jaxb.*;
 import org.signatureservice.messages.saml2.assertion.jaxb.*;
-import org.certificateservices.messages.saml2.protocol.jaxb.*;
-import org.certificateservices.messages.utils.*;
 import org.signatureservice.messages.saml2.protocol.jaxb.ExtensionsType;
 import org.signatureservice.messages.saml2.protocol.jaxb.ResponseType;
 import org.signatureservice.messages.saml2.protocol.jaxb.StatusCodeType;

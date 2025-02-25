@@ -4,10 +4,9 @@ package org.signatureservice.messages.saml2.metadata
 import org.signatureservice.messages.MessageContentException
 import org.signatureservice.messages.csmessages.DefaultCSMessageParser
 import org.signatureservice.messages.saml2.BaseSAMLMessageParser
-import org.certificateservices.messages.saml2.CommonSAMLMessageParserSpecification
+import org.signatureservice.messages.saml2.CommonSAMLMessageParserSpecification
 import org.signatureservice.messages.saml2.assertion.jaxb.AssertionType
 import org.signatureservice.messages.saml2.assertion.jaxb.AttributeType
-import org.certificateservices.messages.saml2.metadata.jaxb.*
 import org.signatureservice.messages.saml2.metadata.jaxb.AdditionalMetadataLocationType
 import org.signatureservice.messages.saml2.metadata.jaxb.AffiliationDescriptorType
 import org.signatureservice.messages.saml2.metadata.jaxb.AttributeConsumingServiceType
@@ -42,8 +41,8 @@ import javax.xml.datatype.DatatypeFactory
 import javax.xml.datatype.Duration
 import javax.xml.namespace.QName
 
-import static org.certificateservices.messages.TestUtils.printXML
-import static org.certificateservices.messages.TestUtils.slurpXml
+import static org.signatureservice.messages.TestUtils.printXML
+import static org.signatureservice.messages.TestUtils.*
 import static org.signatureservice.messages.ContextMessageSecurityProvider.DEFAULT_CONTEXT
 
 class SAMLMetaDataMessageParserSpec extends CommonSAMLMessageParserSpecification {

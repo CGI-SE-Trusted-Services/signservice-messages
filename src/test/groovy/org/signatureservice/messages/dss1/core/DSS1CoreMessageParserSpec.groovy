@@ -3,8 +3,6 @@ package org.signatureservice.messages.dss1.core
 
 import org.signatureservice.messages.MessageContentException
 import org.signatureservice.messages.csmessages.DefaultCSMessageParser
-import org.certificateservices.messages.dss1.core.jaxb.*
-import org.certificateservices.messages.saml2.CommonSAMLMessageParserSpecification
 import org.signatureservice.messages.dss1.core.jaxb.AnyType
 import org.signatureservice.messages.dss1.core.jaxb.InputDocuments
 import org.signatureservice.messages.dss1.core.jaxb.ObjectFactory
@@ -13,10 +11,11 @@ import org.signatureservice.messages.dss1.core.jaxb.SignRequest
 import org.signatureservice.messages.dss1.core.jaxb.SignResponse
 import org.signatureservice.messages.dss1.core.jaxb.SignatureObject
 import org.signatureservice.messages.dss1.core.jaxb.VerifyRequest
+import org.signatureservice.messages.saml2.CommonSAMLMessageParserSpecification
 
 import javax.xml.bind.JAXBElement
 
-import static org.certificateservices.messages.TestUtils.slurpXml
+import static org.signatureservice.messages.TestUtils.*
 import static org.signatureservice.messages.ContextMessageSecurityProvider.DEFAULT_CONTEXT
 
 class DSS1CoreMessageParserSpec extends CommonSAMLMessageParserSpecification {

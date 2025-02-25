@@ -17,6 +17,9 @@ import org.w3c.dom.Document;
 
 import spock.lang.Specification
 
+import static org.signatureservice.messages.TestUtils.*
+import static org.signatureservice.messages.TestUtils.*
+
 class EncryptedCSMessagePayloadParserSpec extends Specification {
 	
 	EncryptedCSMessagePayloadParser pp;

@@ -56,7 +56,7 @@ public class DummyPayloadParser implements PayloadParser{
 
 	
 	public String getJAXBPackage() {
-		return "org.certificateservices.messages.dummy.jaxb";
+		return "org.signatureservice.messages.dummy.jaxb";
 	}
 
 	

@@ -14,7 +14,6 @@ package org.signatureservice.messages.pkimessages;
 
 import org.signatureservice.messages.MessageException;
 import org.signatureservice.messages.MessageSecurityProvider;
-import org.certificateservices.messages.pkimessages.jaxb.*;
 import org.signatureservice.messages.pkimessages.jaxb.*;
 
 import java.security.cert.X509Certificate;

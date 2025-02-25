@@ -22,7 +22,7 @@ import org.signatureservice.messages.MessageContentException
 import org.signatureservice.messages.MessageProcessingException
 import org.signatureservice.messages.MessageSecurityProvider
 import org.signatureservice.messages.SigningAlgorithmScheme
-import org.certificateservices.messages.TestUtils
+import org.signatureservice.messages.TestUtils
 import org.signatureservice.messages.assertion.AssertionPayloadParser
 import org.signatureservice.messages.csmessages.CSMessageParser
 import org.signatureservice.messages.csmessages.DefaultCSMessageParser
@@ -42,7 +42,7 @@ import java.security.cert.CertificateFactory
 import java.security.cert.X509Certificate
 import java.security.spec.PKCS8EncodedKeySpec
 
-import static org.certificateservices.messages.TestUtils.setupRegisteredPayloadParser
+import static org.signatureservice.messages.TestUtils.*
 
 class XMLSignerSpec extends Specification {
 	

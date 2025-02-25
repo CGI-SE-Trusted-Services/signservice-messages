@@ -18,6 +18,8 @@ import org.signatureservice.messages.utils.SystemTime;
 import spock.lang.Shared;
 import spock.lang.Specification
 
+import static org.signatureservice.messages.TestUtils.*
+
 class UserDataAssertionDataSpec extends Specification {
 	
 

@@ -53,7 +53,6 @@ import org.signatureservice.messages.csmessages.jaxb.Credential;
 import org.signatureservice.messages.csmessages.jaxb.RequestStatus;
 import org.signatureservice.messages.encryptedcsmessage.jaxb.EncryptedCSMessageType;
 import org.signatureservice.messages.encryptedcsmessage.jaxb.ObjectFactory;
-import org.certificateservices.messages.utils.*;
 import org.signatureservice.messages.utils.*;
 import org.signatureservice.messages.utils.XMLEncrypter.DecryptedXMLConverter;
 import org.signatureservice.messages.xenc.jaxb.EncryptedDataType;
@@ -356,7 +355,7 @@ public class EncryptedCSMessagePayloadParser extends BasePayloadParser {
      */
     private JAXBContext getJAXBContext() throws JAXBException{
     	if(jaxbContext== null){
-    		String jaxbClassPath = "org.certificateservices.messages.encryptedcsmessage.jaxb:org.certificateservices.messages.xenc.jaxb:org.certificateservices.messages.xmldsig.jaxb";
+    		String jaxbClassPath = "org.signatureservice.messages.encryptedcsmessage.jaxb:org.signatureservice.messages.xenc.jaxb:org.signatureservice.messages.xmldsig.jaxb";
     			    		
     		jaxbContext = JAXBContext.newInstance(jaxbClassPath);
     		

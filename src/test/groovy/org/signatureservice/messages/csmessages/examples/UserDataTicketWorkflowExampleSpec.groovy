@@ -1,6 +1,7 @@
 package org.signatureservice.messages.csmessages.examples
 
 import org.bouncycastle.jce.provider.BouncyCastleProvider
+import org.signatureservice.messages.TestUtils
 import org.signatureservice.messages.utils.XMLSigner
 
 import java.security.Security
@@ -10,7 +11,6 @@ import javax.xml.bind.JAXBElement;
 
 import org.signatureservice.messages.MessageSecurityProvider;
 import org.signatureservice.messages.SimpleMessageSecurityProvider;
-import org.certificateservices.messages.TestUtils;
 import org.signatureservice.messages.assertion.AssertionPayloadParser;
 import org.signatureservice.messages.assertion.AttributeQueryData;
 import org.signatureservice.messages.assertion.AttributeQueryTypeEnum;

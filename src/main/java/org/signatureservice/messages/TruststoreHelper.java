@@ -13,7 +13,6 @@
 package org.signatureservice.messages;
 
 import org.bouncycastle.asn1.ASN1ObjectIdentifier;
-import org.certificateservices.messages.utils.*;
 import org.signatureservice.messages.utils.*;
 
 import java.security.KeyStore;

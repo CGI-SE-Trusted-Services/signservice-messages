@@ -1185,7 +1185,7 @@ public class DefaultPKIMessageParser implements PKIMessageParser {
     private JAXBContext jaxbContext = null;
     private JAXBContext getJAXBContext() throws JAXBException{
     	if(jaxbContext== null){
-    		jaxbContext = JAXBContext.newInstance("org.certificateservices.messages.pkimessages.jaxb");
+    		jaxbContext = JAXBContext.newInstance("org.signatureservice.messages.pkimessages.jaxb");
     	}
     	return jaxbContext;
     }

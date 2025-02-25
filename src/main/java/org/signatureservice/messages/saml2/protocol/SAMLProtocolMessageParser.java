@@ -9,7 +9,6 @@ import org.signatureservice.messages.saml2.BaseSAMLMessageParser;
 import org.signatureservice.messages.saml2.assertion.jaxb.ConditionsType;
 import org.signatureservice.messages.saml2.assertion.jaxb.NameIDType;
 import org.signatureservice.messages.saml2.assertion.jaxb.SubjectType;
-import org.certificateservices.messages.saml2.protocol.jaxb.*;
 import org.signatureservice.messages.saml2.protocol.jaxb.*;
 import org.signatureservice.messages.utils.MessageGenerateUtils;
 import org.signatureservice.messages.utils.XMLSigner;
@@ -36,7 +35,7 @@ import java.util.List;
  */
 public class SAMLProtocolMessageParser extends BaseSAMLMessageParser{
 
-    private static final String BASE_JAXB_CONTEXT = "org.certificateservices.messages.saml2.assertion.jaxb:org.certificateservices.messages.saml2.protocol.jaxb:org.certificateservices.messages.xenc.jaxb:org.certificateservices.messages.xmldsig.jaxb:org.certificateservices.messages.sweeid2.pricipalselection1_0.jaxb";
+    private static final String BASE_JAXB_CONTEXT = "org.signatureservice.messages.saml2.assertion.jaxb:org.signatureservice.messages.saml2.protocol.jaxb:org.signatureservice.messages.xenc.jaxb:org.signatureservice.messages.xmldsig.jaxb:org.signatureservice.messages.sweeid2.pricipalselection1_0.jaxb";
 
     private AuthNSignatureLocationFinder authNSignatureLocationFinder = new AuthNSignatureLocationFinder();
     @Override

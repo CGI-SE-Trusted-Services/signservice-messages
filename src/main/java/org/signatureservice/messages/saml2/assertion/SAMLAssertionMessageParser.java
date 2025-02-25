@@ -1,13 +1,11 @@
 package org.signatureservice.messages.saml2.assertion;
 
-import org.certificateservices.messages.*;
 import org.signatureservice.messages.ContextMessageSecurityProvider;
 import org.signatureservice.messages.MessageContentException;
 import org.signatureservice.messages.MessageProcessingException;
 import org.signatureservice.messages.NoDecryptionKeyFoundException;
 import org.signatureservice.messages.csmessages.DefaultCSMessageParser;
 import org.signatureservice.messages.saml2.BaseSAMLMessageParser;
-import org.certificateservices.messages.saml2.assertion.jaxb.*;
 import org.signatureservice.messages.saml2.assertion.jaxb.*;
 import org.signatureservice.messages.utils.MessageGenerateUtils;
 import org.signatureservice.messages.utils.XMLEncrypter;
@@ -35,7 +33,7 @@ import java.util.List;
  */
 public class SAMLAssertionMessageParser extends BaseSAMLMessageParser{
 
-    private static final String BASE_JAXB_CONTEXT = "org.certificateservices.messages.saml2.assertion.jaxb:org.certificateservices.messages.saml2.protocol.jaxb:org.certificateservices.messages.xenc.jaxb:org.certificateservices.messages.xmldsig.jaxb";
+    private static final String BASE_JAXB_CONTEXT = "org.signatureservice.messages.saml2.assertion.jaxb:org.signatureservice.messages.saml2.protocol.jaxb:org.signatureservice.messages.xenc.jaxb:org.signatureservice.messages.xmldsig.jaxb";
 
     EncryptedAssertionXMLConverter encryptedAssertionXMLConverter = new EncryptedAssertionXMLConverter();
 

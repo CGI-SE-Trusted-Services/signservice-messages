@@ -19,7 +19,6 @@ import org.signatureservice.messages.csmessages.CSMessageResponseData;
 import org.signatureservice.messages.csmessages.PayloadParser;
 import org.signatureservice.messages.csmessages.jaxb.CSMessage;
 import org.signatureservice.messages.csmessages.jaxb.Credential;
-import org.certificateservices.messages.v2x.backend.jaxb.*;
 import org.signatureservice.messages.v2x.backend.jaxb.*;
 import org.signatureservice.messages.v2x.registration.V2XPayloadParser;
 import org.signatureservice.messages.v2x.registration.jaxb.RegionsType;
@@ -52,7 +51,7 @@ public class V2XBackendPayloadParser extends BasePayloadParser {
 	 * @see PayloadParser#getJAXBPackage()
 	 */
 	public String getJAXBPackage() {
-		return "org.certificateservices.messages.v2x.backend.jaxb";
+		return "org.signatureservice.messages.v2x.backend.jaxb";
 	}
 
 	/**

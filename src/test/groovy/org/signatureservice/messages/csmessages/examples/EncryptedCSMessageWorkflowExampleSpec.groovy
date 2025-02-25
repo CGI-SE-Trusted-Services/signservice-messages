@@ -1,6 +1,7 @@
 package org.signatureservice.messages.csmessages.examples
 
 import org.bouncycastle.jce.provider.BouncyCastleProvider
+import org.signatureservice.messages.TestUtils
 import org.signatureservice.messages.utils.XMLSigner
 
 import java.security.Security
@@ -8,7 +9,6 @@ import java.security.cert.X509Certificate
 
 import org.signatureservice.messages.MessageSecurityProvider;
 import org.signatureservice.messages.SimpleMessageSecurityProvider;
-import org.certificateservices.messages.TestUtils
 import org.signatureservice.messages.credmanagement.CredManagementPayloadParser
 import org.signatureservice.messages.csmessages.CSMessageParserManager
 import org.signatureservice.messages.csmessages.PayloadParserRegistry

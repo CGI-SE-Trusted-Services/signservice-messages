@@ -11,6 +11,7 @@ import spock.lang.Shared;
 import spock.lang.Specification
 
 import static AttributeQueryTypeEnum.*
+import static org.signatureservice.messages.TestUtils.*
 
 class AttributeQueryDataSpec extends Specification {
 	

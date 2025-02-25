@@ -20,7 +20,6 @@ import org.signatureservice.messages.csmessages.PayloadParser;
 import org.signatureservice.messages.csmessages.jaxb.CSMessage;
 import org.signatureservice.messages.csmessages.jaxb.Credential;
 import org.signatureservice.messages.utils.MessageGenerateUtils;
-import org.certificateservices.messages.v2x.registration.jaxb.*;
 import org.signatureservice.messages.v2x.registration.jaxb.*;
 
 import java.io.InputStream;
@@ -52,7 +51,7 @@ public class V2XPayloadParser extends BasePayloadParser {
 	 * @see PayloadParser#getJAXBPackage()
 	 */
 	public String getJAXBPackage() {
-		return "org.certificateservices.messages.v2x.registration.jaxb";
+		return "org.signatureservice.messages.v2x.registration.jaxb";
 	}
 
 	/**

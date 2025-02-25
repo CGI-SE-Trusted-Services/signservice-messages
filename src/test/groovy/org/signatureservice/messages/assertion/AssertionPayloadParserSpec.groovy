@@ -46,6 +46,7 @@ import java.security.Security
 import java.security.cert.CertificateFactory
 import java.security.cert.X509Certificate
 
+import static org.signatureservice.messages.TestUtils.*
 import static org.signatureservice.messages.csmessages.DefaultCSMessageParserSpec.TEST_ID
 
 class AssertionPayloadParserSpec extends Specification {
@@ -109,7 +110,7 @@ class AssertionPayloadParserSpec extends Specification {
 	
 	def "Verify that JAXBPackage(), getNameSpace(), getSchemaAsInputStream(), getSupportedVersions(), getDefaultPayloadVersion() returns the correct values"(){
 		expect:
-		pp.getJAXBPackage() == "org.certificateservices.messages.saml2.assertion.jaxb"
+		pp.getJAXBPackage() == "org.signatureservice.messages.saml2.assertion.jaxb"
 		pp.getNameSpace() == "urn:oasis:names:tc:SAML:2.0:assertion"
 		pp.getSchemaAsInputStream("2.0") != null
 		pp.getDefaultPayloadVersion() == "2.0"

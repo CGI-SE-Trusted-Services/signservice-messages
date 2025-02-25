@@ -66,7 +66,6 @@ import org.signatureservice.messages.csmessages.jaxb.Originator;
 import org.signatureservice.messages.csmessages.jaxb.Payload;
 import org.signatureservice.messages.csmessages.jaxb.RequestStatus;
 import org.signatureservice.messages.sensitivekeys.SensitiveKeysParser;
-import org.certificateservices.messages.utils.*;
 import org.signatureservice.messages.utils.*;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -942,7 +941,7 @@ public class DefaultCSMessageParser implements CSMessageParser {
 	     */
 	    JAXBContext getJAXBContext() throws JAXBException, MessageProcessingException{
 	    	if(jaxbContext== null){
-	    		jaxbClassPath = "org.certificateservices.messages.csmessages.jaxb:org.certificateservices.messages.xmldsig.jaxb:org.certificateservices.messages.xenc.jaxb:org.certificateservices.messages.csexport.data.jaxb:org.certificateservices.messages.sensitivekeys.jaxb";
+	    		jaxbClassPath = "org.signatureservice.messages.csmessages.jaxb:org.signatureservice.messages.xmldsig.jaxb:org.signatureservice.messages.xenc.jaxb:org.signatureservice.messages.csexport.data.jaxb:org.signatureservice.messages.sensitivekeys.jaxb";
 	    			    		
 	    		for(String namespace : PayloadParserRegistry.getRegistredNamespaces()){
 	    			String jaxbPackage = PayloadParserRegistry.getParser(namespace).getJAXBPackage();

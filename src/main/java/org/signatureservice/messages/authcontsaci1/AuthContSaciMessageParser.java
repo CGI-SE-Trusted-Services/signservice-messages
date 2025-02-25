@@ -14,7 +14,6 @@ package org.signatureservice.messages.authcontsaci1;
 
 import org.signatureservice.messages.MessageContentException;
 import org.signatureservice.messages.MessageProcessingException;
-import org.certificateservices.messages.authcontsaci1.jaxb.*;
 import org.signatureservice.messages.authcontsaci1.jaxb.AttributeMappingType;
 import org.signatureservice.messages.authcontsaci1.jaxb.AuthContextInfoType;
 import org.signatureservice.messages.authcontsaci1.jaxb.SAMLAuthContextType;
@@ -52,7 +51,7 @@ import java.util.List;
  */
 public class AuthContSaciMessageParser {
 
-    private static final String BASE_JAXB_CONTEXT = "org.certificateservices.messages.saml2.assertion.jaxb:org.certificateservices.messages.authcontsaci1.jaxb";
+    private static final String BASE_JAXB_CONTEXT = "org.signatureservice.messages.saml2.assertion.jaxb:org.signatureservice.messages.authcontsaci1.jaxb";
 
     public static final String NAMESPACE = "http://id.elegnamnden.se/auth-cont/1.0/saci";
 

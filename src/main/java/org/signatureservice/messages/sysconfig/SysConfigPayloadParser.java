@@ -54,7 +54,7 @@ public class SysConfigPayloadParser extends BasePayloadParser {
 	 * @see PayloadParser#getJAXBPackage()
 	 */
 	public String getJAXBPackage() {
-		return "org.certificateservices.messages.sysconfig.jaxb";
+		return "org.signatureservice.messages.sysconfig.jaxb";
 	}
 
 	/**

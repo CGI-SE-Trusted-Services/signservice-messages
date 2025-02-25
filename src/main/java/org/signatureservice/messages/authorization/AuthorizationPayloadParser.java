@@ -19,7 +19,6 @@ import java.util.List;
 
 import org.signatureservice.messages.MessageContentException;
 import org.signatureservice.messages.MessageProcessingException;
-import org.certificateservices.messages.authorization.jaxb.*;
 import org.signatureservice.messages.authorization.jaxb.*;
 import org.signatureservice.messages.csmessages.BasePayloadParser;
 import org.signatureservice.messages.csmessages.CSMessageResponseData;
@@ -53,7 +52,7 @@ public class AuthorizationPayloadParser extends BasePayloadParser {
 	 * @see PayloadParser#getJAXBPackage()
 	 */
 	public String getJAXBPackage() {
-		return "org.certificateservices.messages.authorization.jaxb";
+		return "org.signatureservice.messages.authorization.jaxb";
 	}
 
 	/**

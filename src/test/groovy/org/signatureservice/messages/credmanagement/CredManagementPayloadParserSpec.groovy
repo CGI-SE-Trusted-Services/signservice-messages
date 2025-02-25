@@ -24,7 +24,6 @@ import org.signatureservice.messages.csmessages.CSMessageResponseData
 import org.signatureservice.messages.csmessages.DefaultCSMessageParser
 import org.signatureservice.messages.csmessages.PayloadParserRegistry
 import org.signatureservice.messages.csmessages.constants.AvailableCredentialTypes
-import org.certificateservices.messages.csmessages.jaxb.*
 import org.signatureservice.messages.utils.CSMessageUtils
 import org.signatureservice.messages.utils.MessageGenerateUtils
 import org.signatureservice.messages.csmessages.jaxb.Attribute
@@ -41,6 +40,9 @@ import spock.lang.Specification
 
 import javax.xml.datatype.DatatypeFactory
 import java.security.Security
+
+import static org.signatureservice.messages.TestUtils.*
+import static org.signatureservice.messages.csmessages.DefaultCSMessageParserSpec.*
 
 class CredManagementPayloadParserSpec extends Specification {
 	
@@ -67,7 +69,7 @@ class CredManagementPayloadParserSpec extends Specification {
 	
 	def "Verify that JAXBPackage(), getNameSpace(), getSchemaAsInputStream(), getSupportedVersions(), getDefaultPayloadVersion() returns the correct values"(){
 		expect:
-		pp.getJAXBPackage() == "org.certificateservices.messages.credmanagement.jaxb"
+		pp.getJAXBPackage() == "org.signatureservice.messages.credmanagement.jaxb"
 		pp.getNameSpace() == "http://certificateservices.org/xsd/credmanagement2_0"
 		pp.getSchemaAsInputStream("2.0") != null
 		pp.getSchemaAsInputStream("2.1") != null

@@ -57,7 +57,7 @@ public class CSExportProtocolPayloadParser extends BasePayloadParser {
 	 * @see PayloadParser#getJAXBPackage()
 	 */
 	public String getJAXBPackage() {
-		return "org.certificateservices.messages.csexport.protocol.jaxb";
+		return "org.signatureservice.messages.csexport.protocol.jaxb";
 	}
 
 	/**

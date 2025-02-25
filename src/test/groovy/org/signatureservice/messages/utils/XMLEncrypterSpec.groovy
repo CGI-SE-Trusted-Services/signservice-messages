@@ -58,6 +58,7 @@ import spock.lang.Unroll
 
 import static org.signatureservice.messages.ContextMessageSecurityProvider.DEFAULT_CONTEXT
 import static XMLSigner.XMLDSIG_NAMESPACE
+import static org.signatureservice.messages.TestUtils.*
 
 class XMLEncrypterSpec extends Specification {
 	

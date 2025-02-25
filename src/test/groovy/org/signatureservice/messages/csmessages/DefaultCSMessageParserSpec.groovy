@@ -47,6 +47,8 @@ import org.w3c.dom.Document
 import spock.lang.Specification;
 import spock.lang.Unroll;
 import static DefaultCSMessageParser.*
+import static TestMessages.*
+import static org.signatureservice.messages.TestUtils.*
 
 public class DefaultCSMessageParserSpec extends Specification{
 	
@@ -571,8 +573,8 @@ public class DefaultCSMessageParserSpec extends Specification{
 	
 		mp.jaxbData.getJAXBIntrospector()
 		expect: // Verify that JAXB data isn't cleaned
-		mp.jaxbData.jaxbClassPath =~ "org.certificateservices.messages.csmessages.jaxb"
-		mp.jaxbData.jaxbClassPath =~ ":org.certificateservices.messages.sysconfig.jaxb"
+		mp.jaxbData.jaxbClassPath =~ "org.signatureservice.messages.csmessages.jaxb"
+		mp.jaxbData.jaxbClassPath =~ ":org.signatureservice.messages.sysconfig.jaxb"
 		mp.jaxbData.jaxbContext != null
 		mp.jaxbData.jaxbIntrospector != null
 		
@@ -591,7 +593,7 @@ public class DefaultCSMessageParserSpec extends Specification{
 		mp.jaxbData.getCSMessageUnmarshaller("2.0") != null
 		mp.jaxbData.getPayLoadValidatorFromCache(SysConfigPayloadParser.NAMESPACE, "2.0", "2.0") != null
 		
-		mp.jaxbData.jaxbClassPath =~ "org.certificateservices.messages.csmessages.jaxb"
+		mp.jaxbData.jaxbClassPath =~ "org.signatureservice.messages.csmessages.jaxb"
 		mp.jaxbData.jaxbContext !=null
 		mp.jaxbData.jaxbIntrospector != null
 
@@ -610,7 +612,7 @@ public class DefaultCSMessageParserSpec extends Specification{
 		mp.jaxbData.getPayLoadValidatorFromCache(SysConfigPayloadParser.NAMESPACE, "2.0", "2.0") != null
 		mp.jaxbData.getPayLoadValidatorFromCache(DummyPayloadParser.NAMESPACE, "2.0", "2.0") != null
 		then:
-		mp.jaxbData.jaxbClassPath =~ "org.certificateservices.messages.dummy.jaxb"
+		mp.jaxbData.jaxbClassPath =~ "org.signatureservice.messages.dummy.jaxb"
 		mp.jaxbData.jaxbContext != null
 		mp.jaxbData.jaxbIntrospector != null
 		when: "Try to generate new payload with registered dummy parser"
@@ -635,7 +637,7 @@ public class DefaultCSMessageParserSpec extends Specification{
 		mp.jaxbData.getCSMessageUnmarshaller("2.0") != null
 		mp.jaxbData.getPayLoadValidatorFromCache(SysConfigPayloadParser.NAMESPACE, "2.0", "2.0") != null
 		then:
-		mp.jaxbData.jaxbClassPath !=~ "org.certificateservices.messages.dummy.jaxb"
+		mp.jaxbData.jaxbClassPath !=~ "org.signatureservice.messages.dummy.jaxb"
 		mp.jaxbData.jaxbContext != null
 		mp.jaxbData.jaxbIntrospector != null
 
