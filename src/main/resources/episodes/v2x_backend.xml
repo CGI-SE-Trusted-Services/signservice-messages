@@ -13,22 +13,22 @@ Generated on: 2020.06.02 at 09:13:09 AM CEST
       <package name="org.certificateservices.messages.v2x.backend.jaxb"/>
     </schemaBindings>
     <bindings scd="tns:SignCertResponse">
-      <class ref="org.certificateservices.messages.v2x.backend.jaxb.SignCertResponse"/>
+      <class ref="org.signatureservice.messages.v2x.backend.jaxb.SignCertResponse"/>
     </bindings>
     <bindings scd="~tns:BaseResponseType">
-      <class ref="org.certificateservices.messages.v2x.backend.jaxb.BaseResponseType"/>
+      <class ref="org.signatureservice.messages.v2x.backend.jaxb.BaseResponseType"/>
     </bindings>
     <bindings scd="tns:SignCertRequest">
-      <class ref="org.certificateservices.messages.v2x.backend.jaxb.SignCertRequest"/>
+      <class ref="org.signatureservice.messages.v2x.backend.jaxb.SignCertRequest"/>
     </bindings>
     <bindings scd="tns:SignErrorRequest">
-      <class ref="org.certificateservices.messages.v2x.backend.jaxb.SignErrorRequest"/>
+      <class ref="org.signatureservice.messages.v2x.backend.jaxb.SignErrorRequest"/>
     </bindings>
     <bindings scd="tns:SignErrorResponse">
-      <class ref="org.certificateservices.messages.v2x.backend.jaxb.SignErrorResponse"/>
+      <class ref="org.signatureservice.messages.v2x.backend.jaxb.SignErrorResponse"/>
     </bindings>
     <bindings scd="~tns:ValidityUnitType">
-      <typesafeEnumClass ref="org.certificateservices.messages.v2x.backend.jaxb.ValidityUnitType"/>
+      <typesafeEnumClass ref="org.signatureservice.messages.v2x.backend.jaxb.ValidityUnitType"/>
     </bindings>
   </bindings>
 </bindings>

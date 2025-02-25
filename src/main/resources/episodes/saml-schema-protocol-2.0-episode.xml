@@ -13,82 +13,82 @@ Generated on: 2015.06.18 at 04:08:58 PM CEST
       <package name="org.certificateservices.messages.samlp.jaxb"/>
     </schemaBindings>
     <bindings scd="~tns:StatusCodeType">
-      <class ref="org.certificateservices.messages.saml2.protocol.jaxb.StatusCodeType"/>
+      <class ref="org.signatureservice.messages.saml2.protocol.jaxb.StatusCodeType"/>
     </bindings>
     <bindings scd="~tns:StatusResponseType">
-      <class ref="org.certificateservices.messages.saml2.protocol.jaxb.StatusResponseType"/>
+      <class ref="org.signatureservice.messages.saml2.protocol.jaxb.StatusResponseType"/>
     </bindings>
     <bindings scd="~tns:ArtifactResolveType">
-      <class ref="org.certificateservices.messages.saml2.protocol.jaxb.ArtifactResolveType"/>
+      <class ref="org.signatureservice.messages.saml2.protocol.jaxb.ArtifactResolveType"/>
     </bindings>
     <bindings scd="~tns:IDPEntryType">
-      <class ref="org.certificateservices.messages.saml2.protocol.jaxb.IDPEntryType"/>
+      <class ref="org.signatureservice.messages.saml2.protocol.jaxb.IDPEntryType"/>
     </bindings>
     <bindings scd="~tns:ManageNameIDRequestType">
-      <class ref="org.certificateservices.messages.saml2.protocol.jaxb.ManageNameIDRequestType"/>
+      <class ref="org.signatureservice.messages.saml2.protocol.jaxb.ManageNameIDRequestType"/>
     </bindings>
     <bindings scd="~tns:RequestedAuthnContextType">
-      <class ref="org.certificateservices.messages.saml2.protocol.jaxb.RequestedAuthnContextType"/>
+      <class ref="org.signatureservice.messages.saml2.protocol.jaxb.RequestedAuthnContextType"/>
     </bindings>
     <bindings scd="~tns:LogoutRequestType">
-      <class ref="org.certificateservices.messages.saml2.protocol.jaxb.LogoutRequestType"/>
+      <class ref="org.signatureservice.messages.saml2.protocol.jaxb.LogoutRequestType"/>
     </bindings>
     <bindings scd="~tns:ArtifactResponseType">
-      <class ref="org.certificateservices.messages.saml2.protocol.jaxb.ArtifactResponseType"/>
+      <class ref="org.signatureservice.messages.saml2.protocol.jaxb.ArtifactResponseType"/>
     </bindings>
     <bindings scd="~tns:ExtensionsType">
-      <class ref="org.certificateservices.messages.saml2.protocol.jaxb.ExtensionsType"/>
+      <class ref="org.signatureservice.messages.saml2.protocol.jaxb.ExtensionsType"/>
     </bindings>
     <bindings scd="~tns:TerminateType">
-      <class ref="org.certificateservices.messages.saml2.protocol.jaxb.TerminateType"/>
+      <class ref="org.signatureservice.messages.saml2.protocol.jaxb.TerminateType"/>
     </bindings>
     <bindings scd="~tns:NameIDMappingResponseType">
-      <class ref="org.certificateservices.messages.saml2.protocol.jaxb.NameIDMappingResponseType"/>
+      <class ref="org.signatureservice.messages.saml2.protocol.jaxb.NameIDMappingResponseType"/>
     </bindings>
     <bindings scd="~tns:AuthzDecisionQueryType">
-      <class ref="org.certificateservices.messages.saml2.protocol.jaxb.AuthzDecisionQueryType"/>
+      <class ref="org.signatureservice.messages.saml2.protocol.jaxb.AuthzDecisionQueryType"/>
     </bindings>
     <bindings scd="~tns:NameIDPolicyType">
-      <class ref="org.certificateservices.messages.saml2.protocol.jaxb.NameIDPolicyType"/>
+      <class ref="org.signatureservice.messages.saml2.protocol.jaxb.NameIDPolicyType"/>
     </bindings>
     <bindings scd="~tns:ScopingType">
-      <class ref="org.certificateservices.messages.saml2.protocol.jaxb.ScopingType"/>
+      <class ref="org.signatureservice.messages.saml2.protocol.jaxb.ScopingType"/>
     </bindings>
     <bindings scd="~tns:ResponseType">
-      <class ref="org.certificateservices.messages.saml2.protocol.jaxb.ResponseType"/>
+      <class ref="org.signatureservice.messages.saml2.protocol.jaxb.ResponseType"/>
     </bindings>
     <bindings scd="~tns:StatusType">
-      <class ref="org.certificateservices.messages.saml2.protocol.jaxb.StatusType"/>
+      <class ref="org.signatureservice.messages.saml2.protocol.jaxb.StatusType"/>
     </bindings>
     <bindings scd="~tns:AuthnRequestType">
-      <class ref="org.certificateservices.messages.saml2.protocol.jaxb.AuthnRequestType"/>
+      <class ref="org.signatureservice.messages.saml2.protocol.jaxb.AuthnRequestType"/>
     </bindings>
     <bindings scd="~tns:AssertionIDRequestType">
-      <class ref="org.certificateservices.messages.saml2.protocol.jaxb.AssertionIDRequestType"/>
+      <class ref="org.signatureservice.messages.saml2.protocol.jaxb.AssertionIDRequestType"/>
     </bindings>
     <bindings scd="~tns:SubjectQueryAbstractType">
-      <class ref="org.certificateservices.messages.saml2.protocol.jaxb.SubjectQueryAbstractType"/>
+      <class ref="org.signatureservice.messages.saml2.protocol.jaxb.SubjectQueryAbstractType"/>
     </bindings>
     <bindings scd="~tns:IDPListType">
-      <class ref="org.certificateservices.messages.saml2.protocol.jaxb.IDPListType"/>
+      <class ref="org.signatureservice.messages.saml2.protocol.jaxb.IDPListType"/>
     </bindings>
     <bindings scd="~tns:StatusDetailType">
-      <class ref="org.certificateservices.messages.saml2.protocol.jaxb.StatusDetailType"/>
+      <class ref="org.signatureservice.messages.saml2.protocol.jaxb.StatusDetailType"/>
     </bindings>
     <bindings scd="~tns:AuthnQueryType">
-      <class ref="org.certificateservices.messages.saml2.protocol.jaxb.AuthnQueryType"/>
+      <class ref="org.signatureservice.messages.saml2.protocol.jaxb.AuthnQueryType"/>
     </bindings>
     <bindings scd="~tns:AttributeQueryType">
-      <class ref="org.certificateservices.messages.saml2.protocol.jaxb.AttributeQueryType"/>
+      <class ref="org.signatureservice.messages.saml2.protocol.jaxb.AttributeQueryType"/>
     </bindings>
     <bindings scd="~tns:NameIDMappingRequestType">
-      <class ref="org.certificateservices.messages.saml2.protocol.jaxb.NameIDMappingRequestType"/>
+      <class ref="org.signatureservice.messages.saml2.protocol.jaxb.NameIDMappingRequestType"/>
     </bindings>
     <bindings scd="~tns:RequestAbstractType">
-      <class ref="org.certificateservices.messages.saml2.protocol.jaxb.RequestAbstractType"/>
+      <class ref="org.signatureservice.messages.saml2.protocol.jaxb.RequestAbstractType"/>
     </bindings>
     <bindings scd="~tns:AuthnContextComparisonType">
-      <typesafeEnumClass ref="org.certificateservices.messages.saml2.protocol.jaxb.AuthnContextComparisonType"/>
+      <typesafeEnumClass ref="org.signatureservice.messages.saml2.protocol.jaxb.AuthnContextComparisonType"/>
     </bindings>
   </bindings>
 </bindings>

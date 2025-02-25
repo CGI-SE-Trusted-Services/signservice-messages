@@ -13,178 +13,178 @@ Generated on: 2017.10.30 at 02:11:53 PM CET
       <package name="org.certificateservices.messages.xades.v132.jaxb"/>
     </schemaBindings>
     <bindings scd="~tns:SignedDataObjectPropertiesType">
-      <class ref="org.certificateservices.messages.xades.v132.jaxb.SignedDataObjectPropertiesType"/>
+      <class ref="org.signatureservice.messages.xades.v132.jaxb.SignedDataObjectPropertiesType"/>
     </bindings>
     <bindings scd="~tns:XAdESTimeStampType">
-      <class ref="org.certificateservices.messages.xades.v132.jaxb.XAdESTimeStampType"/>
+      <class ref="org.signatureservice.messages.xades.v132.jaxb.XAdESTimeStampType"/>
     </bindings>
     <bindings scd="~tns:OtherTimeStampType">
-      <class ref="org.certificateservices.messages.xades.v132.jaxb.OtherTimeStampType"/>
+      <class ref="org.signatureservice.messages.xades.v132.jaxb.OtherTimeStampType"/>
     </bindings>
     <bindings scd="~tns:CertIDListType">
-      <class ref="org.certificateservices.messages.xades.v132.jaxb.CertIDListType"/>
+      <class ref="org.signatureservice.messages.xades.v132.jaxb.CertIDListType"/>
     </bindings>
     <bindings scd="~tns:UnsignedSignaturePropertiesType">
-      <class ref="org.certificateservices.messages.xades.v132.jaxb.UnsignedSignaturePropertiesType"/>
+      <class ref="org.signatureservice.messages.xades.v132.jaxb.UnsignedSignaturePropertiesType"/>
     </bindings>
     <bindings scd="~tns:CompleteRevocationRefsType">
-      <class ref="org.certificateservices.messages.xades.v132.jaxb.CompleteRevocationRefsType"/>
+      <class ref="org.signatureservice.messages.xades.v132.jaxb.CompleteRevocationRefsType"/>
     </bindings>
     <bindings scd="~tns:IncludeType">
-      <class ref="org.certificateservices.messages.xades.v132.jaxb.IncludeType"/>
+      <class ref="org.signatureservice.messages.xades.v132.jaxb.IncludeType"/>
     </bindings>
     <bindings scd="~tns:QualifyingPropertiesReferenceType">
-      <class ref="org.certificateservices.messages.xades.v132.jaxb.QualifyingPropertiesReferenceType"/>
+      <class ref="org.signatureservice.messages.xades.v132.jaxb.QualifyingPropertiesReferenceType"/>
     </bindings>
     <bindings scd="~tns:EncapsulatedPKIDataType">
-      <class ref="org.certificateservices.messages.xades.v132.jaxb.EncapsulatedPKIDataType"/>
+      <class ref="org.signatureservice.messages.xades.v132.jaxb.EncapsulatedPKIDataType"/>
     </bindings>
     <bindings scd="~tns:AnyType">
-      <class ref="org.certificateservices.messages.xades.v132.jaxb.AnyType"/>
+      <class ref="org.signatureservice.messages.xades.v132.jaxb.AnyType"/>
     </bindings>
     <bindings scd="~tns:UnsignedDataObjectPropertiesType">
-      <class ref="org.certificateservices.messages.xades.v132.jaxb.UnsignedDataObjectPropertiesType"/>
+      <class ref="org.signatureservice.messages.xades.v132.jaxb.UnsignedDataObjectPropertiesType"/>
     </bindings>
     <bindings scd="~tns:SignerRoleType">
-      <class ref="org.certificateservices.messages.xades.v132.jaxb.SignerRoleType"/>
+      <class ref="org.signatureservice.messages.xades.v132.jaxb.SignerRoleType"/>
     </bindings>
     <bindings scd="~tns:SignerRoleV2Type">
-      <class ref="org.certificateservices.messages.xades.v132.jaxb.SignerRoleV2Type"/>
+      <class ref="org.signatureservice.messages.xades.v132.jaxb.SignerRoleV2Type"/>
     </bindings>
     <bindings scd="~tns:SignedPropertiesType">
-      <class ref="org.certificateservices.messages.xades.v132.jaxb.SignedPropertiesType"/>
+      <class ref="org.signatureservice.messages.xades.v132.jaxb.SignedPropertiesType"/>
     </bindings>
     <bindings scd="~tns:CertIDListV2Type">
-      <class ref="org.certificateservices.messages.xades.v132.jaxb.CertIDListV2Type"/>
+      <class ref="org.signatureservice.messages.xades.v132.jaxb.CertIDListV2Type"/>
     </bindings>
     <bindings scd="~tns:SignatureProductionPlaceV2Type">
-      <class ref="org.certificateservices.messages.xades.v132.jaxb.SignatureProductionPlaceV2Type"/>
+      <class ref="org.signatureservice.messages.xades.v132.jaxb.SignatureProductionPlaceV2Type"/>
     </bindings>
     <bindings scd="~tns:CompleteCertificateRefsType">
-      <class ref="org.certificateservices.messages.xades.v132.jaxb.CompleteCertificateRefsType"/>
+      <class ref="org.signatureservice.messages.xades.v132.jaxb.CompleteCertificateRefsType"/>
     </bindings>
     <bindings scd="~tns:CertificateValuesType">
-      <class ref="org.certificateservices.messages.xades.v132.jaxb.CertificateValuesType"/>
+      <class ref="org.signatureservice.messages.xades.v132.jaxb.CertificateValuesType"/>
     </bindings>
     <bindings scd="~tns:ObjectIdentifierType">
-      <class ref="org.certificateservices.messages.xades.v132.jaxb.ObjectIdentifierType"/>
+      <class ref="org.signatureservice.messages.xades.v132.jaxb.ObjectIdentifierType"/>
     </bindings>
     <bindings scd="~tns:RevocationValuesType">
-      <class ref="org.certificateservices.messages.xades.v132.jaxb.RevocationValuesType"/>
+      <class ref="org.signatureservice.messages.xades.v132.jaxb.RevocationValuesType"/>
     </bindings>
     <bindings scd="~tns:QualifyingPropertiesType">
-      <class ref="org.certificateservices.messages.xades.v132.jaxb.QualifyingPropertiesType"/>
+      <class ref="org.signatureservice.messages.xades.v132.jaxb.QualifyingPropertiesType"/>
     </bindings>
     <bindings scd="~tns:CommitmentTypeIndicationType">
-      <class ref="org.certificateservices.messages.xades.v132.jaxb.CommitmentTypeIndicationType"/>
+      <class ref="org.signatureservice.messages.xades.v132.jaxb.CommitmentTypeIndicationType"/>
     </bindings>
     <bindings scd="~tns:CertifiedRolesListTypeV2">
-      <class ref="org.certificateservices.messages.xades.v132.jaxb.CertifiedRolesListTypeV2"/>
+      <class ref="org.signatureservice.messages.xades.v132.jaxb.CertifiedRolesListTypeV2"/>
     </bindings>
     <bindings scd="~tns:CounterSignatureType">
-      <class ref="org.certificateservices.messages.xades.v132.jaxb.CounterSignatureType"/>
+      <class ref="org.signatureservice.messages.xades.v132.jaxb.CounterSignatureType"/>
     </bindings>
     <bindings scd="~tns:SignatureProductionPlaceType">
-      <class ref="org.certificateservices.messages.xades.v132.jaxb.SignatureProductionPlaceType"/>
+      <class ref="org.signatureservice.messages.xades.v132.jaxb.SignatureProductionPlaceType"/>
     </bindings>
     <bindings scd="~tns:UnsignedPropertiesType">
-      <class ref="org.certificateservices.messages.xades.v132.jaxb.UnsignedPropertiesType"/>
+      <class ref="org.signatureservice.messages.xades.v132.jaxb.UnsignedPropertiesType"/>
     </bindings>
     <bindings scd="~tns:ClaimedRolesListType">
-      <class ref="org.certificateservices.messages.xades.v132.jaxb.ClaimedRolesListType"/>
+      <class ref="org.signatureservice.messages.xades.v132.jaxb.ClaimedRolesListType"/>
     </bindings>
     <bindings scd="~tns:SignedSignaturePropertiesType">
-      <class ref="org.certificateservices.messages.xades.v132.jaxb.SignedSignaturePropertiesType"/>
+      <class ref="org.signatureservice.messages.xades.v132.jaxb.SignedSignaturePropertiesType"/>
     </bindings>
     <bindings scd="~tns:SignedAssertionsListType">
-      <class ref="org.certificateservices.messages.xades.v132.jaxb.SignedAssertionsListType"/>
+      <class ref="org.signatureservice.messages.xades.v132.jaxb.SignedAssertionsListType"/>
     </bindings>
     <bindings scd="~tns:SPUserNoticeType">
-      <class ref="org.certificateservices.messages.xades.v132.jaxb.SPUserNoticeType"/>
+      <class ref="org.signatureservice.messages.xades.v132.jaxb.SPUserNoticeType"/>
     </bindings>
     <bindings scd="~tns:DataObjectFormatType">
-      <class ref="org.certificateservices.messages.xades.v132.jaxb.DataObjectFormatType"/>
+      <class ref="org.signatureservice.messages.xades.v132.jaxb.DataObjectFormatType"/>
     </bindings>
     <bindings scd="~tns:SignaturePolicyIdentifierType">
-      <class ref="org.certificateservices.messages.xades.v132.jaxb.SignaturePolicyIdentifierType"/>
+      <class ref="org.signatureservice.messages.xades.v132.jaxb.SignaturePolicyIdentifierType"/>
     </bindings>
     <bindings scd="~tns:ReferenceInfoType">
-      <class ref="org.certificateservices.messages.xades.v132.jaxb.ReferenceInfoType"/>
+      <class ref="org.signatureservice.messages.xades.v132.jaxb.ReferenceInfoType"/>
     </bindings>
     <bindings scd="~tns:DigestAlgAndValueType">
-      <class ref="org.certificateservices.messages.xades.v132.jaxb.DigestAlgAndValueType"/>
+      <class ref="org.signatureservice.messages.xades.v132.jaxb.DigestAlgAndValueType"/>
     </bindings>
     <bindings scd="~tns:CertIDTypeV2">
-      <class ref="org.certificateservices.messages.xades.v132.jaxb.CertIDTypeV2"/>
+      <class ref="org.signatureservice.messages.xades.v132.jaxb.CertIDTypeV2"/>
     </bindings>
     <bindings scd="~tns:DocumentationReferencesType">
-      <class ref="org.certificateservices.messages.xades.v132.jaxb.DocumentationReferencesType"/>
+      <class ref="org.signatureservice.messages.xades.v132.jaxb.DocumentationReferencesType"/>
     </bindings>
     <bindings scd="~tns:CertifiedRolesListType">
-      <class ref="org.certificateservices.messages.xades.v132.jaxb.CertifiedRolesListType"/>
+      <class ref="org.signatureservice.messages.xades.v132.jaxb.CertifiedRolesListType"/>
     </bindings>
     <bindings scd="~tns:CRLValuesType">
-      <class ref="org.certificateservices.messages.xades.v132.jaxb.CRLValuesType"/>
+      <class ref="org.signatureservice.messages.xades.v132.jaxb.CRLValuesType"/>
     </bindings>
     <bindings scd="~tns:CRLRefType">
-      <class ref="org.certificateservices.messages.xades.v132.jaxb.CRLRefType"/>
+      <class ref="org.signatureservice.messages.xades.v132.jaxb.CRLRefType"/>
     </bindings>
     <bindings scd="~tns:IdentifierType">
-      <class ref="org.certificateservices.messages.xades.v132.jaxb.IdentifierType"/>
+      <class ref="org.signatureservice.messages.xades.v132.jaxb.IdentifierType"/>
     </bindings>
     <bindings scd="~tns:OCSPRefsType">
-      <class ref="org.certificateservices.messages.xades.v132.jaxb.OCSPRefsType"/>
+      <class ref="org.signatureservice.messages.xades.v132.jaxb.OCSPRefsType"/>
     </bindings>
     <bindings scd="~tns:CertifiedRoleTypeV2">
-      <class ref="org.certificateservices.messages.xades.v132.jaxb.CertifiedRoleTypeV2"/>
+      <class ref="org.signatureservice.messages.xades.v132.jaxb.CertifiedRoleTypeV2"/>
     </bindings>
     <bindings scd="~tns:OtherCertStatusValuesType">
-      <class ref="org.certificateservices.messages.xades.v132.jaxb.OtherCertStatusValuesType"/>
+      <class ref="org.signatureservice.messages.xades.v132.jaxb.OtherCertStatusValuesType"/>
     </bindings>
     <bindings scd="~tns:SignaturePolicyIdType">
-      <class ref="org.certificateservices.messages.xades.v132.jaxb.SignaturePolicyIdType"/>
+      <class ref="org.signatureservice.messages.xades.v132.jaxb.SignaturePolicyIdType"/>
     </bindings>
     <bindings scd="~tns:SigPolicyQualifiersListType">
-      <class ref="org.certificateservices.messages.xades.v132.jaxb.SigPolicyQualifiersListType"/>
+      <class ref="org.signatureservice.messages.xades.v132.jaxb.SigPolicyQualifiersListType"/>
     </bindings>
     <bindings scd="~tns:CRLIdentifierType">
-      <class ref="org.certificateservices.messages.xades.v132.jaxb.CRLIdentifierType"/>
+      <class ref="org.signatureservice.messages.xades.v132.jaxb.CRLIdentifierType"/>
     </bindings>
     <bindings scd="~tns:CRLRefsType">
-      <class ref="org.certificateservices.messages.xades.v132.jaxb.CRLRefsType"/>
+      <class ref="org.signatureservice.messages.xades.v132.jaxb.CRLRefsType"/>
     </bindings>
     <bindings scd="~tns:OCSPRefType">
-      <class ref="org.certificateservices.messages.xades.v132.jaxb.OCSPRefType"/>
+      <class ref="org.signatureservice.messages.xades.v132.jaxb.OCSPRefType"/>
     </bindings>
     <bindings scd="~tns:NoticeReferenceType">
-      <class ref="org.certificateservices.messages.xades.v132.jaxb.NoticeReferenceType"/>
+      <class ref="org.signatureservice.messages.xades.v132.jaxb.NoticeReferenceType"/>
     </bindings>
     <bindings scd="~tns:GenericTimeStampType">
-      <class ref="org.certificateservices.messages.xades.v132.jaxb.GenericTimeStampType"/>
+      <class ref="org.signatureservice.messages.xades.v132.jaxb.GenericTimeStampType"/>
     </bindings>
     <bindings scd="~tns:OtherCertStatusRefsType">
-      <class ref="org.certificateservices.messages.xades.v132.jaxb.OtherCertStatusRefsType"/>
+      <class ref="org.signatureservice.messages.xades.v132.jaxb.OtherCertStatusRefsType"/>
     </bindings>
     <bindings scd="~tns:IntegerListType">
-      <class ref="org.certificateservices.messages.xades.v132.jaxb.IntegerListType"/>
+      <class ref="org.signatureservice.messages.xades.v132.jaxb.IntegerListType"/>
     </bindings>
     <bindings scd="~tns:CertIDType">
-      <class ref="org.certificateservices.messages.xades.v132.jaxb.CertIDType"/>
+      <class ref="org.signatureservice.messages.xades.v132.jaxb.CertIDType"/>
     </bindings>
     <bindings scd="~tns:OCSPIdentifierType">
-      <class ref="org.certificateservices.messages.xades.v132.jaxb.OCSPIdentifierType"/>
+      <class ref="org.signatureservice.messages.xades.v132.jaxb.OCSPIdentifierType"/>
     </bindings>
     <bindings scd="~tns:ResponderIDType">
-      <class ref="org.certificateservices.messages.xades.v132.jaxb.ResponderIDType"/>
+      <class ref="org.signatureservice.messages.xades.v132.jaxb.ResponderIDType"/>
     </bindings>
     <bindings scd="~tns:CommitmentTypeQualifiersListType">
-      <class ref="org.certificateservices.messages.xades.v132.jaxb.CommitmentTypeQualifiersListType"/>
+      <class ref="org.signatureservice.messages.xades.v132.jaxb.CommitmentTypeQualifiersListType"/>
     </bindings>
     <bindings scd="~tns:OCSPValuesType">
-      <class ref="org.certificateservices.messages.xades.v132.jaxb.OCSPValuesType"/>
+      <class ref="org.signatureservice.messages.xades.v132.jaxb.OCSPValuesType"/>
     </bindings>
     <bindings scd="~tns:QualifierType">
-      <typesafeEnumClass ref="org.certificateservices.messages.xades.v132.jaxb.QualifierType"/>
+      <typesafeEnumClass ref="org.signatureservice.messages.xades.v132.jaxb.QualifierType"/>
     </bindings>
   </bindings>
 </bindings>

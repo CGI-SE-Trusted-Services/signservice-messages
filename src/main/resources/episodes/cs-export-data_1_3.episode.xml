@@ -13,55 +13,55 @@ Generated on: 2018.02.22 at 10:23:37 AM CET
       <package name="org.certificateservices.messages.csexport.data.jaxb"/>
     </schemaBindings>
     <bindings scd="tns:CSExport">
-      <class ref="org.certificateservices.messages.csexport.data.jaxb.CSExport"/>
+      <class ref="org.signatureservice.messages.csexport.data.jaxb.CSExport"/>
     </bindings>
     <bindings scd="~tns:FieldConstraint">
-      <class ref="org.certificateservices.messages.csexport.data.jaxb.FieldConstraint"/>
+      <class ref="org.signatureservice.messages.csexport.data.jaxb.FieldConstraint"/>
     </bindings>
     <bindings scd="~tns:ConditionalList">
-      <class ref="org.certificateservices.messages.csexport.data.jaxb.ConditionalList"/>
+      <class ref="org.signatureservice.messages.csexport.data.jaxb.ConditionalList"/>
     </bindings>
     <bindings scd="~tns:TokenTypeLifeCycleRule">
-      <class ref="org.certificateservices.messages.csexport.data.jaxb.TokenTypeLifeCycleRule"/>
+      <class ref="org.signatureservice.messages.csexport.data.jaxb.TokenTypeLifeCycleRule"/>
     </bindings>
     <bindings scd="~tns:Department">
-      <class ref="org.certificateservices.messages.csexport.data.jaxb.Department"/>
+      <class ref="org.signatureservice.messages.csexport.data.jaxb.Department"/>
     </bindings>
     <bindings scd="~tns:TokenType">
-      <class ref="org.certificateservices.messages.csexport.data.jaxb.TokenType"/>
+      <class ref="org.signatureservice.messages.csexport.data.jaxb.TokenType"/>
     </bindings>
     <bindings scd="~tns:DomainNameRestriction">
-      <class ref="org.certificateservices.messages.csexport.data.jaxb.DomainNameRestriction"/>
+      <class ref="org.signatureservice.messages.csexport.data.jaxb.DomainNameRestriction"/>
     </bindings>
     <bindings scd="~tns:Organisation">
-      <class ref="org.certificateservices.messages.csexport.data.jaxb.Organisation"/>
+      <class ref="org.signatureservice.messages.csexport.data.jaxb.Organisation"/>
     </bindings>
     <bindings scd="~tns:TokenTypeOrganisation">
-      <class ref="org.certificateservices.messages.csexport.data.jaxb.TokenTypeOrganisation"/>
+      <class ref="org.signatureservice.messages.csexport.data.jaxb.TokenTypeOrganisation"/>
     </bindings>
     <bindings scd="~tns:DepartmentDomainNameAttribute">
-      <class ref="org.certificateservices.messages.csexport.data.jaxb.DepartmentDomainNameAttribute"/>
+      <class ref="org.signatureservice.messages.csexport.data.jaxb.DepartmentDomainNameAttribute"/>
     </bindings>
     <bindings scd="~tns:DepartmentAttribute">
-      <class ref="org.certificateservices.messages.csexport.data.jaxb.DepartmentAttribute"/>
+      <class ref="org.signatureservice.messages.csexport.data.jaxb.DepartmentAttribute"/>
     </bindings>
     <bindings scd="~tns:CredentialConstraint">
-      <class ref="org.certificateservices.messages.csexport.data.jaxb.CredentialConstraint"/>
+      <class ref="org.signatureservice.messages.csexport.data.jaxb.CredentialConstraint"/>
     </bindings>
     <bindings scd="~tns:TokenContainerInfoEx">
-      <class ref="org.certificateservices.messages.csexport.data.jaxb.TokenContainerInfoEx"/>
+      <class ref="org.signatureservice.messages.csexport.data.jaxb.TokenContainerInfoEx"/>
     </bindings>
     <bindings scd="~tns:ValidityRestriction">
-      <class ref="org.certificateservices.messages.csexport.data.jaxb.ValidityRestriction"/>
+      <class ref="org.signatureservice.messages.csexport.data.jaxb.ValidityRestriction"/>
     </bindings>
     <bindings scd="~tns:ConditionalListAvailableList">
-      <class ref="org.certificateservices.messages.csexport.data.jaxb.ConditionalListAvailableList"/>
+      <class ref="org.signatureservice.messages.csexport.data.jaxb.ConditionalListAvailableList"/>
     </bindings>
     <bindings scd="~tns:ConditionalListInListMapping">
-      <class ref="org.certificateservices.messages.csexport.data.jaxb.ConditionalListInListMapping"/>
+      <class ref="org.signatureservice.messages.csexport.data.jaxb.ConditionalListInListMapping"/>
     </bindings>
     <bindings scd="~tns:RelatedTokenAttribute">
-      <class ref="org.certificateservices.messages.csexport.data.jaxb.RelatedTokenAttribute"/>
+      <class ref="org.signatureservice.messages.csexport.data.jaxb.RelatedTokenAttribute"/>
     </bindings>
   </bindings>
 </bindings>

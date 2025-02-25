@@ -13,73 +13,73 @@ Generated on: 2017.07.15 at 03:41:01 PM MSK
       <package name="org.certificateservices.messages.saml2.metadata.jaxb"/>
     </schemaBindings>
     <bindings scd="~tns:localizedNameType">
-      <class ref="org.certificateservices.messages.saml2.metadata.jaxb.LocalizedNameType"/>
+      <class ref="org.signatureservice.messages.saml2.metadata.jaxb.LocalizedNameType"/>
     </bindings>
     <bindings scd="~tns:OrganizationType">
-      <class ref="org.certificateservices.messages.saml2.metadata.jaxb.OrganizationType"/>
+      <class ref="org.signatureservice.messages.saml2.metadata.jaxb.OrganizationType"/>
     </bindings>
     <bindings scd="~tns:AdditionalMetadataLocationType">
-      <class ref="org.certificateservices.messages.saml2.metadata.jaxb.AdditionalMetadataLocationType"/>
+      <class ref="org.signatureservice.messages.saml2.metadata.jaxb.AdditionalMetadataLocationType"/>
     </bindings>
     <bindings scd="~tns:IDPSSODescriptorType">
-      <class ref="org.certificateservices.messages.saml2.metadata.jaxb.IDPSSODescriptorType"/>
+      <class ref="org.signatureservice.messages.saml2.metadata.jaxb.IDPSSODescriptorType"/>
     </bindings>
     <bindings scd="~tns:EndpointType">
-      <class ref="org.certificateservices.messages.saml2.metadata.jaxb.EndpointType"/>
+      <class ref="org.signatureservice.messages.saml2.metadata.jaxb.EndpointType"/>
     </bindings>
     <bindings scd="~tns:KeyDescriptorType">
-      <class ref="org.certificateservices.messages.saml2.metadata.jaxb.KeyDescriptorType"/>
+      <class ref="org.signatureservice.messages.saml2.metadata.jaxb.KeyDescriptorType"/>
     </bindings>
     <bindings scd="~tns:RequestedAttributeType">
-      <class ref="org.certificateservices.messages.saml2.metadata.jaxb.RequestedAttributeType"/>
+      <class ref="org.signatureservice.messages.saml2.metadata.jaxb.RequestedAttributeType"/>
     </bindings>
     <bindings scd="~tns:IndexedEndpointType">
-      <class ref="org.certificateservices.messages.saml2.metadata.jaxb.IndexedEndpointType"/>
+      <class ref="org.signatureservice.messages.saml2.metadata.jaxb.IndexedEndpointType"/>
     </bindings>
     <bindings scd="~tns:AttributeConsumingServiceType">
-      <class ref="org.certificateservices.messages.saml2.metadata.jaxb.AttributeConsumingServiceType"/>
+      <class ref="org.signatureservice.messages.saml2.metadata.jaxb.AttributeConsumingServiceType"/>
     </bindings>
     <bindings scd="~tns:ExtensionsType">
-      <class ref="org.certificateservices.messages.saml2.metadata.jaxb.ExtensionsType"/>
+      <class ref="org.signatureservice.messages.saml2.metadata.jaxb.ExtensionsType"/>
     </bindings>
     <bindings scd="~tns:ContactType">
-      <class ref="org.certificateservices.messages.saml2.metadata.jaxb.ContactType"/>
+      <class ref="org.signatureservice.messages.saml2.metadata.jaxb.ContactType"/>
     </bindings>
     <bindings scd="~tns:SPSSODescriptorType">
-      <class ref="org.certificateservices.messages.saml2.metadata.jaxb.SPSSODescriptorType"/>
+      <class ref="org.signatureservice.messages.saml2.metadata.jaxb.SPSSODescriptorType"/>
     </bindings>
     <bindings scd="~tns:RoleDescriptorType">
-      <class ref="org.certificateservices.messages.saml2.metadata.jaxb.RoleDescriptorType"/>
+      <class ref="org.signatureservice.messages.saml2.metadata.jaxb.RoleDescriptorType"/>
     </bindings>
     <bindings scd="~tns:EntitiesDescriptorType">
-      <class ref="org.certificateservices.messages.saml2.metadata.jaxb.EntitiesDescriptorType"/>
+      <class ref="org.signatureservice.messages.saml2.metadata.jaxb.EntitiesDescriptorType"/>
     </bindings>
     <bindings scd="~tns:EntityDescriptorType">
-      <class ref="org.certificateservices.messages.saml2.metadata.jaxb.EntityDescriptorType"/>
+      <class ref="org.signatureservice.messages.saml2.metadata.jaxb.EntityDescriptorType"/>
     </bindings>
     <bindings scd="~tns:AffiliationDescriptorType">
-      <class ref="org.certificateservices.messages.saml2.metadata.jaxb.AffiliationDescriptorType"/>
+      <class ref="org.signatureservice.messages.saml2.metadata.jaxb.AffiliationDescriptorType"/>
     </bindings>
     <bindings scd="~tns:AttributeAuthorityDescriptorType">
-      <class ref="org.certificateservices.messages.saml2.metadata.jaxb.AttributeAuthorityDescriptorType"/>
+      <class ref="org.signatureservice.messages.saml2.metadata.jaxb.AttributeAuthorityDescriptorType"/>
     </bindings>
     <bindings scd="~tns:PDPDescriptorType">
-      <class ref="org.certificateservices.messages.saml2.metadata.jaxb.PDPDescriptorType"/>
+      <class ref="org.signatureservice.messages.saml2.metadata.jaxb.PDPDescriptorType"/>
     </bindings>
     <bindings scd="~tns:localizedURIType">
-      <class ref="org.certificateservices.messages.saml2.metadata.jaxb.LocalizedURIType"/>
+      <class ref="org.signatureservice.messages.saml2.metadata.jaxb.LocalizedURIType"/>
     </bindings>
     <bindings scd="~tns:AuthnAuthorityDescriptorType">
-      <class ref="org.certificateservices.messages.saml2.metadata.jaxb.AuthnAuthorityDescriptorType"/>
+      <class ref="org.signatureservice.messages.saml2.metadata.jaxb.AuthnAuthorityDescriptorType"/>
     </bindings>
     <bindings scd="~tns:SSODescriptorType">
-      <class ref="org.certificateservices.messages.saml2.metadata.jaxb.SSODescriptorType"/>
+      <class ref="org.signatureservice.messages.saml2.metadata.jaxb.SSODescriptorType"/>
     </bindings>
     <bindings scd="~tns:ContactTypeType">
-      <typesafeEnumClass ref="org.certificateservices.messages.saml2.metadata.jaxb.ContactTypeType"/>
+      <typesafeEnumClass ref="org.signatureservice.messages.saml2.metadata.jaxb.ContactTypeType"/>
     </bindings>
     <bindings scd="~tns:KeyTypes">
-      <typesafeEnumClass ref="org.certificateservices.messages.saml2.metadata.jaxb.KeyTypes"/>
+      <typesafeEnumClass ref="org.signatureservice.messages.saml2.metadata.jaxb.KeyTypes"/>
     </bindings>
   </bindings>
 </bindings>

@@ -13,70 +13,70 @@ Generated on: 2015.06.12 at 09:53:47 AM CEST
       <package name="org.certificateservices.messages.xmldsig.jaxb"/>
     </schemaBindings>
     <bindings scd="~tns:KeyInfoType">
-      <class ref="org.certificateservices.messages.xmldsig.jaxb.KeyInfoType"/>
+      <class ref="org.signatureservice.messages.xmldsig.jaxb.KeyInfoType"/>
     </bindings>
     <bindings scd="~tns:SignedInfoType">
-      <class ref="org.certificateservices.messages.xmldsig.jaxb.SignedInfoType"/>
+      <class ref="org.signatureservice.messages.xmldsig.jaxb.SignedInfoType"/>
     </bindings>
     <bindings scd="~tns:RetrievalMethodType">
-      <class ref="org.certificateservices.messages.xmldsig.jaxb.RetrievalMethodType"/>
+      <class ref="org.signatureservice.messages.xmldsig.jaxb.RetrievalMethodType"/>
     </bindings>
     <bindings scd="~tns:DigestMethodType">
-      <class ref="org.certificateservices.messages.xmldsig.jaxb.DigestMethodType"/>
+      <class ref="org.signatureservice.messages.xmldsig.jaxb.DigestMethodType"/>
     </bindings>
     <bindings scd="~tns:SignatureMethodType">
-      <class ref="org.certificateservices.messages.xmldsig.jaxb.SignatureMethodType"/>
+      <class ref="org.signatureservice.messages.xmldsig.jaxb.SignatureMethodType"/>
     </bindings>
     <bindings scd="~tns:SPKIDataType">
-      <class ref="org.certificateservices.messages.xmldsig.jaxb.SPKIDataType"/>
+      <class ref="org.signatureservice.messages.xmldsig.jaxb.SPKIDataType"/>
     </bindings>
     <bindings scd="~tns:X509DataType">
-      <class ref="org.certificateservices.messages.xmldsig.jaxb.X509DataType"/>
+      <class ref="org.signatureservice.messages.xmldsig.jaxb.X509DataType"/>
     </bindings>
     <bindings scd="~tns:PGPDataType">
-      <class ref="org.certificateservices.messages.xmldsig.jaxb.PGPDataType"/>
+      <class ref="org.signatureservice.messages.xmldsig.jaxb.PGPDataType"/>
     </bindings>
     <bindings scd="~tns:SignatureType">
-      <class ref="org.certificateservices.messages.xmldsig.jaxb.SignatureType"/>
+      <class ref="org.signatureservice.messages.xmldsig.jaxb.SignatureType"/>
     </bindings>
     <bindings scd="~tns:DSAKeyValueType">
-      <class ref="org.certificateservices.messages.xmldsig.jaxb.DSAKeyValueType"/>
+      <class ref="org.signatureservice.messages.xmldsig.jaxb.DSAKeyValueType"/>
     </bindings>
     <bindings scd="~tns:ManifestType">
-      <class ref="org.certificateservices.messages.xmldsig.jaxb.ManifestType"/>
+      <class ref="org.signatureservice.messages.xmldsig.jaxb.ManifestType"/>
     </bindings>
     <bindings scd="~tns:SignatureValueType">
-      <class ref="org.certificateservices.messages.xmldsig.jaxb.SignatureValueType"/>
+      <class ref="org.signatureservice.messages.xmldsig.jaxb.SignatureValueType"/>
     </bindings>
     <bindings scd="~tns:TransformsType">
-      <class ref="org.certificateservices.messages.xmldsig.jaxb.TransformsType"/>
+      <class ref="org.signatureservice.messages.xmldsig.jaxb.TransformsType"/>
     </bindings>
     <bindings scd="~tns:RSAKeyValueType">
-      <class ref="org.certificateservices.messages.xmldsig.jaxb.RSAKeyValueType"/>
+      <class ref="org.signatureservice.messages.xmldsig.jaxb.RSAKeyValueType"/>
     </bindings>
     <bindings scd="~tns:TransformType">
-      <class ref="org.certificateservices.messages.xmldsig.jaxb.TransformType"/>
+      <class ref="org.signatureservice.messages.xmldsig.jaxb.TransformType"/>
     </bindings>
     <bindings scd="~tns:SignaturePropertyType">
-      <class ref="org.certificateservices.messages.xmldsig.jaxb.SignaturePropertyType"/>
+      <class ref="org.signatureservice.messages.xmldsig.jaxb.SignaturePropertyType"/>
     </bindings>
     <bindings scd="~tns:KeyValueType">
-      <class ref="org.certificateservices.messages.xmldsig.jaxb.KeyValueType"/>
+      <class ref="org.signatureservice.messages.xmldsig.jaxb.KeyValueType"/>
     </bindings>
     <bindings scd="~tns:ReferenceType">
-      <class ref="org.certificateservices.messages.xmldsig.jaxb.ReferenceType"/>
+      <class ref="org.signatureservice.messages.xmldsig.jaxb.ReferenceType"/>
     </bindings>
     <bindings scd="~tns:CanonicalizationMethodType">
-      <class ref="org.certificateservices.messages.xmldsig.jaxb.CanonicalizationMethodType"/>
+      <class ref="org.signatureservice.messages.xmldsig.jaxb.CanonicalizationMethodType"/>
     </bindings>
     <bindings scd="~tns:SignaturePropertiesType">
-      <class ref="org.certificateservices.messages.xmldsig.jaxb.SignaturePropertiesType"/>
+      <class ref="org.signatureservice.messages.xmldsig.jaxb.SignaturePropertiesType"/>
     </bindings>
     <bindings scd="~tns:ObjectType">
-      <class ref="org.certificateservices.messages.xmldsig.jaxb.ObjectType"/>
+      <class ref="org.signatureservice.messages.xmldsig.jaxb.ObjectType"/>
     </bindings>
     <bindings scd="~tns:X509IssuerSerialType">
-      <class ref="org.certificateservices.messages.xmldsig.jaxb.X509IssuerSerialType"/>
+      <class ref="org.signatureservice.messages.xmldsig.jaxb.X509IssuerSerialType"/>
     </bindings>
   </bindings>
 </bindings>

@@ -13,7 +13,7 @@ Generated on: 2017.07.28 at 10:12:09 AM MSK
       <package name="org.certificateservices.messages.saml2.metadata.attr.jaxb"/>
     </schemaBindings>
     <bindings scd="~tns:EntityAttributesType">
-      <class ref="org.certificateservices.messages.saml2.metadata.attr.jaxb.EntityAttributesType"/>
+      <class ref="org.signatureservice.messages.saml2.metadata.attr.jaxb.EntityAttributesType"/>
     </bindings>
   </bindings>
 </bindings>

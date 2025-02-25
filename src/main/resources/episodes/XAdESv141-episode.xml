@@ -13,7 +13,7 @@ Generated on: 2017.04.05 at 05:18:30 PM CEST
       <package name="org.certificateservices.messages.xades.v141.jaxb"/>
     </schemaBindings>
     <bindings scd="~tns:ValidationDataType">
-      <class ref="org.certificateservices.messages.xades.v141.jaxb.ValidationDataType"/>
+      <class ref="org.signatureservice.messages.xades.v141.jaxb.ValidationDataType"/>
     </bindings>
   </bindings>
 </bindings>

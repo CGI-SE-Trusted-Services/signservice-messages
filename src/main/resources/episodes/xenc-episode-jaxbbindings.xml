@@ -13,40 +13,40 @@ Generated on: 2015.06.12 at 09:59:06 AM CEST
       <package name="org.certificateservices.messages.xenc.jaxb"/>
     </schemaBindings>
     <bindings scd="tns:ReferenceList">
-      <class ref="org.certificateservices.messages.xenc.jaxb.ReferenceList"/>
+      <class ref="org.signatureservice.messages.xenc.jaxb.ReferenceList"/>
     </bindings>
     <bindings scd="~tns:ReferenceType">
-      <class ref="org.certificateservices.messages.xenc.jaxb.ReferenceType"/>
+      <class ref="org.signatureservice.messages.xenc.jaxb.ReferenceType"/>
     </bindings>
     <bindings scd="~tns:AgreementMethodType">
-      <class ref="org.certificateservices.messages.xenc.jaxb.AgreementMethodType"/>
+      <class ref="org.signatureservice.messages.xenc.jaxb.AgreementMethodType"/>
     </bindings>
     <bindings scd="~tns:CipherReferenceType">
-      <class ref="org.certificateservices.messages.xenc.jaxb.CipherReferenceType"/>
+      <class ref="org.signatureservice.messages.xenc.jaxb.CipherReferenceType"/>
     </bindings>
     <bindings scd="~tns:EncryptedKeyType">
-      <class ref="org.certificateservices.messages.xenc.jaxb.EncryptedKeyType"/>
+      <class ref="org.signatureservice.messages.xenc.jaxb.EncryptedKeyType"/>
     </bindings>
     <bindings scd="~tns:CipherDataType">
-      <class ref="org.certificateservices.messages.xenc.jaxb.CipherDataType"/>
+      <class ref="org.signatureservice.messages.xenc.jaxb.CipherDataType"/>
     </bindings>
     <bindings scd="~tns:EncryptionPropertyType">
-      <class ref="org.certificateservices.messages.xenc.jaxb.EncryptionPropertyType"/>
+      <class ref="org.signatureservice.messages.xenc.jaxb.EncryptionPropertyType"/>
     </bindings>
     <bindings scd="~tns:EncryptionPropertiesType">
-      <class ref="org.certificateservices.messages.xenc.jaxb.EncryptionPropertiesType"/>
+      <class ref="org.signatureservice.messages.xenc.jaxb.EncryptionPropertiesType"/>
     </bindings>
     <bindings scd="~tns:EncryptedDataType">
-      <class ref="org.certificateservices.messages.xenc.jaxb.EncryptedDataType"/>
+      <class ref="org.signatureservice.messages.xenc.jaxb.EncryptedDataType"/>
     </bindings>
     <bindings scd="~tns:EncryptedType">
-      <class ref="org.certificateservices.messages.xenc.jaxb.EncryptedType"/>
+      <class ref="org.signatureservice.messages.xenc.jaxb.EncryptedType"/>
     </bindings>
     <bindings scd="~tns:EncryptionMethodType">
-      <class ref="org.certificateservices.messages.xenc.jaxb.EncryptionMethodType"/>
+      <class ref="org.signatureservice.messages.xenc.jaxb.EncryptionMethodType"/>
     </bindings>
     <bindings scd="~tns:TransformsType">
-      <class ref="org.certificateservices.messages.xenc.jaxb.TransformsType"/>
+      <class ref="org.signatureservice.messages.xenc.jaxb.TransformsType"/>
     </bindings>
   </bindings>
 </bindings>
