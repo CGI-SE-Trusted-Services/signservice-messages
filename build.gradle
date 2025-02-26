@@ -6,7 +6,7 @@ plugins {
     id("project-report")
 }
 
-group "org.signservice.messages"
+group "org.signatureservice.messages"
 description "signservice-messages"
 
 ext {
