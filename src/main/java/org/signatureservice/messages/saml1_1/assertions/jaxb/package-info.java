@@ -5,9 +5,9 @@
 // Generated on: 2017.01.09 at 12:28:01 PM MSK 
 //
 
-@javax.xml.bind.annotation.XmlSchema(namespace = "urn:oasis:names:tc:SAML:1.0:assertion",
+@jakarta.xml.bind.annotation.XmlSchema(namespace = "urn:oasis:names:tc:SAML:1.0:assertion",
         xmlns = {
-                @javax.xml.bind.annotation.XmlNs(namespaceURI = "urn:oasis:names:tc:SAML:1.0:assertion", prefix = "saml"),
-                @javax.xml.bind.annotation.XmlNs(namespaceURI = "http://www.w3.org/2000/09/xmldsig#", prefix = "ds")},
-        elementFormDefault = javax.xml.bind.annotation.XmlNsForm.QUALIFIED)
+                @jakarta.xml.bind.annotation.XmlNs(namespaceURI = "urn:oasis:names:tc:SAML:1.0:assertion", prefix = "saml"),
+                @jakarta.xml.bind.annotation.XmlNs(namespaceURI = "http://www.w3.org/2000/09/xmldsig#", prefix = "ds")},
+        elementFormDefault = jakarta.xml.bind.annotation.XmlNsForm.QUALIFIED)
 package org.signatureservice.messages.saml1_1.assertions.jaxb;

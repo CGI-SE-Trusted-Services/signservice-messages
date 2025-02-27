@@ -23,7 +23,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
 
-import javax.xml.bind.JAXBElement;
+import jakarta.xml.bind.JAXBElement;
 import javax.xml.datatype.Duration;
 import javax.xml.namespace.QName;
 import java.math.BigInteger;

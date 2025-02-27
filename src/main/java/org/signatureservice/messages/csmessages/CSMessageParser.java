@@ -17,7 +17,7 @@ import java.security.cert.X509Certificate;
 import java.util.List;
 import java.util.Properties;
 
-import javax.xml.bind.Marshaller;
+import jakarta.xml.bind.Marshaller;
 
 import org.signatureservice.messages.MessageContentException;
 import org.signatureservice.messages.MessageProcessingException;

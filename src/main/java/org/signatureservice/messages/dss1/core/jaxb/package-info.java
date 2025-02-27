@@ -5,9 +5,9 @@
 // Generated on: 2017.01.09 at 12:38:48 PM MSK 
 //
 
-@javax.xml.bind.annotation.XmlSchema(namespace = "urn:oasis:names:tc:dss:1.0:core:schema",
+@jakarta.xml.bind.annotation.XmlSchema(namespace = "urn:oasis:names:tc:dss:1.0:core:schema",
         xmlns = {
-                @javax.xml.bind.annotation.XmlNs(namespaceURI = "http://www.w3.org/2000/09/xmldsig#", prefix = "ds"),
-                @javax.xml.bind.annotation.XmlNs(namespaceURI = "urn:oasis:names:tc:dss:1.0:core:schema", prefix = "dss")},
-        elementFormDefault = javax.xml.bind.annotation.XmlNsForm.QUALIFIED)
+                @jakarta.xml.bind.annotation.XmlNs(namespaceURI = "http://www.w3.org/2000/09/xmldsig#", prefix = "ds"),
+                @jakarta.xml.bind.annotation.XmlNs(namespaceURI = "urn:oasis:names:tc:dss:1.0:core:schema", prefix = "dss")},
+        elementFormDefault = jakarta.xml.bind.annotation.XmlNsForm.QUALIFIED)
 package org.signatureservice.messages.dss1.core.jaxb;

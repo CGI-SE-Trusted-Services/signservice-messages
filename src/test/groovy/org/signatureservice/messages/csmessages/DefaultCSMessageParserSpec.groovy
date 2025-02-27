@@ -18,8 +18,8 @@ import org.signatureservice.messages.MessageSecurityProvider
 
 import java.security.Security
 import java.security.cert.X509Certificate
-import javax.xml.bind.JAXBElement
-import javax.xml.bind.Marshaller
+import jakarta.xml.bind.JAXBElement
+import jakarta.xml.bind.Marshaller
 import javax.xml.datatype.DatatypeFactory
 
 import org.apache.xml.security.Init

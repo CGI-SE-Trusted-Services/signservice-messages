@@ -5,11 +5,11 @@
 // Generated on: 2017.01.09 at 01:10:41 PM MSK
 //
 
-@javax.xml.bind.annotation.XmlSchema(namespace = "http://id.elegnamnden.se/csig/1.1/dss-ext/ns",
+@jakarta.xml.bind.annotation.XmlSchema(namespace = "http://id.elegnamnden.se/csig/1.1/dss-ext/ns",
         xmlns = {
-                @javax.xml.bind.annotation.XmlNs(namespaceURI = "urn:oasis:names:tc:SAML:2.0:assertion", prefix = "saml"),
-                @javax.xml.bind.annotation.XmlNs(namespaceURI = "http://www.w3.org/2000/09/xmldsig#", prefix = "ds"),
-                @javax.xml.bind.annotation.XmlNs(namespaceURI = "urn:oasis:names:tc:dss:1.0:core:schema", prefix = "dss"),
-                @javax.xml.bind.annotation.XmlNs(namespaceURI = "http://id.elegnamnden.se/csig/1.1/dss-ext/ns", prefix = "csig")},
-        elementFormDefault = javax.xml.bind.annotation.XmlNsForm.QUALIFIED)
+                @jakarta.xml.bind.annotation.XmlNs(namespaceURI = "urn:oasis:names:tc:SAML:2.0:assertion", prefix = "saml"),
+                @jakarta.xml.bind.annotation.XmlNs(namespaceURI = "http://www.w3.org/2000/09/xmldsig#", prefix = "ds"),
+                @jakarta.xml.bind.annotation.XmlNs(namespaceURI = "urn:oasis:names:tc:dss:1.0:core:schema", prefix = "dss"),
+                @jakarta.xml.bind.annotation.XmlNs(namespaceURI = "http://id.elegnamnden.se/csig/1.1/dss-ext/ns", prefix = "csig")},
+        elementFormDefault = jakarta.xml.bind.annotation.XmlNsForm.QUALIFIED)
 package org.signatureservice.messages.sweeid2.dssextenstions1_1.jaxb;

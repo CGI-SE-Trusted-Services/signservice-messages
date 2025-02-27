@@ -6,7 +6,7 @@ import org.signatureservice.messages.sweeid2.pricipalselection1_0.jaxb.Principal
 import org.signatureservice.messages.sweeid2.pricipalselection1_0.jaxb.RequestedPrincipalSelectionType
 import spock.lang.Specification
 
-import javax.xml.bind.JAXBElement
+import jakarta.xml.bind.JAXBElement
 
 /**
  * Unit tests for PrincipalSelectionGenerator

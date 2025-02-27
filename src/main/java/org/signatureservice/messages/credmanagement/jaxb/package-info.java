@@ -5,8 +5,8 @@
 // Generated on: 2016.04.27 at 11:55:56 AM CEST 
 //
 
-@javax.xml.bind.annotation.XmlSchema(namespace = "http://certificateservices.org/xsd/credmanagement2_0", xmlns = {
-        @javax.xml.bind.annotation.XmlNs(namespaceURI = "http://certificateservices.org/xsd/credmanagement2_0", prefix = "credmanagement"),
-        @javax.xml.bind.annotation.XmlNs(namespaceURI = "http://www.w3.org/2000/09/xmldsig#", prefix = "ds"),
-        @javax.xml.bind.annotation.XmlNs(namespaceURI = "http://certificateservices.org/xsd/csmessages2_0", prefix = "cs")}, elementFormDefault = javax.xml.bind.annotation.XmlNsForm.QUALIFIED)
+@jakarta.xml.bind.annotation.XmlSchema(namespace = "http://certificateservices.org/xsd/credmanagement2_0", xmlns = {
+        @jakarta.xml.bind.annotation.XmlNs(namespaceURI = "http://certificateservices.org/xsd/credmanagement2_0", prefix = "credmanagement"),
+        @jakarta.xml.bind.annotation.XmlNs(namespaceURI = "http://www.w3.org/2000/09/xmldsig#", prefix = "ds"),
+        @jakarta.xml.bind.annotation.XmlNs(namespaceURI = "http://certificateservices.org/xsd/csmessages2_0", prefix = "cs")}, elementFormDefault = jakarta.xml.bind.annotation.XmlNsForm.QUALIFIED)
 package org.signatureservice.messages.credmanagement.jaxb;

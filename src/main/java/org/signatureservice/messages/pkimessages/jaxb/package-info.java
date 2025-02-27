@@ -5,8 +5,8 @@
 // Generated on: 2012.09.23 at 02:26:35 PM CEST 
 //
 
-@javax.xml.bind.annotation.XmlSchema(namespace = "http://certificateservices.org/xsd/pkimessages1_0",
+@jakarta.xml.bind.annotation.XmlSchema(namespace = "http://certificateservices.org/xsd/pkimessages1_0",
 xmlns = {   
-    @javax.xml.bind.annotation.XmlNs(namespaceURI = "http://www.w3.org/2000/09/xmldsig#", prefix = "ds"),
-    @javax.xml.bind.annotation.XmlNs(namespaceURI = "http://certificateservices.org/xsd/pkimessages1_0", prefix = "")},elementFormDefault = javax.xml.bind.annotation.XmlNsForm.QUALIFIED)
+    @jakarta.xml.bind.annotation.XmlNs(namespaceURI = "http://www.w3.org/2000/09/xmldsig#", prefix = "ds"),
+    @jakarta.xml.bind.annotation.XmlNs(namespaceURI = "http://certificateservices.org/xsd/pkimessages1_0", prefix = "")},elementFormDefault = jakarta.xml.bind.annotation.XmlNsForm.QUALIFIED)
 package org.signatureservice.messages.pkimessages.jaxb;

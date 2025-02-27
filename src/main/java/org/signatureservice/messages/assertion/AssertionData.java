@@ -16,7 +16,7 @@ import java.security.cert.X509Certificate;
 import java.util.Date;
 import java.util.Optional;
 
-import javax.xml.bind.JAXBElement;
+import jakarta.xml.bind.JAXBElement;
 
 import org.signatureservice.messages.MessageContentException;
 import org.signatureservice.messages.MessageProcessingException;

@@ -5,9 +5,9 @@
 // Generated on: 2015.07.22 at 02:18:15 PM CEST 
 //
 
-@javax.xml.bind.annotation.XmlSchema(namespace = "http://certificateservices.org/xsd/encrypted_csmessages2_0", 
+@jakarta.xml.bind.annotation.XmlSchema(namespace = "http://certificateservices.org/xsd/encrypted_csmessages2_0",
    xmlns = {   
-		@javax.xml.bind.annotation.XmlNs(namespaceURI = "http://certificateservices.org/xsd/encrypted_csmessages2_0", prefix = "enccs"),
-	    @javax.xml.bind.annotation.XmlNs(namespaceURI = "http://www.w3.org/2000/09/xmldsig#", prefix = "ds"),
-	    @javax.xml.bind.annotation.XmlNs(namespaceURI = "http://www.w3.org/2001/04/xmlenc#", prefix = "xenc")}, elementFormDefault = javax.xml.bind.annotation.XmlNsForm.QUALIFIED)
+		@jakarta.xml.bind.annotation.XmlNs(namespaceURI = "http://certificateservices.org/xsd/encrypted_csmessages2_0", prefix = "enccs"),
+	    @jakarta.xml.bind.annotation.XmlNs(namespaceURI = "http://www.w3.org/2000/09/xmldsig#", prefix = "ds"),
+	    @jakarta.xml.bind.annotation.XmlNs(namespaceURI = "http://www.w3.org/2001/04/xmlenc#", prefix = "xenc")}, elementFormDefault = jakarta.xml.bind.annotation.XmlNsForm.QUALIFIED)
 package org.signatureservice.messages.encryptedcsmessage.jaxb;

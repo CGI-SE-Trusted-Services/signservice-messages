@@ -5,8 +5,8 @@
 // Generated on: 2016.02.04 at 09:01:03 AM CET 
 //
 
-@javax.xml.bind.annotation.XmlSchema(namespace = "http://certificateservices.org/xsd/authorization2_0", xmlns = {   
-		@javax.xml.bind.annotation.XmlNs(namespaceURI = "http://certificateservices.org/xsd/authorization2_0", prefix = "auth"),
-	    @javax.xml.bind.annotation.XmlNs(namespaceURI = "http://www.w3.org/2000/09/xmldsig#", prefix = "ds"),
-	    @javax.xml.bind.annotation.XmlNs(namespaceURI = "http://certificateservices.org/xsd/csmessages2_0", prefix = "cs")},elementFormDefault = javax.xml.bind.annotation.XmlNsForm.QUALIFIED)
+@jakarta.xml.bind.annotation.XmlSchema(namespace = "http://certificateservices.org/xsd/authorization2_0", xmlns = {
+		@jakarta.xml.bind.annotation.XmlNs(namespaceURI = "http://certificateservices.org/xsd/authorization2_0", prefix = "auth"),
+	    @jakarta.xml.bind.annotation.XmlNs(namespaceURI = "http://www.w3.org/2000/09/xmldsig#", prefix = "ds"),
+	    @jakarta.xml.bind.annotation.XmlNs(namespaceURI = "http://certificateservices.org/xsd/csmessages2_0", prefix = "cs")},elementFormDefault = jakarta.xml.bind.annotation.XmlNsForm.QUALIFIED)
 package org.signatureservice.messages.authorization.jaxb;

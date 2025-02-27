@@ -5,10 +5,10 @@
 // Generated on: 2015.06.18 at 04:08:58 PM CEST 
 //
 
-@javax.xml.bind.annotation.XmlSchema(namespace = "urn:oasis:names:tc:SAML:2.0:protocol", xmlns = {   
-		@javax.xml.bind.annotation.XmlNs(namespaceURI = "urn:oasis:names:tc:SAML:2.0:assertion", prefix = "saml"),
-	    @javax.xml.bind.annotation.XmlNs(namespaceURI = "http://www.w3.org/2000/09/xmldsig#", prefix = "ds"),
-	    @javax.xml.bind.annotation.XmlNs(namespaceURI = "http://www.w3.org/2001/04/xmlenc#", prefix = "xenc"),
-	    @javax.xml.bind.annotation.XmlNs(namespaceURI = "urn:oasis:names:tc:SAML:2.0:protocol", prefix = "samlp"),
-		@javax.xml.bind.annotation.XmlNs(namespaceURI = "http://id.swedenconnect.se/authn/1.0/principal-selection/ns", prefix = "psc")},elementFormDefault = javax.xml.bind.annotation.XmlNsForm.QUALIFIED)
+@jakarta.xml.bind.annotation.XmlSchema(namespace = "urn:oasis:names:tc:SAML:2.0:protocol", xmlns = {
+		@jakarta.xml.bind.annotation.XmlNs(namespaceURI = "urn:oasis:names:tc:SAML:2.0:assertion", prefix = "saml"),
+	    @jakarta.xml.bind.annotation.XmlNs(namespaceURI = "http://www.w3.org/2000/09/xmldsig#", prefix = "ds"),
+	    @jakarta.xml.bind.annotation.XmlNs(namespaceURI = "http://www.w3.org/2001/04/xmlenc#", prefix = "xenc"),
+	    @jakarta.xml.bind.annotation.XmlNs(namespaceURI = "urn:oasis:names:tc:SAML:2.0:protocol", prefix = "samlp"),
+		@jakarta.xml.bind.annotation.XmlNs(namespaceURI = "http://id.swedenconnect.se/authn/1.0/principal-selection/ns", prefix = "psc")},elementFormDefault = jakarta.xml.bind.annotation.XmlNsForm.QUALIFIED)
 package org.signatureservice.messages.saml2.protocol.jaxb;

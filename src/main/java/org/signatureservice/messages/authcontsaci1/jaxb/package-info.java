@@ -5,9 +5,9 @@
 // Generated on: 2017.05.20 at 06:19:56 PM CEST 
 //
 
-@javax.xml.bind.annotation.XmlSchema(namespace = "http://id.elegnamnden.se/auth-cont/1.0/saci",
+@jakarta.xml.bind.annotation.XmlSchema(namespace = "http://id.elegnamnden.se/auth-cont/1.0/saci",
         xmlns = {
-                @javax.xml.bind.annotation.XmlNs(namespaceURI = "urn:oasis:names:tc:SAML:2.0:assertion", prefix = "saml"),
-                @javax.xml.bind.annotation.XmlNs(namespaceURI = "http://id.elegnamnden.se/auth-cont/1.0/saci", prefix = "saci")},
-                elementFormDefault = javax.xml.bind.annotation.XmlNsForm.QUALIFIED)
+                @jakarta.xml.bind.annotation.XmlNs(namespaceURI = "urn:oasis:names:tc:SAML:2.0:assertion", prefix = "saml"),
+                @jakarta.xml.bind.annotation.XmlNs(namespaceURI = "http://id.elegnamnden.se/auth-cont/1.0/saci", prefix = "saci")},
+                elementFormDefault = jakarta.xml.bind.annotation.XmlNsForm.QUALIFIED)
 package org.signatureservice.messages.authcontsaci1.jaxb;

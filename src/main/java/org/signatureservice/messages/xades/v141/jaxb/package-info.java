@@ -5,9 +5,9 @@
 // Generated on: 2017.04.05 at 05:18:30 PM CEST 
 //
 
-@javax.xml.bind.annotation.XmlSchema(namespace = "http://uri.etsi.org/01903/v1.4.1#",
+@jakarta.xml.bind.annotation.XmlSchema(namespace = "http://uri.etsi.org/01903/v1.4.1#",
 xmlns = {
-        @javax.xml.bind.annotation.XmlNs(namespaceURI = "http://uri.etsi.org/01903/v1.4.1#", prefix = "xadesv141"),
-        @javax.xml.bind.annotation.XmlNs(namespaceURI = "http://uri.etsi.org/01903/v1.3.2#", prefix = "xades"),
-        @javax.xml.bind.annotation.XmlNs(namespaceURI = "http://www.w3.org/2000/09/xmldsig#", prefix = "ds")}, elementFormDefault = javax.xml.bind.annotation.XmlNsForm.QUALIFIED)
+        @jakarta.xml.bind.annotation.XmlNs(namespaceURI = "http://uri.etsi.org/01903/v1.4.1#", prefix = "xadesv141"),
+        @jakarta.xml.bind.annotation.XmlNs(namespaceURI = "http://uri.etsi.org/01903/v1.3.2#", prefix = "xades"),
+        @jakarta.xml.bind.annotation.XmlNs(namespaceURI = "http://www.w3.org/2000/09/xmldsig#", prefix = "ds")}, elementFormDefault = jakarta.xml.bind.annotation.XmlNsForm.QUALIFIED)
 package org.signatureservice.messages.xades.v141.jaxb;

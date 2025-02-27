@@ -6,7 +6,7 @@ import org.signatureservice.messages.csmessages.CSMessageParserManager
 import java.security.Security
 import java.security.cert.X509Certificate;
 
-import javax.xml.bind.JAXBElement;
+import jakarta.xml.bind.JAXBElement;
 
 import org.apache.xml.security.Init
 import org.signatureservice.messages.MessageSecurityProvider;

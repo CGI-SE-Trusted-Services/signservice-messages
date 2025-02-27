@@ -16,7 +16,7 @@ import org.signatureservice.messages.MessageProcessingException;
 import org.signatureservice.messages.csmessages.jaxb.CSMessage;
 import org.signatureservice.messages.csmessages.jaxb.CSResponse;
 
-import javax.xml.bind.JAXBElement;
+import jakarta.xml.bind.JAXBElement;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;

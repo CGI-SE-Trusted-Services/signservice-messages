@@ -13,7 +13,7 @@ import org.signatureservice.messages.dss1.core.jaxb.SignatureObject
 import org.signatureservice.messages.dss1.core.jaxb.VerifyRequest
 import org.signatureservice.messages.saml2.CommonSAMLMessageParserSpecification
 
-import javax.xml.bind.JAXBElement
+import jakarta.xml.bind.JAXBElement
 
 import static org.signatureservice.messages.TestUtils.*
 import static org.signatureservice.messages.ContextMessageSecurityProvider.DEFAULT_CONTEXT

@@ -5,5 +5,5 @@
 // Generated on: 2017.03.01 at 08:01:08 PM CET 
 //
 
-@javax.xml.bind.annotation.XmlSchema(namespace = "http://certificateservices.org/xsd/sensitivekeys", elementFormDefault = javax.xml.bind.annotation.XmlNsForm.QUALIFIED)
+@jakarta.xml.bind.annotation.XmlSchema(namespace = "http://certificateservices.org/xsd/sensitivekeys", elementFormDefault = jakarta.xml.bind.annotation.XmlNsForm.QUALIFIED)
 package org.signatureservice.messages.sensitivekeys.jaxb;

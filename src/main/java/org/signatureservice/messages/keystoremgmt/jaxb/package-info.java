@@ -5,9 +5,9 @@
 // Generated on: 2015.06.02 at 10:40:08 AM CEST 
 //
 
-@javax.xml.bind.annotation.XmlSchema(namespace = "http://www.w3.org/2000/09/xmldsig#", 
+@jakarta.xml.bind.annotation.XmlSchema(namespace = "http://www.w3.org/2000/09/xmldsig#", 
 xmlns = {   
-		@javax.xml.bind.annotation.XmlNs(namespaceURI = "http://certificateservices.org/xsd/keystoremgmt2_0", prefix = "keystoremgmt"),
-	    @javax.xml.bind.annotation.XmlNs(namespaceURI = "http://www.w3.org/2000/09/xmldsig#", prefix = "ds"),
-	    @javax.xml.bind.annotation.XmlNs(namespaceURI = "http://certificateservices.org/xsd/csmessages2_0", prefix = "cs")},elementFormDefault = javax.xml.bind.annotation.XmlNsForm.QUALIFIED)
+		@jakarta.xml.bind.annotation.XmlNs(namespaceURI = "http://certificateservices.org/xsd/keystoremgmt2_0", prefix = "keystoremgmt"),
+	    @jakarta.xml.bind.annotation.XmlNs(namespaceURI = "http://www.w3.org/2000/09/xmldsig#", prefix = "ds"),
+	    @jakarta.xml.bind.annotation.XmlNs(namespaceURI = "http://certificateservices.org/xsd/csmessages2_0", prefix = "cs")},elementFormDefault = jakarta.xml.bind.annotation.XmlNsForm.QUALIFIED)
 package org.signatureservice.messages.keystoremgmt.jaxb;

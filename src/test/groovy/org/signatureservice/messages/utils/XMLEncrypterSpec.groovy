@@ -27,7 +27,7 @@ import java.security.MessageDigest
 import java.security.Security
 import java.security.cert.CertificateFactory
 import java.security.cert.X509Certificate
-import javax.xml.bind.JAXBElement
+import jakarta.xml.bind.JAXBElement
 import javax.xml.transform.OutputKeys
 import javax.xml.transform.Transformer
 import javax.xml.transform.TransformerFactory

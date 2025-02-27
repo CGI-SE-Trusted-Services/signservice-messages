@@ -26,7 +26,7 @@ import org.w3c.dom.Document
 import spock.lang.IgnoreIf
 
 import groovy.xml.XmlSlurper
-import javax.xml.bind.JAXBElement
+import jakarta.xml.bind.JAXBElement
 
 import static org.signatureservice.messages.TestUtils.*
 import static org.signatureservice.messages.ContextMessageSecurityProvider.DEFAULT_CONTEXT

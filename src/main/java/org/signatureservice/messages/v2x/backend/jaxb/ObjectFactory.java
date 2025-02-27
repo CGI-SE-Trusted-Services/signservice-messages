@@ -8,7 +8,7 @@
 
 package org.signatureservice.messages.v2x.backend.jaxb;
 
-import javax.xml.bind.annotation.XmlRegistry;
+import jakarta.xml.bind.annotation.XmlRegistry;
 
 
 /**

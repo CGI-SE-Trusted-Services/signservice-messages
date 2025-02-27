@@ -33,8 +33,8 @@ import org.w3c.dom.ls.LSResourceResolver;
 import org.xml.sax.SAXException;
 
 import javax.xml.XMLConstants;
-import javax.xml.bind.*;
-import javax.xml.bind.util.JAXBSource;
+import jakarta.xml.bind.*;
+import jakarta.xml.bind.util.JAXBSource;
 import javax.xml.namespace.QName;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.ParserConfigurationException;

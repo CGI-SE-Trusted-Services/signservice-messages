@@ -5,7 +5,7 @@ import org.signatureservice.messages.sweeid2.pricipalselection1_0.jaxb.ObjectFac
 import org.signatureservice.messages.sweeid2.pricipalselection1_0.jaxb.PrincipalSelectionType;
 import org.signatureservice.messages.sweeid2.pricipalselection1_0.jaxb.RequestedPrincipalSelectionType;
 
-import javax.xml.bind.JAXBElement;
+import jakarta.xml.bind.JAXBElement;
 import java.util.List;
 
 /**

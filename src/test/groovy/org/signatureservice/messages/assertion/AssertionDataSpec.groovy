@@ -3,7 +3,7 @@ package org.signatureservice.messages.assertion
 import org.bouncycastle.jce.provider.BouncyCastleProvider
 
 import java.security.Security
-import javax.xml.bind.JAXBElement;
+import jakarta.xml.bind.JAXBElement;
 
 import org.apache.xml.security.Init
 import org.signatureservice.messages.MessageContentException;

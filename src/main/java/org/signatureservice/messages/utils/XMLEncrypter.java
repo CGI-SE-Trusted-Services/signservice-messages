@@ -33,9 +33,9 @@ import org.xml.sax.SAXException;
 
 import javax.crypto.Cipher;
 import javax.crypto.KeyGenerator;
-import javax.xml.bind.JAXBElement;
-import javax.xml.bind.Marshaller;
-import javax.xml.bind.Unmarshaller;
+import jakarta.xml.bind.JAXBElement;
+import jakarta.xml.bind.Marshaller;
+import jakarta.xml.bind.Unmarshaller;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.transform.*;
 import javax.xml.transform.dom.DOMSource;

@@ -36,7 +36,7 @@ import org.signatureservice.messages.sweeid2.pricipalselection1_0.jaxb.Requested
 import org.signatureservice.messages.utils.MessageGenerateUtils
 import org.signatureservice.messages.xenc.jaxb.EncryptionMethodType
 
-import javax.xml.bind.JAXBElement
+import jakarta.xml.bind.JAXBElement
 import javax.xml.datatype.DatatypeFactory
 import javax.xml.datatype.Duration
 import javax.xml.namespace.QName

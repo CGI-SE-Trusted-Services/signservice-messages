@@ -22,7 +22,7 @@ import org.signatureservice.messages.sweeid2.pricipalselection1_0.jaxb.MatchValu
 import org.signatureservice.messages.utils.MessageGenerateUtils
 import org.signatureservice.messages.sweeid2.pricipalselection1_0.jaxb.ObjectFactory
 
-import javax.xml.bind.JAXBElement
+import jakarta.xml.bind.JAXBElement
 
 import static org.signatureservice.messages.TestUtils.*
 import static org.signatureservice.messages.ContextMessageSecurityProvider.DEFAULT_CONTEXT

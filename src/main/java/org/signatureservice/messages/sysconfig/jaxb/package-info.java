@@ -5,9 +5,9 @@
 // Generated on: 2015.05.22 at 12:49:39 PM CEST 
 //
 
-@javax.xml.bind.annotation.XmlSchema(namespace = "http://certificateservices.org/xsd/sysconfig2_0", 
+@jakarta.xml.bind.annotation.XmlSchema(namespace = "http://certificateservices.org/xsd/sysconfig2_0",
 xmlns = {   
-		@javax.xml.bind.annotation.XmlNs(namespaceURI = "http://certificateservices.org/xsd/sysconfig2_0", prefix = "sysconfig"),
-	    @javax.xml.bind.annotation.XmlNs(namespaceURI = "http://www.w3.org/2000/09/xmldsig#", prefix = "ds"),
-	    @javax.xml.bind.annotation.XmlNs(namespaceURI = "http://certificateservices.org/xsd/csmessages2_0", prefix = "cs")}, elementFormDefault = javax.xml.bind.annotation.XmlNsForm.QUALIFIED)
+		@jakarta.xml.bind.annotation.XmlNs(namespaceURI = "http://certificateservices.org/xsd/sysconfig2_0", prefix = "sysconfig"),
+	    @jakarta.xml.bind.annotation.XmlNs(namespaceURI = "http://www.w3.org/2000/09/xmldsig#", prefix = "ds"),
+	    @jakarta.xml.bind.annotation.XmlNs(namespaceURI = "http://certificateservices.org/xsd/csmessages2_0", prefix = "cs")}, elementFormDefault = jakarta.xml.bind.annotation.XmlNsForm.QUALIFIED)
 package org.signatureservice.messages.sysconfig.jaxb;

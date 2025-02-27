@@ -32,7 +32,7 @@ import org.xml.sax.InputSource
 import spock.lang.Specification
 import spock.lang.Unroll
 
-import javax.xml.bind.JAXBElement
+import jakarta.xml.bind.JAXBElement
 import javax.xml.crypto.dsig.XMLSignature
 import javax.xml.crypto.dsig.XMLSignatureFactory
 import javax.xml.crypto.dsig.dom.DOMValidateContext

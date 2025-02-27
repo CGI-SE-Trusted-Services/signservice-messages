@@ -14,7 +14,7 @@ package org.signatureservice.messages.csmessages;
 
 import java.util.Properties;
 
-import javax.xml.bind.JAXBElement;
+import jakarta.xml.bind.JAXBElement;
 
 import org.signatureservice.messages.MessageProcessingException;
 import org.signatureservice.messages.utils.SettingsUtils;

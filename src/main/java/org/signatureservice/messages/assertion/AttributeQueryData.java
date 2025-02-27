@@ -12,7 +12,7 @@
  *************************************************************************/
 package org.signatureservice.messages.assertion;
 
-import javax.xml.bind.JAXBElement;
+import jakarta.xml.bind.JAXBElement;
 
 import org.signatureservice.messages.MessageContentException;
 import org.signatureservice.messages.MessageProcessingException;

@@ -7,7 +7,7 @@ import org.signatureservice.messages.utils.XMLSigner
 import java.security.Security
 import java.security.cert.X509Certificate;
 
-import javax.xml.bind.JAXBElement;
+import jakarta.xml.bind.JAXBElement;
 
 import org.signatureservice.messages.MessageSecurityProvider;
 import org.signatureservice.messages.SimpleMessageSecurityProvider;

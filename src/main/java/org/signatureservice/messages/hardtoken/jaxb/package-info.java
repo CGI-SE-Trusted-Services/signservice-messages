@@ -5,10 +5,10 @@
 // Generated on: 2016.05.23 at 04:03:45 PM CEST 
 //
 
-@javax.xml.bind.annotation.XmlSchema(namespace = "http://certificateservices.org/xsd/hardtoken",
+@jakarta.xml.bind.annotation.XmlSchema(namespace = "http://certificateservices.org/xsd/hardtoken",
 xmlns = {   
-		@javax.xml.bind.annotation.XmlNs(namespaceURI = "http://certificateservices.org/xsd/hardtoken", prefix = "hardtoken"),
-		@javax.xml.bind.annotation.XmlNs(namespaceURI = "http://www.w3.org/2000/09/xmldsig#", prefix = "ds"),
-	    @javax.xml.bind.annotation.XmlNs(namespaceURI = "http://www.w3.org/2001/04/xmlenc#", prefix = "xenc")},
-	    elementFormDefault = javax.xml.bind.annotation.XmlNsForm.QUALIFIED)
+		@jakarta.xml.bind.annotation.XmlNs(namespaceURI = "http://certificateservices.org/xsd/hardtoken", prefix = "hardtoken"),
+		@jakarta.xml.bind.annotation.XmlNs(namespaceURI = "http://www.w3.org/2000/09/xmldsig#", prefix = "ds"),
+	    @jakarta.xml.bind.annotation.XmlNs(namespaceURI = "http://www.w3.org/2001/04/xmlenc#", prefix = "xenc")},
+	    elementFormDefault = jakarta.xml.bind.annotation.XmlNsForm.QUALIFIED)
 package org.signatureservice.messages.hardtoken.jaxb;

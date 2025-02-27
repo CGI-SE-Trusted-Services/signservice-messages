@@ -5,9 +5,9 @@
 // Generated on: 2016.10.13 at 03:22:10 PM CEST 
 //
 
-@javax.xml.bind.annotation.XmlSchema(namespace = "http://certificateservices.org/xsd/csexport_data_1_0",
+@jakarta.xml.bind.annotation.XmlSchema(namespace = "http://certificateservices.org/xsd/csexport_data_1_0",
         xmlns = {
-                @javax.xml.bind.annotation.XmlNs(namespaceURI = "http://certificateservices.org/xsd/csexport_data_1_0", prefix = "csexd"),
-                @javax.xml.bind.annotation.XmlNs(namespaceURI = "http://www.w3.org/2000/09/xmldsig#", prefix = "ds")},
-        elementFormDefault = javax.xml.bind.annotation.XmlNsForm.QUALIFIED)
+                @jakarta.xml.bind.annotation.XmlNs(namespaceURI = "http://certificateservices.org/xsd/csexport_data_1_0", prefix = "csexd"),
+                @jakarta.xml.bind.annotation.XmlNs(namespaceURI = "http://www.w3.org/2000/09/xmldsig#", prefix = "ds")},
+        elementFormDefault = jakarta.xml.bind.annotation.XmlNsForm.QUALIFIED)
 package org.signatureservice.messages.csexport.data.jaxb;

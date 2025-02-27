@@ -28,7 +28,7 @@ import org.signatureservice.messages.csmessages.jaxb.CSResponse;
 import org.signatureservice.messages.csmessages.jaxb.Credential;
 import org.signatureservice.messages.csmessages.jaxb.RequestStatus;
 
-import javax.xml.bind.JAXBElement;
+import jakarta.xml.bind.JAXBElement;
 import java.io.InputStream;
 import java.util.List;
 

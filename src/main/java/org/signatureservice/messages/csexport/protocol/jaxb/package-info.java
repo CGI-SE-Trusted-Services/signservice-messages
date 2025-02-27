@@ -5,10 +5,10 @@
 // Generated on: 2017.01.04 at 02:14:36 PM MSK 
 //
 
-@javax.xml.bind.annotation.XmlSchema(namespace = "http://certificateservices.org/xsd/cs_export_protocol2_0",
+@jakarta.xml.bind.annotation.XmlSchema(namespace = "http://certificateservices.org/xsd/cs_export_protocol2_0",
         xmlns = {
-                @javax.xml.bind.annotation.XmlNs(namespaceURI = "http://certificateservices.org/xsd/cs_export_protocol2_0", prefix = "csexp"),
-                @javax.xml.bind.annotation.XmlNs(namespaceURI = "http://www.w3.org/2000/09/xmldsig#", prefix = "ds"),
-                @javax.xml.bind.annotation.XmlNs(namespaceURI = "http://certificateservices.org/xsd/csmessages2_0", prefix = "cs")},
-        elementFormDefault = javax.xml.bind.annotation.XmlNsForm.QUALIFIED)
+                @jakarta.xml.bind.annotation.XmlNs(namespaceURI = "http://certificateservices.org/xsd/cs_export_protocol2_0", prefix = "csexp"),
+                @jakarta.xml.bind.annotation.XmlNs(namespaceURI = "http://www.w3.org/2000/09/xmldsig#", prefix = "ds"),
+                @jakarta.xml.bind.annotation.XmlNs(namespaceURI = "http://certificateservices.org/xsd/csmessages2_0", prefix = "cs")},
+        elementFormDefault = jakarta.xml.bind.annotation.XmlNsForm.QUALIFIED)
 package org.signatureservice.messages.csexport.protocol.jaxb;

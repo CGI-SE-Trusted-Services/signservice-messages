@@ -5,11 +5,11 @@
 // Generated on: 2017.03.02 at 11:08:13 AM CET 
 //
 
-@javax.xml.bind.annotation.XmlSchema(namespace = "http://certificateservices.org/xsd/autoenroll2_x",
+@jakarta.xml.bind.annotation.XmlSchema(namespace = "http://certificateservices.org/xsd/autoenroll2_x",
         xmlns = {
-                @javax.xml.bind.annotation.XmlNs(namespaceURI = "http://certificateservices.org/xsd/autoenroll2_x", prefix = "ae"),
-                @javax.xml.bind.annotation.XmlNs(namespaceURI = "http://www.w3.org/2000/09/xmldsig#", prefix = "ds"),
-                @javax.xml.bind.annotation.XmlNs(namespaceURI = "http://certificateservices.org/xsd/csmessages2_0", prefix = "cs"),
-                @javax.xml.bind.annotation.XmlNs(namespaceURI = "http://certificateservices.org/xsd/sensitivekeys", prefix = "key")},
-        elementFormDefault = javax.xml.bind.annotation.XmlNsForm.QUALIFIED)
+                @jakarta.xml.bind.annotation.XmlNs(namespaceURI = "http://certificateservices.org/xsd/autoenroll2_x", prefix = "ae"),
+                @jakarta.xml.bind.annotation.XmlNs(namespaceURI = "http://www.w3.org/2000/09/xmldsig#", prefix = "ds"),
+                @jakarta.xml.bind.annotation.XmlNs(namespaceURI = "http://certificateservices.org/xsd/csmessages2_0", prefix = "cs"),
+                @jakarta.xml.bind.annotation.XmlNs(namespaceURI = "http://certificateservices.org/xsd/sensitivekeys", prefix = "key")},
+        elementFormDefault = jakarta.xml.bind.annotation.XmlNsForm.QUALIFIED)
 package org.signatureservice.messages.autoenroll.jaxb;

@@ -7,8 +7,8 @@ import org.signatureservice.messages.csmessages.jaxb.CSMessage;
 import org.signatureservice.messages.csmessages.jaxb.GetApprovalRequest;
 import org.xml.sax.SAXParseException;
 
-import javax.xml.bind.JAXBElement;
-import javax.xml.bind.JAXBException;
+import jakarta.xml.bind.JAXBElement;
+import jakarta.xml.bind.JAXBException;
 import java.security.cert.X509Certificate;
 
 /**

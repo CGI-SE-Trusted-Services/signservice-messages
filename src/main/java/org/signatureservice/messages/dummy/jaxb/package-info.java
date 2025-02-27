@@ -5,5 +5,5 @@
 // Generated on: 2015.05.27 at 04:31:50 PM CEST 
 //
 
-@javax.xml.bind.annotation.XmlSchema(namespace = "http://www.w3.org/2000/09/xmldsig#", elementFormDefault = javax.xml.bind.annotation.XmlNsForm.QUALIFIED)
+@jakarta.xml.bind.annotation.XmlSchema(namespace = "http://www.w3.org/2000/09/xmldsig#", elementFormDefault = jakarta.xml.bind.annotation.XmlNsForm.QUALIFIED)
 package org.signatureservice.messages.dummy.jaxb;

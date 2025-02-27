@@ -28,7 +28,7 @@ import org.signatureservice.messages.sweeid2.dssextenstions1_1.jaxb.SignerAssert
 import org.w3c.dom.Document
 import org.w3c.dom.Element
 
-import javax.xml.bind.JAXBElement
+import jakarta.xml.bind.JAXBElement
 import javax.xml.namespace.QName
 
 import static org.signatureservice.messages.TestUtils.*

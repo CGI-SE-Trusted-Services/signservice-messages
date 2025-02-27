@@ -13,9 +13,9 @@ import org.signatureservice.messages.csexport.data.jaxb.TokenType
 import org.signatureservice.messages.utils.MessageGenerateUtils
 import spock.lang.Specification
 
-import javax.xml.bind.JAXBContext
-import javax.xml.bind.Marshaller
-import javax.xml.bind.Unmarshaller
+import jakarta.xml.bind.JAXBContext
+import jakarta.xml.bind.Marshaller
+import jakarta.xml.bind.Unmarshaller
 import javax.xml.validation.Schema
 import java.security.Security
 
