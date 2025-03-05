@@ -112,7 +112,7 @@ class BaseSAMLMessageParserSpec extends CommonSAMLMessageParserSpecification {
 
 
 	
-	def "Verify getAssertionFromResponseType() returns null if no assertion exists in respinse"(){
+	def "Verify getAssertionFromResponseType() returns null if no assertion exists in response"(){
 		setup:
 		ResponseType resp = spmp.parseMessage(DEFAULT_CONTEXT,bsmp.genFailureMessage(DEFAULT_CONTEXT,"_143214321", ResponseStatusCodes.REQUESTER, "Some Error"), false)
 		when:
@@ -154,6 +154,63 @@ class BaseSAMLMessageParserSpec extends CommonSAMLMessageParserSpecification {
 	   bsmp.verifyAssertionConditions(ticket, scl)
 	   then:
 	   thrown MessageContentException
+	}
+
+	def "Verify that verifyAssertionConditions can handle absence of notBefore correctly"(){
+		setup:
+		def ticket = samp.generateSimpleAssertion("someIssuer", null, new Date(1436279412000), "SomeSubject",null).getValue()
+
+		when: "Any time before not after is valid"
+		createMockedTime(1436279213000)
+		bsmp.verifyAssertionConditions(ticket, scl)
+		then:
+		true
+
+		when: "Same millisecond as notOnOrAfter is not valid"
+		createMockedTime(1436279413000)
+		bsmp.verifyAssertionConditions(ticket, scl)
+		then:
+		thrown MessageContentException
+
+		when: "After notOnOrAfter is also not valid"
+		createMockedTime(1436279414000)
+		bsmp.verifyAssertionConditions(ticket, scl)
+		then:
+		thrown MessageContentException
+	}
+
+	def "Verify that verifyAssertionConditions can handle absence of notOnOrAfter correctly"(){
+		setup:
+		def ticket = samp.generateSimpleAssertion("someIssuer", new Date(1436279212000), null, "SomeSubject",null).getValue()
+
+		createMockedTime(1436279210000)
+		when: "Verify that MessageContent is thrown if not yet valid"
+		bsmp.verifyAssertionConditions(ticket, scl)
+		then:
+		thrown MessageContentException
+
+		when: "Same millisecond as not before is valid"
+		createMockedTime(1436279212000)
+		bsmp.verifyAssertionConditions(ticket, scl)
+		then:
+		true
+
+		when: "Any time after not before is valid"
+		createMockedTime(1436279213000)
+		bsmp.verifyAssertionConditions(ticket, scl)
+		then:
+		true
+	}
+
+	def "Verify that verifyAssertionConditions can handle absence of notBefore and notOnOrAfter correctly"(){
+		setup:
+		def ticket = samp.generateSimpleAssertion("someIssuer", null, null, "SomeSubject",null).getValue()
+
+		when: "Any time is valid"
+		createMockedTime(1436279213000)
+		bsmp.verifyAssertionConditions(ticket, scl)
+		then:
+		true
 	}
 
 	def "Verify that conditions that contains OneTime or AudienceRestriction throws MessageContentException for SimpleConditionsLookup"(){
@@ -364,8 +421,6 @@ class BaseSAMLMessageParserSpec extends CommonSAMLMessageParserSpecification {
 
 	private ConditionsType genValidConditionsType(){
 		ConditionsType conditionsType = of.createConditionsType()
-		conditionsType.setNotBefore(MessageGenerateUtils.dateToXMLGregorianCalendar(new Date(1436279212000)))
-		conditionsType.setNotOnOrAfter(MessageGenerateUtils.dateToXMLGregorianCalendar(new Date(1436279412000)))
 		return conditionsType;
 	}
   

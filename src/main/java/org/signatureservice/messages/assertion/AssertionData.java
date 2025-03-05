@@ -14,6 +14,7 @@ package org.signatureservice.messages.assertion;
 
 import java.security.cert.X509Certificate;
 import java.util.Date;
+import java.util.Optional;
 
 import javax.xml.bind.JAXBElement;
 
@@ -33,8 +34,8 @@ import org.signatureservice.messages.utils.MessageGenerateUtils;
 public abstract class AssertionData {
 	
 	protected String id;
-	protected Date notBefore;
-	protected Date notOnOrAfter;
+	private Date notBefore;
+	private Date notOnOrAfter;
 	protected String subjectId;
 	protected X509Certificate signCertificate;
 	protected AssertionPayloadParser assertionPayloadParser;
@@ -86,18 +87,18 @@ public abstract class AssertionData {
 
 	/**
 	 * 
-	 * @return the not before date this assertions i valid.
+	 * @return the not before date this assertions i valid, as an Optional<Date>.
 	 */
-	public Date getNotBefore() {
-		return notBefore;
+	public Optional<Date> getNotBefore() {
+		return Optional.ofNullable(notBefore);
 	}
 
 	/**
 	 * 
-	 * @return the date this assertion expires.
+	 * @return the date this assertion expires, as an Optional<Date>.
 	 */
-	public Date getNotOnOrAfter() {
-		return notOnOrAfter;
+	public Optional<Date> getNotOnOrAfter() {
+		return Optional.ofNullable(notOnOrAfter);
 	}
 
 	/**

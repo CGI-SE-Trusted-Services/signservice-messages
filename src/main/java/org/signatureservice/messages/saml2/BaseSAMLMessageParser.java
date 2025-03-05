@@ -450,15 +450,22 @@ public abstract class BaseSAMLMessageParser {
 	public void verifyConditions(ConditionsType conditions, String type, String messageId, ConditionLookup conditionLookup) throws MessageContentException {
 		try{
 			long clockSkew = conditionLookup.acceptedClockSkew();
-			Date notBefore = new Date(MessageGenerateUtils.xMLGregorianCalendarToDate(conditions.getNotBefore()).getTime() - clockSkew);
-			Date notOnOrAfter = new Date(MessageGenerateUtils.xMLGregorianCalendarToDate(conditions.getNotOnOrAfter()).getTime() + clockSkew);
 			Date currentTime = systemTime.getSystemTime();
 
-			if(notBefore.after(currentTime)){
-				throw new MessageContentException("Error " + type + " not yet valid, not valid until: " + notBefore);
+			Date notBeforeOptional = MessageGenerateUtils.xMLGregorianCalendarToDate(conditions.getNotBefore());
+			if(notBeforeOptional != null) {
+				Date notBefore = new Date(notBeforeOptional.getTime() - clockSkew);
+				if(notBefore.after(currentTime)){
+					throw new MessageContentException("Error " + type + " not yet valid, not valid until: " + notBefore);
+				}
 			}
-			if(notOnOrAfter.before(currentTime) || notOnOrAfter.equals(currentTime)){
-				throw new MessageContentException("Error " + type + " has expired on: " + notOnOrAfter);
+
+			Date notOnOrAfterOptional = MessageGenerateUtils.xMLGregorianCalendarToDate(conditions.getNotOnOrAfter());
+			if(notOnOrAfterOptional != null) {
+				Date notOnOrAfter = new Date(notOnOrAfterOptional.getTime() + clockSkew);
+				if(notOnOrAfter.before(currentTime) || notOnOrAfter.equals(currentTime)){
+					throw new MessageContentException("Error " + type + " has expired on: " + notOnOrAfter);
+				}
 			}
 
 			for(ConditionAbstractType cat : conditions.getConditionOrAudienceRestrictionOrOneTimeUse()){

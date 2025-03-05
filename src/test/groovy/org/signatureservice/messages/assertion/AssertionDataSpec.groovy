@@ -38,7 +38,7 @@ class AssertionDataSpec extends Specification {
 		ad = new TestAssertionData(assertionPayloadParser)
 	}
 	
-	def "Verify that parseCommonData sets all fields and getters retieves correct data"(){
+	def "Verify that parseCommonData sets all fields and getters retrieves correct data"(){
 		setup:
 		byte[] ticketData = assertionPayloadParser.genApprovalTicket("someIssuer", new Date(1436279212427), new Date(1436279312427), "SomeSubject","1234",["abcdef", "defcva"], null, null,null)
 		def assertion = assertionPayloadParser.parseApprovalTicket(ticketData)
@@ -48,8 +48,24 @@ class AssertionDataSpec extends Specification {
 		
 		then:
 		ad.getId() == assertion.value.getID()
-		ad.getNotBefore().time == 1436279212427L
-		ad.getNotOnOrAfter().time == 1436279312427L
+		ad.getNotBefore().get().time == 1436279212427L
+		ad.getNotOnOrAfter().get().time == 1436279312427L
+		ad.getSubjectId() == "SomeSubject"
+		ad.getSignCertificate().subjectDN.toString() == "O=Demo Customer1 AT, CN=test"
+	}
+
+	def "Verify that parseCommonData sets all fields and getters retrieves correct data, with absent validity dates"(){
+		setup:
+		byte[] ticketData = assertionPayloadParser.genApprovalTicket("someIssuer", null, null, "SomeSubject","1234",["abcdef", "defcva"], null, null,null)
+		def assertion = assertionPayloadParser.parseApprovalTicket(ticketData)
+
+		when:
+		ad.parse(assertion)
+
+		then:
+		ad.getId() == assertion.value.getID()
+		ad.getNotBefore().isEmpty()
+		ad.getNotOnOrAfter().isEmpty()
 		ad.getSubjectId() == "SomeSubject"
 		ad.getSignCertificate().subjectDN.toString() == "O=Demo Customer1 AT, CN=test"
 	}
