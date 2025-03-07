@@ -1,4 +1,16 @@
-= Certservice-messages Project
+= Signservice-messages Project
+
+This project is a fork of the Certservice-messages Project. The Signature service project will henceforth
+depend on this project instead.
+
+== Remarks
+
+** This project will be made available publicly, as a dependency of signservice-support-lib
+** Target namespaces for the xml schemas remain unchanged for now
+** Parts of the codebase not required for Signature service will be removed, as they are discovered
+** All the sections below are documentation inherited from the Certservice-messages Project
+
+== Certservice-messages Project
 
 This a project containing Java code to generate and parse various messages within other certservice projects.
 

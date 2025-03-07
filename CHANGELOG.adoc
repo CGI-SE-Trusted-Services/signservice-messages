@@ -1,7 +1,18 @@
 = Changelog
 
 This document provides information about changes that have been made for each new version
-of the Certificate Service Messages Library.
+of the Signature Service Messages Library.
+
+== Version 2503.1
+
+== Changes
+
+** Package name org.certificateservices.messages -> org.signatureservice.message
+** Language level Java8 -> Java11
+
+== Changelog inherited from Certificate Service Messages Library
+
+Everything below is changes made prior to the fork
 
 == Version 2502.1
 
