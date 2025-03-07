@@ -44,7 +44,7 @@ public class SweEID2DSSExtensionsMessageParser extends DSS1CoreMessageParser{
 
     private static final String BASE_JAXB_CONTEXT = "org.signatureservice.messages.sweeid2.dssextenstions1_1.jaxb:org.signatureservice.messages.saml2.assertion.jaxb:org.signatureservice.messages.xenc.jaxb";
 
-    private static final String SWEEID_DSS_EXTENSTIONS_XSD_SCHEMA_1_1_RESOURCE_LOCATION = "/eid-dss-extensions-1.1.2.xsd";
+    private static final String SWEEID_DSS_EXTENSTIONS_XSD_SCHEMA_1_1_RESOURCE_LOCATION = "/eid-dss-extensions-1.1.3.xsd";
 
 
     protected ObjectFactory eid2Of = new ObjectFactory();
