@@ -19,7 +19,6 @@ import java.util.Set;
 import org.signatureservice.messages.MessageProcessingException;
 import org.signatureservice.messages.assertion.AssertionPayloadParser;
 import org.signatureservice.messages.credmanagement.CredManagementPayloadParser;
-import org.signatureservice.messages.encryptedcsmessage.EncryptedCSMessagePayloadParser;
 import org.signatureservice.messages.keystoremgmt.KeystoreMgmtPayloadParser;
 import org.signatureservice.messages.signrequest.SignRequestPayloadParser;
 import org.signatureservice.messages.sysconfig.SysConfigPayloadParser;
@@ -61,7 +60,6 @@ public class PayloadParserRegistry {
 		  payloadParserRegistry.put(KeystoreMgmtPayloadParser.NAMESPACE, KeystoreMgmtPayloadParser.class);
 		  payloadParserRegistry.put(CredManagementPayloadParser.NAMESPACE, CredManagementPayloadParser.class);
 		  payloadParserRegistry.put(AssertionPayloadParser.NAMESPACE, AssertionPayloadParser.class);
-		  payloadParserRegistry.put(EncryptedCSMessagePayloadParser.NAMESPACE, EncryptedCSMessagePayloadParser.class);
 		  payloadParserRegistry.put(SignRequestPayloadParser.NAMESPACE, SignRequestPayloadParser.class);
 		  payloadParserRegistry.put(V2XPayloadParser.NAMESPACE, V2XPayloadParser.class);
 		  payloadParserRegistry.put(V2XBackendPayloadParser.NAMESPACE, V2XBackendPayloadParser.class);
