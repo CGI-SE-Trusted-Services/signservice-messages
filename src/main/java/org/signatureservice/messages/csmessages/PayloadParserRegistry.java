@@ -21,7 +21,6 @@ import org.signatureservice.messages.assertion.AssertionPayloadParser;
 import org.signatureservice.messages.authorization.AuthorizationPayloadParser;
 import org.signatureservice.messages.autoenroll.AutoEnrollPayloadParser;
 import org.signatureservice.messages.credmanagement.CredManagementPayloadParser;
-import org.signatureservice.messages.csagent.CSAgentProtocolPayloadParser;
 import org.signatureservice.messages.csexport.protocol.CSExportProtocolPayloadParser;
 import org.signatureservice.messages.encryptedcsmessage.EncryptedCSMessagePayloadParser;
 import org.signatureservice.messages.keystoremgmt.KeystoreMgmtPayloadParser;
@@ -69,7 +68,6 @@ public class PayloadParserRegistry {
 		  payloadParserRegistry.put(AuthorizationPayloadParser.NAMESPACE, AuthorizationPayloadParser.class);
 		  payloadParserRegistry.put(CSExportProtocolPayloadParser.NAMESPACE, CSExportProtocolPayloadParser.class);
 		  payloadParserRegistry.put(AutoEnrollPayloadParser.NAMESPACE, AutoEnrollPayloadParser.class);
-		  payloadParserRegistry.put(CSAgentProtocolPayloadParser.NAMESPACE, CSAgentProtocolPayloadParser.class);
 		  payloadParserRegistry.put(SignRequestPayloadParser.NAMESPACE, SignRequestPayloadParser.class);
 		  payloadParserRegistry.put(V2XPayloadParser.NAMESPACE, V2XPayloadParser.class);
 		  payloadParserRegistry.put(V2XBackendPayloadParser.NAMESPACE, V2XBackendPayloadParser.class);
