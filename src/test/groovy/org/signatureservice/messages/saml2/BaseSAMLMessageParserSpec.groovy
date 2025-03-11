@@ -3,7 +3,6 @@ package org.signatureservice.messages.saml2
 import org.signatureservice.messages.MessageContentException
 import org.signatureservice.messages.assertion.AssertionPayloadParser
 import org.signatureservice.messages.assertion.ResponseStatusCodes
-import org.signatureservice.messages.authorization.AuthorizationPayloadParser
 import org.signatureservice.messages.credmanagement.CredManagementPayloadParser
 import org.signatureservice.messages.credmanagement.jaxb.IssueTokenCredentialsRequest
 import org.signatureservice.messages.csmessages.DefaultCSMessageParser
@@ -19,7 +18,6 @@ import org.signatureservice.messages.saml2.assertion.jaxb.SubjectType
 import org.signatureservice.messages.saml2.protocol.SAMLProtocolMessageParser
 import org.signatureservice.messages.saml2.protocol.jaxb.ExtensionsType
 import org.signatureservice.messages.saml2.protocol.jaxb.ResponseType
-import org.signatureservice.messages.utils.MessageGenerateUtils
 import org.signatureservice.messages.utils.SystemTime
 import org.signatureservice.messages.xenc.jaxb.EncryptedDataType
 import org.w3c.dom.Document
@@ -55,20 +53,19 @@ class BaseSAMLMessageParserSpec extends CommonSAMLMessageParserSpecification {
 	def "Verify that init with custom JAXB and Schema setting is initialized properly"(){
 	   setup:
 	    Properties c = new Properties();
-		c.setProperty(BaseSAMLMessageParser.SETTING_CUSTOM_JAXBCLASSPATH, "org.signatureservice.messages.csmessages.jaxb:org.signatureservice.messages.credmanagement.jaxb:org.signatureservice.messages.authorization.jaxb")
-		c.setProperty(BaseSAMLMessageParser.SETTING_CUSTOM_SCHEMALOCATIONS, DefaultCSMessageParser.CSMESSAGE_XSD_SCHEMA_2_0_RESOURCE_LOCATION + ":" + CredManagementPayloadParser.CREDMANAGEMENT_XSD_SCHEMA_2_0_RESOURCE_LOCATION + ":" + AuthorizationPayloadParser.AUTHORIZATION_XSD_SCHEMA_2_0_RESOURCE_LOCATION)
+		c.setProperty(BaseSAMLMessageParser.SETTING_CUSTOM_JAXBCLASSPATH, "org.signatureservice.messages.csmessages.jaxb:org.signatureservice.messages.credmanagement.jaxb")
+		c.setProperty(BaseSAMLMessageParser.SETTING_CUSTOM_SCHEMALOCATIONS, DefaultCSMessageParser.CSMESSAGE_XSD_SCHEMA_2_0_RESOURCE_LOCATION + ":" + CredManagementPayloadParser.CREDMANAGEMENT_XSD_SCHEMA_2_0_RESOURCE_LOCATION)
 		SAMLAssertionMessageParser p = new SAMLAssertionMessageParser()
 		def customMock = Mock(SAMLParserCustomisations)
-		customMock.getCustomJAXBClasspath() >> "org.signatureservice.messages.csmessages.jaxb:org.signatureservice.messages.credmanagement.jaxb:org.signatureservice.messages.authorization.jaxb"
-		customMock.getCustomSchemaLocations() >> [DefaultCSMessageParser.CSMESSAGE_XSD_SCHEMA_2_0_RESOURCE_LOCATION , CredManagementPayloadParser.CREDMANAGEMENT_XSD_SCHEMA_2_0_RESOURCE_LOCATION , AuthorizationPayloadParser.AUTHORIZATION_XSD_SCHEMA_2_0_RESOURCE_LOCATION]
+		customMock.getCustomJAXBClasspath() >> "org.signatureservice.messages.csmessages.jaxb:org.signatureservice.messages.credmanagement.jaxb"
+		customMock.getCustomSchemaLocations() >> [DefaultCSMessageParser.CSMESSAGE_XSD_SCHEMA_2_0_RESOURCE_LOCATION , CredManagementPayloadParser.CREDMANAGEMENT_XSD_SCHEMA_2_0_RESOURCE_LOCATION]
 		when:
 		p.init(secProv, customMock);
 		then:
-		p.customJAXBClasspath == "org.signatureservice.messages.csmessages.jaxb:org.signatureservice.messages.credmanagement.jaxb:org.signatureservice.messages.authorization.jaxb"
-		p.customSchemaLocations.length == 3
+		p.customJAXBClasspath == "org.signatureservice.messages.csmessages.jaxb:org.signatureservice.messages.credmanagement.jaxb"
+		p.customSchemaLocations.length == 2
 		p.customSchemaLocations[0] == DefaultCSMessageParser.CSMESSAGE_XSD_SCHEMA_2_0_RESOURCE_LOCATION
 		p.customSchemaLocations[1] == CredManagementPayloadParser.CREDMANAGEMENT_XSD_SCHEMA_2_0_RESOURCE_LOCATION
-		p.customSchemaLocations[2] == AuthorizationPayloadParser.AUTHORIZATION_XSD_SCHEMA_2_0_RESOURCE_LOCATION
 		p.getJAXBContext().createJAXBIntrospector().getElementName(new IssueTokenCredentialsRequest()) != null
 		when:
 		Object o = p.parseMessage(DEFAULT_CONTEXT,csMessageData,false)
