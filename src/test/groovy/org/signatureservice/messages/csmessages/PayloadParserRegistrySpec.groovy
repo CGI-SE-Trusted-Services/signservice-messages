@@ -16,7 +16,6 @@ package org.signatureservice.messages.csmessages
 import org.signatureservice.messages.MessageProcessingException;
 import org.signatureservice.messages.csmessages.PayloadParserRegistry.ConfigurationCallback
 import org.signatureservice.messages.dummy.DummyPayloadParser;
-import org.signatureservice.messages.keystoremgmt.KeystoreMgmtPayloadParser;
 import org.signatureservice.messages.sysconfig.SysConfigPayloadParser
 import spock.lang.Specification;
 
@@ -35,7 +34,6 @@ public class PayloadParserRegistrySpec extends Specification{
 		then:
 		PayloadParserRegistry.configurationCallback != null
 		PayloadParserRegistry.payloadParserRegistry.get(SysConfigPayloadParser.NAMESPACE) != null
-		PayloadParserRegistry.payloadParserRegistry.get(KeystoreMgmtPayloadParser.NAMESPACE) != null
 	}
 	
 	def "Test that configure configures the callback and doesn't register default payload parsers if registerBuiltInPayloads is false "(){
