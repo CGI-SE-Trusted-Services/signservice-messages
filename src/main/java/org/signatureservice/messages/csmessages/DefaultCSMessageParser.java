@@ -941,7 +941,7 @@ public class DefaultCSMessageParser implements CSMessageParser {
 	     */
 	    JAXBContext getJAXBContext() throws JAXBException, MessageProcessingException{
 	    	if(jaxbContext== null){
-	    		jaxbClassPath = "org.signatureservice.messages.csmessages.jaxb:org.signatureservice.messages.xmldsig.jaxb:org.signatureservice.messages.xenc.jaxb:org.signatureservice.messages.csexport.data.jaxb:org.signatureservice.messages.sensitivekeys.jaxb";
+	    		jaxbClassPath = "org.signatureservice.messages.csmessages.jaxb:org.signatureservice.messages.xmldsig.jaxb:org.signatureservice.messages.xenc.jaxb:org.signatureservice.messages.sensitivekeys.jaxb";
 	    			    		
 	    		for(String namespace : PayloadParserRegistry.getRegistredNamespaces()){
 	    			String jaxbPackage = PayloadParserRegistry.getParser(namespace).getJAXBPackage();
