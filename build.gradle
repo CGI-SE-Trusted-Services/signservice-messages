@@ -61,10 +61,16 @@ dependencies {
     jaxws 'com.sun.xml.ws:jaxws-ri:4.0.3'
 }
 
-tasks.register('generateJAXBClasses', JavaExec) {
+tasks.register('jaxbEidDssExtensions113', JavaExec) {
     mainClass = 'com.sun.tools.xjc.XJCFacade'
     classpath = configurations.jaxws
-    args = ['-d', 'src/main/java', '-disableXmlSecurity', 'src/main/resources/eid-dss-extensions-1.1.3.xsd', '-b', 'src/main/resources/xjb']
+    args = ['-d', 'src/main/java', '-disableXmlSecurity', 'src/main/resources/eid-dss-extensions-1.1.3.xsd', '-b', 'src/main/resources/xjb/1.xjb']
+}
+
+tasks.register('jaxbOasisDssCore10', JavaExec) {
+    mainClass = 'com.sun.tools.xjc.XJCFacade'
+    classpath = configurations.jaxws
+    args = ['-d', 'src/main/java', '-disableXmlSecurity', 'src/main/resources/cs-message-oasis-dss-core-schema-v1.0-os.xsd', '-b', 'src/main/resources/xjb/2.xjb']
 }
 
 tasks.withType(JavaCompile).configureEach {
