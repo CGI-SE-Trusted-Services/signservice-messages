@@ -21,8 +21,6 @@ import org.signatureservice.messages.assertion.AssertionPayloadParser;
 import org.signatureservice.messages.credmanagement.CredManagementPayloadParser;
 import org.signatureservice.messages.signrequest.SignRequestPayloadParser;
 import org.signatureservice.messages.sysconfig.SysConfigPayloadParser;
-import org.signatureservice.messages.v2x.backend.V2XBackendPayloadParser;
-import org.signatureservice.messages.v2x.registration.V2XPayloadParser;
 
 /**
  * Class in charge of maintaining available PayLoadParsers for different pay load content in CS Messages.
@@ -59,8 +57,6 @@ public class PayloadParserRegistry {
 		  payloadParserRegistry.put(CredManagementPayloadParser.NAMESPACE, CredManagementPayloadParser.class);
 		  payloadParserRegistry.put(AssertionPayloadParser.NAMESPACE, AssertionPayloadParser.class);
 		  payloadParserRegistry.put(SignRequestPayloadParser.NAMESPACE, SignRequestPayloadParser.class);
-		  payloadParserRegistry.put(V2XPayloadParser.NAMESPACE, V2XPayloadParser.class);
-		  payloadParserRegistry.put(V2XBackendPayloadParser.NAMESPACE, V2XBackendPayloadParser.class);
 		}
 	}
 	
