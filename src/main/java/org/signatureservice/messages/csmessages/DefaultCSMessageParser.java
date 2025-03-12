@@ -65,7 +65,6 @@ import org.signatureservice.messages.csmessages.jaxb.ObjectFactory;
 import org.signatureservice.messages.csmessages.jaxb.Originator;
 import org.signatureservice.messages.csmessages.jaxb.Payload;
 import org.signatureservice.messages.csmessages.jaxb.RequestStatus;
-import org.signatureservice.messages.sensitivekeys.SensitiveKeysParser;
 import org.signatureservice.messages.utils.*;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -941,7 +940,7 @@ public class DefaultCSMessageParser implements CSMessageParser {
 	     */
 	    JAXBContext getJAXBContext() throws JAXBException, MessageProcessingException{
 	    	if(jaxbContext== null){
-	    		jaxbClassPath = "org.signatureservice.messages.csmessages.jaxb:org.signatureservice.messages.xmldsig.jaxb:org.signatureservice.messages.xenc.jaxb:org.signatureservice.messages.sensitivekeys.jaxb";
+	    		jaxbClassPath = "org.signatureservice.messages.csmessages.jaxb:org.signatureservice.messages.xmldsig.jaxb:org.signatureservice.messages.xenc.jaxb";
 	    			    		
 	    		for(String namespace : PayloadParserRegistry.getRegistredNamespaces()){
 	    			String jaxbPackage = PayloadParserRegistry.getParser(namespace).getJAXBPackage();
@@ -967,15 +966,14 @@ public class DefaultCSMessageParser implements CSMessageParser {
 
 		    	String[] relatedSchemas = pp.getRelatedSchemas(payLoadVersion);
 
-		        Source[] sources = new Source[(payLoadSchemaStream == null ? 3 + relatedSchemas.length: 4 + relatedSchemas.length)];
+		        Source[] sources = new Source[(payLoadSchemaStream == null ? 2 + relatedSchemas.length: 3 + relatedSchemas.length)];
 		        sources[0] = new StreamSource(getClass().getResourceAsStream(XMLDSIG_XSD_SCHEMA_RESOURCE_LOCATION));
-				sources[1] = new StreamSource(getClass().getResourceAsStream(SensitiveKeysParser.SENSITIVE_KEYS_XSD_SCHEMA_RESOURCE_LOCATION));
-		        sources[2] = new StreamSource(getClass().getResourceAsStream(csMessageSchemaLocation));
+		        sources[1] = new StreamSource(getClass().getResourceAsStream(csMessageSchemaLocation));
 				for(int i = 0; i<relatedSchemas.length; i++){
-					sources[3+i] = new StreamSource(getClass().getResourceAsStream(relatedSchemas[i]));
+					sources[2+i] = new StreamSource(getClass().getResourceAsStream(relatedSchemas[i]));
 				}
 		        if(payLoadSchemaStream != null){
-		          sources[3 + relatedSchemas.length] = new StreamSource(payLoadSchemaStream);
+		          sources[2 + relatedSchemas.length] = new StreamSource(payLoadSchemaStream);
 		        }
 
 				try {
