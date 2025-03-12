@@ -19,7 +19,6 @@ import java.util.Set;
 import org.signatureservice.messages.MessageProcessingException;
 import org.signatureservice.messages.assertion.AssertionPayloadParser;
 import org.signatureservice.messages.credmanagement.CredManagementPayloadParser;
-import org.signatureservice.messages.signrequest.SignRequestPayloadParser;
 import org.signatureservice.messages.sysconfig.SysConfigPayloadParser;
 
 /**
@@ -56,7 +55,6 @@ public class PayloadParserRegistry {
 		  payloadParserRegistry.put(SysConfigPayloadParser.NAMESPACE, SysConfigPayloadParser.class);
 		  payloadParserRegistry.put(CredManagementPayloadParser.NAMESPACE, CredManagementPayloadParser.class);
 		  payloadParserRegistry.put(AssertionPayloadParser.NAMESPACE, AssertionPayloadParser.class);
-		  payloadParserRegistry.put(SignRequestPayloadParser.NAMESPACE, SignRequestPayloadParser.class);
 		}
 	}
 	
