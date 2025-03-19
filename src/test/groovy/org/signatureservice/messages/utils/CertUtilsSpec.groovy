@@ -148,7 +148,7 @@ class CertUtilsSpec extends Specification{
 	def "test GetDNHashCode"() {
 		expect:
 		CertUtils.getDNHashCode(null) == 0
-		CertUtils.getDNHashCode("CN=Test eIDCA,O=Test") == -2127086232
+		CertUtils.getDNHashCode("CN=Test eIDCA,O=Test") == 255062283
 
 		CertUtils.getDNHashCode("CN=Test eIDCA,givenNAme=Test, surname=eIDCS, serialNumber=123456,O=Test,c=SE") == CertUtils.getDNHashCode("CN=Test eIDCA,GIVENNAME=Test,SURNAME=eIDCS,SERIALNUMBER=123456,O=Test,C=SE")
 		CertUtils.getDNHashCode("serialNumber=123456, c=SE,O=Test, surname=eIDCS,givenNAme=Test, CN=Test eIDCA ") == CertUtils.getDNHashCode("serialNumber=123456, c=SE,O=Test, surname=eIDCS,CN=Test eIDCA ,givenNAme=Test  ")

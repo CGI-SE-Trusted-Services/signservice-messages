@@ -10,8 +10,6 @@ group "org.signatureservice.messages"
 description "signservice-messages"
 
 ext {
-    bcJdk18onVersion = "1.76"
-    groovyVersion = "3.0.23"
     tomcatEmbedVersion = "10.1.36"
     commonsIOVersion = "2.18.0"
 }
@@ -42,7 +40,7 @@ configurations {
 }
 
 dependencies {
-    implementation "org.bouncycastle:bcprov-jdk18on:${bcJdk18onVersion}"
+    implementation "org.bouncycastle:bcprov-jdk18on:${bcVersion}"
     implementation 'jakarta.xml.bind:jakarta.xml.bind-api:4.0.2'
     implementation("org.apache.santuario:xmlsec:2.3.5") {
         exclude(module: "woodstox-core")
