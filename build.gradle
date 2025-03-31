@@ -6,7 +6,7 @@ plugins {
     id("project-report")
 }
 
-group "org.signatureservice.messages"
+group "se.signatureservice.messages"
 description "signservice-messages"
 
 sourceCompatibility = JavaVersion.VERSION_11

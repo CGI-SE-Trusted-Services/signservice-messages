@@ -14,19 +14,19 @@
 
     <bindings schemaLocation="../cs-message-oasis-dss-core-schema-v1.0-os.xsd">
         <schemaBindings>
-            <package name="org.signatureservice.messages.saml1_1.assertions.jaxb"/>
+            <package name="se.signatureservice.messages.saml1_1.assertions.jaxb"/>
         </schemaBindings>
     </bindings>
 
     <bindings schemaLocation="../cs-message-oasis-sstc-saml-schema-protocol-1.1.xsd">
         <schemaBindings>
-            <package name="org.signatureservice.messages.saml1_1.assertions.jaxb"/>
+            <package name="se.signatureservice.messages.saml1_1.assertions.jaxb"/>
         </schemaBindings>
     </bindings>
 
     <bindings schemaLocation="../xmldsig-core-schema.xsd">
         <schemaBindings>
-            <package name="org.signatureservice.messages.xmldsig.jaxb"/>
+            <package name="se.signatureservice.messages.xmldsig.jaxb"/>
         </schemaBindings>
     </bindings>
 

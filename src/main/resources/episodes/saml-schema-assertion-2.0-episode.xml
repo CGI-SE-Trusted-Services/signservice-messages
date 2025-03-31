@@ -13,76 +13,76 @@ Generated on: 2015.06.18 at 04:04:28 PM CEST
       <package name="org.certificateservices.messages.assertion.jaxb"/>
     </schemaBindings>
     <bindings scd="~tns:ConditionAbstractType">
-      <class ref="org.signatureservice.messages.saml2.assertion.jaxb.ConditionAbstractType"/>
+      <class ref="se.signatureservice.messages.saml2.assertion.jaxb.ConditionAbstractType"/>
     </bindings>
     <bindings scd="~tns:ConditionsType">
-      <class ref="org.signatureservice.messages.saml2.assertion.jaxb.ConditionsType"/>
+      <class ref="se.signatureservice.messages.saml2.assertion.jaxb.ConditionsType"/>
     </bindings>
     <bindings scd="~tns:AuthnContextType">
-      <class ref="org.signatureservice.messages.saml2.assertion.jaxb.AuthnContextType"/>
+      <class ref="se.signatureservice.messages.saml2.assertion.jaxb.AuthnContextType"/>
     </bindings>
     <bindings scd="~tns:SubjectConfirmationDataType">
-      <class ref="org.signatureservice.messages.saml2.assertion.jaxb.SubjectConfirmationDataType"/>
+      <class ref="se.signatureservice.messages.saml2.assertion.jaxb.SubjectConfirmationDataType"/>
     </bindings>
     <bindings scd="~tns:StatementAbstractType">
-      <class ref="org.signatureservice.messages.saml2.assertion.jaxb.StatementAbstractType"/>
+      <class ref="se.signatureservice.messages.saml2.assertion.jaxb.StatementAbstractType"/>
     </bindings>
     <bindings scd="~tns:SubjectConfirmationType">
-      <class ref="org.signatureservice.messages.saml2.assertion.jaxb.SubjectConfirmationType"/>
+      <class ref="se.signatureservice.messages.saml2.assertion.jaxb.SubjectConfirmationType"/>
     </bindings>
     <bindings scd="~tns:AuthnStatementType">
-      <class ref="org.signatureservice.messages.saml2.assertion.jaxb.AuthnStatementType"/>
+      <class ref="se.signatureservice.messages.saml2.assertion.jaxb.AuthnStatementType"/>
     </bindings>
     <bindings scd="~tns:NameIDType">
-      <class ref="org.signatureservice.messages.saml2.assertion.jaxb.NameIDType"/>
+      <class ref="se.signatureservice.messages.saml2.assertion.jaxb.NameIDType"/>
     </bindings>
     <bindings scd="~tns:AuthzDecisionStatementType">
-      <class ref="org.signatureservice.messages.saml2.assertion.jaxb.AuthzDecisionStatementType"/>
+      <class ref="se.signatureservice.messages.saml2.assertion.jaxb.AuthzDecisionStatementType"/>
     </bindings>
     <bindings scd="~tns:EncryptedElementType">
-      <class ref="org.signatureservice.messages.saml2.assertion.jaxb.EncryptedElementType"/>
+      <class ref="se.signatureservice.messages.saml2.assertion.jaxb.EncryptedElementType"/>
     </bindings>
     <bindings scd="~tns:ActionType">
-      <class ref="org.signatureservice.messages.saml2.assertion.jaxb.ActionType"/>
+      <class ref="se.signatureservice.messages.saml2.assertion.jaxb.ActionType"/>
     </bindings>
     <bindings scd="~tns:ProxyRestrictionType">
-      <class ref="org.signatureservice.messages.saml2.assertion.jaxb.ProxyRestrictionType"/>
+      <class ref="se.signatureservice.messages.saml2.assertion.jaxb.ProxyRestrictionType"/>
     </bindings>
     <bindings scd="~tns:AttributeType">
-      <class ref="org.signatureservice.messages.saml2.assertion.jaxb.AttributeType"/>
+      <class ref="se.signatureservice.messages.saml2.assertion.jaxb.AttributeType"/>
     </bindings>
     <bindings scd="~tns:AttributeStatementType">
-      <class ref="org.signatureservice.messages.saml2.assertion.jaxb.AttributeStatementType"/>
+      <class ref="se.signatureservice.messages.saml2.assertion.jaxb.AttributeStatementType"/>
     </bindings>
     <bindings scd="~tns:BaseIDAbstractType">
-      <class ref="org.signatureservice.messages.saml2.assertion.jaxb.BaseIDAbstractType"/>
+      <class ref="se.signatureservice.messages.saml2.assertion.jaxb.BaseIDAbstractType"/>
     </bindings>
     <bindings scd="~tns:OneTimeUseType">
-      <class ref="org.signatureservice.messages.saml2.assertion.jaxb.OneTimeUseType"/>
+      <class ref="se.signatureservice.messages.saml2.assertion.jaxb.OneTimeUseType"/>
     </bindings>
     <bindings scd="~tns:SubjectType">
-      <class ref="org.signatureservice.messages.saml2.assertion.jaxb.SubjectType"/>
+      <class ref="se.signatureservice.messages.saml2.assertion.jaxb.SubjectType"/>
     </bindings>
     <bindings scd="~tns:SubjectLocalityType">
-      <class ref="org.signatureservice.messages.saml2.assertion.jaxb.SubjectLocalityType"/>
+      <class ref="se.signatureservice.messages.saml2.assertion.jaxb.SubjectLocalityType"/>
     </bindings>
     <bindings scd="~tns:AdviceType">
-      <class ref="org.signatureservice.messages.saml2.assertion.jaxb.AdviceType"/>
+      <class ref="se.signatureservice.messages.saml2.assertion.jaxb.AdviceType"/>
     </bindings>
     <bindings scd="~tns:AssertionType">
-      <class ref="org.signatureservice.messages.saml2.assertion.jaxb.AssertionType"/>
+      <class ref="se.signatureservice.messages.saml2.assertion.jaxb.AssertionType"/>
     </bindings>
     <bindings scd="~tns:EvidenceType">
-      <class ref="org.signatureservice.messages.saml2.assertion.jaxb.EvidenceType"/>
+      <class ref="se.signatureservice.messages.saml2.assertion.jaxb.EvidenceType"/>
     </bindings>
     <bindings scd="~tns:AudienceRestrictionType">
-      <class ref="org.signatureservice.messages.saml2.assertion.jaxb.AudienceRestrictionType"/>
+      <class ref="se.signatureservice.messages.saml2.assertion.jaxb.AudienceRestrictionType"/>
     </bindings>
     <bindings scd="~tns:KeyInfoConfirmationDataType">
-      <class ref="org.signatureservice.messages.saml2.assertion.jaxb.KeyInfoConfirmationDataType"/>
+      <class ref="se.signatureservice.messages.saml2.assertion.jaxb.KeyInfoConfirmationDataType"/>
     </bindings>
     <bindings scd="~tns:DecisionType">
-      <typesafeEnumClass ref="org.signatureservice.messages.saml2.assertion.jaxb.DecisionType"/>
+      <typesafeEnumClass ref="se.signatureservice.messages.saml2.assertion.jaxb.DecisionType"/>
     </bindings>
   </bindings>
 </bindings>

@@ -13,16 +13,16 @@ Generated on: 2017.07.15 at 03:44:49 PM MSK
       <package name="org.certificateservices.messages.saml2.metadata.ui.jaxb"/>
     </schemaBindings>
     <bindings scd="~tns:UIInfoType">
-      <class ref="org.signatureservice.messages.saml2.metadata.ui.jaxb.UIInfoType"/>
+      <class ref="se.signatureservice.messages.saml2.metadata.ui.jaxb.UIInfoType"/>
     </bindings>
     <bindings scd="~tns:KeywordsType">
-      <class ref="org.signatureservice.messages.saml2.metadata.ui.jaxb.KeywordsType"/>
+      <class ref="se.signatureservice.messages.saml2.metadata.ui.jaxb.KeywordsType"/>
     </bindings>
     <bindings scd="~tns:DiscoHintsType">
-      <class ref="org.signatureservice.messages.saml2.metadata.ui.jaxb.DiscoHintsType"/>
+      <class ref="se.signatureservice.messages.saml2.metadata.ui.jaxb.DiscoHintsType"/>
     </bindings>
     <bindings scd="~tns:LogoType">
-      <class ref="org.signatureservice.messages.saml2.metadata.ui.jaxb.LogoType"/>
+      <class ref="se.signatureservice.messages.saml2.metadata.ui.jaxb.LogoType"/>
     </bindings>
   </bindings>
 </bindings>

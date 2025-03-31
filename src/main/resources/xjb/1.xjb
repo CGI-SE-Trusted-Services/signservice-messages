@@ -12,25 +12,25 @@
 
     <bindings schemaLocation="file:../eid-dss-extensions-1.1.3.xsd">
         <schemaBindings>
-            <package name="org.signatureservice.messages.sweeid2.dssextenstions1_1.jaxb"/>
+            <package name="se.signatureservice.messages.sweeid2.dssextenstions1_1.jaxb"/>
         </schemaBindings>
     </bindings>
 
     <bindings schemaLocation="https://docs.oasis-open.org/security/saml/v2.0/saml-schema-assertion-2.0.xsd">
         <schemaBindings>
-            <package name="org.signatureservice.messages.saml2.assertion.jaxb"/>
+            <package name="se.signatureservice.messages.saml2.assertion.jaxb"/>
         </schemaBindings>
     </bindings>
 
     <bindings schemaLocation="http://www.w3.org/TR/2002/REC-xmlenc-core-20021210/xenc-schema.xsd">
         <schemaBindings>
-            <package name="org.signatureservice.messages.xenc.jaxb"/>
+            <package name="se.signatureservice.messages.xenc.jaxb"/>
         </schemaBindings>
     </bindings>
 
     <bindings schemaLocation="http://www.w3.org/TR/2002/REC-xmldsig-core-20020212/xmldsig-core-schema.xsd">
         <schemaBindings>
-            <package name="org.signatureservice.messages.xmldsig.jaxb"/>
+            <package name="se.signatureservice.messages.xmldsig.jaxb"/>
         </schemaBindings>
     </bindings>
 </bindings>
