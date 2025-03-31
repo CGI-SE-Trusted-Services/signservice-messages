@@ -13,73 +13,73 @@ Generated on: 2018.03.14 at 10:39:39 AM CET
       <package name="org.certificateservices.messages.csmessages.jaxb"/>
     </schemaBindings>
     <bindings scd="~tns:Credential">
-      <class ref="org.signatureservice.messages.csmessages.jaxb.Credential"/>
+      <class ref="se.signatureservice.messages.csmessages.jaxb.Credential"/>
     </bindings>
     <bindings scd="~tns:TokenRequest">
-      <class ref="org.signatureservice.messages.csmessages.jaxb.TokenRequest"/>
+      <class ref="se.signatureservice.messages.csmessages.jaxb.TokenRequest"/>
     </bindings>
     <bindings scd="~tns:Token">
-      <class ref="org.signatureservice.messages.csmessages.jaxb.Token"/>
+      <class ref="se.signatureservice.messages.csmessages.jaxb.Token"/>
     </bindings>
     <bindings scd="~tns:User">
-      <class ref="org.signatureservice.messages.csmessages.jaxb.User"/>
+      <class ref="se.signatureservice.messages.csmessages.jaxb.User"/>
     </bindings>
     <bindings scd="~tns:CredentialRequest">
-      <class ref="org.signatureservice.messages.csmessages.jaxb.CredentialRequest"/>
+      <class ref="se.signatureservice.messages.csmessages.jaxb.CredentialRequest"/>
     </bindings>
     <bindings scd="tns:GetApprovalRequest">
-      <class ref="org.signatureservice.messages.csmessages.jaxb.GetApprovalRequest"/>
+      <class ref="se.signatureservice.messages.csmessages.jaxb.GetApprovalRequest"/>
     </bindings>
     <bindings scd="~tns:CSRequest">
-      <class ref="org.signatureservice.messages.csmessages.jaxb.CSRequest"/>
+      <class ref="se.signatureservice.messages.csmessages.jaxb.CSRequest"/>
     </bindings>
     <bindings scd="~tns:Payload">
-      <class ref="org.signatureservice.messages.csmessages.jaxb.Payload"/>
+      <class ref="se.signatureservice.messages.csmessages.jaxb.Payload"/>
     </bindings>
     <bindings scd="~tns:CSResponse">
-      <class ref="org.signatureservice.messages.csmessages.jaxb.CSResponse"/>
+      <class ref="se.signatureservice.messages.csmessages.jaxb.CSResponse"/>
     </bindings>
     <bindings scd="tns:CSMessage">
-      <class ref="org.signatureservice.messages.csmessages.jaxb.CSMessage"/>
+      <class ref="se.signatureservice.messages.csmessages.jaxb.CSMessage"/>
     </bindings>
     <bindings scd="~tns:Originator">
-      <class ref="org.signatureservice.messages.csmessages.jaxb.Originator"/>
+      <class ref="se.signatureservice.messages.csmessages.jaxb.Originator"/>
     </bindings>
     <bindings scd="~tns:Assertions">
-      <class ref="org.signatureservice.messages.csmessages.jaxb.Assertions"/>
+      <class ref="se.signatureservice.messages.csmessages.jaxb.Assertions"/>
     </bindings>
     <bindings scd="tns:IsApprovedRequest">
-      <class ref="org.signatureservice.messages.csmessages.jaxb.IsApprovedRequest"/>
+      <class ref="se.signatureservice.messages.csmessages.jaxb.IsApprovedRequest"/>
     </bindings>
     <bindings scd="~tns:IsApprovedResponseType">
-      <class ref="org.signatureservice.messages.csmessages.jaxb.IsApprovedResponseType"/>
+      <class ref="se.signatureservice.messages.csmessages.jaxb.IsApprovedResponseType"/>
     </bindings>
     <bindings scd="~tns:Attribute">
-      <class ref="org.signatureservice.messages.csmessages.jaxb.Attribute"/>
+      <class ref="se.signatureservice.messages.csmessages.jaxb.Attribute"/>
     </bindings>
     <bindings scd="~tns:CredentialStatusList">
-      <class ref="org.signatureservice.messages.csmessages.jaxb.CredentialStatusList"/>
+      <class ref="se.signatureservice.messages.csmessages.jaxb.CredentialStatusList"/>
     </bindings>
     <bindings scd="~tns:Approver">
-      <class ref="org.signatureservice.messages.csmessages.jaxb.Approver"/>
+      <class ref="se.signatureservice.messages.csmessages.jaxb.Approver"/>
     </bindings>
     <bindings scd="~tns:Organisation">
-      <class ref="org.signatureservice.messages.csmessages.jaxb.Organisation"/>
+      <class ref="se.signatureservice.messages.csmessages.jaxb.Organisation"/>
     </bindings>
     <bindings scd="~tns:ApprovalStatus">
-      <typesafeEnumClass ref="org.signatureservice.messages.csmessages.jaxb.ApprovalStatus"/>
+      <typesafeEnumClass ref="se.signatureservice.messages.csmessages.jaxb.ApprovalStatus"/>
     </bindings>
     <bindings scd="~tns:RegenerateActionType">
-      <typesafeEnumClass ref="org.signatureservice.messages.csmessages.jaxb.RegenerateActionType"/>
+      <typesafeEnumClass ref="se.signatureservice.messages.csmessages.jaxb.RegenerateActionType"/>
     </bindings>
     <bindings scd="~tns:ApproverType">
-      <typesafeEnumClass ref="org.signatureservice.messages.csmessages.jaxb.ApproverType"/>
+      <typesafeEnumClass ref="se.signatureservice.messages.csmessages.jaxb.ApproverType"/>
     </bindings>
     <bindings scd="~tns:AutomationLevel">
-      <typesafeEnumClass ref="org.signatureservice.messages.csmessages.jaxb.AutomationLevel"/>
+      <typesafeEnumClass ref="se.signatureservice.messages.csmessages.jaxb.AutomationLevel"/>
     </bindings>
     <bindings scd="~tns:RequestStatus">
-      <typesafeEnumClass ref="org.signatureservice.messages.csmessages.jaxb.RequestStatus"/>
+      <typesafeEnumClass ref="se.signatureservice.messages.csmessages.jaxb.RequestStatus"/>
     </bindings>
   </bindings>
 </bindings>

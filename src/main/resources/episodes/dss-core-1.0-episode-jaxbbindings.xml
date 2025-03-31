@@ -13,151 +13,151 @@ Generated on: 2017.01.09 at 12:38:48 PM MSK
       <package name="org.certificateservices.messages.dss1.core.jaxb"/>
     </schemaBindings>
     <bindings scd="~tns:SigningTimeInfoType">
-      <class ref="org.signatureservice.messages.dss1.core.jaxb.SigningTimeInfoType"/>
+      <class ref="se.signatureservice.messages.dss1.core.jaxb.SigningTimeInfoType"/>
     </bindings>
     <bindings scd="~tns:AttachmentReferenceType">
-      <class ref="org.signatureservice.messages.dss1.core.jaxb.AttachmentReferenceType"/>
+      <class ref="se.signatureservice.messages.dss1.core.jaxb.AttachmentReferenceType"/>
     </bindings>
     <bindings scd="tns:TransformedData">
-      <class ref="org.signatureservice.messages.dss1.core.jaxb.TransformedData"/>
+      <class ref="se.signatureservice.messages.dss1.core.jaxb.TransformedData"/>
     </bindings>
     <bindings scd="~tns:DocumentBaseType">
-      <class ref="org.signatureservice.messages.dss1.core.jaxb.DocumentBaseType"/>
+      <class ref="se.signatureservice.messages.dss1.core.jaxb.DocumentBaseType"/>
     </bindings>
     <bindings scd="tns:Base64Data">
-      <class ref="org.signatureservice.messages.dss1.core.jaxb.Base64Data"/>
+      <class ref="se.signatureservice.messages.dss1.core.jaxb.Base64Data"/>
     </bindings>
     <bindings scd="~tns:DocumentType">
-      <class ref="org.signatureservice.messages.dss1.core.jaxb.DocumentType"/>
+      <class ref="se.signatureservice.messages.dss1.core.jaxb.DocumentType"/>
     </bindings>
     <bindings scd="tns:SignaturePlacement">
-      <class ref="org.signatureservice.messages.dss1.core.jaxb.SignaturePlacement"/>
+      <class ref="se.signatureservice.messages.dss1.core.jaxb.SignaturePlacement"/>
     </bindings>
     <bindings scd="tns:KeySelector">
-      <class ref="org.signatureservice.messages.dss1.core.jaxb.KeySelector"/>
+      <class ref="se.signatureservice.messages.dss1.core.jaxb.KeySelector"/>
     </bindings>
     <bindings scd="~tns:AnyType">
-      <class ref="org.signatureservice.messages.dss1.core.jaxb.AnyType"/>
+      <class ref="se.signatureservice.messages.dss1.core.jaxb.AnyType"/>
     </bindings>
     <bindings scd="tns:Result">
-      <class ref="org.signatureservice.messages.dss1.core.jaxb.Result"/>
+      <class ref="se.signatureservice.messages.dss1.core.jaxb.Result"/>
     </bindings>
     <bindings scd="~tns:InternationalStringType">
-      <class ref="org.signatureservice.messages.dss1.core.jaxb.InternationalStringType"/>
+      <class ref="se.signatureservice.messages.dss1.core.jaxb.InternationalStringType"/>
     </bindings>
     <bindings scd="tns:IntendedAudience">
-      <class ref="org.signatureservice.messages.dss1.core.jaxb.IntendedAudience"/>
+      <class ref="se.signatureservice.messages.dss1.core.jaxb.IntendedAudience"/>
     </bindings>
     <bindings scd="~tns:AdditionalTimeInfoType">
-      <class ref="org.signatureservice.messages.dss1.core.jaxb.AdditionalTimeInfoType"/>
+      <class ref="se.signatureservice.messages.dss1.core.jaxb.AdditionalTimeInfoType"/>
     </bindings>
     <bindings scd="tns:DocumentHash">
-      <class ref="org.signatureservice.messages.dss1.core.jaxb.DocumentHash"/>
+      <class ref="se.signatureservice.messages.dss1.core.jaxb.DocumentHash"/>
     </bindings>
     <bindings scd="tns:ManifestResult">
-      <class ref="org.signatureservice.messages.dss1.core.jaxb.ManifestResult"/>
+      <class ref="se.signatureservice.messages.dss1.core.jaxb.ManifestResult"/>
     </bindings>
     <bindings scd="tns:AdditionalKeyInfo">
-      <class ref="org.signatureservice.messages.dss1.core.jaxb.AdditionalKeyInfo"/>
+      <class ref="se.signatureservice.messages.dss1.core.jaxb.AdditionalKeyInfo"/>
     </bindings>
     <bindings scd="~tns:VerificationTimeInfoType">
-      <class ref="org.signatureservice.messages.dss1.core.jaxb.VerificationTimeInfoType"/>
+      <class ref="se.signatureservice.messages.dss1.core.jaxb.VerificationTimeInfoType"/>
     </bindings>
     <bindings scd="~tns:VerifyManifestResultsType">
-      <class ref="org.signatureservice.messages.dss1.core.jaxb.VerifyManifestResultsType"/>
+      <class ref="se.signatureservice.messages.dss1.core.jaxb.VerifyManifestResultsType"/>
     </bindings>
     <bindings scd="tns:SignatureObject">
-      <class ref="org.signatureservice.messages.dss1.core.jaxb.SignatureObject"/>
+      <class ref="se.signatureservice.messages.dss1.core.jaxb.SignatureObject"/>
     </bindings>
     <bindings scd="tns:Timestamp">
-      <class ref="org.signatureservice.messages.dss1.core.jaxb.Timestamp"/>
+      <class ref="se.signatureservice.messages.dss1.core.jaxb.Timestamp"/>
     </bindings>
     <bindings scd="tns:Base64Signature">
-      <class ref="org.signatureservice.messages.dss1.core.jaxb.Base64Signature"/>
+      <class ref="se.signatureservice.messages.dss1.core.jaxb.Base64Signature"/>
     </bindings>
     <bindings scd="tns:SignaturePtr">
-      <class ref="org.signatureservice.messages.dss1.core.jaxb.SignaturePtr"/>
+      <class ref="se.signatureservice.messages.dss1.core.jaxb.SignaturePtr"/>
     </bindings>
     <bindings scd="~tns:SchemasType">
-      <class ref="org.signatureservice.messages.dss1.core.jaxb.SchemasType"/>
+      <class ref="se.signatureservice.messages.dss1.core.jaxb.SchemasType"/>
     </bindings>
     <bindings scd="tns:SignedReference">
-      <class ref="org.signatureservice.messages.dss1.core.jaxb.SignedReference"/>
+      <class ref="se.signatureservice.messages.dss1.core.jaxb.SignedReference"/>
     </bindings>
     <bindings scd="~tns:ResponseBaseType">
-      <class ref="org.signatureservice.messages.dss1.core.jaxb.ResponseBaseType"/>
+      <class ref="se.signatureservice.messages.dss1.core.jaxb.ResponseBaseType"/>
     </bindings>
     <bindings scd="tns:ReturnTransformedDocument">
-      <class ref="org.signatureservice.messages.dss1.core.jaxb.ReturnTransformedDocument"/>
+      <class ref="se.signatureservice.messages.dss1.core.jaxb.ReturnTransformedDocument"/>
     </bindings>
     <bindings scd="tns:TransformedDocument">
-      <class ref="org.signatureservice.messages.dss1.core.jaxb.TransformedDocument"/>
+      <class ref="se.signatureservice.messages.dss1.core.jaxb.TransformedDocument"/>
     </bindings>
     <bindings scd="tns:RequesterIdentity">
-      <class ref="org.signatureservice.messages.dss1.core.jaxb.RequesterIdentity"/>
+      <class ref="se.signatureservice.messages.dss1.core.jaxb.RequesterIdentity"/>
     </bindings>
     <bindings scd="~tns:UpdateSignatureInstructionType">
-      <class ref="org.signatureservice.messages.dss1.core.jaxb.UpdateSignatureInstructionType"/>
+      <class ref="se.signatureservice.messages.dss1.core.jaxb.UpdateSignatureInstructionType"/>
     </bindings>
     <bindings scd="tns:ClaimedIdentity">
-      <class ref="org.signatureservice.messages.dss1.core.jaxb.ClaimedIdentity"/>
+      <class ref="se.signatureservice.messages.dss1.core.jaxb.ClaimedIdentity"/>
     </bindings>
     <bindings scd="tns:ReturnUpdatedSignature">
-      <class ref="org.signatureservice.messages.dss1.core.jaxb.ReturnUpdatedSignature"/>
+      <class ref="se.signatureservice.messages.dss1.core.jaxb.ReturnUpdatedSignature"/>
     </bindings>
     <bindings scd="tns:Properties">
-      <class ref="org.signatureservice.messages.dss1.core.jaxb.Properties"/>
+      <class ref="se.signatureservice.messages.dss1.core.jaxb.Properties"/>
     </bindings>
     <bindings scd="~tns:PropertiesType">
-      <class ref="org.signatureservice.messages.dss1.core.jaxb.PropertiesType"/>
+      <class ref="se.signatureservice.messages.dss1.core.jaxb.PropertiesType"/>
     </bindings>
     <bindings scd="tns:TstInfo">
-      <class ref="org.signatureservice.messages.dss1.core.jaxb.TstInfo"/>
+      <class ref="se.signatureservice.messages.dss1.core.jaxb.TstInfo"/>
     </bindings>
     <bindings scd="tns:ProcessingDetails">
-      <class ref="org.signatureservice.messages.dss1.core.jaxb.ProcessingDetails"/>
+      <class ref="se.signatureservice.messages.dss1.core.jaxb.ProcessingDetails"/>
     </bindings>
     <bindings scd="~tns:DetailType">
-      <class ref="org.signatureservice.messages.dss1.core.jaxb.DetailType"/>
+      <class ref="se.signatureservice.messages.dss1.core.jaxb.DetailType"/>
     </bindings>
     <bindings scd="~tns:UpdatedSignatureType">
-      <class ref="org.signatureservice.messages.dss1.core.jaxb.UpdatedSignatureType"/>
+      <class ref="se.signatureservice.messages.dss1.core.jaxb.UpdatedSignatureType"/>
     </bindings>
     <bindings scd="tns:SignResponse">
-      <class ref="org.signatureservice.messages.dss1.core.jaxb.SignResponse"/>
+      <class ref="se.signatureservice.messages.dss1.core.jaxb.SignResponse"/>
     </bindings>
     <bindings scd="tns:DocumentWithSignature">
-      <class ref="org.signatureservice.messages.dss1.core.jaxb.DocumentWithSignature"/>
+      <class ref="se.signatureservice.messages.dss1.core.jaxb.DocumentWithSignature"/>
     </bindings>
     <bindings scd="tns:Property">
-      <class ref="org.signatureservice.messages.dss1.core.jaxb.Property"/>
+      <class ref="se.signatureservice.messages.dss1.core.jaxb.Property"/>
     </bindings>
     <bindings scd="tns:SignRequest">
-      <class ref="org.signatureservice.messages.dss1.core.jaxb.SignRequest"/>
+      <class ref="se.signatureservice.messages.dss1.core.jaxb.SignRequest"/>
     </bindings>
     <bindings scd="~tns:RequestBaseType">
-      <class ref="org.signatureservice.messages.dss1.core.jaxb.RequestBaseType"/>
+      <class ref="se.signatureservice.messages.dss1.core.jaxb.RequestBaseType"/>
     </bindings>
     <bindings scd="tns:InputDocuments">
-      <class ref="org.signatureservice.messages.dss1.core.jaxb.InputDocuments"/>
+      <class ref="se.signatureservice.messages.dss1.core.jaxb.InputDocuments"/>
     </bindings>
     <bindings scd="tns:IncludeObject">
-      <class ref="org.signatureservice.messages.dss1.core.jaxb.IncludeObject"/>
+      <class ref="se.signatureservice.messages.dss1.core.jaxb.IncludeObject"/>
     </bindings>
     <bindings scd="tns:SignedReferences">
-      <class ref="org.signatureservice.messages.dss1.core.jaxb.SignedReferences"/>
+      <class ref="se.signatureservice.messages.dss1.core.jaxb.SignedReferences"/>
     </bindings>
     <bindings scd="tns:VerifyRequest">
-      <class ref="org.signatureservice.messages.dss1.core.jaxb.VerifyRequest"/>
+      <class ref="se.signatureservice.messages.dss1.core.jaxb.VerifyRequest"/>
     </bindings>
     <bindings scd="~tns:UseVerificationTimeType">
-      <class ref="org.signatureservice.messages.dss1.core.jaxb.UseVerificationTimeType"/>
+      <class ref="se.signatureservice.messages.dss1.core.jaxb.UseVerificationTimeType"/>
     </bindings>
     <bindings scd="~tns:InlineXMLType">
-      <class ref="org.signatureservice.messages.dss1.core.jaxb.InlineXMLType"/>
+      <class ref="se.signatureservice.messages.dss1.core.jaxb.InlineXMLType"/>
     </bindings>
     <bindings scd="~tns:TimeSignatureInstructionType">
-      <class ref="org.signatureservice.messages.dss1.core.jaxb.TimeSignatureInstructionType"/>
+      <class ref="se.signatureservice.messages.dss1.core.jaxb.TimeSignatureInstructionType"/>
     </bindings>
   </bindings>
 </bindings>
