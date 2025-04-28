@@ -1,5 +1,4 @@
 plugins {
-    id("java")
     id("maven-publish")
     id("groovy")
     id("idea")
@@ -11,20 +10,6 @@ description "signservice-messages"
 
 sourceCompatibility = JavaVersion.VERSION_11
 targetCompatibility = JavaVersion.VERSION_11
-
-pluginManager.withPlugin('org.certificateservices.gradle.certservice-gradle-plugin') {
-    certserviceSettings {
-        useMavenCentral = true
-        licenseName = "GNU Lesser General Public License v3.0 or later"
-        licenseURL = "https://www.gnu.org/licenses/lgpl-3.0-standalone.html"
-        useDeveloperPOM = true
-        useScmPOM = true
-        scmConnection = "https://github.com/CGI-SE-Trusted-Services/signservice-messages.git"
-        scmDeveloperConnection = "https://github.com/CGI-SE-Trusted-Services/signservice-messages.git"
-        scmUrl = "https://github.com/CGI-SE-Trusted-Services/signservice-messages"
-        projectUrl = "https://github.com/CGI-SE-Trusted-Services/signservice-messages"
-    }
-}
 
 repositories {
     mavenCentral()
@@ -41,11 +26,11 @@ dependencies {
         exclude(module: "woodstox-core")
         exclude(module: "commons-codec")
     }
-    testRuntimeOnly 'org.glassfish.jaxb:jaxb-runtime:4.0.2'
-    testRuntimeOnly 'net.bytebuddy:byte-buddy:1.16.1'
+    testRuntimeOnly 'org.glassfish.jaxb:jaxb-runtime:4.0.5'
+    testRuntimeOnly 'net.bytebuddy:byte-buddy:1.17.5'
 
     testImplementation 'org.objenesis:objenesis:3.4'
-    testImplementation "commons-io:commons-io:2.18.0"
+    testImplementation "commons-io:commons-io:2.19.0"
     testImplementation "org.apache.tomcat.embed:tomcat-embed-core:${tomcatEmbedVersion}"
     testImplementation "org.codehaus.groovy:groovy-xml:${groovyVersion}"
     testImplementation platform("org.spockframework:spock-bom:2.3-groovy-3.0")
