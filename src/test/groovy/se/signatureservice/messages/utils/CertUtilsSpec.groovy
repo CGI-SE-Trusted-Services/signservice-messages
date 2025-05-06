@@ -322,63 +322,6 @@ class CertUtilsSpec extends Specification{
 
 
 
-	void assertFieldEquals(List<String[]> fields, String field, String expectedValue){
-		boolean found=false
-
-		for(String[] attr : fields){
-			if(attr[0].equals(field)){
-				found = true
-				assert attr[1] == expectedValue
-			}
-		}
-
-		if(!found){
-			assert false : "Field "+ field + " not found."
-		}
-	}
-
-	void assertMultipleFieldEquals(List<String[]> fields, String field, String[] expectedValues){
-		boolean found=false
-
-		for(String[] attr : fields){
-			if(attr[0].equals(field)){
-				found = true
-				boolean foundValue = false
-				for(String expectedValue : expectedValues){
-					if(attr[1].equals(expectedValue)){
-						foundValue = true
-					}
-				}
-				assert foundValue
-			}
-		}
-
-		if(!found){
-			assert false : "Field "+ field + " not found."
-		}
-	}
-
-	/**
-	 * Asserts that all items in the list contain all the values specified (order doesn't matter)
-	 *
-	 * @param fields			The key/value data to compare with
-	 * @param expectedKey		The key to look up
-	 * @param expectedValues	The values to match with the key
-     */
-	void assertMultipleFieldMatch(List<String[]> fields, String expectedKey, String[] expectedValues) {
-		List<String> found = new ArrayList<String>()
-
-		for (String[] field : fields) {
-			if (field[0] == expectedKey) {
-				found.add(field[1])
-			}
-		}
-
-		assert (found as String[]) == expectedValues : "Arrays don't match"
-	}
-
-
-
 	public static byte[] base64Cert =("MIIDLTCCAhWgAwIBAgIIYmVP6xQ/t3QwDQYJKoZIhvcNAQEFBQAwJDETMBEGA1UE" +
 			"AwwKVGVzdCBlSURDQTENMAsGA1UECgwEVGVzdDAeFw0xMTEwMjExNDM2MzlaFw0z" +
 			"MTEwMjExNDM2MzlaMCQxEzARBgNVBAMMClRlc3QgZUlEQ0ExDTALBgNVBAoMBFRl" +
