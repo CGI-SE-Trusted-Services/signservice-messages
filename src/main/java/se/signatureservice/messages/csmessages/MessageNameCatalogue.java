@@ -39,7 +39,7 @@ public interface MessageNameCatalogue {
 	 * @param requestName the related request name if applicable, null if this is a request. 
 	 * @param payLoadObject the setting to look-up the name for. 
 	 * @return the name of the message to use.
-	 * @throws MessageException if name lookup failed due to internal connection problems.
+	 * @throws MessageProcessingException if name lookup failed due to internal connection problems.
 	 * @throws IllegalArgumentException if name lookup failed due to bad request data
 	 */
 	public String lookupName(String requestName, Object payLoadObject) throws MessageProcessingException, IllegalArgumentException;

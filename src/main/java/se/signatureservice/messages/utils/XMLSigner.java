@@ -14,7 +14,7 @@ package se.signatureservice.messages.utils;
 
 import java.io.ByteArrayInputStream;
 import java.io.StringWriter;
-import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 import java.security.*;
 import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
@@ -57,7 +57,6 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-import se.signatureservice.messages.*;
 import se.signatureservice.messages.ContextMessageSecurityProvider.Context;
 
 /**
@@ -198,24 +197,6 @@ public class XMLSigner {
 
 	/**
 	 * Help method to verify a signed enveloped message and performs the following checks.
-	 * Using the default message security context.
-	 *
-	 * <li>That the signature if included X509Certificate verifies.
-	 * <li>That the signatures algorithms is one of supported signature schemes.
-	 * <li>That the signature method is enveloped.
-	 *
-	 * @param message the message to verify signature of.
-	 * @param authorizeAgainstOrganisation true if the message security provider should perform
-	 * any authorization to the related organisation, that must exist in the message of true.
-	 * @throws MessageContentException if message content was faulty
-	 * @throws MessageProcessingException if internal error occured verifying the signature.
-	 */
-	@Deprecated
-	public void verifyEnvelopedSignature(byte[] message, boolean authorizeAgainstOrganisation) throws MessageContentException, MessageProcessingException{
-		verifyEnvelopedSignature(ContextMessageSecurityProvider.DEFAULT_CONTEXT,message,authorizeAgainstOrganisation);
-	}
-	/**
-	 * Help method to verify a signed enveloped message and performs the following checks.
 	 * 
 	 * <li>That the signature if included X509Certificate verifies.
 	 * <li>That the signatures algorithms is one of supported signature schemes.
@@ -298,47 +279,6 @@ public class XMLSigner {
 	}
 
 	/**
-	 * Help method to verify a signed enveloped message and performs the following checks. Using the
-	 * default signature location finder.
-	 * Using the default message security context.
-	 *
-	 * <li>That the signature if included X509Certificate verifies.
-	 * <li>That the signatures algorithms is one of supported signature schemes.
-	 * <li>That the signature method is enveloped.
-	 * 
-	 * @param doc the message to verify signature of.
-	 * @param organisationLookup implementation to extract organsiation name from a given XML message.
-	 * If null must validation be performed manually after the message is parsed. It is possible to use the
-	 * checkBasicCertificateValidation help method for this.
-	 * @throws MessageContentException if message content was faulty
-	 * @throws MessageProcessingException if internal error occured verifying the signature.
-	 */
-	@Deprecated
-	public void verifyEnvelopedSignature(Document doc, OrganisationLookup organisationLookup) throws MessageContentException, MessageProcessingException{
-		verifyEnvelopedSignature(doc,defaultSignatureLocationFinder,organisationLookup);
-	}
-	/**
-	 * Help method to verify a signed enveloped message and performs the following checks.
-	 * Using the default message security context.
-	 *
-	 * <li>That the signature if included X509Certificate verifies.
-	 * <li>That the signatures algorithms is one of supported signature schemes.
-	 * <li>That the signature method is enveloped.
-	 *
-	 * @param message the message to verify signature of.
-	 * @param signatureLocationFinder reference to implementation finding the signature element of a document. (Required)
-	 * @param organisationLookup implementation to extract organsiation name from a given XML message.
-	 * If null must validation be performed manually after the message is parsed. It is possible to use the
-	 * checkBasicCertificateValidation help method for this.
-	 * @throws MessageContentException if message content was faulty
-	 * @throws MessageProcessingException if internal error occured verifying the signature.
-	 */
-	@Deprecated
-	public void verifyEnvelopedSignature(byte[] message, SignatureLocationFinder signatureLocationFinder, OrganisationLookup organisationLookup) throws MessageContentException, MessageProcessingException {
-		verifyEnvelopedSignature(ContextMessageSecurityProvider.DEFAULT_CONTEXT,message,signatureLocationFinder,organisationLookup);
-	}
-
-	/**
 	 * Help method to verify a signed enveloped message and performs the following checks.
 	 *
 	 * <li>That the signature if included X509Certificate verifies.
@@ -364,14 +304,15 @@ public class XMLSigner {
 		verifyEnvelopedSignature(context, doc, signatureLocationFinder, organisationLookup);
 	}
 
+
 	/**
-	 * Help method to verify a signed enveloped message and performs the following checks, using
-	 * the default context.
-	 * Using the default message security context.
+	 * Help method to verify a signed enveloped message and performs the following checks.
+	 *
 	 * <li>That the signature if included X509Certificate verifies.
 	 * <li>That the signatures algorithms is one of supported signature schemes.
 	 * <li>That the signature method is enveloped.
 	 *
+	 * @param context the related message security context
 	 * @param doc the message to verify signature of.
 	 * @param signatureLocationFinder reference to implementation finding the signature element of a document. (Required)
 	 * @param organisationLookup implementation to extract organsiation name from a given XML message.
@@ -379,26 +320,6 @@ public class XMLSigner {
 	 * @throws MessageContentException if message content was faulty
 	 * @throws MessageProcessingException if internal error occured verifying the signature.
 	 */
-	@Deprecated
-	public void verifyEnvelopedSignature(Document doc, SignatureLocationFinder signatureLocationFinder, OrganisationLookup organisationLookup) throws MessageContentException, MessageProcessingException {
-		verifyEnvelopedSignature(ContextMessageSecurityProvider.DEFAULT_CONTEXT,doc,signatureLocationFinder,organisationLookup);
-	}
-
-		/**
-         * Help method to verify a signed enveloped message and performs the following checks.
-         *
-         * <li>That the signature if included X509Certificate verifies.
-         * <li>That the signatures algorithms is one of supported signature schemes.
-         * <li>That the signature method is enveloped.
-         *
-		 * @param context the related message security context
-         * @param doc the message to verify signature of.
-         * @param signatureLocationFinder reference to implementation finding the signature element of a document. (Required)
-         * @param organisationLookup implementation to extract organsiation name from a given XML message.
-         * If null is basic validation performed such as key usage and expiration, but no revocation checks.
-         * @throws MessageContentException if message content was faulty
-         * @throws MessageProcessingException if internal error occured verifying the signature.
-         */
 	public void verifyEnvelopedSignature(Context context, Document doc, SignatureLocationFinder signatureLocationFinder, OrganisationLookup organisationLookup) throws MessageContentException, MessageProcessingException{
 
 		try{
@@ -565,18 +486,19 @@ public class XMLSigner {
 	public void sign(Document doc,  SignatureLocationFinder signatureLocationFinder) throws MessageProcessingException, MessageContentException {
 		sign(ContextMessageSecurityProvider.DEFAULT_CONTEXT,doc,signatureLocationFinder);
 	}
-		/**
-         * Help method to sign an XML Document
-         *
-         * Method that generates the signature and marshalls the message to byte array in UTF-8 format.
-		 *
-		 * @param context the related message security context
-         * @param doc a XML document about to be signed.
-         * @param signatureLocationFinder to find in which element the signature should be placed.
-         *
-         * @throws MessageProcessingException if problems occurred when processing the message.
-         * @throws MessageContentException if unsupported version is detected in message.
-         */
+
+	/**
+	 * Help method to sign an XML Document
+	 *
+	 * Method that generates the signature and marshalls the message to byte array in UTF-8 format.
+	 *
+	 * @param context the related message security context
+	 * @param doc a XML document about to be signed.
+	 * @param signatureLocationFinder to find in which element the signature should be placed.
+	 *
+	 * @throws MessageProcessingException if problems occurred when processing the message.
+	 * @throws MessageContentException if unsupported version is detected in message.
+	 */
 	public void sign(Context context, Document doc,  SignatureLocationFinder signatureLocationFinder) throws MessageProcessingException, MessageContentException{
 
 		try {
@@ -649,16 +571,11 @@ public class XMLSigner {
 				}
 			}
 
-		} catch (NoSuchAlgorithmException e) {
-			throw new MessageProcessingException("Error signing the XML, " + e.getMessage(),e);
-		} catch (InvalidAlgorithmParameterException e) {
-			throw new MessageProcessingException("Error signing the XML, " + e.getMessage(),e);
-		} catch (MarshalException e) {
-			throw new MessageProcessingException("Error signing the XML, " + e.getMessage(),e);
-		} catch (XMLSignatureException e) {
+		} catch (NoSuchAlgorithmException | InvalidAlgorithmParameterException | MarshalException |
+                 XMLSignatureException e) {
 			throw new MessageProcessingException("Error signing the XML, " + e.getMessage(),e);
 		}
-	}
+    }
 
 	/**
 	 * Method to convert a Document to a UTF-8 encoded byte array
@@ -672,13 +589,11 @@ public class XMLSigner {
 			StringWriter writer = new StringWriter();
 			transformer.transform(new DOMSource(doc), new StreamResult(writer));
 			String output = writer.getBuffer().toString();
-			return output.getBytes("UTF-8");
-		} catch (UnsupportedEncodingException e) {
-			throw new MessageProcessingException("Error marshalling to XML, " + e.getMessage(),e);
+			return output.getBytes(StandardCharsets.UTF_8);
 		} catch (TransformerException e) {
 			throw new MessageProcessingException("Error marshalling to XML, " + e.getMessage(),e);
 		}
-	}
+    }
 
 
 	/**

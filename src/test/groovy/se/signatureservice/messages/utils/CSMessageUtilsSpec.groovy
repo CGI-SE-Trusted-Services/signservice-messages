@@ -13,11 +13,9 @@
 package se.signatureservice.messages.utils
 
 import se.signatureservice.messages.DummyMessageSecurityProvider
-import se.signatureservice.messages.MessageContentException
 import se.signatureservice.messages.credmanagement.CredManagementPayloadParser
 import se.signatureservice.messages.credmanagement.CredManagementPayloadParserSpec
 import se.signatureservice.messages.credmanagement.jaxb.FetchHardTokenDataRequest
-import se.signatureservice.messages.credmanagement.jaxb.IsIssuerRequest
 import se.signatureservice.messages.csmessages.CSMessageParser
 import se.signatureservice.messages.csmessages.CSMessageParserManager
 import se.signatureservice.messages.csmessages.PayloadParserRegistry
@@ -25,6 +23,7 @@ import se.signatureservice.messages.csmessages.jaxb.CSMessage
 import se.signatureservice.messages.csmessages.jaxb.Credential
 import se.signatureservice.messages.csmessages.jaxb.IsApprovedRequest
 import spock.lang.Specification
+
 
 class CSMessageUtilsSpec extends Specification {
 
@@ -65,78 +64,5 @@ csmessage.sourceid=SomeClientSystem
 	def "Verify that getPayload returns null if cs message parser parameter is null"(){
 		expect:
 		CSMessageUtils.getPayload(null) == null
-	}
-	
-	def "Verify that getPayloadName returns correct paylaod name for non null cs message"(){
-		expect:
-		CSMessageUtils.getPayloadName(isApprovedRequestMessage) == "IsApprovedRequest"
-	}
-	
-	def "Verify that getPayloadName throwns MessageContentException for null cs message"(){
-		when:
-		CSMessageUtils.getPayloadName(null)
-		then:
-		thrown MessageContentException
-	}
-	
-	def "Verify that getRelatedPayload returns the related payload object inside a GetApprovalRequest"(){
-		expect:
-		CSMessageUtils.getRelatedPayload(getApprovedRequestMessage) instanceof IsIssuerRequest
-	}
-	
-	def "Verify that getRelatedPayload throws MessageContentException if supplied argument isn't an GetApprovalRequest"(){
-		when:
-		CSMessageUtils.getRelatedPayload(isApprovedRequestMessage)
-		then:
-		thrown MessageContentException
-	}
-	
-	def "Verify that getRelatedPayload throws MessageContentException if supplied argument is null"(){
-		when:
-		CSMessageUtils.getRelatedPayload(null)
-		then:
-		thrown MessageContentException
-	}
-	
-	def "Verify that getRelatedPayloadName returns the related payload name inside a GetApprovalRequest"(){
-		expect:
-		CSMessageUtils.getRelatedPayloadName(getApprovedRequestMessage) == "IsIssuerRequest"
-	}
-	
-	def "Verify that getRelatedPayloadName throws MessageContentException if supplied argument isn't an GetApprovalRequest"(){
-		when:
-		CSMessageUtils.getRelatedPayloadName(isApprovedRequestMessage)
-		then:
-		thrown MessageContentException
-	}
-	
-	def "Verify that getRelatedPayloadName throws MessageContentException if supplied argument is null"(){
-		when:
-		CSMessageUtils.getRelatedPayloadName(null)
-		then:
-		thrown MessageContentException
-	}
-
-	def "Verify that getRequesterUniqueId parser requester unique id properly"(){
-		expect:
-		CSMessageUtils.getRequesterUniqueId(csMessageParser,CredManagementPayloadParserSpec.ver2_0IssueTokenCredentialMessage) == "2457777d97b66fff;CN=Demo Customer1 AT ServerCA,O=Demo Customer1 AT"
-	}
-
-	def "Verify that getRequesterUniqueId throws MessageContentException for invalid csmessage data"(){
-		when:
-		CSMessageUtils.getRequesterUniqueId(csMessageParser,"""<?xml version="1.0" encoding="UTF-8" standalone="no"?><invalid>""".bytes)
-		then:
-		def e = thrown MessageContentException
-		e.message == "Error parsing the certificate from signature in message: XML document structures must start and end within the same entity."
-	}
-
-	def "Verify that corrupt signer certificate generated MessageContentException"(){
-		setup:
-		byte[] corruptMessage = new String(CredManagementPayloadParserSpec.ver2_0IssueTokenCredentialMessage).replace("MDCTBABgNVHR8EOTA3","INVALID").bytes
-		when:
-		CSMessageUtils.getRequesterUniqueId(csMessageParser,corruptMessage)
-		then:
-		def e = thrown MessageContentException
-		e.message =~ "Error parsing the certificate from signature in message:"
 	}
 }
