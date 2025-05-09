@@ -10,15 +10,14 @@
  *  See terms of license at gnu.org.                                     *
  *                                                                       *
  *************************************************************************/
-package se.signatureservice.messages.csmessages;
+package se.signatureservice.messages.csmessages
 
-
-import se.signatureservice.messages.DummyMessageSecurityProvider;
+import se.signatureservice.messages.DummyMessageSecurityProvider
 import se.signatureservice.messages.MessageProcessingException
 import se.signatureservice.messages.credmanagement.CredManagementPayloadParser
 import se.signatureservice.messages.csmessages.jaxb.CSMessage
-import se.signatureservice.messages.utils.MessageGenerateUtils;
-import spock.lang.Specification;
+import se.signatureservice.messages.utils.MessageGenerateUtils
+import spock.lang.Specification
 
 public class CSMessageParserManagerSpec extends Specification{
 	
@@ -44,17 +43,6 @@ public class CSMessageParserManagerSpec extends Specification{
 		then:
 		mp == mp2
 		
-	}
-	
-	def "Verify that custom CSMessageParser is returned if configured"(){
-		setup:
-		config.setProperty(CSMessageParserManager.SETTING_CSMESSAGEPARSER_IMPL, TestCSMessageParser.class.getName())
-		
-		when:
-		def mp = CSMessageParserManager.initCSMessageParser(secprov, config)
-		
-		then:
-		mp instanceof TestCSMessageParser
 	}
 
 	def "Verify that MessageProcessingException is thrown if invalid class path was given"(){

@@ -91,7 +91,7 @@ class XMLSignerSpec extends Specification {
 
 	def "Verify that verifyEnvelopedSignature checks certificate auth authorization if flag set to true"(){
 		when:
-		csXMLSigner.verifyEnvelopedSignature(validCSMessage, true)
+		csXMLSigner.verifyEnvelopedSignature(null, validCSMessage, true)
 		then:
 		true
 	}

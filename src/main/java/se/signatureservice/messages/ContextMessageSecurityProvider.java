@@ -35,7 +35,7 @@ public interface ContextMessageSecurityProvider extends MessageSecurityProvider{
 	/**
 	 * Default context is null.
 	 */
-	public static final Context DEFAULT_CONTEXT = null;
+	Context DEFAULT_CONTEXT = null;
 	
 
 	/**

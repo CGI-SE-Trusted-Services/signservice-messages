@@ -31,7 +31,7 @@ public class SettingsUtils {
 	 * 
 	 * @param config the configuration to fetch setting from.
 	 * @param setting the setting to fetch
-	 * @param required if required is a MessageException thrown if setting isn't set.
+	 * @param required if required is a MessageProcessingException thrown if setting isn't set.
 	 * @return a boolean value of the setting.
 	 * @throws MessageProcessingException if setting couldn't be read properly from the configuration file.
 	 */
@@ -45,7 +45,7 @@ public class SettingsUtils {
 	 * @param config the configuration to fetch setting from.
 	 * @param setting the setting to fetch
 	 * @param alternativeSetting for backward compability settings.
-	 * @param required if required is a MessageException thrown if setting isn't set.
+	 * @param required if required is a MessageProcessingException thrown if setting isn't set.
 	 * @return a boolean value of the setting.
 	 * @throws MessageProcessingException if setting couldn't be read properly from the configuration file.
 	 */
@@ -143,7 +143,7 @@ public class SettingsUtils {
 	
 	/**
 	 * Method to parse a string with the given deliminator into a String array, with every value trimmed and
-	 * a PKIMessageException thrown if a required setting isn't set.
+	 * a MessageProcessingException thrown if a required setting isn't set.
 	 * 
 	 * @param config the configuration to read from.
 	 * @param setting the setting to look-up.
@@ -157,7 +157,7 @@ public class SettingsUtils {
     
 	/**
 	 * Method to parse a string with the given deliminator into a String array, with every value trimmed and
-	 * a PKIMessageException thrown if a required setting isn't set.
+	 * a MessageProcessingException thrown if a required setting isn't set.
 	 * 
 	 * @param config the configuration to read from.
 	 * @param setting the setting to look-up.
@@ -191,7 +191,7 @@ public class SettingsUtils {
      * @param config the configuration to read from.
 	 * @param setting the setting to look-up.
      * @return the value if set.
-     * @throws MessageException if setting wasn't set or set to ""
+     * @throws MessageProcessingException if setting wasn't set or set to ""
      */
 	public static String getRequiredProperty(Properties config, String key) throws MessageProcessingException{
 		return getRequiredProperty(config, key, null);
@@ -202,14 +202,14 @@ public class SettingsUtils {
      * 
      * @param config the configuration to read from.
 	 * @param setting the setting to look-up.
-	 * @param alternativeSetting for backward compability settings.
+	 * @param alternativeSettings for backward compability settings.
      * @return the value if set.
-     * @throws MessageException if setting wasn't set or set to ""
+     * @throws MessageProcessingException if setting wasn't set or set to ""
      */
-	public static String getRequiredProperty(Properties config, String key, String alternativeSettings) throws MessageProcessingException{
-		String value = config.getProperty(key, (alternativeSettings != null ? config.getProperty(alternativeSettings, "") : ""));
+	public static String getRequiredProperty(Properties config, String setting, String alternativeSettings) throws MessageProcessingException{
+		String value = config.getProperty(setting, (alternativeSettings != null ? config.getProperty(alternativeSettings, "") : ""));
 		if(value.trim().equals("")){
-			throw new MessageProcessingException("Error required configuration property " + key + " not set.");
+			throw new MessageProcessingException("Error required configuration property " + setting + " not set.");
 		}
 		return value;
 	}

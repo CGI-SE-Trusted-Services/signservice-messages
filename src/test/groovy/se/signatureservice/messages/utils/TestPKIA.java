@@ -10,7 +10,7 @@
  *  See terms of license at gnu.org.                                     *
  *                                                                       *
  *************************************************************************/
-package se.singnatureservice.testutils;
+package se.signatureservice.messages.utils;
 
 /**
  * Test PKI A

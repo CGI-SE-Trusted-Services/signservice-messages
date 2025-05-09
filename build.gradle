@@ -30,8 +30,6 @@ dependencies {
     testRuntimeOnly 'net.bytebuddy:byte-buddy:1.17.5'
 
     testImplementation 'org.objenesis:objenesis:3.4'
-    testImplementation "commons-io:commons-io:2.19.0"
-    testImplementation "org.apache.tomcat.embed:tomcat-embed-core:${tomcatEmbedVersion}"
     testImplementation "org.codehaus.groovy:groovy-xml:${groovyVersion}"
     testImplementation platform("org.spockframework:spock-bom:2.3-groovy-3.0")
     testImplementation "org.spockframework:spock-core"

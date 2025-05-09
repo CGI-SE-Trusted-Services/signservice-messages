@@ -12,30 +12,26 @@
  *************************************************************************/
 package se.signatureservice.messages
 
-
+import org.apache.xml.security.utils.Base64
 import org.bouncycastle.jce.provider.BouncyCastleProvider
-import se.singnatureservice.testutils.TestPKIA
 import se.signatureservice.messages.utils.DefaultSystemTime
+import se.signatureservice.messages.utils.TestPKIA
+import se.signatureservice.messages.utils.XMLEncrypter
 import se.signatureservice.messages.utils.XMLSigner
 import spock.lang.Shared
-
-import java.security.Security
-import java.util.logging.Level
-import java.util.logging.Logger
-
-import static SimpleMessageSecurityProvider.*
-import static TruststoreHelper.*
+import spock.lang.Specification
 
 import java.security.KeyStore
 import java.security.PrivateKey
+import java.security.Security
 import java.security.cert.CertificateFactory
 import java.security.cert.X509Certificate
 import java.security.interfaces.RSAPrivateKey
+import java.util.logging.Level
+import java.util.logging.Logger
 
-import org.apache.xml.security.utils.Base64
-import se.signatureservice.messages.utils.XMLEncrypter
-
-import spock.lang.Specification
+import static se.signatureservice.messages.SimpleMessageSecurityProvider.*
+import static se.signatureservice.messages.TruststoreHelper.*
 
 
 /**
