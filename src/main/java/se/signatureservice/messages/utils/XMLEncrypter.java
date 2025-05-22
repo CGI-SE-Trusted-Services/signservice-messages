@@ -1,6 +1,6 @@
 /************************************************************************
  *                                                                       *
- *  Certificate Service - Messages                                       *
+ *  Signature Service - Messages                                         *
  *                                                                       *
  *  This software is free software; you can redistribute it and/or       *
  *  modify it under the terms of the GNU Lesser General Public License   *
@@ -21,7 +21,6 @@ import org.apache.xml.security.keys.content.KeyName;
 import org.apache.xml.security.keys.content.X509Data;
 import org.bouncycastle.util.encoders.Base64;
 import org.apache.xml.security.utils.EncryptionConstants;
-import se.signatureservice.messages.*;
 import se.signatureservice.messages.*;
 import se.signatureservice.messages.ContextMessageSecurityProvider.Context;
 import org.w3c.dom.Document;

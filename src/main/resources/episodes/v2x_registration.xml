@@ -13,67 +13,67 @@ Generated on: 2020.05.30 at 07:57:06 AM CEST
       <package name="org.certificateservices.messages.v2x.registration.jaxb"/>
     </schemaBindings>
     <bindings scd="~tns:RegionsType">
-      <class ref="org.signatureservice.messages.v2x.registration.jaxb.RegionsType"/>
+      <class ref="se.signatureservice.messages.v2x.registration.jaxb.RegionsType"/>
     </bindings>
     <bindings scd="tns:UpdateITSSResponse">
-      <class ref="org.signatureservice.messages.v2x.registration.jaxb.UpdateITSSResponse"/>
+      <class ref="se.signatureservice.messages.v2x.registration.jaxb.UpdateITSSResponse"/>
     </bindings>
     <bindings scd="~tns:BaseV2XResponseType">
-      <class ref="org.signatureservice.messages.v2x.registration.jaxb.BaseV2XResponseType"/>
+      <class ref="se.signatureservice.messages.v2x.registration.jaxb.BaseV2XResponseType"/>
     </bindings>
     <bindings scd="~tns:CanonicalKeyType">
-      <class ref="org.signatureservice.messages.v2x.registration.jaxb.CanonicalKeyType"/>
+      <class ref="se.signatureservice.messages.v2x.registration.jaxb.CanonicalKeyType"/>
     </bindings>
     <bindings scd="~tns:ATAppPermissionsType">
-      <class ref="org.signatureservice.messages.v2x.registration.jaxb.ATAppPermissionsType"/>
+      <class ref="se.signatureservice.messages.v2x.registration.jaxb.ATAppPermissionsType"/>
     </bindings>
     <bindings scd="~tns:EnrolmentCredentialsType">
-      <class ref="org.signatureservice.messages.v2x.registration.jaxb.EnrolmentCredentialsType"/>
+      <class ref="se.signatureservice.messages.v2x.registration.jaxb.EnrolmentCredentialsType"/>
     </bindings>
     <bindings scd="tns:RegisterITSSResponse">
-      <class ref="org.signatureservice.messages.v2x.registration.jaxb.RegisterITSSResponse"/>
+      <class ref="se.signatureservice.messages.v2x.registration.jaxb.RegisterITSSResponse"/>
     </bindings>
     <bindings scd="tns:RegisterITSSRequest">
-      <class ref="org.signatureservice.messages.v2x.registration.jaxb.RegisterITSSRequest"/>
+      <class ref="se.signatureservice.messages.v2x.registration.jaxb.RegisterITSSRequest"/>
     </bindings>
     <bindings scd="~tns:BaseRegisterRequestType">
-      <class ref="org.signatureservice.messages.v2x.registration.jaxb.BaseRegisterRequestType"/>
+      <class ref="se.signatureservice.messages.v2x.registration.jaxb.BaseRegisterRequestType"/>
     </bindings>
     <bindings scd="tns:ReactivateITSSRequest">
-      <class ref="org.signatureservice.messages.v2x.registration.jaxb.ReactivateITSSRequest"/>
+      <class ref="se.signatureservice.messages.v2x.registration.jaxb.ReactivateITSSRequest"/>
     </bindings>
     <bindings scd="tns:GetITSSDataRequest">
-      <class ref="org.signatureservice.messages.v2x.registration.jaxb.GetITSSDataRequest"/>
+      <class ref="se.signatureservice.messages.v2x.registration.jaxb.GetITSSDataRequest"/>
     </bindings>
     <bindings scd="tns:DeactivateITSSRequest">
-      <class ref="org.signatureservice.messages.v2x.registration.jaxb.DeactivateITSSRequest"/>
+      <class ref="se.signatureservice.messages.v2x.registration.jaxb.DeactivateITSSRequest"/>
     </bindings>
     <bindings scd="tns:GetITSSDataResponse">
-      <class ref="org.signatureservice.messages.v2x.registration.jaxb.GetITSSDataResponse"/>
+      <class ref="se.signatureservice.messages.v2x.registration.jaxb.GetITSSDataResponse"/>
     </bindings>
     <bindings scd="tns:ReactivateITSSResponse">
-      <class ref="org.signatureservice.messages.v2x.registration.jaxb.ReactivateITSSResponse"/>
+      <class ref="se.signatureservice.messages.v2x.registration.jaxb.ReactivateITSSResponse"/>
     </bindings>
     <bindings scd="tns:UpdateITSSRequest">
-      <class ref="org.signatureservice.messages.v2x.registration.jaxb.UpdateITSSRequest"/>
+      <class ref="se.signatureservice.messages.v2x.registration.jaxb.UpdateITSSRequest"/>
     </bindings>
     <bindings scd="tns:DeactivateITSSResponse">
-      <class ref="org.signatureservice.messages.v2x.registration.jaxb.DeactivateITSSResponse"/>
+      <class ref="se.signatureservice.messages.v2x.registration.jaxb.DeactivateITSSResponse"/>
     </bindings>
     <bindings scd="~tns:EnrolmentCredentialType">
-      <class ref="org.signatureservice.messages.v2x.registration.jaxb.EnrolmentCredentialType"/>
+      <class ref="se.signatureservice.messages.v2x.registration.jaxb.EnrolmentCredentialType"/>
     </bindings>
     <bindings scd="~tns:AppPermissionsType">
-      <class ref="org.signatureservice.messages.v2x.registration.jaxb.AppPermissionsType"/>
+      <class ref="se.signatureservice.messages.v2x.registration.jaxb.AppPermissionsType"/>
     </bindings>
     <bindings scd="~tns:ITSSStatusType">
-      <typesafeEnumClass ref="org.signatureservice.messages.v2x.registration.jaxb.ITSSStatusType"/>
+      <typesafeEnumClass ref="se.signatureservice.messages.v2x.registration.jaxb.ITSSStatusType"/>
     </bindings>
     <bindings scd="~tns:PermissionType">
-      <typesafeEnumClass ref="org.signatureservice.messages.v2x.registration.jaxb.PermissionType"/>
+      <typesafeEnumClass ref="se.signatureservice.messages.v2x.registration.jaxb.PermissionType"/>
     </bindings>
     <bindings scd="~tns:ECStatusType">
-      <typesafeEnumClass ref="org.signatureservice.messages.v2x.registration.jaxb.ECStatusType"/>
+      <typesafeEnumClass ref="se.signatureservice.messages.v2x.registration.jaxb.ECStatusType"/>
     </bindings>
   </bindings>
 </bindings>
