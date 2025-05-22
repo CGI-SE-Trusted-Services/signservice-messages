@@ -31,7 +31,7 @@ dependencies {
 
     testImplementation 'org.objenesis:objenesis:3.4'
     testImplementation "org.codehaus.groovy:groovy-xml:${groovyVersion}"
-    testImplementation platform("org.spockframework:spock-bom:2.3-groovy-3.0")
+    testImplementation platform("org.spockframework:spock-bom:2.4-M6-groovy-3.0")
     testImplementation "org.spockframework:spock-core"
 
     jaxws 'com.sun.xml.ws:jaxws-ri:4.0.3'

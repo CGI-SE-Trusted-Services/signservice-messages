@@ -43,6 +43,7 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import java.io.*;
 import java.math.BigInteger;
+import java.nio.charset.StandardCharsets;
 import java.security.*;
 import java.security.cert.CertificateEncodingException;
 import java.security.cert.CertificateFactory;
@@ -415,10 +416,10 @@ public class XMLEncrypter {
 	 * @throws MessageProcessingException if internal problems occurred encrypting the message.
 	 */
 	public Document encryptProperties(Properties properties, List<X509Certificate> receipients, boolean useKeyId) throws MessageProcessingException {
-		Document encDocument = null, document = null;
+		Document encDocument, document;
 		try {
 			ByteArrayOutputStream os = new ByteArrayOutputStream();		
-			properties.storeToXML(os, null, "UTF-8");			
+			properties.storeToXML(os, null, StandardCharsets.UTF_8);
 			InputStream is = new ByteArrayInputStream(os.toByteArray());
 			documentBuilder.setEntityResolver(new EntityResolver() {
 				@Override
@@ -451,7 +452,7 @@ public class XMLEncrypter {
 	 * @throws MessageContentException if content of document was invalid
 	 */
 	public Properties decryptProperties(Document encDocument) throws NoDecryptionKeyFoundException, MessageProcessingException, MessageContentException {
-		Properties properties = null;
+		Properties properties;
 		
 		try {
 			Document document = decryptDoc(encDocument, null);
@@ -584,12 +585,12 @@ public class XMLEncrypter {
 				Node rsaKeyNode = rsaKeyValueList.item(i);
 
 				NodeList modValueList = ((Element)rsaKeyNode).getElementsByTagNameNS(XMLDSIG_NAMESPACE, "Modulus");
-				if(modValueList != null && modValueList.getLength() > 0) {
+				if(modValueList.getLength() > 0) {
 					modValue = modValueList.item(0).getFirstChild().getNodeValue();
 				}
 
 				NodeList expValueList = ((Element)rsaKeyNode).getElementsByTagNameNS(XMLDSIG_NAMESPACE, "Exponent");
-				if(expValueList != null && expValueList.getLength() > 0) {
+				if(expValueList.getLength() > 0) {
 					expValue = expValueList.item(0).getFirstChild().getNodeValue();
 				}
 

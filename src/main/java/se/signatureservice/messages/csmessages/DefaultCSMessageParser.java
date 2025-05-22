@@ -331,7 +331,7 @@ public class DefaultCSMessageParser implements CSMessageParser {
 	 */
 	public byte[] generateGetApprovalRequest(String requestId, String destinationId, String organisation, byte[] request, Credential originator, List<Object> assertions) throws MessageContentException, MessageProcessingException{
 		CSMessage csMessage = parseMessage(request);
-		CSRequest requestPayload = null;
+		CSRequest requestPayload;
 		try{
 			requestPayload = (CSRequest) csMessage.getPayload().getAny();
 		}catch(Exception e){
@@ -923,9 +923,9 @@ public class DefaultCSMessageParser implements CSMessageParser {
 	private class JAXBRelatedData{
 		
 		private JAXBContext jaxbContext = null;
-		private HashMap<String, Validator> payLoadValidatorCache = new HashMap<String, Validator>();
+		private HashMap<String, Validator> payLoadValidatorCache = new HashMap<>();
 	    private JAXBIntrospector jaxbIntrospector = null;
-		private Map<String, Schema> csMessageSchemaCache = new HashMap<String, Schema>();
+		private Map<String, Schema> csMessageSchemaCache = new HashMap<>();
 		private String jaxbClassPath = "";
 		
 		void clearAllJAXBData(){
@@ -939,22 +939,26 @@ public class DefaultCSMessageParser implements CSMessageParser {
 	    /**
 	     * Help method maintaining the PKI Message JAXB Context.
 	     */
-	    JAXBContext getJAXBContext() throws JAXBException, MessageProcessingException{
-	    	if(jaxbContext== null){
-	    		jaxbClassPath = "se.signatureservice.messages.csmessages.jaxb:se.signatureservice.messages.xmldsig.jaxb:se.signatureservice.messages.xenc.jaxb";
-	    			    		
-	    		for(String namespace : PayloadParserRegistry.getRegistredNamespaces()){
-	    			String jaxbPackage = PayloadParserRegistry.getParser(namespace).getJAXBPackage();
-	    			if(jaxbPackage != null){
-	    			  jaxbClassPath += ":" + jaxbPackage;
-	    			}
-	    		}
-	    		
-	    		jaxbContext = JAXBContext.newInstance(jaxbClassPath);
-	    		
-	    	}
-	    	return jaxbContext;
-	    }
+		JAXBContext getJAXBContext() throws JAXBException, MessageProcessingException {
+			if (jaxbContext == null) {
+				StringBuilder jaxbClassPathBuilder = new StringBuilder();
+				jaxbClassPathBuilder
+						.append("se.signatureservice.messages.csmessages.jaxb")
+						.append(":se.signatureservice.messages.xmldsig.jaxb")
+						.append(":se.signatureservice.messages.xenc.jaxb");
+
+				for (String namespace : PayloadParserRegistry.getRegistredNamespaces()) {
+					String jaxbPackage = PayloadParserRegistry.getParser(namespace).getJAXBPackage();
+					if (jaxbPackage != null) {
+						jaxbClassPathBuilder.append(":").append(jaxbPackage);
+					}
+				}
+
+				jaxbClassPath = jaxbClassPathBuilder.toString();
+				jaxbContext = JAXBContext.newInstance(jaxbClassPath);
+			}
+			return jaxbContext;
+		}
 	    
 		
 		Validator getPayLoadValidatorFromCache(String payLoadNamespace, String version, String payLoadVersion) throws MessageProcessingException, MessageContentException{
@@ -1013,7 +1017,7 @@ public class DefaultCSMessageParser implements CSMessageParser {
 	     * @throws JAXBException of internal JAXB problems occurred when looking up the name space.
 	     */
 	    private String getNamespace(Object jaxbObject) throws MessageProcessingException {
-	    	QName qname = null;
+	    	QName qname;
 			try {
 				qname = getJAXBIntrospector().getElementName(jaxbObject);
 			} catch (JAXBException e) {
@@ -1105,7 +1109,7 @@ public class DefaultCSMessageParser implements CSMessageParser {
 				if(doc.getDocumentElement().getLocalName().equals("CSMessage") && doc.getDocumentElement().getNamespaceURI().equals(DefaultCSMessageParser.CSMESSAGE_NAMESPACE)){
 					return new Element[]{doc.getDocumentElement()};
 				}
-			}catch(Exception e){
+			}catch(Exception ignored){
 			}
 			throw new MessageContentException("Invalid CS message type sent for signature.");
 		}

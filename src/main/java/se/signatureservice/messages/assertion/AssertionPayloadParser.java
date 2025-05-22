@@ -537,7 +537,7 @@ public class AssertionPayloadParser extends BasePayloadParser {
 					verifyAssertionSignature(assertion);
 					verifyAssertionConditions(assertion.getValue());
 					retval.add(assertion);
-				}catch(MessageContentException e){}
+				}catch(MessageContentException ignored){}
 			}
 		}
 		

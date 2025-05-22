@@ -98,11 +98,11 @@ public class SimpleMessageSecurityProvider implements
 	public static final EncryptionAlgorithmScheme DEFAULT_ENCRYPTION_ALGORITHM_SCHEME = EncryptionAlgorithmScheme.RSA_OAEP_WITH_AES256;
 
 
-	PrivateKey signPrivateKey = null;
-	X509Certificate signCertificate = null;
+	PrivateKey signPrivateKey;
+	X509Certificate signCertificate;
 	
-	Map<String, PrivateKey> decryptionKeys = new HashMap<String, PrivateKey>();
-	Map<String, X509Certificate[]> decryptionCertificates = new HashMap<String, X509Certificate[]>();
+	Map<String, PrivateKey> decryptionKeys = new HashMap<>();
+	Map<String, X509Certificate[]> decryptionCertificates = new HashMap<>();
 	String defaultDecryptionKeyId = null;
 	
 	private SigningAlgorithmScheme signingAlgorithmScheme;
@@ -160,8 +160,8 @@ public class SimpleMessageSecurityProvider implements
 			  String alias = aliases.nextElement();
 			  Key key = decKS.getKey(alias, decKeyStorePassword);
 			  Certificate[] certChain = decKS.getCertificateChain(alias);
-			  if(key != null && key instanceof PrivateKey && certChain != null && certChain.length > 0){
-				  X509Certificate[] x509CertChain =  (X509Certificate[]) Arrays.copyOf(certChain,certChain.length, X509Certificate[].class);
+			  if(key instanceof PrivateKey && certChain != null && certChain.length > 0){
+				  X509Certificate[] x509CertChain = Arrays.copyOf(certChain,certChain.length, X509Certificate[].class);
 				  String keyId = XMLEncrypter.generateKeyId(x509CertChain[0].getPublicKey());
 				  decryptionKeys.put(keyId, (PrivateKey) key);
 				  decryptionCertificates.put(keyId, x509CertChain);

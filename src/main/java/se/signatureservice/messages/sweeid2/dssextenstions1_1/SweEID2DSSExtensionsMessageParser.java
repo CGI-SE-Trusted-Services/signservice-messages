@@ -55,8 +55,8 @@ public class SweEID2DSSExtensionsMessageParser extends DSS1CoreMessageParser{
     protected SignMessageXMLConverter signMessageXMLConverter =new SignMessageXMLConverter();
 
 
-    private static Map<String,String> NAMESPACETOPREFIXMAP = new HashMap<String, String>();
-    private static Map<String,String> PREFIXTONAMESPACEMAP = new HashMap<String, String>();
+    private static final Map<String,String> NAMESPACETOPREFIXMAP = new HashMap<>();
+    private static final Map<String,String> PREFIXTONAMESPACEMAP = new HashMap<>();
 
     static{
         NAMESPACETOPREFIXMAP.put(NAMESPACE,"csig");
@@ -638,7 +638,7 @@ public class SweEID2DSSExtensionsMessageParser extends DSS1CoreMessageParser{
         JAXBElement<byte[]> message = eid2Of.createMessage(messageToEncrypt);
         Document encryptedDoc = xmlEncrypter.encryptElement(context, message,recipients,false);
 
-        EncryptedElementType encryptedElementType = null;
+        EncryptedElementType encryptedElementType;
         try {
             EncryptedDataType encryptedDataType = (EncryptedDataType) ((JAXBElement<?>) getUnmarshaller().unmarshal(encryptedDoc)).getValue();
             encryptedElementType =  of.createEncryptedElementType();

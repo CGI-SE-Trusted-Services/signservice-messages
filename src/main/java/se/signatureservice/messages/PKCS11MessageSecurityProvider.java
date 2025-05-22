@@ -17,6 +17,7 @@ import se.signatureservice.messages.utils.XMLEncrypter;
 import se.signatureservice.messages.utils.XMLSigner;
 
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.security.*;
 import java.security.cert.Certificate;
 import java.security.cert.CertificateEncodingException;
@@ -81,22 +82,20 @@ public class PKCS11MessageSecurityProvider implements ContextMessageSecurityProv
     static final String SETTING_ENCRYPTION_ALGORITHM_SCHEME = SETTING_PREFIX + ".encryption.algorithm";
     static final EncryptionAlgorithmScheme DEFAULT_ENCRYPTION_ALGORITHM_SCHEME = EncryptionAlgorithmScheme.RSA_OAEP_WITH_AES256;
 
-    private KeyStore pkcs11Keystore;
     private KeyStore trustStore;
-    private String pkcs11Password;
     private String pkcs11Provider;
 
     private SigningAlgorithmScheme signingAlgorithmScheme;
     private EncryptionAlgorithmScheme encryptionAlgorithmScheme;
 
-    private X509Certificate signingCertificate;
-    private PrivateKey signingKey;
+    private final X509Certificate signingCertificate;
+    private final PrivateKey signingKey;
 
-    private Map<String, X509Certificate[]> decryptionCertificates = new HashMap<String, X509Certificate[]>();
-    private Map<String, PrivateKey> decryptionKeys = new HashMap<String, PrivateKey>();
+    private final Map<String, X509Certificate[]> decryptionCertificates = new HashMap<>();
+    private final Map<String, PrivateKey> decryptionKeys = new HashMap<>();
     private String defaultDecryptionKeyId = null;
 
-    private PKCS11ProviderManager providerManager = null;
+    private final PKCS11ProviderManager providerManager;
 
     protected TruststoreHelper truststoreHelper;
 
@@ -107,12 +106,13 @@ public class PKCS11MessageSecurityProvider implements ContextMessageSecurityProv
     public PKCS11MessageSecurityProvider(Properties config, PKCS11ProviderManager providerManager) throws MessageProcessingException{
         String pkcs11Library = SettingsUtils.getRequiredProperty(config, SETTING_PKCS11_LIBRARY);
         int pkcs11Slot = Integer.parseInt(SettingsUtils.getRequiredProperty(config, SETTING_PKCS11_SLOT));
-        pkcs11Password = SettingsUtils.getRequiredProperty(config, SETTING_PKCS11_SLOT_PASSWORD);
+        String pkcs11Password = SettingsUtils.getRequiredProperty(config, SETTING_PKCS11_SLOT_PASSWORD);
         String signingKeyAlias = config.getProperty(SETTING_SIGNINGKEY_ALIAS);
         String decryptKeyDefaultAlias = config.getProperty(SETTING_DECRYPTKEY_DEFAULT_ALIAS);
         String trustStorePath = config.getProperty(SETTING_TRUSTSTORE_PATH);
         String trustStorePassword = config.getProperty(SETTING_TRUSTSTORE_PASSWORD);
 
+        KeyStore pkcs11Keystore;
         try {
             this.providerManager = providerManager;
             pkcs11Keystore = getPKCS11Keystore(pkcs11Library, pkcs11Slot, pkcs11Password);
@@ -130,7 +130,7 @@ public class PKCS11MessageSecurityProvider implements ContextMessageSecurityProv
             }
 
             signingCertificate = (X509Certificate) pkcs11Keystore.getCertificate(signingKeyAlias);
-            signingKey = (PrivateKey)pkcs11Keystore.getKey(signingKeyAlias, pkcs11Password.toCharArray());
+            signingKey = (PrivateKey) pkcs11Keystore.getKey(signingKeyAlias, pkcs11Password.toCharArray());
         } catch(Exception e){
             if(e instanceof MessageProcessingException){
                 throw (MessageProcessingException) e;
@@ -153,7 +153,7 @@ public class PKCS11MessageSecurityProvider implements ContextMessageSecurityProv
                 String alias = aliases.nextElement();
                 Key key = pkcs11Keystore.getKey(alias, pkcs11Password.toCharArray());
                 Certificate[] certChain = pkcs11Keystore.getCertificateChain(alias);
-                if(key != null && key instanceof PrivateKey && certChain != null && certChain.length > 0){
+                if(key instanceof PrivateKey && certChain != null && certChain.length > 0){
                     X509Certificate[] x509CertChain = Arrays.copyOf(certChain,certChain.length, X509Certificate[].class);
                     String keyId = XMLEncrypter.generateKeyId(x509CertChain[0].getPublicKey());
                     decryptionKeys.put(keyId, (PrivateKey) key);
@@ -174,7 +174,7 @@ public class PKCS11MessageSecurityProvider implements ContextMessageSecurityProv
         }
 
 
-        if(decryptionKeys.size() == 0){
+        if(decryptionKeys.isEmpty()){
             throw new MessageProcessingException("No decryption keys found in token");
         }
 
@@ -481,11 +481,11 @@ public class PKCS11MessageSecurityProvider implements ContextMessageSecurityProv
 
         StringBuffer pkcs11Config = new StringBuffer();
         pkcs11Config.append("name = CSMsgSecProv\n");
-        pkcs11Config.append("library = " + pkcs11Library + "\n");
-        pkcs11Config.append("slot = " + slot + "\n");
+        pkcs11Config.append("library = ").append(pkcs11Library).append("\n");
+        pkcs11Config.append("slot = ").append(slot).append("\n");
 
-        log.fine("Using PKCS#11 configuration: " + pkcs11Config.toString());
-        configStream = new ByteArrayInputStream(pkcs11Config.toString().getBytes("UTF-8"));
+        log.fine("Using PKCS#11 configuration: " + pkcs11Config);
+        configStream = new ByteArrayInputStream(pkcs11Config.toString().getBytes(StandardCharsets.UTF_8));
         pkcs11Provider = providerManager.addPKCS11Provider(configStream);
         keyStore = providerManager.loadPKCS11Keystore(slotPassword == null ? null : slotPassword.toCharArray());
 

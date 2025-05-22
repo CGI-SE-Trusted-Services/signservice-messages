@@ -16,10 +16,7 @@ import java.security.KeyStore;
 import java.security.PrivateKey;
 import java.security.cert.Certificate;
 import java.security.cert.X509Certificate;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 import se.signatureservice.messages.utils.XMLEncrypter;
 
@@ -37,7 +34,7 @@ public class DummyMessageSecurityProvider implements
 	private KeyStore dummyKS = null;
 	private KeyStore encKeyStore = null;
 	private String defaultEncKeyId;
-	private Map<String,String> encKeyIdToAlias = new HashMap<String,String>();
+	private Map<String,String> encKeyIdToAlias = new HashMap<>();
 	
 	private boolean validCallDone = false;
 	private String organisationCalled = null;
@@ -162,7 +159,7 @@ public class DummyMessageSecurityProvider implements
 	@Override
 	public PrivateKey getDecryptionKey(Context context, String keyId) throws MessageProcessingException {
 		KeyStore encKeyStore = getEncKeystore();
-		if(keyId == DEFAULT_DECRYPTIONKEY){
+		if(Objects.equals(keyId, DEFAULT_DECRYPTIONKEY)){
 			keyId = defaultEncKeyId;
 		}
 		String alias =  encKeyIdToAlias.get(keyId);
@@ -184,7 +181,7 @@ public class DummyMessageSecurityProvider implements
 	@Override
 	public X509Certificate getDecryptionCertificate(Context context, String keyId) throws MessageProcessingException {
 		KeyStore encKeyStore = getEncKeystore();
-		if(keyId == DEFAULT_DECRYPTIONKEY){
+		if(Objects.equals(keyId, DEFAULT_DECRYPTIONKEY)){
 			keyId = defaultEncKeyId;
 		}
 		String alias =  encKeyIdToAlias.get(keyId);
@@ -207,7 +204,7 @@ public class DummyMessageSecurityProvider implements
 	@Override
 	public X509Certificate[] getDecryptionCertificateChain(Context context, String keyId) throws MessageProcessingException {
 		KeyStore encKeyStore = getEncKeystore();
-		if(keyId == DEFAULT_DECRYPTIONKEY){
+		if(Objects.equals(keyId, DEFAULT_DECRYPTIONKEY)){
 			keyId = defaultEncKeyId;
 		}
 		String alias =  encKeyIdToAlias.get(keyId);
