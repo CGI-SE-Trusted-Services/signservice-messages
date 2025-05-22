@@ -1,6 +1,6 @@
 /*************************************************************************
  *                                                                       *
- *  Certificate Service - Test Utils                                     *
+ *  Signature Service - Messages                                         *
  *                                                                       *
  *  This software is free software; you can redistribute it and/or       *
  *  modify it under the terms of the GNU Affero General Public License   *
@@ -10,7 +10,7 @@
  *  See terms of license at gnu.org.                                     *
  *                                                                       *
  *************************************************************************/
-package se.singnatureservice.testutils;
+package se.signatureservice.messages.utils;
 
 /**
  * Test PKI A

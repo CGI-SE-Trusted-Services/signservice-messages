@@ -13,16 +13,16 @@ Generated on: 2017.03.01 at 08:01:08 PM CET
       <package name="org.certificateservices.messages.sensitivekeys.jaxb"/>
     </schemaBindings>
     <bindings scd="tns:KeyData">
-      <class ref="org.signatureservice.messages.sensitivekeys.jaxb.KeyData"/>
+      <class ref="se.signatureservice.messages.sensitivekeys.jaxb.KeyData"/>
     </bindings>
     <bindings scd="~tns:KeyDataType">
-      <class ref="org.signatureservice.messages.sensitivekeys.jaxb.KeyDataType"/>
+      <class ref="se.signatureservice.messages.sensitivekeys.jaxb.KeyDataType"/>
     </bindings>
     <bindings scd="~tns:EncodedKey">
-      <class ref="org.signatureservice.messages.sensitivekeys.jaxb.EncodedKey"/>
+      <class ref="se.signatureservice.messages.sensitivekeys.jaxb.EncodedKey"/>
     </bindings>
     <bindings scd="~tns:AsymmetricKey">
-      <class ref="org.signatureservice.messages.sensitivekeys.jaxb.AsymmetricKey"/>
+      <class ref="se.signatureservice.messages.sensitivekeys.jaxb.AsymmetricKey"/>
     </bindings>
   </bindings>
 </bindings>

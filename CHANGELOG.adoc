@@ -3,15 +3,26 @@
 This document provides information about changes that have been made for each new version
 of the Signature Service Messages Library.
 
+== Version 2505.1
+
+== Changes
+
+* Updated the Gradle Wrapper files(gradlew, gradlew.bat, gradle-wrapper.jar) to align with the configured Gradle version.
+* Removed not related internal build logic from build.gradle
+* Bump Apache Commons IO from 2.18.0 to 2.19.0
+* Bump JAXB Runtime from 4.0.2 to 4.0.5
+* Bump Byte Buddy (without Dependencies) from 1.16.1 to 1.17.5
+* Bump Tomcat dependency used in testing to 10.1.40
+
 == Version 2503.1
 
 == Changes
 
-** Package name org.certificateservices.messages -> se.signatureservice.message
-** Language level Java8 -> Java11
-** New XML Schema version 1.1.3 for namespace \http://id.elegnamnden.se/csig/1.1/dss-ext/ns, jaxb classes regenerated,
+* Package name org.certificateservices.messages -> se.signatureservice.message
+* Language level Java8 -> Java11
+* New XML Schema version 1.1.3 for namespace \http://id.elegnamnden.se/csig/1.1/dss-ext/ns, jaxb classes regenerated,
 and minor modifications made to reflect updates in the xsd
-** A lot of code that is not relevant for Signature service has been removed, although some still remains
+* A lot of code that is not relevant for Signature service has been removed, although some still remains
 
 == Changelog inherited from Certificate Service Messages Library
 

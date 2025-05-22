@@ -1,6 +1,6 @@
 /************************************************************************
  *                                                                       *
- *  Certificate Service - Messages                                       *
+ *  Signature Service - Messages                                         *
  *                                                                       *
  *  This software is free software; you can redistribute it and/or       *
  *  modify it under the terms of the GNU Lesser General Public License   *
@@ -91,7 +91,7 @@ class XMLSignerSpec extends Specification {
 
 	def "Verify that verifyEnvelopedSignature checks certificate auth authorization if flag set to true"(){
 		when:
-		csXMLSigner.verifyEnvelopedSignature(validCSMessage, true)
+		csXMLSigner.verifyEnvelopedSignature(null, validCSMessage, true)
 		then:
 		true
 	}

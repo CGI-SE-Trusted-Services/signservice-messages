@@ -1,15 +1,9 @@
 package se.signatureservice.messages.utils;
 
-import se.signatureservice.messages.MessageContentException;
-import se.signatureservice.messages.MessageProcessingException;
-import se.signatureservice.messages.csmessages.CSMessageParser;
-import se.signatureservice.messages.csmessages.jaxb.CSMessage;
-import se.signatureservice.messages.csmessages.jaxb.GetApprovalRequest;
-import org.xml.sax.SAXParseException;
-
 import jakarta.xml.bind.JAXBElement;
 import jakarta.xml.bind.JAXBException;
-import java.security.cert.X509Certificate;
+import org.xml.sax.SAXParseException;
+import se.signatureservice.messages.csmessages.jaxb.CSMessage;
 
 /**
  * Utility methods used when working with CS Messages
@@ -33,48 +27,6 @@ public class CSMessageUtils {
 			return ((JAXBElement) o).getValue();
 		}
 		return o;
-	}
-	
-	/**
-	 * Method returning the name of the payload object. i.e the simple name of the payload class.
-	 * @param csMessage
-	 * @return
-	 * @throws MessageContentException if no payload name could be found.
-	 */
-	public static String getPayloadName(CSMessage csMessage) throws MessageContentException{
-		Object payload = getPayload(csMessage);
-		if(payload == null){
-			throw new MessageContentException("Error no payload name could be found in CS Message");
-		}
-		return payload.getClass().getSimpleName();
-	}
-	
-	/**
-	 * Method returning the related payload object in from a GetApprovalRequest.
-	 * @param csMessage the CS message to fetch related payload object, must contain a GetApprovalRequest payload
-	 * @return the related payload
-	 * @throws MessageContentException if csMessage didn't contain any GetApprovalRequest
-	 */
-	public static Object getRelatedPayload(CSMessage csMessage) throws MessageContentException{
-		Object payload = getPayload(csMessage);
-		if(payload instanceof GetApprovalRequest){
-			return ((GetApprovalRequest) payload).getRequestPayload().getAny();
-		}
-		throw new MessageContentException("Error fetching related payload object from CS Message, message didn't contain any GetApprovalRequest payload.");
-	}
-	
-	/**
-	 * Method returning the related payload name in from a GetApprovalRequest. i.e the simple name of the payload class.
-	 * @param csMessage the CS message to fetch related payload name, must contain a GetApprovalRequest payload
-	 * @return the related payload name, 
-	 * @throws MessageContentException if csMessage didn't contain any GetApprovalRequest
-	 */
-	public static String getRelatedPayloadName(CSMessage csMessage) throws MessageContentException{
-		Object payload = getPayload(csMessage);
-		if(payload instanceof GetApprovalRequest){
-			return ((GetApprovalRequest) payload).getRequestPayload().getAny().getClass().getSimpleName();
-		}
-		throw new MessageContentException("Error fetching related payload name from CS Message, message didn't contain any GetApprovalRequest payload.");
 	}
 
 	/**
@@ -107,26 +59,4 @@ public class CSMessageUtils {
 		}
 		return e.getMessage();
 	}
-
-	/**
-	 * Help method to parse a requester unique id from messageData used primarily for spam protection.
-	 * @param parser the related CSMessageParser
-	 * @param messageData the message data to extract unique id from.
-	 * @return the requester id from the signer of the message.
-	 * @throws MessageContentException if signer certificate data in message was invalid.
-	 * @throws MessageProcessingException if internal problems occurred parsing the message data.
-	 */
-	public static String getRequesterUniqueId(CSMessageParser parser, byte[] messageData) throws MessageContentException, MessageProcessingException {
-		X509Certificate signingCert = parser.getSigningCertificate(messageData);
-		if (signingCert == null) {
-			throw new MessageContentException("Error, no signing certificate found in CS Message Request");
-		}
-		// Reencode certificate with BC provider to ensure normalized issuer dn.
-		try {
-			return CertUtils.getCertificateUniqueId(CertUtils.getCertfromByteArray(signingCert.getEncoded()));
-		}catch(Exception e){
-			throw new MessageContentException("Error parsing certificate from CS Message: " + e.getMessage());
-		}
-	}
-	
 }

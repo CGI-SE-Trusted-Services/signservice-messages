@@ -1,15 +1,15 @@
 /************************************************************************
-*                                                                       *
-*  Certificate Service - Messages                                       *
-*                                                                       *
-*  This software is free software; you can redistribute it and/or       *
-*  modify it under the terms of the GNU Lesser General Public License   *
-*  License as published by the Free Software Foundation; either         *
-*  version 3   of the License, or any later version.                    *
-*                                                                       *
-*  See terms of license at gnu.org.                                     *
-*                                                                       *
-*************************************************************************/
+ *                                                                       *
+ *  Signature Service - Messages                                         *
+ *                                                                       *
+ *  This software is free software; you can redistribute it and/or       *
+ *  modify it under the terms of the GNU Lesser General Public License   *
+ *  License as published by the Free Software Foundation; either         *
+ *  version 3   of the License, or any later version.                    *
+ *                                                                       *
+ *  See terms of license at gnu.org.                                     *
+ *                                                                       *
+ *************************************************************************/
 package se.signatureservice.messages.csmessages;
 
 import java.util.Properties;
@@ -39,7 +39,7 @@ public interface MessageNameCatalogue {
 	 * @param requestName the related request name if applicable, null if this is a request. 
 	 * @param payLoadObject the setting to look-up the name for. 
 	 * @return the name of the message to use.
-	 * @throws MessageException if name lookup failed due to internal connection problems.
+	 * @throws MessageProcessingException if name lookup failed due to internal connection problems.
 	 * @throws IllegalArgumentException if name lookup failed due to bad request data
 	 */
 	public String lookupName(String requestName, Object payLoadObject) throws MessageProcessingException, IllegalArgumentException;
