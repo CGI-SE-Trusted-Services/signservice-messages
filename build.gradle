@@ -27,7 +27,7 @@ dependencies {
         exclude(module: "commons-codec")
     }
     testRuntimeOnly 'org.glassfish.jaxb:jaxb-runtime:4.0.5'
-    testRuntimeOnly 'net.bytebuddy:byte-buddy:1.17.5'
+    testRuntimeOnly 'net.bytebuddy:byte-buddy:1.17.6'
 
     testImplementation 'org.objenesis:objenesis:3.4'
     testImplementation "org.codehaus.groovy:groovy-xml:${groovyVersion}"

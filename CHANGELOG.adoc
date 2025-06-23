@@ -3,7 +3,7 @@
 This document provides information about changes that have been made for each new version
 of the Signature Service Messages Library.
 
-== Version 2505.1
+== Version 2506.1
 
 === Upgrade notes
 NOTE: Changes in preparation for moving to java 21 in Q4 2025
@@ -15,7 +15,6 @@ to align with the configured Gradle version (Still 7.6.4).
 * Removed not related internal build logic from build.gradle
 * Bump JAXB Runtime from 4.0.2 to 4.0.5
 * Bump Byte Buddy (without Dependencies) from 1.16.1 to 1.17.5
-* Bump Tomcat dependency used in testing to 10.1.41
 * Updated Spock Framework Core Module to 2.4-M6-groovy-3.0
 * Cleaned up zip-bin.gradle and zip-src.gradle.
 
