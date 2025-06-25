@@ -416,7 +416,7 @@ public class XMLEncrypter {
 	 * @throws MessageProcessingException if internal problems occurred encrypting the message.
 	 */
 	public Document encryptProperties(Properties properties, List<X509Certificate> receipients, boolean useKeyId) throws MessageProcessingException {
-		Document encDocument, document;
+		Document encDocument = null, document = null;
 		try {
 			ByteArrayOutputStream os = new ByteArrayOutputStream();		
 			properties.storeToXML(os, null, StandardCharsets.UTF_8);
@@ -452,7 +452,7 @@ public class XMLEncrypter {
 	 * @throws MessageContentException if content of document was invalid
 	 */
 	public Properties decryptProperties(Document encDocument) throws NoDecryptionKeyFoundException, MessageProcessingException, MessageContentException {
-		Properties properties;
+		Properties properties = null;
 		
 		try {
 			Document document = decryptDoc(encDocument, null);
@@ -585,12 +585,12 @@ public class XMLEncrypter {
 				Node rsaKeyNode = rsaKeyValueList.item(i);
 
 				NodeList modValueList = ((Element)rsaKeyNode).getElementsByTagNameNS(XMLDSIG_NAMESPACE, "Modulus");
-				if(modValueList.getLength() > 0) {
+				if(modValueList != null && modValueList.getLength() > 0) {
 					modValue = modValueList.item(0).getFirstChild().getNodeValue();
 				}
 
 				NodeList expValueList = ((Element)rsaKeyNode).getElementsByTagNameNS(XMLDSIG_NAMESPACE, "Exponent");
-				if(expValueList.getLength() > 0) {
+				if(expValueList != null && expValueList.getLength() > 0) {
 					expValue = expValueList.item(0).getFirstChild().getNodeValue();
 				}
 

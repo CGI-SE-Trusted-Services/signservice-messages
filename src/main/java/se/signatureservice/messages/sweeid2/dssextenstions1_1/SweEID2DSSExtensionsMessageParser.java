@@ -638,7 +638,7 @@ public class SweEID2DSSExtensionsMessageParser extends DSS1CoreMessageParser{
         JAXBElement<byte[]> message = eid2Of.createMessage(messageToEncrypt);
         Document encryptedDoc = xmlEncrypter.encryptElement(context, message,recipients,false);
 
-        EncryptedElementType encryptedElementType;
+        EncryptedElementType encryptedElementType = null;
         try {
             EncryptedDataType encryptedDataType = (EncryptedDataType) ((JAXBElement<?>) getUnmarshaller().unmarshal(encryptedDoc)).getValue();
             encryptedElementType =  of.createEncryptedElementType();
