@@ -373,7 +373,7 @@ public class DSS1CoreMessageParser extends BaseSAMLMessageParser{
                     }
                     return new Element[] {(Element) nl.item(0)};
                 }
-            }catch(Exception e){
+            }catch(Exception ignored){
             }
             throw new MessageContentException("Invalid DSS message type sent for signature.");
         }

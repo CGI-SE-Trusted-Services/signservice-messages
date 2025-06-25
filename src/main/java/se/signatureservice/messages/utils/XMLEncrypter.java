@@ -43,6 +43,7 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import java.io.*;
 import java.math.BigInteger;
+import java.nio.charset.StandardCharsets;
 import java.security.*;
 import java.security.cert.CertificateEncodingException;
 import java.security.cert.CertificateFactory;
@@ -418,7 +419,7 @@ public class XMLEncrypter {
 		Document encDocument = null, document = null;
 		try {
 			ByteArrayOutputStream os = new ByteArrayOutputStream();		
-			properties.storeToXML(os, null, "UTF-8");			
+			properties.storeToXML(os, null, StandardCharsets.UTF_8);
 			InputStream is = new ByteArrayInputStream(os.toByteArray());
 			documentBuilder.setEntityResolver(new EntityResolver() {
 				@Override

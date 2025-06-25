@@ -1096,7 +1096,7 @@ public class SAMLMetaDataMessageParser extends BaseSAMLMessageParser {
                 if(doc.getDocumentElement().getNamespaceURI().equals(NAMESPACE)){
                     return new Element[] {doc.getDocumentElement()};
                 }
-            }catch(Exception e){
+            }catch(Exception ignored){
             }
             throw new MessageContentException("Invalid SAMLP message type sent for signature.");
         }
