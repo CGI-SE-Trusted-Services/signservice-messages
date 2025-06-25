@@ -12,7 +12,7 @@ depend on this project instead.
 
 == Certservice-messages Project
 
-This a project containing Java code to generate and parse various messages within other certservice projects.
+This project containing Java code to generate and parse various messages within other certservice projects.
 
 It mainly consists of the following parts:
 
@@ -26,13 +26,7 @@ CS Message 2.0 (core message format) with a set of Payload Parsers (which also a
 ** Authorization Payload Parser
 ** Encrypted CS Message Payload Parser
 
-PKI Message generator (Older core message format) containing messages for credential management. 
-
-
-Framework for generating and parsing Receipt Messages (but no actual message implementation exists in this project. See org.certificateservices.messages.receipts package for details. To implement a custom kind of receipt message used by certservice-ejbcacomponents or certservice-ejbcaproviders implement a custom RecieptParser, add the jar to the main applications classpath and use settings defined in certservice-ejbcacomponents or certservice-ejbcaproviders to specify your implementation.
-
-
-Framework for generating and parsing Heartbeat Messages (but no actual message implementation exists in this project. See org.certificateservices.messages.heartbeat package for details. To implement a custom kind of receipt message used by certservice-ejbcacomponents or certservice-ejbcaproviders implement a custom HeartBeatParser, add the jar to the main applications classpath and use settings defined in certservice-ejbcacomponents or certservice-ejbcaproviders to specify your implementation.
+PKI Message generator (Older core message format) containing messages for credential management.
 
 == Updated Dependencies
 
@@ -52,7 +46,7 @@ For detailed documentation of each available message and its content see directo
 
 == Using CS Message 2.0 Framework to generate or parse messages.
 
-Before you start generating or parsing a CS Message 2.0 you need to initialize it once using a call to org.certificateservices.messages.csmessages.initCSMessageParser(MessageSecurityProvider securityProvider, Properties config). You can later retrieve the CSMessageParser using the getCSMessageParser() metod. As security provider you can either implement your own of use the org.certificateservices.messages.SimpleMessageSecurityProvider.
+Before you start generating or parsing a CS Message 2.0 you need to initialize it once using a call to se.signatureservice.message.csmessages.initCSMessageParser(MessageSecurityProvider securityProvider, Properties config). You can later retrieve the CSMessageParser using the getCSMessageParser() metod. As security provider you can either implement your own of use the se.signatureservice.message.SimpleMessageSecurityProvider.
 
 == Main Configuration Settings
 
@@ -63,7 +57,7 @@ Settings for the configuration manager are:
 |===
 |Key |Description |Default value 
 
-|csmessage.parser.impl |Implementation of CS Message Parser that should be used. |org.certificateservices.messages.csmessages.DefaultCSMessageParser 
+|csmessage.parser.impl |Implementation of CS Message Parser that should be used. |se.signatureservice.message.csmessages.DefaultCSMessageParser
 |===
 
 == DefaultCSMessageParser Settings
@@ -253,41 +247,19 @@ _(Required if truststore type is CA and matchsubject is true)_
 
 == Generating CS 2.0 Messages using payload parser.
 
-After initializing the CS Message Parser it is possible to generate messages using a payload parser. Payload parser can be retrived from org.certificateservices.messages.csmessages.PayloadParserRegistry using the method getParser(String namespace). It is also possible to add your own implementations of a payload parser by using the register() method.
+After initializing the CS Message Parser it is possible to generate messages using a payload parser. Payload parser can be retrived from se.signatureservice.message.csmessages.PayloadParserRegistry using the method getParser(String namespace). It is also possible to add your own implementations of a payload parser by using the register() method.
 
-For examples on using the payload parser, especially on using it in combination with assertions. See work-flow examples in src/test/groovy/org/certificateservices/messages/csmessages/examples directory.
+For examples on using the payload parser, especially on using it in combination with assertions. See work-flow examples in src/test/groovy/se/signatureservice/messages/csmessages/examples directory.
 
 === Available Payload Parsers.
 
-The following build in pay load parser exists.
+The following build in payload parser exists.
 
-Credential Management Payload Parser, to generate credential management messages, See org.certificateservices.messages.credmanagement.CredManagementPayloadParser
+Credential Management Payload Parser, to generate credential management messages, See se.signatureservice.message.credmanagement.CredManagementPayloadParser
 
-Key Store Managment Payload Parser for generate key store management messages, see org.certificateservices.messages.keystoremgmt.KeystoreMgmtPayloadParser
+System Configuration Payload Parser to generate system configuration messages, see se.signatureservice.message.sysconfig.SysConfigPayloadParser
 
-System Configuration Payload Parser to generate system configuration messages, see org.certificateservices.messages.sysconfig.SysConfigPayloadParser
-
-Assertion Payload Parser to generate assertions inserted into other payload messages, see org.certificateservices.messages.assertion.AssertionPayloadParser
-
-Encrypted CS Message Payload Parser, not actually a payload but encrypts an entire CS Message into an Encrypted variant, see org.certificateservices.messages.encryptedcsmessage.EncryptedCSMessagePayloadParser
-
-== Generating older PKI Messages
-
-PKI Message was the first generation messages sent between clients and CA, mainly for requesting certificates.
-
-To start generating or parsing messages create a PKI Message Parser using the org.certificateservices.messages.pkimessages.PKIMessageParserFactory
-and instansiate a parser with the method genPKIMessageParser(MessageSecurityProvider securityProvider, Properties config). The MessageSecurityProvider
-is the same as for CS Message Parser but doens't use any encryption functionality. 
-
-== Main Configuration Settings
-
-The following general setting exists for PKI Message Parsers:
-
-|===
-|Key |Description |Default value 
-
-|pkimessage.parser.impl |Implementation of PKI Message Parser that should be used. |org.certificateservices.messages.pkimessages.DefaultPKIMessageParser 
-|===
+Assertion Payload Parser to generate assertions inserted into other payload messages, see se.signatureservice.message.assertion.AssertionPayloadParser
 
 == DefaultCSMessageParser Settings
 
@@ -366,7 +338,7 @@ For example:
 
 [source]
 ----
-xjc -d src/main/java src/main/resources/credmanagement_schema2_0.xsd -p org.certificateservices.messages.credmanagement.jaxb  -extension -b src/main/resources/csmessage-episode-jaxbbindings.xml -b src/main/resources/xmldsig-episode-jaxbbindings.xml -disableXmlSecurity
+xjc -d src/main/java src/main/resources/credmanagement_schema2_0.xsd -p se.signatureservice.message.credmanagement.jaxb  -extension -b src/main/resources/csmessage-episode-jaxbbindings.xml -b src/main/resources/xmldsig-episode-jaxbbindings.xml -disableXmlSecurity
 ----
 
 When generating jaxb code is usually not the correct xml prefixes set, this has to be configured manually in package-info.java class. Remember that when

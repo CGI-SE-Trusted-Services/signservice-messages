@@ -8,16 +8,6 @@ tasks.register('zipBin', Zip) {
         include('CHANGELOG.adoc')
         into(projectBaseName)
     }
-    from('src/main/resources/') {
-        include('requestcertificate.properties')
-        include('*.jks')
-        into(projectBaseName)
-    }
-    from('src/main/resources/') {
-        include('requestcertificate.sh')
-        fileMode = 0755
-        into(projectBaseName)
-    }
     from('src/test/resources/') {
         include('log4j.properties')
         into(projectBaseName)
@@ -26,13 +16,9 @@ tasks.register('zipBin', Zip) {
         include(project.name + "-${project.version}.jar")
         into(projectBaseName)
     }
-
     from(configurations.default) {
         exclude('*-sources.jar')
         exclude('*-javadoc.jar')
         into(projectBaseName + '/lib/')
-    }
-    from('build/assemblepom') {
-        into(projectBaseName + '/repository/')
     }
 }

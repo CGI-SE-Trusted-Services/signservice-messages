@@ -37,7 +37,7 @@ public class DummyMessageSecurityProvider implements
 	private KeyStore dummyKS = null;
 	private KeyStore encKeyStore = null;
 	private String defaultEncKeyId;
-	private Map<String,String> encKeyIdToAlias = new HashMap<String,String>();
+	private Map<String,String> encKeyIdToAlias = new HashMap<>();
 	
 	private boolean validCallDone = false;
 	private String organisationCalled = null;
