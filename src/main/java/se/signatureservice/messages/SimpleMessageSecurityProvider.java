@@ -98,8 +98,8 @@ public class SimpleMessageSecurityProvider implements
 	public static final EncryptionAlgorithmScheme DEFAULT_ENCRYPTION_ALGORITHM_SCHEME = EncryptionAlgorithmScheme.RSA_OAEP_WITH_AES256;
 
 
-	PrivateKey signPrivateKey;
-	X509Certificate signCertificate;
+	PrivateKey signPrivateKey = null;
+	X509Certificate signCertificate = null;
 	
 	Map<String, PrivateKey> decryptionKeys = new HashMap<>();
 	Map<String, X509Certificate[]> decryptionCertificates = new HashMap<>();

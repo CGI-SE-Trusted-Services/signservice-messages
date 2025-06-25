@@ -331,7 +331,7 @@ public class DefaultCSMessageParser implements CSMessageParser {
 	 */
 	public byte[] generateGetApprovalRequest(String requestId, String destinationId, String organisation, byte[] request, Credential originator, List<Object> assertions) throws MessageContentException, MessageProcessingException{
 		CSMessage csMessage = parseMessage(request);
-		CSRequest requestPayload;
+		CSRequest requestPayload = null;
 		try{
 			requestPayload = (CSRequest) csMessage.getPayload().getAny();
 		}catch(Exception e){
