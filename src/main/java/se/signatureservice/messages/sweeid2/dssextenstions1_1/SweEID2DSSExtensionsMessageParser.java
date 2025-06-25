@@ -55,8 +55,8 @@ public class SweEID2DSSExtensionsMessageParser extends DSS1CoreMessageParser{
     protected SignMessageXMLConverter signMessageXMLConverter =new SignMessageXMLConverter();
 
 
-    private static Map<String,String> NAMESPACETOPREFIXMAP = new HashMap<String, String>();
-    private static Map<String,String> PREFIXTONAMESPACEMAP = new HashMap<String, String>();
+    private static final Map<String,String> NAMESPACETOPREFIXMAP = new HashMap<>();
+    private static final Map<String,String> PREFIXTONAMESPACEMAP = new HashMap<>();
 
     static{
         NAMESPACETOPREFIXMAP.put(NAMESPACE,"csig");

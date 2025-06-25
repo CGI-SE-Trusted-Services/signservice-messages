@@ -7,6 +7,7 @@ tasks.register('zipSrc', Zip) {
         include('gradle/**')
         include('*.gradle')
         include('README.adoc')
+        include('CHANGELOG.adoc')
         include('LICENSE.txt')
         exclude('.gradle/**')
         into(projectBaseName)
@@ -21,15 +22,12 @@ tasks.register('zipSrc', Zip) {
         into(projectBaseName + '/docs')
     }
     from(project.buildDir.name + '/libs/') {
-        include('certservice-messages*.jar')
+        include('signservice-messages*.jar')
         into(projectBaseName)
     }
     from(configurations.default) {
         exclude('*-sources.jar')
         exclude('*-javadoc.jar')
         into(projectBaseName + '/lib')
-    }
-    from('build/assemblepom') {
-        into(projectBaseName + '/repository')
     }
 }
