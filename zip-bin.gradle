@@ -1,0 +1,24 @@
+tasks.register('zipBin', Zip) {
+    String projectBaseName = project.name + "-${project.ext.get('shortVersionNumber')}"
+    archiveFileName = projectBaseName + '-bin.zip'
+
+    from(projectDir) {
+        include('README.adoc')
+        include('LICENSE.txt')
+        include('CHANGELOG.adoc')
+        into(projectBaseName)
+    }
+    from('src/test/resources/') {
+        include('log4j.properties')
+        into(projectBaseName)
+    }
+    from('build/libs/') {
+        include(project.name + "-${project.version}.jar")
+        into(projectBaseName)
+    }
+    from(configurations.default) {
+        exclude('*-sources.jar')
+        exclude('*-javadoc.jar')
+        into(projectBaseName + '/lib/')
+    }
+}
