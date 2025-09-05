@@ -26,6 +26,8 @@ dependencies {
         exclude(module: "woodstox-core")
         exclude(module: "commons-codec")
     }
+    implementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.19.1'
+    implementation "org.bouncycastle:bcmail-jdk18on:${bcVersion}"
     testRuntimeOnly 'org.glassfish.jaxb:jaxb-runtime:4.0.5'
     testRuntimeOnly 'net.bytebuddy:byte-buddy:1.17.6'
 
