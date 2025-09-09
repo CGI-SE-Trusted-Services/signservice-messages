@@ -9,6 +9,9 @@ import com.fasterxml.jackson.databind.json.JsonMapper;
 import se.signatureservice.messages.ContextMessageSecurityProvider;
 import se.signatureservice.messages.MessageContentException;
 import se.signatureservice.messages.MessageProcessingException;
+import se.signatureservice.messages.MessageSecurityProvider;
+import se.signatureservice.messages.csmessages.manager.MessageSecurityProviderManager;
+import se.signatureservice.messages.saml2.metadata.SAMLMetaDataMessageParser;
 import se.signatureservice.messages.saml2.metadata.jaxb.EntitiesDescriptorType;
 import se.signatureservice.messages.saml2.metadata.jaxb.EntityDescriptorType;
 
@@ -25,15 +28,23 @@ import java.util.List;
  */
 public class ReducedMetadataIO {
     final static ObjectMapper objectMapper;
-    final static MetadataMessageParserManager metadataMessageParserManager;
+    final static SAMLMetaDataMessageParser samlMetaDataMessageParser;
+
     static {
         objectMapper = JsonMapper.builder()
                 .configure(SerializationFeature.ORDER_MAP_ENTRIES_BY_KEYS, true)
                 .configure(MapperFeature.SORT_PROPERTIES_ALPHABETICALLY, true)
                 .build();
-
         objectMapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
-        metadataMessageParserManager = new MetadataMessageParserManager();
+
+        MessageSecurityProvider securityProvider;
+        try {
+            securityProvider = MessageSecurityProviderManager.getMessageSecurityProvider();
+            samlMetaDataMessageParser = new SAMLMetaDataMessageParser();
+            samlMetaDataMessageParser.init(securityProvider, null);
+        } catch (MessageProcessingException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     /**
@@ -44,6 +55,26 @@ public class ReducedMetadataIO {
      */
     static String asJson(ReducedMetadata metadata) throws JsonProcessingException {
         return objectMapper.writeValueAsString(metadata);
+    }
+
+    /**
+     * Method to read ReducedMetadata from file contents
+     *
+     * @param File file
+     * @return ReducedMetadata
+     */
+    public static ReducedMetadata fromJson(File file) throws IOException {
+        return fromJson(Files.readAllBytes(file.toPath()));
+    }
+
+    /**
+     * Method to read ReducedMetadata from bytes
+     *
+     * @param byte[] json
+     * @return ReducedMetadata
+     */
+    public static ReducedMetadata fromJson(byte[] json) throws IOException {
+        return objectMapper.readValue(json, ReducedMetadataImpl.class);
     }
 
     /**
@@ -63,12 +94,12 @@ public class ReducedMetadataIO {
      * Method to parse byte[] contents into a list of ReducedMetadata, when parsing an EntityDescriptor
      * it will be a list of one
      *
-     * @param file with EntityDescriptor, or EntitiesDescriptor, content
+     * @param byte[] with EntityDescriptor, or EntitiesDescriptor, content
      * @param verifySignature
      * @return List<ReducedMetadata>
      */
     public static List<ReducedMetadata> fromBytes(byte[] bytes, boolean verifySignature) throws MessageProcessingException, MessageContentException {
-        Object o = metadataMessageParserManager.getSAMLMetaDataMessageParser().parseMessage(
+        Object o = samlMetaDataMessageParser.parseMessage(
                 new ContextMessageSecurityProvider.Context(MetadataConstants.CONTEXT_USAGE_METADATA_SIGN),
                 bytes, verifySignature
         );
