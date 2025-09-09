@@ -28,41 +28,45 @@ public class ReducedMetadataImpl implements ReducedMetadata {
     String entityID;
 
     // from EntityAttributes under entityDescriptor.extensions
-    private final Map<String, List<String>> entityAttributes;
+    private Map<String, List<String>> entityAttributes;
     public Map<String, List<String>> getEntityAttributes() {
         return entityAttributes;
     }
 
     // from SingleSignOnService elements of the first IDPSSODescriptor encountered
-    private final List<SingleSignOnService> singleSignOnServices;
+    private List<SingleSignOnService> singleSignOnServices;
     public List<SingleSignOnService> getSingleSignOnServices() {
         return singleSignOnServices;
     }
 
 
     // from attributeConsumingServices of each encountered SPSSODescriptor
-    private final List<AttributeConsumingService> attributeConsumingServices;
+    private List<AttributeConsumingService> attributeConsumingServices;
     public List<AttributeConsumingService> getAttributeConsumingServices() {
         return attributeConsumingServices;
     }
 
     // from the first extensions.RequestedPrincipalSelection, of the first IDPSSODescriptor
-    private final List<String> requestedPrincipalSelection;
+    private List<String> requestedPrincipalSelection;
     public List<String> getRequestedPrincipalSelection() {
         return requestedPrincipalSelection;
     }
 
     // roleDescriptors, with any extension.uiInfo found
     // certs are only read for the first idp, and first sp
-    private final List<RoleDescriptor> roleDescriptors;
+    private List<RoleDescriptor> roleDescriptors;
     public List<RoleDescriptor> getRoleDescriptors() {
         return roleDescriptors;
     }
 
     // from the organisation element of the entityDescriptor
-    private final Organisation organisation;
+    private Organisation organisation;
     public Organisation getOrganisation() {
         return organisation;
+    }
+
+    public ReducedMetadataImpl() {
+        roleDescriptors = new ArrayList<>();
     }
 
     public ReducedMetadataImpl(EntityDescriptorType entityDescriptor) {
@@ -75,17 +79,20 @@ public class ReducedMetadataImpl implements ReducedMetadata {
         this.organisation = ReducedMetadataUtils.getOrganisation(entityDescriptor);
     }
 
+    @Override
     public List<AttributeConsumingService> getAttributeConsumingServices(String serviceName) {
         return attributeConsumingServices.stream().filter( it -> it.names.contains(serviceName)).collect(Collectors.toList());
     }
 
+    @Override
     public List<String> requestedPrincipalSelection() throws MessageContentException {
         if (!hasIDPSSODescriptor()) {
-            throw new MessageContentException("No IDP SSO Descriptor found in meta data with id ${entityID}.");
+            throw new MessageContentException("No IDP SSO Descriptor found in meta data with id " + entityID);
         }
         return requestedPrincipalSelection;
     }
 
+    @Override
     public List<X509Certificate> getSigningCertificates(ContextMessageSecurityProvider.Context context) throws MessageProcessingException {
         var expectedRole = Objects.equals(context.getUsage(), MetadataConstants.CONTEXT_USAGE_SIGNREQUEST) ? SPSSODescriptorType.class.getSimpleName() : IDPSSODescriptorType.class.getSimpleName();
 
@@ -103,6 +110,7 @@ public class ReducedMetadataImpl implements ReducedMetadata {
         return rd.signingCertObjects;
     }
 
+    @Override
     public boolean hasIDPSSODescriptor() {
         return roleDescriptors.stream().anyMatch(it -> Objects.equals(it.elementLocalName, IDPSSODescriptorType.class.getSimpleName()));
     }
@@ -111,14 +119,18 @@ public class ReducedMetadataImpl implements ReducedMetadata {
         return this.roleDescriptors.stream().filter (it -> Objects.equals(it.elementLocalName, localName)).findFirst().orElse(null);
     }
 
+    @Override
     public boolean hasEntityAttributeValue(String name, String value) {
         return entityAttributes.containsKey(name) && entityAttributes.get(name).contains(value);
     }
 
+    @Override
     public boolean hasEntityAttributes() {
         return !entityAttributes.isEmpty();
     }
 
+    @JsonIgnore
+    @Override
     public List<String> getAuthnContextClassRefs() {
         for (final var e : entityAttributes.entrySet()) {
             if (Objects.equals(e.getKey(), MetadataConstants.DEFAULT_ASSURANCE_CERTIFICATION_NAME)) {
@@ -147,7 +159,6 @@ public class ReducedMetadataImpl implements ReducedMetadata {
         // then from the rest of the roleDescriptors
 
         String displayName = null;
-        boolean firstRound = true;
 
         for (final var rd : roleDescriptors) {
             displayName = rd.getUIInfoDisplayName(lang, defaultLang).orElse(null);
@@ -155,25 +166,30 @@ public class ReducedMetadataImpl implements ReducedMetadata {
                 msgLog.info("Setting displayName from MDIO metadata extension '${displayName}'");
                 return displayName;
             }
+            break;
+        }
 
-            if (firstRound) {
-                displayName = Optional.ofNullable(organisation).flatMap(o -> o.getOrganisationDisplayName(lang, defaultLang)).orElse(null);
-                if (isTruthyString(displayName)) {
-                    msgLog.info("Setting displayName from Organization metadata extension '$displayName'");
-                    return displayName;
-                }
+        displayName = Optional.ofNullable(organisation).flatMap(o -> o.getOrganisationDisplayName(lang, defaultLang)).orElse(null);
+        if (isTruthyString(displayName)) {
+            msgLog.info("Setting displayName from Organization metadata extension '$displayName'");
+            return displayName;
+        }
 
-                var firstIDpRd = firstRoleDescriptor(IDPSSODescriptorType.class.getSimpleName());
-                if (firstIDpRd != null) {
-                    displayName = firstIDpRd.getCNDisplayName().orElse(null);
-                    if (isTruthyString(displayName)) {
-                        return displayName;
-                    } else {
-                        msgLog.error("No Trusted X509 Signing Certificate found for EntityID '${entityID}' when trying to receive displayName from X509 certificate");
-                    }
-                }
+        var firstIDpRd = firstRoleDescriptor(IDPSSODescriptorType.class.getSimpleName());
+        if (firstIDpRd != null) {
+            displayName = firstIDpRd.getCNDisplayName().orElse(null);
+            if (isTruthyString(displayName)) {
+                return displayName;
+            } else {
+                msgLog.error("No Trusted X509 Signing Certificate found for EntityID '${entityID}' when trying to receive displayName from X509 certificate");
+            }
+        }
 
-                firstRound = false;
+        for (final var rd : roleDescriptors) {
+            displayName = rd.getUIInfoDisplayName(lang, defaultLang).orElse(null);
+            if (isTruthyString(displayName)) {
+                msgLog.info("Setting displayName from MDIO metadata extension '${displayName}'");
+                return displayName;
             }
         }
 
@@ -184,6 +200,9 @@ public class ReducedMetadataImpl implements ReducedMetadata {
     public static class SingleSignOnService {
         String binding;
         String location;
+
+        public SingleSignOnService() {
+        }
 
         public String getBinding() {
             return binding;
@@ -203,6 +222,14 @@ public class ReducedMetadataImpl implements ReducedMetadata {
         List<String> names;
         List<RequestedAttribute> requestedAttributes;
 
+        public AttributeConsumingService() {
+        }
+
+        AttributeConsumingService(List<String> names, List<RequestedAttribute> requestedAttributes) {
+            this.names = names;
+            this.requestedAttributes = requestedAttributes;
+        }
+
         public List<String> getNames() {
             return names;
         }
@@ -210,24 +237,14 @@ public class ReducedMetadataImpl implements ReducedMetadata {
         public List<RequestedAttribute> getRequestedAttributes() {
             return requestedAttributes;
         }
-
-        AttributeConsumingService(List<String> names, List<RequestedAttribute> requestedAttributes) {
-            this.names = names;
-            this.requestedAttributes = requestedAttributes;
-        }
     }
 
     public static class RequestedAttribute {
         String name;
         String friendlyName;
-        private final Boolean required;
+        private Boolean required;
 
-        public String getName() {
-            return name;
-        }
-
-        public String getFriendlyName() {
-            return friendlyName;
+        public RequestedAttribute() {
         }
 
         RequestedAttribute(String name) {
@@ -239,6 +256,14 @@ public class ReducedMetadataImpl implements ReducedMetadata {
             this.name = name;
             this.friendlyName = friendlyName;
             this.required = required;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public String getFriendlyName() {
+            return friendlyName;
         }
 
         public Boolean isRequired() {
@@ -254,6 +279,14 @@ public class ReducedMetadataImpl implements ReducedMetadata {
         List<String> signingCertificates;
         List<String> signingCertificatesCNs;
         List<String> errorMessages = new ArrayList<>();
+
+        public RoleDescriptor() {
+        }
+
+        RoleDescriptor(String elementLocalName, List<UIInfo> uiInfos) {
+            this.elementLocalName = elementLocalName;
+            this.uiInfos = uiInfos;
+        }
 
         public String getElementLocalName() {
             return elementLocalName;
@@ -273,11 +306,6 @@ public class ReducedMetadataImpl implements ReducedMetadata {
 
         public List<String> getErrorMessages() {
             return errorMessages;
-        }
-
-        RoleDescriptor(String elementLocalName, List<UIInfo> uiInfos) {
-            this.elementLocalName = elementLocalName;
-            this.uiInfos = uiInfos;
         }
 
         Optional<String> getUIInfoDisplayName(String lang, String defaultLang) {
@@ -331,18 +359,29 @@ public class ReducedMetadataImpl implements ReducedMetadata {
     public static class UIInfo {
         List<DisplayName> displayNames;
 
-        public List<DisplayName> getDisplayNames() {
-            return displayNames;
+        public UIInfo() {
         }
 
         UIInfo(List<DisplayName> displayNames) {
             this.displayNames = displayNames;
+        }
+
+        public List<DisplayName> getDisplayNames() {
+            return displayNames;
         }
     }
 
     public static class DisplayName {
         String value;
         String lang;
+
+        public DisplayName() {
+        }
+
+        DisplayName(String value, String lang) {
+            this.value = ReducedMetadataUtils.trimAndOneLine(value);
+            this.lang = lang;
+        }
 
         public String getValue() {
             return value;
@@ -351,22 +390,20 @@ public class ReducedMetadataImpl implements ReducedMetadata {
         public String getLang() {
             return lang;
         }
-
-        DisplayName(String value, String lang) {
-            this.value = ReducedMetadataUtils.trimAndOneLine(value);
-            this.lang = lang;
-        }
     }
 
     public static class Organisation {
         List<DisplayName> displayNames;
 
-        public List<DisplayName> getDisplayNames() {
-            return displayNames;
+        public Organisation() {
         }
 
         Organisation(List<DisplayName> displayNames) {
             this.displayNames = displayNames;
+        }
+
+        public List<DisplayName> getDisplayNames() {
+            return displayNames;
         }
 
         Optional<String> getOrganisationDisplayName(String lang, String defaultLang) {
