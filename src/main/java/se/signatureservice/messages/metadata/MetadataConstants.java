@@ -1,5 +1,11 @@
 package se.signatureservice.messages.metadata;
 
+/**
+ * Constants used in the context of metadata processing. Moved up the dependency hierarchy to support metadata consumption in support-lib
+ *
+ * @author Fredrik
+ *
+ */
 public class MetadataConstants {
 
     public final static String DEFAULT_ASSURANCE_CERTIFICATION_NAME = "urn:oasis:names:tc:SAML:attribute:assurance-certification";
