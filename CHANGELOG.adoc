@@ -3,6 +3,12 @@
 This document provides information about changes that have been made for each new version
 of the Signature Service Messages Library.
 
+== Version 2509.1
+
+== Changes
+
+* Logic related to Saml metadata parsing has been added.
+
 == Version 2506.1
 
 === Upgrade notes
