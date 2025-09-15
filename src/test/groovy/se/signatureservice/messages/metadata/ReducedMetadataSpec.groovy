@@ -112,6 +112,7 @@ class ReducedMetadataSpec extends Specification {
         tree.roleDescriptors == [[
                                          "elementLocalName": "IDPSSODescriptorType",
                                          "errorMessages"   : ["Error no trusted X509Certificate could be found in MetaData"],
+                                         signingCertificates:[],
                                          "uiInfos"         : [[
                                                                       "displayNames": [[
                                                                                                "lang" : "en",
