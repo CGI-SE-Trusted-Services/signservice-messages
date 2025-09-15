@@ -21,7 +21,9 @@ import se.signatureservice.messages.MessageProcessingException;
 import se.signatureservice.messages.saml2.metadata.jaxb.EntityDescriptorType;
 import se.signatureservice.messages.saml2.metadata.jaxb.SPSSODescriptorType;
 import se.signatureservice.messages.saml2.metadata.jaxb.IDPSSODescriptorType;
+import se.signatureservice.messages.utils.CertUtils;
 
+import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -119,7 +121,7 @@ public class ReducedMetadataImpl implements ReducedMetadata {
             throw new MessageProcessingException(String.join(", ", rd.errorMessages));
         }
 
-        return rd.signingCertObjects;
+        return rd.getSigningCertObjects();
     }
 
     @Override
@@ -309,7 +311,24 @@ public class ReducedMetadataImpl implements ReducedMetadata {
         }
 
         public List<String> getSigningCertificates() {
-            return signingCertificates;
+            return signingCertificates != null ? signingCertificates : new ArrayList<>();
+        }
+
+        @JsonIgnore
+        private List<X509Certificate> getSigningCertObjects() {
+            if (signingCertObjects == null) {
+                signingCertObjects = getSigningCertificates().stream()
+                        .map(c -> Base64.getDecoder().decode(c))
+                        .map(b -> {
+                                    try {
+                                        return CertUtils.getCertfromByteArray(b);
+                                    } catch (CertificateException e) {
+                                        throw new RuntimeException(e);
+                                    }
+                                }
+                        ).collect(Collectors.toList());
+            }
+            return signingCertObjects;
         }
 
         public List<String> getSigningCertificatesCNs() {
@@ -354,6 +373,7 @@ public class ReducedMetadataImpl implements ReducedMetadata {
 
         @JsonIgnore
         Optional<String> getCNDisplayName() {
+            var signingCertObjects = getSigningCertObjects();
             if (isTruthyList(signingCertificatesCNs) && isTruthyList(signingCertObjects)) {
                 for (int i = 0; i < signingCertificatesCNs.size(); i++) {
                     var v = signingCertificatesCNs.get(i);
