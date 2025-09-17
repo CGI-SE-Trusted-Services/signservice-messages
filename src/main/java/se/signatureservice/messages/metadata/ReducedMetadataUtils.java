@@ -188,6 +188,7 @@ class ReducedMetadataUtils {
             descriptor.signingCertObjects = certificates;
             descriptor.signingCertificates = signingCertificates;
             descriptor.signingCertificatesCNs = commonNames;
+            descriptor.getSigningCertFingerprints();  // build and cache fingerprints
         } catch (Exception e) {
             descriptor.errorMessages.add(e.getMessage());
         }

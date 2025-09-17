@@ -23,6 +23,9 @@ import se.signatureservice.messages.saml2.metadata.jaxb.SPSSODescriptorType;
 import se.signatureservice.messages.saml2.metadata.jaxb.IDPSSODescriptorType;
 import se.signatureservice.messages.utils.CertUtils;
 
+import java.io.UnsupportedEncodingException;
+import java.security.NoSuchAlgorithmException;
+import java.security.cert.CertificateEncodingException;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 import java.util.*;
@@ -108,6 +111,15 @@ public class ReducedMetadataImpl implements ReducedMetadata {
 
     @Override
     public List<X509Certificate> getSigningCertificates(ContextMessageSecurityProvider.Context context) throws MessageProcessingException {
+        return getRoleDescriptor(context).getSigningCertObjects();
+    }
+
+    @Override
+    public List<String> getSigningCertificateFingerprints(ContextMessageSecurityProvider.Context context) throws MessageProcessingException {
+        return getRoleDescriptor(context).getSigningCertFingerprints();
+    }
+
+    private RoleDescriptor getRoleDescriptor(ContextMessageSecurityProvider.Context context) throws MessageProcessingException {
         var expectedRole = Objects.equals(context.getUsage(), MetadataConstants.CONTEXT_USAGE_SIGNREQUEST) ? SPSSODescriptorType.class.getSimpleName() : IDPSSODescriptorType.class.getSimpleName();
 
         // get the first roleDescriptor of the right type, and return its certificates
@@ -120,8 +132,7 @@ public class ReducedMetadataImpl implements ReducedMetadata {
         if(!rd.errorMessages.isEmpty()) {
             throw new MessageProcessingException(String.join(", ", rd.errorMessages));
         }
-
-        return rd.getSigningCertObjects();
+        return rd;
     }
 
     @Override
@@ -290,6 +301,8 @@ public class ReducedMetadataImpl implements ReducedMetadata {
         List<UIInfo> uiInfos;
         @JsonIgnore
         List<X509Certificate> signingCertObjects;
+        @JsonIgnore
+        List<String> signingCertFingerprints;
         List<String> signingCertificates;
         List<String> signingCertificatesCNs;
         List<String> errorMessages = new ArrayList<>();
@@ -329,6 +342,25 @@ public class ReducedMetadataImpl implements ReducedMetadata {
                         ).collect(Collectors.toList());
             }
             return signingCertObjects;
+        }
+
+        @JsonIgnore
+        List<String> getSigningCertFingerprints() {
+            if (signingCertFingerprints == null) {
+                signingCertFingerprints = getSigningCertObjects().stream()
+                        .map(c -> {
+                            try {
+                                return CertUtils.getCertFingerprint(c);
+                            } catch (NoSuchAlgorithmException e) {
+                                throw new RuntimeException(e);
+                            } catch (CertificateEncodingException e) {
+                                throw new RuntimeException(e);
+                            } catch (UnsupportedEncodingException e) {
+                                throw new RuntimeException(e);
+                            }
+                        }).collect(Collectors.toList());
+            }
+            return signingCertFingerprints;
         }
 
         public List<String> getSigningCertificatesCNs() {
