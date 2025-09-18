@@ -443,7 +443,7 @@ public class ReducedMetadataImpl implements ReducedMetadata {
         }
 
         DisplayName(String value, String lang) {
-            this.value = ReducedMetadataUtils.trimAndOneLine(value);
+            this.value = ReducedMetadataUtils.cleanWhitespace(value);
             this.lang = lang;
         }
 

@@ -40,7 +40,7 @@ class ReducedMetadataUtils {
                     )).collect(Collectors.toList());
 
 
-                    var names = it.getServiceName().stream().map(sn -> trimAndOneLine(sn.getValue())).collect(Collectors.toList());
+                    var names = it.getServiceName().stream().map(sn -> cleanWhitespace(sn.getValue())).collect(Collectors.toList());
                     retVal.add(new ReducedMetadataImpl.AttributeConsumingService(names, attr));
                 });
             }
@@ -81,7 +81,7 @@ class ReducedMetadataUtils {
                             retVal.put(attribute.getName(), new ArrayList<>());
                             for (Object v : attribute.getAttributeValue()) {
                                 if (v instanceof String) {
-                                    String value = trimAndOneLine((String) v);
+                                    String value = cleanWhitespace((String) v);
                                     retVal.get(attribute.getName()).add(value);
                                 }
                             }
@@ -194,8 +194,8 @@ class ReducedMetadataUtils {
         }
     }
 
-    static String trimAndOneLine(String value) {
-        return value != null ? value.replaceAll("\\n", " ").trim() : null;
+    static String cleanWhitespace(String value) {
+        return value != null ? value.replaceAll("\\n", " ").replaceAll("\\s+", " ").trim() : null;
     }
 
     static boolean isTruthyString(String value) {

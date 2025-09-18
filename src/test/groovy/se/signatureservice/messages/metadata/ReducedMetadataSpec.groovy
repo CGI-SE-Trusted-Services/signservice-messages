@@ -137,7 +137,7 @@ class ReducedMetadataSpec extends Specification {
 
         expect:
         tree.attributeConsumingServices == [ [
-                                                 "names" : [ "Sweden Connect Test-SP             för eIDAS", "Sweden Connect Test SP     for eIDAS" ],
+                                                 "names" : [ "Sweden Connect Test-SP för eIDAS", "Sweden Connect Test SP for eIDAS" ],
                                                  "requestedAttributes" : [ [
                                                                                "name" : "urn:oid:1.2.752.29.4.13",
                                                                                "required" : false
@@ -162,10 +162,10 @@ class ReducedMetadataSpec extends Specification {
                                          "uiInfos"               : [[
                                                                             "displayNames": [[
                                                                                                      "lang" : "en",
-                                                                                                     "value": "Visma-test eIDAS     SP"
+                                                                                                     "value": "Visma-test eIDAS SP"
                                                                                              ], [
                                                                                                      "lang" : "sv",
-                                                                                                     "value": "Visma-test eIDAS     SP"
+                                                                                                     "value": "Visma-test eIDAS SP"
                                                                                              ]]
                                                                     ]]
                                  ]]
@@ -173,10 +173,10 @@ class ReducedMetadataSpec extends Specification {
         tree.organisation == [
                 "displayNames": [[
                                          "lang" : "en",
-                                         "value": "Visma eIDAS     Test-SP"
+                                         "value": "Visma eIDAS Test-SP"
                                  ], [
                                          "lang" : "sv",
-                                         "value": "Visma eIDAS     Test-SP"
+                                         "value": "Visma eIDAS Test-SP"
                                  ]]
         ]
     }
