@@ -66,7 +66,10 @@ public class ReducedMetadataIO {
      * @return the JSON representation of the metadata
      * @throws JsonProcessingException if the object cannot be serialized
      */
-    static String asJson(ReducedMetadata metadata) throws JsonProcessingException {
+    public static String asJson(ReducedMetadata metadata) throws JsonProcessingException {
+        if(metadata == null) {
+            return null;
+        }
         return objectMapper.writeValueAsString(metadata);
     }
 
