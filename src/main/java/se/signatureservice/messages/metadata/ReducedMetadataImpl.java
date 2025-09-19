@@ -13,6 +13,11 @@
 package se.signatureservice.messages.metadata;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.databind.MapperFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.databind.json.JsonMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import se.signatureservice.messages.ContextMessageSecurityProvider;
@@ -41,6 +46,15 @@ import static se.signatureservice.messages.metadata.ReducedMetadataUtils.isTruth
  */
 public class ReducedMetadataImpl implements ReducedMetadata {
     static Logger msgLog = LoggerFactory.getLogger(ReducedMetadataImpl.class);
+    public static final ObjectMapper objectMapper;
+    static {
+        objectMapper = JsonMapper.builder()
+                .configure(SerializationFeature.ORDER_MAP_ENTRIES_BY_KEYS, true)
+                .configure(MapperFeature.SORT_PROPERTIES_ALPHABETICALLY, true)
+                .build();
+
+        objectMapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+    }
 
     String entityID;
 

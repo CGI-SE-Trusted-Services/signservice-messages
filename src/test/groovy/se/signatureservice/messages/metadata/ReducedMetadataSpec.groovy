@@ -2,8 +2,14 @@ package se.signatureservice.messages.metadata
 
 import groovy.json.JsonSlurper
 import org.apache.xml.security.Init
+import se.signatureservice.messages.ContextMessageSecurityProvider
 import se.signatureservice.messages.DummyMessageSecurityProvider
+import se.signatureservice.messages.MessageContentException
+import se.signatureservice.messages.MessageProcessingException
 import se.signatureservice.messages.csmessages.manager.MessageSecurityProviderManager
+import se.signatureservice.messages.saml2.metadata.SAMLMetaDataMessageParser
+import se.signatureservice.messages.saml2.metadata.jaxb.EntitiesDescriptorType
+import se.signatureservice.messages.saml2.metadata.jaxb.EntityDescriptorType
 import se.signatureservice.messages.utils.CertUtils
 import spock.lang.Ignore
 import spock.lang.Specification
@@ -19,21 +25,24 @@ class ReducedMetadataSpec extends Specification {
     ReducedMetadata withNoDisplayNameSources
     ReducedMetadata withDisplayNameSourceInSecondRoleDescriptor
     ReducedMetadata withAttributeConsumingServices
+    static SAMLMetaDataMessageParser samlMetaDataMessageParser
 
     def setupSpec() {
         Init.init()
         CertUtils.installBCProvider()
         MessageSecurityProviderManager.initMessageSecurityProvider(new DummyMessageSecurityProvider())
+        samlMetaDataMessageParser = new SAMLMetaDataMessageParser()
+        samlMetaDataMessageParser.init(MessageSecurityProviderManager.getMessageSecurityProvider(), null)
     }
 
     def setup() {
-        withEntityAttributes = ReducedMetadataIO.fromBytes(metaDataWithExtensions, false).get(0)
-        withoutEntityAttributes = ReducedMetadataIO.fromBytes(metaDataWithNoExtensions, false).get(0)
-        withOrgAsDisplayNameSource = ReducedMetadataIO.fromBytes(metaDataNoUIInfo, false).get(0)
-        withKeyAsDisplayNameSource = ReducedMetadataIO.fromBytes(metaDataWithKey, false).get(0)
-        withNoDisplayNameSources = ReducedMetadataIO.fromBytes(metaDataNoDisplayNameSources, false).get(0)
-        withDisplayNameSourceInSecondRoleDescriptor = ReducedMetadataIO.fromBytes(metaDataWithUIInfoInSecondRoleDescriptor, false).get(0)
-        withAttributeConsumingServices = ReducedMetadataIO.fromBytes(metaDataWithAttributeConsumingServices, false).get(0)
+        withEntityAttributes = fromBytes(metaDataWithExtensions, false).get(0)
+        withoutEntityAttributes = fromBytes(metaDataWithNoExtensions, false).get(0)
+        withOrgAsDisplayNameSource = fromBytes(metaDataNoUIInfo, false).get(0)
+        withKeyAsDisplayNameSource = fromBytes(metaDataWithKey, false).get(0)
+        withNoDisplayNameSources = fromBytes(metaDataNoDisplayNameSources, false).get(0)
+        withDisplayNameSourceInSecondRoleDescriptor = fromBytes(metaDataWithUIInfoInSecondRoleDescriptor, false).get(0)
+        withAttributeConsumingServices = fromBytes(metaDataWithAttributeConsumingServices, false).get(0)
     }
 
     def "Verify that hasEntityAttributeValue looks upp correct name"() {
@@ -97,7 +106,7 @@ class ReducedMetadataSpec extends Specification {
 
     def "Verify json serialisation 1"() {
         setup:
-        def json = ReducedMetadataIO.asJson(withEntityAttributes)
+        def json = ReducedMetadataImpl.objectMapper.writeValueAsString(withEntityAttributes)
         def slurper = new JsonSlurper()
         def tree = slurper.parseText(json)
 
@@ -131,7 +140,7 @@ class ReducedMetadataSpec extends Specification {
 
     def "Verify json serialisation 2"() {
         setup:
-        def json = ReducedMetadataIO.asJson(withAttributeConsumingServices)
+        def json = ReducedMetadataImpl.objectMapper.writeValueAsString(withAttributeConsumingServices)
         def slurper = new JsonSlurper()
         def tree = slurper.parseText(json)
 
@@ -526,4 +535,26 @@ tHmLQH0JrZ8uboA6POI3zOCpzEWesP0ydDegsbot/F4RLRvCNcHXZGbUKsC/P03cspBiZtH/kxyZ
 Y6Q2PQpOMHg9qvYql5sf9G5WxcBjaPVdl2zBdcmLFuD2eNthpyPwB+TMMmrRSQaP8i2W0kMdU0e+
 Lt/T/qgBSULCH1r6/oucIZ4bCyhqKfwYqM6ZSojhsiAXMUtxiOca25I6psMhbMkJKNIX3kphBkyS
 r09QdVXdwXLlK9l7IQ==</ds:X509Certificate></ds:X509Data></ds:KeyInfo></ds:Signature><IDPSSODescriptor protocolSupportEnumeration="urn:oasis:names:tc:SAML:2.0:protocol"><Extensions/><SingleSignOnService Binding="http://ssobinding1.com" Location="http://ssolocation1.com"/></IDPSSODescriptor></EntityDescriptor>""".getBytes("UTF-8")
+
+    private static List<ReducedMetadata> fromBytes(byte[] bytes, boolean verifySignature) throws MessageProcessingException, MessageContentException {
+        Object o = samlMetaDataMessageParser.parseMessage(
+                new ContextMessageSecurityProvider.Context(MetadataConstants.CONTEXT_USAGE_METADATA_SIGN),
+                bytes, verifySignature
+        );
+        var list = new LinkedList<ReducedMetadata>();
+        collectMetadata(o, list);
+        return list;
+    }
+
+    private static void collectMetadata(Object metaData, List<ReducedMetadata> list) {
+        if (metaData instanceof EntityDescriptorType) {
+            list.add(new ReducedMetadataImpl(((EntityDescriptorType) metaData)));
+        } else {
+            if (metaData instanceof EntitiesDescriptorType) {
+                for (Object edt : ((EntitiesDescriptorType) metaData).getEntityDescriptorOrEntitiesDescriptor()) {
+                    collectMetadata(edt, list);
+                }
+            }
+        }
+    }
 }
