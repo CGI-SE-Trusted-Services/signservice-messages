@@ -57,6 +57,16 @@ public class ReducedMetadataImpl implements ReducedMetadata {
     }
 
     String entityID;
+    @Override
+    public String getEntityID() {
+        return entityID;
+    }
+
+    // an entity is initially loaded from a file
+    String fileName;
+    public String getFileName() {
+        return fileName;
+    }
 
     // from EntityAttributes under entityDescriptor.extensions
     private Map<String, List<String>> entityAttributes;
@@ -100,7 +110,7 @@ public class ReducedMetadataImpl implements ReducedMetadata {
         roleDescriptors = new ArrayList<>();
     }
 
-    public ReducedMetadataImpl(EntityDescriptorType entityDescriptor) {
+    public ReducedMetadataImpl(EntityDescriptorType entityDescriptor, String fileName) {
         this.entityID = entityDescriptor.getEntityID();
         this.entityAttributes = ReducedMetadataUtils.getEntityAttributes(entityDescriptor);
         this.singleSignOnServices = ReducedMetadataUtils.getSingleSignOnServices(entityDescriptor);
@@ -108,6 +118,7 @@ public class ReducedMetadataImpl implements ReducedMetadata {
         this.requestedPrincipalSelection = ReducedMetadataUtils.getRequestedPrincipalSelection(entityDescriptor);
         this.roleDescriptors = ReducedMetadataUtils.getRoleDescriptors(entityDescriptor);
         this.organisation = ReducedMetadataUtils.getOrganisation(entityDescriptor);
+        this.fileName = fileName;
     }
 
     @Override
@@ -177,11 +188,6 @@ public class ReducedMetadataImpl implements ReducedMetadata {
             }
         }
         return Collections.emptyList();
-    }
-
-    @Override
-    public String getEntityID() {
-        return entityID;
     }
 
     public String getDestination(String authNProtocolBinding) throws MessageContentException {

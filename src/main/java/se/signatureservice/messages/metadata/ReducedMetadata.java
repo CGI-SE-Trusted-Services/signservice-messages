@@ -34,6 +34,13 @@ public interface ReducedMetadata {
     String getEntityID();
 
     /**
+     * Method to return the filename, from where the entity was loaded, may be null
+     *
+     * @return String fileName
+     */
+    String getFileName();
+
+    /**
      * Method to return the Destination, based on binding specified in the input parameter
      *
      * @param String authNProtocolBinding
