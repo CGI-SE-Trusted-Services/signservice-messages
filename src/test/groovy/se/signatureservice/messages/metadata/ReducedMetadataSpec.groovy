@@ -548,7 +548,7 @@ r09QdVXdwXLlK9l7IQ==</ds:X509Certificate></ds:X509Data></ds:KeyInfo></ds:Signatu
 
     private static void collectMetadata(Object metaData, List<ReducedMetadata> list) {
         if (metaData instanceof EntityDescriptorType) {
-            list.add(new ReducedMetadataImpl(((EntityDescriptorType) metaData)));
+            list.add(new ReducedMetadataImpl(((EntityDescriptorType) metaData), null));
         } else {
             if (metaData instanceof EntitiesDescriptorType) {
                 for (Object edt : ((EntitiesDescriptorType) metaData).getEntityDescriptorOrEntitiesDescriptor()) {
