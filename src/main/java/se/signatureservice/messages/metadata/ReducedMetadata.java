@@ -12,6 +12,7 @@
  *************************************************************************/
 package se.signatureservice.messages.metadata;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import se.signatureservice.messages.ContextMessageSecurityProvider;
 import se.signatureservice.messages.MessageContentException;
 import se.signatureservice.messages.MessageProcessingException;
@@ -25,6 +26,13 @@ import java.util.List;
  * Created by fredrik 2025-08-28.
  */
 public interface ReducedMetadata {
+
+    /**
+     * Method to return the json representation of this object, with ordered keys
+     *
+     * @return String json
+     */
+    String asJson() throws JsonProcessingException;
 
     /**
      * Method to return the entityID, of the saml metadata EntityDescriptor

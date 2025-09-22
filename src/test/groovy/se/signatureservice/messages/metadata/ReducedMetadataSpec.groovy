@@ -106,7 +106,7 @@ class ReducedMetadataSpec extends Specification {
 
     def "Verify json serialisation 1"() {
         setup:
-        def json = ReducedMetadataImpl.objectMapper.writeValueAsString(withEntityAttributes)
+        def json = withEntityAttributes.asJson()
         def slurper = new JsonSlurper()
         def tree = slurper.parseText(json)
 
@@ -140,7 +140,7 @@ class ReducedMetadataSpec extends Specification {
 
     def "Verify json serialisation 2"() {
         setup:
-        def json = ReducedMetadataImpl.objectMapper.writeValueAsString(withAttributeConsumingServices)
+        def json = withAttributeConsumingServices.asJson()
         def slurper = new JsonSlurper()
         def tree = slurper.parseText(json)
 

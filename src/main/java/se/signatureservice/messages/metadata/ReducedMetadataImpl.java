@@ -14,6 +14,7 @@ package se.signatureservice.messages.metadata;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
@@ -54,6 +55,16 @@ public class ReducedMetadataImpl implements ReducedMetadata {
                 .build();
 
         objectMapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+    }
+
+    @JsonIgnore
+    String json;
+    @Override
+    public String asJson() throws JsonProcessingException {
+        if(json == null) {
+            json = objectMapper.writeValueAsString(this);
+        }
+        return json;
     }
 
     String entityID;
