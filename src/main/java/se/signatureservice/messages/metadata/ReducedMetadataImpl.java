@@ -150,6 +150,7 @@ public class ReducedMetadataImpl implements ReducedMetadata {
         return getRoleDescriptor(context).getSigningCertObjects();
     }
 
+    @JsonIgnore
     @Override
     public List<String> getAllSigningCertificateFingerprints() {
         return roleDescriptors.stream().flatMap( it -> it.getSigningCertFingerprints().stream()).collect(Collectors.toList());
