@@ -26,10 +26,10 @@ dependencies {
         exclude(module: "woodstox-core")
         exclude(module: "commons-codec")
     }
-    implementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.19.1'
+    implementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.20.0'
     implementation "org.bouncycastle:bcmail-jdk18on:${bcVersion}"
     testRuntimeOnly 'org.glassfish.jaxb:jaxb-runtime:4.0.5'
-    testRuntimeOnly 'net.bytebuddy:byte-buddy:1.17.6'
+    testRuntimeOnly 'net.bytebuddy:byte-buddy:1.17.7'
 
     testImplementation 'org.objenesis:objenesis:3.4'
     testImplementation "org.codehaus.groovy:groovy-xml:${groovyVersion}"
