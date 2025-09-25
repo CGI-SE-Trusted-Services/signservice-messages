@@ -10,8 +10,9 @@ import se.signatureservice.messages.csmessages.manager.MessageSecurityProviderMa
 import se.signatureservice.messages.saml2.metadata.SAMLMetaDataMessageParser
 import se.signatureservice.messages.saml2.metadata.jaxb.EntitiesDescriptorType
 import se.signatureservice.messages.saml2.metadata.jaxb.EntityDescriptorType
+import se.signatureservice.messages.saml2.metadata.jaxb.IDPSSODescriptorType
+import se.signatureservice.messages.saml2.metadata.jaxb.SPSSODescriptorType
 import se.signatureservice.messages.utils.CertUtils
-import spock.lang.Ignore
 import spock.lang.Specification
 
 /**
@@ -54,10 +55,9 @@ class ReducedMetadataSpec extends Specification {
         !withoutEntityAttributes.hasEntityAttributeValue("urn:oasis:names:tc:SAML:attribute:assurance-certification", "http://id.elegnamnden.se/loa/1.0/loa2-sigmessage")
     }
 
-    @Ignore
     def "Test verify signature"() {
         setup:
-        //MetaDataBuilder.parse(signed, true) as EntityDescriptor
+        fromBytes(signed, true)
         expect:
         true
     }
@@ -102,6 +102,68 @@ class ReducedMetadataSpec extends Specification {
 
         svName4 == "eid.test.legitimeringstjanst.se"
         deName5 == "UIInfo in second roleDescriptor DE"
+    }
+
+    def "test json ignored properties"() {
+        given:
+        def idpWithKey = withKeyAsDisplayNameSource
+        def spWithKey = withAttributeConsumingServices
+        def withAuthnCCRefs = withEntityAttributes
+
+        def idps = [
+                withEntityAttributes,
+                withoutEntityAttributes,
+                withOrgAsDisplayNameSource,
+                withKeyAsDisplayNameSource,
+                withNoDisplayNameSources,
+                withDisplayNameSourceInSecondRoleDescriptor
+        ]
+
+        def sps = [
+                withAttributeConsumingServices
+        ]
+
+        expect:
+        idpWithKey.getSigningCertificateFingerprints(new ContextMessageSecurityProvider.Context(MetadataConstants.CONTEXT_USAGE_ASSERTIONCONSUME))
+        idpWithKey.getAllSigningCertificateFingerprints()
+        spWithKey.getSigningCertificateFingerprints(new ContextMessageSecurityProvider.Context(MetadataConstants.CONTEXT_USAGE_SIGNREQUEST))
+        spWithKey.getAllSigningCertificateFingerprints()
+
+        withAuthnCCRefs.getAuthnContextClassRefs()
+
+        idps.every {
+            it.firstRoleDescriptor(IDPSSODescriptorType.class.getSimpleName())
+            it.getDestination("http://ssobinding1.com")
+
+            try {
+                it.getSigningCertificateFingerprints(new ContextMessageSecurityProvider.Context(MetadataConstants.CONTEXT_USAGE_SIGNREQUEST))
+                return false
+            } catch (MessageProcessingException e) {
+                return true
+            }
+        }
+
+        sps.every {
+            it.firstRoleDescriptor(SPSSODescriptorType.class.getSimpleName())
+            !it.getAuthnContextClassRefs()
+
+            try {
+                it.getDestination("http://ssobinding1.com")
+                return false
+            } catch (MessageContentException e) {
+                try {
+                    it.requestedPrincipalSelection()
+                    return false
+                } catch (MessageContentException f) {
+                    try {
+                        it.getSigningCertificateFingerprints(new ContextMessageSecurityProvider.Context(MetadataConstants.CONTEXT_USAGE_ASSERTIONCONSUME))
+                        return false
+                    } catch (MessageProcessingException g) {
+                        return true
+                    }
+                }
+            }
+        }
     }
 
     def "Verify json serialisation 1"() {
@@ -493,48 +555,68 @@ class ReducedMetadataSpec extends Specification {
         </md:ContactPerson>
     </md:EntityDescriptor>""".getBytes("UTF-8")
 
-    static def signed = """<?xml version="1.0" encoding="UTF-8"?><EntityDescriptor xmlns="urn:oasis:names:tc:SAML:2.0:metadata" xmlns:mdattr="urn:oasis:names:tc:SAML:metadata:attribute" xmlns:mdui="urn:oasis:names:tc:SAML:metadata:ui" xmlns:saml="urn:oasis:names:tc:SAML:2.0:assertion" entityID="https://idp.switch.ch/idp/shibboleth"><ds:Signature xmlns:ds="http://www.w3.org/2000/09/xmldsig#">
-<ds:SignedInfo>
-<ds:CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#WithComments"/>
-<ds:SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha256"/>
-<ds:Reference URI="">
-<ds:Transforms>
-<ds:Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/>
-<ds:Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/>
-</ds:Transforms>
-<ds:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/>
-<ds:DigestValue>yOQeMtK5oM5404cBY/sOnclyYp8M0bE9mW4yTjRErD4=</ds:DigestValue>
-</ds:Reference>
-</ds:SignedInfo>
-<ds:SignatureValue>
-fepMS3HTW4YQ0ERS9XKCIUba1qY83LQCs2r1vJ8rjjyJzjXz0j16VqJvw/puaJwIyeb0vp6UsLKQ&#13;
-UtAmUcRoJvCGgmVIS1eSUwfQLRasOsXeNQ5hDBlvoPLGJvKro/JGAnuZhszS7v7uxz9f5TW4RZHO&#13;
-P/LYcaokXeEv6/M4AtN7jbYHgEFWLBceH4HX3Esi0r6c4o1YAXFDUzO8dQu9Ju1BgA7hHOBsQ6/E&#13;
-QoyxGo2f8XTh9vZ5W69NvJI1EAtEEBWYV8MceQ/bp1DgM6bbaZk+1EwmbKdQ1xB5DgAijXg+jXHD&#13;
-I6ibLfrgUiUGGDFyXDDKYPuvDNh6iAG6pzWfAg==
-</ds:SignatureValue>
-<ds:KeyInfo><ds:X509Data><ds:X509Certificate>MIIEtjCCAp6gAwIBAgIILMvMsnobWPkwDQYJKoZIhvcNAQELBQAwOzEdMBsGA1UEAwwUU2lnbiBT
-ZXJ2aWNlIFRlc3QgQ0ExGjAYBgNVBAoMEVNpZ25hdHVyZSBTZXJ2aWNlMB4XDTE3MDYxNDA5MTg1
-MloXDTQyMDYxNTA5MTU1NlowOzEdMBsGA1UEAwwUQmFja2VuZCBTZXJ2aWNlIFRlc3QxGjAYBgNV
-BAoMEVNpZ25hdHVyZSBTZXJ2aWNlMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAmita
-DRYToFkqpk5vaZWQIyWoxq9F22OA1Su/ugx5rxWHauNR+/KuiqNqri4cJrfLKPGDb0dUpzACM1B2
-T1B4VwNvlSg2/WcbLNPreZT6wgL98Of0w77cpphN4y2NDeH/uR9czeRGadAhlbNSrGDZIGrmMH4l
-gwiCtHo92XXKXseMajYbZN8DAj1hNePrF1v7GYpqAbMMEUzeeJjLLDBkcqx/Ic630AaoQlcSHHsA
-7Fa7YwBrUsCCL2INc+l56YpsK+/s5XJTCrg6tQy+6EWsFgIS+X4jz1e9nZ+H6QynP5kvFx+Tsr9B
-YeVQG2wyxzzW01013S/HY4laDZRerATkpQIDAQABo4G9MIG6MAwGA1UdEwEB/wQCMAAwHwYDVR0j
-BBgwFoAUVl9ii9pud/WHDi57E8YjuuggmT8wEwYDVR0lBAwwCgYIKwYBBQUHAwIwRQYDVR0fBD4w
-PDA6oDigNoY0aHR0cDovL2NybC5zaWduc2VydmljZXRlc3QuY29tL3NpZ25zZXJ2aWNldGVzdGNh
-LmNybDAdBgNVHQ4EFgQU1RHGFVUXbbTaKRSV2u/icU9aYjkwDgYDVR0PAQH/BAQDAgSwMA0GCSqG
-SIb3DQEBCwUAA4ICAQBTdNcxY6n66UKjwarJjxWuxj1IUBok50lU+WQ0cAFlwZt978apMycKjfiW
-WzDJcVGbTniligO89ZaLSokTu2+jAx/wYy9OoEjVhz9Nder+RMPkDtl7sEWnNdvNN/ZnJL1la1wU
-Bkve6w4Sz58VCCyYOEgj4J4XGzwUx0l77Z0ZBOo/h3v+8qe3rLR/vAS7KaFiRTETRTfaC8fhdzcP
-gOklptKhG1iuKy+6fBzyrKcsqxkRm9L/znB/WYHDmkWJjr1fgpvkNO6+RLb9SMEIIZXNWVx9Pd+z
-aP6kMiQ0hpxZZS8G7THcZCuGs7UysfQLez4/EOJ7Cg0Q1IKGEHpyBWXFkZw63dDKEeUOHGV/MAYO
-r6iKvKRRAKL+GHLFchGLouPFYh3CjgOwRYTDLIJTWbaK+Dh1UUtuxdv3mS2LLeTwVN2u1cWROUHv
-tHmLQH0JrZ8uboA6POI3zOCpzEWesP0ydDegsbot/F4RLRvCNcHXZGbUKsC/P03cspBiZtH/kxyZ
-Y6Q2PQpOMHg9qvYql5sf9G5WxcBjaPVdl2zBdcmLFuD2eNthpyPwB+TMMmrRSQaP8i2W0kMdU0e+
-Lt/T/qgBSULCH1r6/oucIZ4bCyhqKfwYqM6ZSojhsiAXMUtxiOca25I6psMhbMkJKNIX3kphBkyS
-r09QdVXdwXLlK9l7IQ==</ds:X509Certificate></ds:X509Data></ds:KeyInfo></ds:Signature><IDPSSODescriptor protocolSupportEnumeration="urn:oasis:names:tc:SAML:2.0:protocol"><Extensions/><SingleSignOnService Binding="http://ssobinding1.com" Location="http://ssolocation1.com"/></IDPSSODescriptor></EntityDescriptor>""".getBytes("UTF-8")
+    static def signed = """<?xml version="1.0" encoding="UTF-8" standalone="no"?><md:EntityDescriptor xmlns:md="urn:oasis:names:tc:SAML:2.0:metadata" ID="_084afe96f592198a3584819d7f1a5cd535" cacheDuration="P0Y0M0DT12H0M0.000S" entityID="https://m00-mg-local.idp.funktionstjanster.se/samlv2/idp/metadata/0/22"><ds:Signature xmlns:ds="http://www.w3.org/2000/09/xmldsig#"><ds:SignedInfo><ds:CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><ds:SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha256"/><ds:Reference URI="#_084afe96f592198a3584819d7f1a5cd535"><ds:Transforms><ds:Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/><ds:Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></ds:Transforms><ds:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/><ds:DigestValue>wylSg/lp1U9lz8aLwh37Qk9RFv6yY+Uej596MHXj8zU=</ds:DigestValue></ds:Reference></ds:SignedInfo><ds:SignatureValue>V11R4PnCP3ThEpSMJU2MIyAYop3lWhKuHQ+AhA3rpO2m6nsw/fMjYHdZL7z8UnCs3hj5SDw7kNjZZELV+B4gZCjweCWWHeaykt7D/adf/vIhwAxa5KiVtP1ceE+VhtEIewL916LuqNnZoVCp4/ZmH0H6pQ76ATWVUrbAzsc/jwd2J3y0zKWPCDB8up6MshERp1+zSx/e82LGY8LX9S5ZSF4S5YAsE9HSKERnxIoeoB/e9R2Z17+dtu5IhGfMH+Q1us7rjJH5YOrDMJoYv+E78Iec5g95S+Zt5n3ntP1ITJj7fB0xxBd+5hNb9UqKvolHLSHB1it94crXojZna9xsng==</ds:SignatureValue><ds:KeyInfo><ds:X509Data><ds:X509Certificate>MIIG1jCCBb6gAwIBAgIQD+3JXT3m11m5QRMRq8GsKDANBgkqhkiG9w0BAQsFADBZMQswCQYDVQQG
+EwJVUzEVMBMGA1UEChMMRGlnaUNlcnQgSW5jMTMwMQYDVQQDEypEaWdpQ2VydCBHbG9iYWwgRzIg
+VExTIFJTQSBTSEEyNTYgMjAyMCBDQTEwHhcNMjUwNDI4MDAwMDAwWhcNMjYwNDI3MjM1OTU5WjBd
+MQswCQYDVQQGEwJTRTESMBAGA1UEBxMJU3RvY2tob2xtMRcwFQYDVQQKEw5DR0kgU3ZlcmlnZSBB
+QjEhMB8GA1UEAxMYaWRwLmZ1bmt0aW9uc3RqYW5zdGVyLnNlMIIBIjANBgkqhkiG9w0BAQEFAAOC
+AQ8AMIIBCgKCAQEA4asnDxupa4zHopK+2DnrokKWCSh4TX3R1JlRJxiQQtCiOUoAsfuUgLrApGvp
+H95QzVPQ+gMv65cqGoLi9guObEyRdikb07t+5uSglBemGVd0T/nyxrc61yPaTmlfKlJh/jshSMnU
+Q39/h20Lkpvlu0dl0Yr924a1oHHHQ4qrrBYxtWZnK0NpgghQ2K26WOezzy+u5yXye6TBt5KKwy17
+PpXN9Tq/ULMDenX4B6BDVcis4oMPBEaV073/XnU0xZxPLlugfJjDUiMIZph1efdzZ5PwALFZJhlj
+G8OxuSTCe4M4jDg27DlPFQf/CuRAQrxp0kAoHxXtnlCHvhzvpWDJswIDAQABo4IDlDCCA5AwHwYD
+VR0jBBgwFoAUdIWAwGbH3zfez70pN6oDHb7tzRcwHQYDVR0OBBYEFIoUd8pp6OOXN2psZrGKHcEh
+mPOEMCMGA1UdEQQcMBqCGGlkcC5mdW5rdGlvbnN0amFuc3Rlci5zZTA+BgNVHSAENzA1MDMGBmeB
+DAECAjApMCcGCCsGAQUFBwIBFhtodHRwOi8vd3d3LmRpZ2ljZXJ0LmNvbS9DUFMwDgYDVR0PAQH/
+BAQDAgWgMB0GA1UdJQQWMBQGCCsGAQUFBwMBBggrBgEFBQcDAjCBnwYDVR0fBIGXMIGUMEigRqBE
+hkJodHRwOi8vY3JsMy5kaWdpY2VydC5jb20vRGlnaUNlcnRHbG9iYWxHMlRMU1JTQVNIQTI1NjIw
+MjBDQTEtMS5jcmwwSKBGoESGQmh0dHA6Ly9jcmw0LmRpZ2ljZXJ0LmNvbS9EaWdpQ2VydEdsb2Jh
+bEcyVExTUlNBU0hBMjU2MjAyMENBMS0xLmNybDCBhwYIKwYBBQUHAQEEezB5MCQGCCsGAQUFBzAB
+hhhodHRwOi8vb2NzcC5kaWdpY2VydC5jb20wUQYIKwYBBQUHMAKGRWh0dHA6Ly9jYWNlcnRzLmRp
+Z2ljZXJ0LmNvbS9EaWdpQ2VydEdsb2JhbEcyVExTUlNBU0hBMjU2MjAyMENBMS0xLmNydDAMBgNV
+HRMBAf8EAjAAMIIBfgYKKwYBBAHWeQIEAgSCAW4EggFqAWgAdgAOV5S8866pPjMbLJkHs/eQ35vC
+PXEyJd0hqSWsYcVOIQAAAZZ86V0uAAAEAwBHMEUCIQCcaX8yxk2siZZCewHTAVjM6Xf0gP1ioLKG
+6JvM8AZzgAIgUp4Wy4iNoC1Nv+W2H5kb6OhEGDOJnjzzjA3f/9oByC8AdgBJnJtp3h187Pw23s2H
+ZKa4W68Kh4AZ0VVS++nrKd34wwAAAZZ86V12AAAEAwBHMEUCIQDf5wTmWkkZG/6SfiIWSRn9EbNS
+sc8EMTKsCgVY53wUvgIgFYxTGMOZFGvKqJioqZcpshg11SiOqCWSQoxifrRUagIAdgDLOPcViXyE
+oURfW8Hd+8lu8ppZzUcKaQWFsMsUwxRY5wAAAZZ86V1bAAAEAwBHMEUCIQD29ao7HhnhA7IJ7pvS
+8QJD8o8Dj4uOHM3RSuug2mYl6gIgfYTJ6f6bGxsJdFbbfIPk1vkNHEZcfjcZsPFi9dfRqqQwDQYJ
+KoZIhvcNAQELBQADggEBABWg4qfMkzFbF4iRWZqJGKur/uR6ag028kt3nXXZBTDEawmWKLMCYG/S
+2dLr75XmC8K/MzK/mcvlKImuBZULIOCNmuMawrQne+kgo807QvZIB1QX9whDLImGoFDRQU3Yr3vA
+hV9dVwRBKPoGO03S5WlhfT+MeTx/MEV3EhUNdmXMS4ED6A3QlGD/abAzMJGdzaCqZ5bL9BC8P/zE
+ih/CVDrOFULzP/iWHbhdkAN+1X5I5j39dsQqDY3aVeWaIUmGUEiHT9UMhjFTQxiJhkcaQtWY5Hal
+dR1n2pp6YjXvWqgtwRu730rFsojk42EP2fubJMO4AdTIKlL+gZk0L/WEdjc=</ds:X509Certificate></ds:X509Data></ds:KeyInfo></ds:Signature><md:IDPSSODescriptor WantAuthnRequestsSigned="false" errorURL="https://m00-mg-local.idp.funktionstjanster.se/samlv2/idp/error/0/22?mgvhostparam=0&amp;error=ERRORURL_CODE" protocolSupportEnumeration="urn:oasis:names:tc:SAML:2.0:protocol"><md:KeyDescriptor use="signing"><ds:KeyInfo xmlns:ds="http://www.w3.org/2000/09/xmldsig#"><ds:X509Data><ds:X509Certificate>MIIG1jCCBb6gAwIBAgIQD+3JXT3m11m5QRMRq8GsKDANBgkqhkiG9w0BAQsFADBZMQswCQYDVQQG
+EwJVUzEVMBMGA1UEChMMRGlnaUNlcnQgSW5jMTMwMQYDVQQDEypEaWdpQ2VydCBHbG9iYWwgRzIg
+VExTIFJTQSBTSEEyNTYgMjAyMCBDQTEwHhcNMjUwNDI4MDAwMDAwWhcNMjYwNDI3MjM1OTU5WjBd
+MQswCQYDVQQGEwJTRTESMBAGA1UEBxMJU3RvY2tob2xtMRcwFQYDVQQKEw5DR0kgU3ZlcmlnZSBB
+QjEhMB8GA1UEAxMYaWRwLmZ1bmt0aW9uc3RqYW5zdGVyLnNlMIIBIjANBgkqhkiG9w0BAQEFAAOC
+AQ8AMIIBCgKCAQEA4asnDxupa4zHopK+2DnrokKWCSh4TX3R1JlRJxiQQtCiOUoAsfuUgLrApGvp
+H95QzVPQ+gMv65cqGoLi9guObEyRdikb07t+5uSglBemGVd0T/nyxrc61yPaTmlfKlJh/jshSMnU
+Q39/h20Lkpvlu0dl0Yr924a1oHHHQ4qrrBYxtWZnK0NpgghQ2K26WOezzy+u5yXye6TBt5KKwy17
+PpXN9Tq/ULMDenX4B6BDVcis4oMPBEaV073/XnU0xZxPLlugfJjDUiMIZph1efdzZ5PwALFZJhlj
+G8OxuSTCe4M4jDg27DlPFQf/CuRAQrxp0kAoHxXtnlCHvhzvpWDJswIDAQABo4IDlDCCA5AwHwYD
+VR0jBBgwFoAUdIWAwGbH3zfez70pN6oDHb7tzRcwHQYDVR0OBBYEFIoUd8pp6OOXN2psZrGKHcEh
+mPOEMCMGA1UdEQQcMBqCGGlkcC5mdW5rdGlvbnN0amFuc3Rlci5zZTA+BgNVHSAENzA1MDMGBmeB
+DAECAjApMCcGCCsGAQUFBwIBFhtodHRwOi8vd3d3LmRpZ2ljZXJ0LmNvbS9DUFMwDgYDVR0PAQH/
+BAQDAgWgMB0GA1UdJQQWMBQGCCsGAQUFBwMBBggrBgEFBQcDAjCBnwYDVR0fBIGXMIGUMEigRqBE
+hkJodHRwOi8vY3JsMy5kaWdpY2VydC5jb20vRGlnaUNlcnRHbG9iYWxHMlRMU1JTQVNIQTI1NjIw
+MjBDQTEtMS5jcmwwSKBGoESGQmh0dHA6Ly9jcmw0LmRpZ2ljZXJ0LmNvbS9EaWdpQ2VydEdsb2Jh
+bEcyVExTUlNBU0hBMjU2MjAyMENBMS0xLmNybDCBhwYIKwYBBQUHAQEEezB5MCQGCCsGAQUFBzAB
+hhhodHRwOi8vb2NzcC5kaWdpY2VydC5jb20wUQYIKwYBBQUHMAKGRWh0dHA6Ly9jYWNlcnRzLmRp
+Z2ljZXJ0LmNvbS9EaWdpQ2VydEdsb2JhbEcyVExTUlNBU0hBMjU2MjAyMENBMS0xLmNydDAMBgNV
+HRMBAf8EAjAAMIIBfgYKKwYBBAHWeQIEAgSCAW4EggFqAWgAdgAOV5S8866pPjMbLJkHs/eQ35vC
+PXEyJd0hqSWsYcVOIQAAAZZ86V0uAAAEAwBHMEUCIQCcaX8yxk2siZZCewHTAVjM6Xf0gP1ioLKG
+6JvM8AZzgAIgUp4Wy4iNoC1Nv+W2H5kb6OhEGDOJnjzzjA3f/9oByC8AdgBJnJtp3h187Pw23s2H
+ZKa4W68Kh4AZ0VVS++nrKd34wwAAAZZ86V12AAAEAwBHMEUCIQDf5wTmWkkZG/6SfiIWSRn9EbNS
+sc8EMTKsCgVY53wUvgIgFYxTGMOZFGvKqJioqZcpshg11SiOqCWSQoxifrRUagIAdgDLOPcViXyE
+oURfW8Hd+8lu8ppZzUcKaQWFsMsUwxRY5wAAAZZ86V1bAAAEAwBHMEUCIQD29ao7HhnhA7IJ7pvS
+8QJD8o8Dj4uOHM3RSuug2mYl6gIgfYTJ6f6bGxsJdFbbfIPk1vkNHEZcfjcZsPFi9dfRqqQwDQYJ
+KoZIhvcNAQELBQADggEBABWg4qfMkzFbF4iRWZqJGKur/uR6ag028kt3nXXZBTDEawmWKLMCYG/S
+2dLr75XmC8K/MzK/mcvlKImuBZULIOCNmuMawrQne+kgo807QvZIB1QX9whDLImGoFDRQU3Yr3vA
+hV9dVwRBKPoGO03S5WlhfT+MeTx/MEV3EhUNdmXMS4ED6A3QlGD/abAzMJGdzaCqZ5bL9BC8P/zE
+ih/CVDrOFULzP/iWHbhdkAN+1X5I5j39dsQqDY3aVeWaIUmGUEiHT9UMhjFTQxiJhkcaQtWY5Hal
+dR1n2pp6YjXvWqgtwRu730rFsojk42EP2fubJMO4AdTIKlL+gZk0L/WEdjc=</ds:X509Certificate></ds:X509Data></ds:KeyInfo></md:KeyDescriptor><md:SingleLogoutService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST" Location="https://m00-mg-local.idp.funktionstjanster.se/samlv2/idp/sloreq/0/22?mgvhostparam=0" ResponseLocation="https://m00-mg-local.idp.funktionstjanster.se/samlv2/idp/sloresp/0/22?mgvhostparam=0"/><md:SingleLogoutService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect" Location="https://m00-mg-local.idp.funktionstjanster.se/samlv2/idp/sloreq/0/22?mgvhostparam=0" ResponseLocation="https://m00-mg-local.idp.funktionstjanster.se/samlv2/idp/sloresp/0/22?mgvhostparam=0"/><md:NameIDFormat>urn:oasis:names:tc:SAML:2.0:nameid-format:persistent</md:NameIDFormat><md:NameIDFormat>urn:oasis:names:tc:SAML:2.0:nameid-format:transient</md:NameIDFormat><md:SingleSignOnService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST" Location="https://m00-mg-local.idp.funktionstjanster.se/samlv2/idp/req/0/22?mgvhostparam=0"/><md:SingleSignOnService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect" Location="https://m00-mg-local.idp.funktionstjanster.se/samlv2/idp/req/0/22?mgvhostparam=0"/></md:IDPSSODescriptor></md:EntityDescriptor>
+""".getBytes("UTF-8")
 
     private static List<ReducedMetadata> fromBytes(byte[] bytes, boolean verifySignature) throws MessageProcessingException, MessageContentException {
         Object o = samlMetaDataMessageParser.parseMessage(
