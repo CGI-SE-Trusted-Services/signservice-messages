@@ -3,12 +3,22 @@
 This document provides information about changes that have been made for each new version
 of the Signature Service Messages Library.
 
+== Version 2509.1
+
+=== Upgrade notes
+This release contains no breaking changes.
+
+=== Changes
+
+* Upgraded Gradle to `7.6.6`
+* Logic related to Saml metadata parsing has been added.
+
 == Version 2506.1
 
 === Upgrade notes
 NOTE: This release includes changes in preparation for migrating to Java 21 in Q4 2025.
 
-== Changes
+=== Changes
 
 * Upgraded Gradle to `7.6.5`
 ** Updated Gradle Wrapper files (`gradlew`, `gradlew.bat`, `gradle-wrapper.jar`) to match the configured version.
