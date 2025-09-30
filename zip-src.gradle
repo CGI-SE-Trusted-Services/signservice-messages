@@ -1,3 +1,11 @@
+configurations {
+    resolvedDefault {
+        canBeResolved = true
+        canBeConsumed = false
+        extendsFrom configurations.default
+    }
+}
+
 tasks.register('zipSrc', Zip) {
     String projectBaseName = project.name + "-${project.ext.get('shortVersionNumber')}"
     archiveFileName = projectBaseName + '-src.zip'
@@ -25,7 +33,7 @@ tasks.register('zipSrc', Zip) {
         include('signservice-messages*.jar')
         into(projectBaseName)
     }
-    from(configurations.default) {
+    from(configurations.resolvedDefault) {
         exclude('*-sources.jar')
         exclude('*-javadoc.jar')
         into(projectBaseName + '/lib')

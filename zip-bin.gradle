@@ -1,3 +1,11 @@
+configurations {
+    resolvedDefault {
+        canBeResolved = true
+        canBeConsumed = false
+        extendsFrom configurations.default
+    }
+}
+
 tasks.register('zipBin', Zip) {
     String projectBaseName = project.name + "-${project.ext.get('shortVersionNumber')}"
     archiveFileName = projectBaseName + '-bin.zip'
@@ -16,7 +24,8 @@ tasks.register('zipBin', Zip) {
         include(project.name + "-${project.version}.jar")
         into(projectBaseName)
     }
-    from(configurations.default) {
+
+    from(configurations.resolvedDefault) {
         exclude('*-sources.jar')
         exclude('*-javadoc.jar')
         into(projectBaseName + '/lib/')
