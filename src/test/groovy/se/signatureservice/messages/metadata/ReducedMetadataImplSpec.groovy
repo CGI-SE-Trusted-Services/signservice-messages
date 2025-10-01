@@ -16,9 +16,11 @@ import se.signatureservice.messages.utils.CertUtils
 import spock.lang.Specification
 
 /**
+ * Unit tests for ReducedMetadataImpl
+ *
  * Created by fredrik 2025-08-28.
  */
-class ReducedMetadataSpec extends Specification {
+class ReducedMetadataImplSpec extends Specification {
     ReducedMetadata withEntityAttributes
     ReducedMetadata withoutEntityAttributes
     ReducedMetadata withOrgAsDisplayNameSource
