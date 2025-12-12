@@ -13,6 +13,12 @@
 package se.signatureservice.messages.metadata;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.MapperFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.databind.json.JsonMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import se.signatureservice.messages.ContextMessageSecurityProvider;
@@ -21,7 +27,12 @@ import se.signatureservice.messages.MessageProcessingException;
 import se.signatureservice.messages.saml2.metadata.jaxb.EntityDescriptorType;
 import se.signatureservice.messages.saml2.metadata.jaxb.SPSSODescriptorType;
 import se.signatureservice.messages.saml2.metadata.jaxb.IDPSSODescriptorType;
+import se.signatureservice.messages.utils.CertUtils;
 
+import java.io.UnsupportedEncodingException;
+import java.security.NoSuchAlgorithmException;
+import java.security.cert.CertificateEncodingException;
+import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -36,8 +47,37 @@ import static se.signatureservice.messages.metadata.ReducedMetadataUtils.isTruth
  */
 public class ReducedMetadataImpl implements ReducedMetadata {
     static Logger msgLog = LoggerFactory.getLogger(ReducedMetadataImpl.class);
+    public static final ObjectMapper objectMapper;
+    static {
+        objectMapper = JsonMapper.builder()
+                .configure(SerializationFeature.ORDER_MAP_ENTRIES_BY_KEYS, true)
+                .configure(MapperFeature.SORT_PROPERTIES_ALPHABETICALLY, true)
+                .build();
+
+        objectMapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+    }
+
+    @JsonIgnore
+    String json;
+    @Override
+    public String asJson() throws JsonProcessingException {
+        if(json == null) {
+            json = objectMapper.writeValueAsString(this);
+        }
+        return json;
+    }
 
     String entityID;
+    @Override
+    public String getEntityID() {
+        return entityID;
+    }
+
+    // an entity is initially loaded from a file
+    String fileName;
+    public String getFileName() {
+        return fileName;
+    }
 
     // from EntityAttributes under entityDescriptor.extensions
     private Map<String, List<String>> entityAttributes;
@@ -81,7 +121,7 @@ public class ReducedMetadataImpl implements ReducedMetadata {
         roleDescriptors = new ArrayList<>();
     }
 
-    public ReducedMetadataImpl(EntityDescriptorType entityDescriptor) {
+    public ReducedMetadataImpl(EntityDescriptorType entityDescriptor, String fileName) {
         this.entityID = entityDescriptor.getEntityID();
         this.entityAttributes = ReducedMetadataUtils.getEntityAttributes(entityDescriptor);
         this.singleSignOnServices = ReducedMetadataUtils.getSingleSignOnServices(entityDescriptor);
@@ -89,6 +129,7 @@ public class ReducedMetadataImpl implements ReducedMetadata {
         this.requestedPrincipalSelection = ReducedMetadataUtils.getRequestedPrincipalSelection(entityDescriptor);
         this.roleDescriptors = ReducedMetadataUtils.getRoleDescriptors(entityDescriptor);
         this.organisation = ReducedMetadataUtils.getOrganisation(entityDescriptor);
+        this.fileName = fileName;
     }
 
     @Override
@@ -106,6 +147,21 @@ public class ReducedMetadataImpl implements ReducedMetadata {
 
     @Override
     public List<X509Certificate> getSigningCertificates(ContextMessageSecurityProvider.Context context) throws MessageProcessingException {
+        return getRoleDescriptor(context).getSigningCertObjects();
+    }
+
+    @JsonIgnore
+    @Override
+    public List<String> getAllSigningCertificateFingerprints() {
+        return roleDescriptors.stream().flatMap( it -> it.getSigningCertFingerprints().stream()).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<String> getSigningCertificateFingerprints(ContextMessageSecurityProvider.Context context) throws MessageProcessingException {
+        return getRoleDescriptor(context).getSigningCertFingerprints();
+    }
+
+    private RoleDescriptor getRoleDescriptor(ContextMessageSecurityProvider.Context context) throws MessageProcessingException {
         var expectedRole = Objects.equals(context.getUsage(), MetadataConstants.CONTEXT_USAGE_SIGNREQUEST) ? SPSSODescriptorType.class.getSimpleName() : IDPSSODescriptorType.class.getSimpleName();
 
         // get the first roleDescriptor of the right type, and return its certificates
@@ -118,8 +174,7 @@ public class ReducedMetadataImpl implements ReducedMetadata {
         if(!rd.errorMessages.isEmpty()) {
             throw new MessageProcessingException(String.join(", ", rd.errorMessages));
         }
-
-        return rd.signingCertObjects;
+        return rd;
     }
 
     @Override
@@ -150,11 +205,6 @@ public class ReducedMetadataImpl implements ReducedMetadata {
             }
         }
         return Collections.emptyList();
-    }
-
-    @Override
-    public String getEntityID() {
-        return entityID;
     }
 
     public String getDestination(String authNProtocolBinding) throws MessageContentException {
@@ -288,6 +338,8 @@ public class ReducedMetadataImpl implements ReducedMetadata {
         List<UIInfo> uiInfos;
         @JsonIgnore
         List<X509Certificate> signingCertObjects;
+        @JsonIgnore
+        List<String> signingCertFingerprints;
         List<String> signingCertificates;
         List<String> signingCertificatesCNs;
         List<String> errorMessages = new ArrayList<>();
@@ -309,7 +361,43 @@ public class ReducedMetadataImpl implements ReducedMetadata {
         }
 
         public List<String> getSigningCertificates() {
-            return signingCertificates;
+            return signingCertificates != null ? signingCertificates : new ArrayList<>();
+        }
+
+        @JsonIgnore
+        private List<X509Certificate> getSigningCertObjects() {
+            if (signingCertObjects == null) {
+                signingCertObjects = getSigningCertificates().stream()
+                        .map(c -> Base64.getDecoder().decode(c))
+                        .map(b -> {
+                                    try {
+                                        return CertUtils.getCertfromByteArray(b);
+                                    } catch (CertificateException e) {
+                                        throw new RuntimeException(e);
+                                    }
+                                }
+                        ).collect(Collectors.toList());
+            }
+            return signingCertObjects;
+        }
+
+        @JsonIgnore
+        List<String> getSigningCertFingerprints() {
+            if (signingCertFingerprints == null) {
+                signingCertFingerprints = getSigningCertObjects().stream()
+                        .map(c -> {
+                            try {
+                                return CertUtils.getCertFingerprint(c);
+                            } catch (NoSuchAlgorithmException e) {
+                                throw new RuntimeException(e);
+                            } catch (CertificateEncodingException e) {
+                                throw new RuntimeException(e);
+                            } catch (UnsupportedEncodingException e) {
+                                throw new RuntimeException(e);
+                            }
+                        }).collect(Collectors.toList());
+            }
+            return signingCertFingerprints;
         }
 
         public List<String> getSigningCertificatesCNs() {
@@ -354,6 +442,7 @@ public class ReducedMetadataImpl implements ReducedMetadata {
 
         @JsonIgnore
         Optional<String> getCNDisplayName() {
+            var signingCertObjects = getSigningCertObjects();
             if (isTruthyList(signingCertificatesCNs) && isTruthyList(signingCertObjects)) {
                 for (int i = 0; i < signingCertificatesCNs.size(); i++) {
                     var v = signingCertificatesCNs.get(i);
@@ -391,7 +480,7 @@ public class ReducedMetadataImpl implements ReducedMetadata {
         }
 
         DisplayName(String value, String lang) {
-            this.value = ReducedMetadataUtils.trimAndOneLine(value);
+            this.value = ReducedMetadataUtils.cleanWhitespace(value);
             this.lang = lang;
         }
 
