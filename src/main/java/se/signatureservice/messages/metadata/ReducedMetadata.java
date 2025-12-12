@@ -12,6 +12,7 @@
  *************************************************************************/
 package se.signatureservice.messages.metadata;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import se.signatureservice.messages.ContextMessageSecurityProvider;
 import se.signatureservice.messages.MessageContentException;
 import se.signatureservice.messages.MessageProcessingException;
@@ -27,11 +28,25 @@ import java.util.List;
 public interface ReducedMetadata {
 
     /**
+     * Method to return the json representation of this object, with ordered keys
+     *
+     * @return String json
+     */
+    String asJson() throws JsonProcessingException;
+
+    /**
      * Method to return the entityID, of the saml metadata EntityDescriptor
      *
      * @return String entityID of the EntityDescriptor
      */
     String getEntityID();
+
+    /**
+     * Method to return the filename, from where the entity was loaded, may be null
+     *
+     * @return String fileName
+     */
+    String getFileName();
 
     /**
      * Method to return the Destination, based on binding specified in the input parameter
@@ -67,6 +82,23 @@ public interface ReducedMetadata {
      * @return List<X509Certificate>
      */
     List<X509Certificate> getSigningCertificates(ContextMessageSecurityProvider.Context context) throws MessageProcessingException;
+
+
+    /**
+     * Method to find the fingerprints of all certificates specified for signing.
+     *
+     * @return List<String>
+     */
+    List<String> getAllSigningCertificateFingerprints();
+
+    /**
+     * Method to find the fingerprints of certificates specified for signing, from the first IDPSSODescriptor, or SPSSODescriptor,
+     * depending on the input parameter
+     *
+     * @param context, specifies if we want IDPSSODescriptor-, or SPSSODescriptor certificates
+     * @return List<String>
+     */
+    List<String> getSigningCertificateFingerprints(ContextMessageSecurityProvider.Context context) throws MessageProcessingException;
 
     /**
      * Method to find out if this EntityDescriptor has an IDPSSODescriptor
