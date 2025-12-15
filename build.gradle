@@ -8,6 +8,19 @@ plugins {
 group "se.signatureservice.messages"
 description "signservice-messages"
 
+pluginManager.withPlugin('org.certificateservices.gradle.certservice-gradle-plugin') {
+    certserviceSettings {
+        licenseName = "GNU Lesser General Public License v3.0 or later"
+        licenseURL = "https://www.gnu.org/licenses/lgpl-3.0-standalone.html"
+        useDeveloperPOM = true
+        useScmPOM = true
+        scmConnection = "scm:git:https://github.com/CGI-SE-Trusted-Services/signservice-messages.git"
+        scmDeveloperConnection = "scm:git:https://git@github.com/CGI-SE-Trusted-Services/signservice-messages.git"
+        scmUrl = "https://github.com/CGI-SE-Trusted-Services/signservice-messages"
+        projectUrl = "https://github.com/CGI-SE-Trusted-Services/signservice-messages"
+    }
+}
+
 sourceCompatibility = JavaVersion.VERSION_11
 targetCompatibility = JavaVersion.VERSION_11
 
@@ -21,20 +34,20 @@ configurations {
 
 dependencies {
     implementation "org.bouncycastle:bcprov-jdk18on:${bcVersion}"
-    implementation 'jakarta.xml.bind:jakarta.xml.bind-api:4.0.2'
+    implementation 'jakarta.xml.bind:jakarta.xml.bind-api:4.0.4'
     implementation("org.apache.santuario:xmlsec:2.3.5") {
         exclude(module: "woodstox-core")
         exclude(module: "commons-codec")
     }
-    implementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.20.0'
+    implementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.20.1'
     implementation "org.bouncycastle:bcmail-jdk18on:${bcVersion}"
     testRuntimeOnly 'org.glassfish.jaxb:jaxb-runtime:4.0.5'
-    testRuntimeOnly 'net.bytebuddy:byte-buddy:1.17.7'
+    testRuntimeOnly 'net.bytebuddy:byte-buddy:1.18.2'
 
     testImplementation 'org.objenesis:objenesis:3.4'
     testImplementation "org.codehaus.groovy:groovy-xml:${groovyVersion}"
     testImplementation "org.codehaus.groovy:groovy-json:${groovyVersion}"
-    testImplementation platform("org.spockframework:spock-bom:2.4-M6-groovy-3.0")
+    testImplementation platform("org.spockframework:spock-bom:2.4-groovy-3.0")
     testImplementation "org.spockframework:spock-core"
 
     jaxws 'com.sun.xml.ws:jaxws-ri:4.0.3'
