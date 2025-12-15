@@ -8,6 +8,16 @@ of the Signature Service Messages Library.
 === Upgrade notes
 This release contains no breaking changes.
 
+=== Changes
+
+* Removed temporary security-related dependency overrides, as they are no longer required.
+* Dependency upgrades:
+** `jakarta.xml.bind:jakarta.xml.bind-api` to `4.0.4`
+** `com.fasterxml.jackson.dataformat:jackson-dataformat-yaml` to `2.20.1`
+** `net.bytebuddy:byte-buddy` to `1.18.2`
+** `org.spockframework:spock-bom` to `2.4-groovy-3.0`
+
+
 == Version 2509.1
 
 === Upgrade notes
