@@ -15,7 +15,7 @@ tasks.register('zipSrc', Zip) {
     from(projectDir) {
         include('gradlew')
         include('gradlew.bat')
-        fileMode = 0755
+        filePermissions { unix(0755) }
         into(projectBaseName)
     }
     from('build/docs/html5') {
@@ -25,7 +25,7 @@ tasks.register('zipSrc', Zip) {
         include('signservice-messages*.jar')
         into(projectBaseName)
     }
-    from(configurations.default) {
+    from(configurations.runtimeClasspath) {
         exclude('*-sources.jar')
         exclude('*-javadoc.jar')
         into(projectBaseName + '/lib')

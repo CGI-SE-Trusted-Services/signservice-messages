@@ -3,6 +3,15 @@
 This document provides information about changes that have been made for each new version
 of the Signature Service Messages Library.
 
+== Version 2601.1
+
+=== Upgrade notes
+This release contains no breaking changes.
+
+=== Changes
+
+* Upgraded Gradle to 8.14.3.
+
 == Version 2512.2
 
 No changes.
@@ -20,7 +29,6 @@ This release contains no breaking changes.
 ** `com.fasterxml.jackson.dataformat:jackson-dataformat-yaml` to `2.20.1`
 ** `net.bytebuddy:byte-buddy` to `1.18.2`
 ** `org.spockframework:spock-bom` to `2.4-groovy-3.0`
-
 
 == Version 2509.1
 
