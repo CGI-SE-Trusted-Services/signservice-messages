@@ -5,8 +5,8 @@ plugins {
     id("project-report")
 }
 
-group "se.signatureservice.messages"
-description "signservice-messages"
+group = "se.signatureservice.messages"
+description = "signservice-messages"
 
 pluginManager.withPlugin('org.certificateservices.gradle.certservice-gradle-plugin') {
     certserviceSettings {
