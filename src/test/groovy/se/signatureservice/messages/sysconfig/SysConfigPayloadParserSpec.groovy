@@ -159,7 +159,7 @@ class SysConfigPayloadParserSpec extends Specification {
 		org.displayName = "orgDisplayName"
 		org.obfuscatedName = "obfuscatedname"
 		org.issuerDistinguishedName = "CN=testdn"
-		org.matchAdminWith = new BigInteger(1)
+		org.matchAdminWith = BigInteger.ONE
 		
 		
 		SystemConfiguration sc = of.createSystemConfiguration();
