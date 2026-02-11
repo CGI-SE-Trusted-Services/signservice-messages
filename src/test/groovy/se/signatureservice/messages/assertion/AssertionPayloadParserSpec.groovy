@@ -407,7 +407,7 @@ class AssertionPayloadParserSpec extends Specification {
 		when:
 		def assertion = pp.getAssertionFromResponseType(resp) 
 		then:
-		assertion instanceof JAXBElement<AssertionType>
+		assertion instanceof JAXBElement && assertion.value instanceof AssertionType
 	}
 	
 	def "Verify getAssertionFromResponseType() returns null if no assertion exists in respinse"(){
