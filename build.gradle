@@ -45,8 +45,9 @@ dependencies {
     testImplementation "commons-io:commons-io:2.19.0"
     testImplementation "org.apache.groovy:groovy-xml:${groovyVersion}"
     testImplementation "org.apache.groovy:groovy-json:${groovyVersion}"
-    testImplementation platform("org.spockframework:spock-bom:$spokVersion")
+    testImplementation platform("org.spockframework:spock-bom:$spockVersion")
     testImplementation "org.spockframework:spock-core"
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 
     jaxws 'com.sun.xml.ws:jaxws-ri:4.0.3'
 }
