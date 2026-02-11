@@ -106,7 +106,8 @@ class SweEID2DSSExtensionsMessageParserSpec extends CommonSAMLMessageParserSpeci
 		SignRequest sr = emp.parseMessage(DEFAULT_CONTEXT,data, true)
 		then:
 		sr.requestID == "SomeRequestId"
-		sr.optionalInputs.any.get(0) instanceof JAXBElement<SignRequestExtensionType>
+		def extensionType = sr.optionalInputs.any.get(0)
+		extensionType instanceof JAXBElement && extensionType.value instanceof SignRequestExtensionType
 
 		when: "Try unsigned"
 		data = emp.genSignRequest(DEFAULT_CONTEXT,"SomeRequestId","SomeProfile", signRequestExtension,signTasks, false);
@@ -175,7 +176,8 @@ class SweEID2DSSExtensionsMessageParserSpec extends CommonSAMLMessageParserSpeci
 		SignResponse sr = emp.parseMessage(DEFAULT_CONTEXT,data, true)
 		then:
 		sr.requestID == "SomeRequestId"
-		sr.optionalOutputs.any.get(0) instanceof JAXBElement<SignResponseExtensionType>
+		def extensionType = sr.optionalOutputs.any.get(0)
+		extensionType instanceof JAXBElement && extensionType.value instanceof SignResponseExtensionType
 
 		when: "Try unsigned"
 		data = emp.genSignResponse(DEFAULT_CONTEXT,"SomeRequestId","SomeProfile", emp.genResult(ResultMajorValues.Success,null,null,null),resp,responseSignTasks,false)
