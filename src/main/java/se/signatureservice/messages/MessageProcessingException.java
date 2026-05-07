@@ -12,6 +12,8 @@
  *************************************************************************/
 package se.signatureservice.messages;
 
+import java.io.Serial;
+
 /**
  * Exception thrown when internal error occurred during processing of an
  * message, this could be of bad configuration or library dependencies missing.
@@ -23,7 +25,8 @@ package se.signatureservice.messages;
 public class MessageProcessingException extends Exception {
 
 
-	private static final long serialVersionUID = 1L;
+	@Serial
+    private static final long serialVersionUID = 1L;
 
 	/**
 	 * Exception thrown when internal error occurred during processing of an
