@@ -214,7 +214,7 @@ public class DefaultReqRespManager implements ReqRespManager,
 	 * @author Philip Vendil
 	 *
 	 */
-	protected class RequestEntry{
+	protected static class RequestEntry{
 		
 		private CSMessage response;
 

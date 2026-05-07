@@ -441,7 +441,7 @@ public class SimpleMessageSecurityProvider implements
 	 */
 	protected KeyStore getDecryptionKeyStore(Properties config) throws MessageProcessingException {
 		String encryptPath = config.getProperty(SETTING_DECRYPTKEYSTORE_PATH);
-		if(encryptPath == null || encryptPath.trim().equals("")){
+		if(encryptPath == null || encryptPath.trim().isEmpty()){
 			return getSigningKeyStore(config);
 		}
 		return getKeyStore(config, SETTING_DECRYPTKEYSTORE_PATH, SETTING_DECRYPTKEYSTORE_PASSWORD);
@@ -458,7 +458,7 @@ public class SimpleMessageSecurityProvider implements
 	 */
 	protected char[] getDecryptionKeyStorePassword(Properties config) throws MessageProcessingException {
 		String encryptPath = config.getProperty(SETTING_DECRYPTKEYSTORE_PATH);
-		if(encryptPath == null || encryptPath.trim().equals("")){
+		if(encryptPath == null || encryptPath.trim().isEmpty()){
 			return SettingsUtils.getRequiredProperty(config, SETTING_SIGNINGKEYSTORE_PASSWORD).toCharArray();
 		}
 		return SettingsUtils.getRequiredProperty(config, SETTING_DECRYPTKEYSTORE_PASSWORD).toCharArray();

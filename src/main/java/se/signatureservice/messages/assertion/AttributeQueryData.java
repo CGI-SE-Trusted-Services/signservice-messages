@@ -79,7 +79,7 @@ public class AttributeQueryData {
 			throw new MessageContentException("Error parsing Attribute Query: couldn't determine type of attribute query");	
 		}
 
-		if(subjectId == null || subjectId.trim().equals("")){
+		if(subjectId == null || subjectId.trim().isEmpty()){
 			throw new MessageContentException("Error parsing Attribute Query: couldn't parse related subject Id");
 		}
 	}
@@ -134,12 +134,11 @@ public class AttributeQueryData {
 			return false;
 		AttributeQueryData other = (AttributeQueryData) obj;
 		if (id == null) {
-			if (other.id != null)
-				return false;
-		} else if (!id.equals(other.id))
-			return false;
-		return true;
-	}
+            return other.id == null;
+		} else {
+			return id.equals(other.id);
+		}
+    }
 
 	@Override
 	public String toString() {

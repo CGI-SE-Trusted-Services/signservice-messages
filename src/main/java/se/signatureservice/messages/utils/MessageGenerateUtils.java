@@ -43,7 +43,7 @@ public class MessageGenerateUtils {
 	public static String generateRandomUUID(){
 		byte[] randomData = new byte[15];
 		secureRandom.nextBytes(randomData);
-		String hexData = new String(bytesToHex(randomData));
+		String hexData = bytesToHex(randomData);
 		String specialChar = specialCharSet[secureRandom.nextInt(4)];
 
 		return hexData.substring(0, 8) + "-" + hexData.substring(8,12) + "-4" + hexData.substring(12,15) + "-" + specialChar + hexData.substring(15,18) + "-" + hexData.substring(18);

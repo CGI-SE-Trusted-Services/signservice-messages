@@ -892,7 +892,7 @@ public class SAMLMetaDataMessageParser extends BaseSAMLMessageParser {
         isSet(lang,"lang attribute is required for MD UI Keywords");
         KeywordsType k = uiOf.createKeywordsType();
         for(String keyword : keywords){
-            k.getValue().add(keyword.replaceAll(" ","+"));
+            k.getValue().add(keyword.replace(" ","+"));
         }
         k.setLang(lang);
         return uiOf.createKeywords(k);
@@ -954,7 +954,7 @@ public class SAMLMetaDataMessageParser extends BaseSAMLMessageParser {
      * error message.
      */
     protected void isSet(String value, String errorMessage) throws MessageContentException{
-        if(value == null || value.trim().equals("")){
+        if(value == null || value.trim().isEmpty()){
             throw new MessageContentException(errorMessage);
         }
     }

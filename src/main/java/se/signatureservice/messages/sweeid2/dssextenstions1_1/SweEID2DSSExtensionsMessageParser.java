@@ -1029,7 +1029,7 @@ public class SweEID2DSSExtensionsMessageParser extends DSS1CoreMessageParser{
      */
     protected JAXBContext getDSSJAXBContext() throws JAXBException{
         if(dssJaxbContext== null){
-            dssJaxbContext = JAXBContext.newInstance(super.BASE_JAXB_CONTEXT);
+            dssJaxbContext = JAXBContext.newInstance(DSS1CoreMessageParser.BASE_JAXB_CONTEXT);
 
         }
         return dssJaxbContext;
