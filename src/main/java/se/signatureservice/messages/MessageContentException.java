@@ -12,6 +12,8 @@
  *************************************************************************/
 package se.signatureservice.messages;
 
+import java.io.Serial;
+
 /**
  * Exception thrown due to bad content of a message.
  * 
@@ -22,7 +24,8 @@ package se.signatureservice.messages;
 public class MessageContentException extends Exception {
 
 
-	private static final long serialVersionUID = 1L;
+	@Serial
+    private static final long serialVersionUID = 1L;
 
 	/**
 	 * Exception thrown due to bad content of a message.
