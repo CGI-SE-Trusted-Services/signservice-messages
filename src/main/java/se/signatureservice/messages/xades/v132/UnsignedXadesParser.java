@@ -17,6 +17,7 @@ import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.util.Objects;
 
 /**
  * Parser to marshall and unmashall unsigned Xades structures.
@@ -120,17 +121,17 @@ public class UnsignedXadesParser {
                                        String publicId, String systemId, String baseURI) {
             try {
                 if(systemId != null && systemId.equals("datatypes.dtd")){
-                    return new XSDLSInput(publicId, systemId, DefaultCSMessageParser.class.getResourceAsStream("/datatypes.dtd"));
+                    return new XSDLSInput(publicId, systemId, Objects.requireNonNull(DefaultCSMessageParser.class.getResourceAsStream("/datatypes.dtd")));
                 }
                 if(systemId != null && systemId.equals("http://www.w3.org/2001/XMLSchema.dtd")){
-                    return new XSDLSInput(publicId, systemId, DefaultCSMessageParser.class.getResourceAsStream("/XMLSchema.dtd"));
+                    return new XSDLSInput(publicId, systemId, Objects.requireNonNull(DefaultCSMessageParser.class.getResourceAsStream("/XMLSchema.dtd")));
                 }
                 if(namespaceURI != null){
                     if(namespaceURI.equals(DefaultCSMessageParser.XMLDSIG_NAMESPACE)){
-                        return new XSDLSInput(publicId, systemId, DefaultCSMessageParser.class.getResourceAsStream(DefaultCSMessageParser.XMLDSIG_XSD_SCHEMA_RESOURCE_LOCATION));
+                        return new XSDLSInput(publicId, systemId, Objects.requireNonNull(DefaultCSMessageParser.class.getResourceAsStream(DefaultCSMessageParser.XMLDSIG_XSD_SCHEMA_RESOURCE_LOCATION)));
                     }
                     if(namespaceURI.equals(NAMESPACE)){
-                        return new XSDLSInput(publicId, systemId, DefaultCSMessageParser.class.getResourceAsStream(XADES_V132_XSD_SCHEMA_RESOURCE_LOCATION));
+                        return new XSDLSInput(publicId, systemId, Objects.requireNonNull(DefaultCSMessageParser.class.getResourceAsStream(XADES_V132_XSD_SCHEMA_RESOURCE_LOCATION)));
                     }
                 }
             } catch (MessageProcessingException e) {

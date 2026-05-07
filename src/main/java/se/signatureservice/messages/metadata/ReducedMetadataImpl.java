@@ -220,7 +220,7 @@ public class ReducedMetadataImpl implements ReducedMetadata {
         // then certificates from first encounteredIDPSSODescriptor
         // then from the rest of the roleDescriptors
 
-        String displayName = null;
+        String displayName;
 
         for (final var rd : roleDescriptors) {
             displayName = rd.getUIInfoDisplayName(lang, defaultLang).orElse(null);

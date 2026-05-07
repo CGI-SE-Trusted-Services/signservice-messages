@@ -43,6 +43,7 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * MessageParser for generating generate AuthCont 1.0 SACI message according to RFC 7773.
@@ -194,17 +195,17 @@ public class AuthContSaciMessageParser {
                                        String publicId, String systemId, String baseURI) {
             try {
                 if(systemId != null && systemId.equals("http://www.w3.org/2001/XMLSchema.dtd")){
-                    return new XSDLSInput(publicId, systemId, DefaultCSMessageParser.class.getResourceAsStream("/XMLSchema.dtd"));
+                    return new XSDLSInput(publicId, systemId, Objects.requireNonNull(DefaultCSMessageParser.class.getResourceAsStream("/XMLSchema.dtd")));
                 }
                 if(systemId != null && systemId.equals("datatypes.dtd")){
-                    return new XSDLSInput(publicId, systemId, DefaultCSMessageParser.class.getResourceAsStream("/datatypes.dtd"));
+                    return new XSDLSInput(publicId, systemId, Objects.requireNonNull(DefaultCSMessageParser.class.getResourceAsStream("/datatypes.dtd")));
                 }
                 if(namespaceURI != null){
                     if(namespaceURI.equals(SAMLAssertionMessageParser.ASSERTION_NAMESPACE)){
-                        return new XSDLSInput(publicId, systemId, DefaultCSMessageParser.class.getResourceAsStream(SAMLAssertionMessageParser.ASSERTION_XSD_SCHEMA_2_0_RESOURCE_LOCATION));
+                        return new XSDLSInput(publicId, systemId, Objects.requireNonNull(DefaultCSMessageParser.class.getResourceAsStream(SAMLAssertionMessageParser.ASSERTION_XSD_SCHEMA_2_0_RESOURCE_LOCATION)));
                     }
                     if(namespaceURI.equals(NAMESPACE)){
-                        return new XSDLSInput(publicId, systemId, DefaultCSMessageParser.class.getResourceAsStream(SCHEMA_LOCATION));
+                        return new XSDLSInput(publicId, systemId, Objects.requireNonNull(DefaultCSMessageParser.class.getResourceAsStream(SCHEMA_LOCATION)));
                     }
                 }
             } catch (MessageProcessingException e) {

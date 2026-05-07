@@ -801,10 +801,10 @@ public abstract class BaseSAMLMessageParser {
 				String publicId, String systemId, String baseURI) {
 			try {
 				if(systemId != null && systemId.equals("http://www.w3.org/2001/XMLSchema.dtd")){
-					return new XSDLSInput(publicId, systemId, DefaultCSMessageParser.class.getResourceAsStream("/XMLSchema.dtd"));
+					return new XSDLSInput(publicId, systemId, Objects.requireNonNull(DefaultCSMessageParser.class.getResourceAsStream("/XMLSchema.dtd")));
 				}
 				if(systemId != null && systemId.equals("datatypes.dtd")){
-					return new XSDLSInput(publicId, systemId, DefaultCSMessageParser.class.getResourceAsStream("/datatypes.dtd"));
+					return new XSDLSInput(publicId, systemId, Objects.requireNonNull(DefaultCSMessageParser.class.getResourceAsStream("/datatypes.dtd")));
 				}
 
 				String retval = null;
@@ -815,7 +815,7 @@ public abstract class BaseSAMLMessageParser {
 					retval = lookupSchemaForElement(type, namespaceURI, publicId, systemId, baseURI);
 				}
 				if(retval != null) {
-					return new XSDLSInput(publicId, systemId, DefaultCSMessageParser.class.getResourceAsStream(retval));
+					return new XSDLSInput(publicId, systemId, Objects.requireNonNull(DefaultCSMessageParser.class.getResourceAsStream(retval)));
 				}
 
 			} catch (MessageProcessingException e) {
