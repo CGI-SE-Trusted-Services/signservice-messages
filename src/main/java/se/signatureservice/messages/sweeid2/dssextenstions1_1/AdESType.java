@@ -8,5 +8,5 @@ package se.signatureservice.messages.sweeid2.dssextenstions1_1;
 public enum AdESType {
     None,
     BES,
-    EPES;
+    EPES
 }

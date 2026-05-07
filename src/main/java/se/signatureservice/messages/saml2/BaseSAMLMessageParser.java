@@ -473,7 +473,7 @@ public abstract class BaseSAMLMessageParser {
 				if(cat instanceof OneTimeUseType){
 					if(conditionLookup.usedBefore(messageId)){
 						throw new MessageContentException("Error " + type + " has been used before and contains OneTime condition");
-					};
+					}
 
 				}
 				if(cat instanceof AudienceRestrictionType){
