@@ -117,7 +117,7 @@ class SweEID2DSSExtensionsMessageParserSpec extends CommonSAMLMessageParserSpeci
 		xml.@Profile == "SomeProfile"
 		xml.@RequestID == "SomeRequestId"
 		xml.OptionalInputs.SignRequestExtension.size() == 1
-		xml.OptionalInputs.Signature.size() == 0
+		xml.OptionalInputs.Signature.isEmpty()
 		xml.InputDocuments.Other.SignTasks.SignTaskData.size() == 2
 
 		when:
@@ -187,7 +187,7 @@ class SweEID2DSSExtensionsMessageParserSpec extends CommonSAMLMessageParserSpeci
 		xml.@Profile == "SomeProfile"
 		xml.@RequestID == "SomeRequestId"
 		xml.OptionalOutputs.SignResponseExtension.size() == 1
-		xml.OptionalOutputs.Signature.size() == 0
+		xml.OptionalOutputs.Signature.isEmpty()
 		xml.SignatureObject.Other.SignTasks.SignTaskData.size() == 2
 
 		when:
@@ -294,7 +294,7 @@ class SweEID2DSSExtensionsMessageParserSpec extends CommonSAMLMessageParserSpeci
 		//printXML(d);
 		xml = slurpXml(d)
 		then:
-		xml.@CertType.size() == 0
+		xml.@CertType.isEmpty()
 
 		when:
 		t = emp.parseMessage(DEFAULT_CONTEXT,d, false)
@@ -448,7 +448,7 @@ class SweEID2DSSExtensionsMessageParserSpec extends CommonSAMLMessageParserSpeci
 		then:
 		xml.ContextInfo.size() == 1
 		xml.AttributeStatement.size() == 1
-		xml.SamlAssertions.size() == 0
+		xml.SamlAssertions.isEmpty()
 
 		when:
 		t = emp.parseMessage(DEFAULT_CONTEXT,d, false)

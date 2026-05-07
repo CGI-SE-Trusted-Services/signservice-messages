@@ -388,7 +388,7 @@ public abstract class BaseSAMLMessageParser {
 	 * @return the first assertion type of null if no assertion was found.
 	 */
 	public JAXBElement<AssertionType> getAssertionFromResponseType(ResponseType responseType){
-		if(responseType.getAssertionOrEncryptedAssertion().size() == 0){
+		if(responseType.getAssertionOrEncryptedAssertion().isEmpty()){
 			return null;
 		}
 		return of.createAssertion((AssertionType) responseType.getAssertionOrEncryptedAssertion().get(0));

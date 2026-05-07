@@ -203,7 +203,7 @@ public class DefaultCSMessageParserSpec extends Specification{
 		def xml = slurpXml(requestMessage)
 		def payloadObject = xml.payload.PingRequest
 		then:
-		payloadObject.children.size() == 0
+		payloadObject.children.isEmpty()
 		messageContainsPayload requestMessage, "cs:PingRequest"
 		verifyCSHeaderMessage(requestMessage, xml, "SOMEREQUESTER", "SOMESOURCEID", "someorg","PingRequest", createOriginatorCredential())
 
@@ -214,7 +214,7 @@ public class DefaultCSMessageParserSpec extends Specification{
 		xml = slurpXml(rd.responseData)
 		payloadObject = xml.payload.PingResponse
 		then:
-		payloadObject.children.size() == 0
+		payloadObject.children.isEmpty()
 		messageContainsPayload rd.responseData, "cs:PingResponse"
 		verifyCSMessageResponseData  rd, "SOMEREQUESTER", TEST_ID, false, "PingResponse", "UNKNOWN"
 		verifyCSHeaderMessage(rd.responseData, xml, "SOMESOURCEID", "SOMEREQUESTER", "someorg","PingResponse", createOriginatorCredential())
@@ -244,7 +244,7 @@ public class DefaultCSMessageParserSpec extends Specification{
 		then:
 		xml.payload.FailureResponse.inResponseTo == TEST_ID
 		xml.payload.FailureResponse.status == "ILLEGALARGUMENT"
-		xml.payload.FailureResponse.failureMessage.size() == 0
+		xml.payload.FailureResponse.failureMessage.isEmpty()
 	}
 	
 	def "Verify that getSigningCertificate parses signer certificate"(){
@@ -583,7 +583,7 @@ public class DefaultCSMessageParserSpec extends Specification{
 		then:
 		mp.jaxbData.jaxbClassPath == ""
 		mp.jaxbData.jaxbContext == null
-		mp.jaxbData.payLoadValidatorCache.size() == 0
+		mp.jaxbData.payLoadValidatorCache.isEmpty()
 		mp.jaxbData.jaxbIntrospector == null
 
 		mp.jaxbData.getJAXBContext() != null
@@ -807,7 +807,7 @@ public class DefaultCSMessageParserSpec extends Specification{
 	static void verifySuccessfulBasePayload(GPathResult payLoadObject, String expectedResponseTo){
 	  assert payLoadObject.inResponseTo == expectedResponseTo
 	  assert payLoadObject.status == "SUCCESS"
-	  assert payLoadObject.failureMessage.size() == 0
+	  assert payLoadObject.failureMessage.isEmpty()
 	}
 	
 	private Object createPayLoad(){

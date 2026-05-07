@@ -83,6 +83,6 @@ class ContextMessageSecurityProviderSpec extends Specification {
 
     def "Verify that Context.getProperties creates empty context if null"(){
        expect:
-       new Context("SomeUsage1").getProperties().size() == 0
+       new Context("SomeUsage1").getProperties().isEmpty()
     }
 }

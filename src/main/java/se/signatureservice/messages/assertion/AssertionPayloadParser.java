@@ -515,7 +515,7 @@ public class AssertionPayloadParser extends BasePayloadParser {
 	 * @return the first assertion type of null if no assertion was found.
 	 */
 	public JAXBElement<AssertionType> getAssertionFromResponseType(ResponseType responseType){
-		if(responseType.getAssertionOrEncryptedAssertion().size() == 0){
+		if(responseType.getAssertionOrEncryptedAssertion().isEmpty()){
 			return null;
 		}
 		return (JAXBElement<AssertionType>) of.createAssertion((AssertionType) responseType.getAssertionOrEncryptedAssertion().get(0));
