@@ -78,7 +78,7 @@ public class ApprovalAssertionData extends AssertionData {
 										approvers.add((Approver) next);
 									}
 								}	
-								if(approvers.size() == 0){
+								if(approvers.isEmpty()){
 									approvers = null;
 								}
 							}

@@ -41,7 +41,7 @@ public class PayloadParserRegistrySpec extends Specification{
 		PayloadParserRegistry.configure(Mock(ConfigurationCallback), false)
 		then:
 		PayloadParserRegistry.configurationCallback != null
-		PayloadParserRegistry.payloadParserRegistry.size() == 0
+		PayloadParserRegistry.payloadParserRegistry.isEmpty()
 	}
 	
 	def "Verify that register adds payload parser to registry and call updateContext on callback and that deregisters removes the payload parser again."(){
@@ -56,7 +56,7 @@ public class PayloadParserRegistrySpec extends Specification{
 		PayloadParserRegistry.register(DummyPayloadParser.NAMESPACE,DummyPayloadParser.class)
 		then:
 		PayloadParserRegistry.payloadParserRegistry.get(DummyPayloadParser.NAMESPACE) == DummyPayloadParser.class
-		PayloadParserRegistry.payloadParserCache.size() == 0
+		PayloadParserRegistry.payloadParserCache.isEmpty()
 		
 		when:
 		def namespaces = PayloadParserRegistry.getRegistredNamespaces()
