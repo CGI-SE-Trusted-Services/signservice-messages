@@ -52,7 +52,7 @@ public class SettingsUtils {
 	public static Boolean parseBoolean(Properties config, String setting, String alternativeSetting, boolean required) throws MessageProcessingException{
 		String value = config.getProperty(setting, (alternativeSetting != null ? config.getProperty(alternativeSetting, "") : ""));
 
-		if(value == null || value.trim().equals("")){
+		if(value == null || value.trim().isEmpty()){
 			if(required){
 				throw new MessageProcessingException("Error parsing setting " + setting + ", a value must be set to either TRUE or FALSE");
 			}
@@ -131,7 +131,7 @@ public class SettingsUtils {
 		if(value == null && alternativeSetting != null){
 			value = config.getProperty(alternativeSetting);
 		}
-		if(value == null || value.trim().equals("")){
+		if(value == null || value.trim().isEmpty()){
 			return defaulValue;
 		}
 		String[] values = value.split(deliminator);
@@ -171,7 +171,7 @@ public class SettingsUtils {
 		if(value == null && alternativeSetting != null){
 			value = config.getProperty(alternativeSetting);
 		}
-		if(value == null || value.trim().equals("")){
+		if(value == null || value.trim().isEmpty()){
 			if(required){
 			  throw new MessageProcessingException("Required setting " + setting + " not set.");
 			}else{
@@ -208,7 +208,7 @@ public class SettingsUtils {
      */
 	public static String getRequiredProperty(Properties config, String setting, String alternativeSettings) throws MessageProcessingException{
 		String value = config.getProperty(setting, (alternativeSettings != null ? config.getProperty(alternativeSettings, "") : ""));
-		if(value.trim().equals("")){
+		if(value.trim().isEmpty()){
 			throw new MessageProcessingException("Error required configuration property " + setting + " not set.");
 		}
 		return value;
