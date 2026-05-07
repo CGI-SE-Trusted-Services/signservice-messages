@@ -331,7 +331,7 @@ public class DefaultCSMessageParser implements CSMessageParser {
 	 */
 	public byte[] generateGetApprovalRequest(String requestId, String destinationId, String organisation, byte[] request, Credential originator, List<Object> assertions) throws MessageContentException, MessageProcessingException{
 		CSMessage csMessage = parseMessage(request);
-		CSRequest requestPayload = null;
+		final CSRequest requestPayload;
 		try{
 			requestPayload = (CSRequest) csMessage.getPayload().getAny();
 		}catch(Exception e){
@@ -784,13 +784,12 @@ public class DefaultCSMessageParser implements CSMessageParser {
     public void validatePayloadObject(CSMessageVersion version, Object payLoadObject) throws MessageContentException {
 		try {
 			String payLoadNamespace = jaxbData.getNamespace(payLoadObject);
-			if(!payLoadNamespace.equals(CSMESSAGE_NAMESPACE)){
+			if(!CSMESSAGE_NAMESPACE.equals(payLoadNamespace)){
 			  Validator validator = jaxbData.getPayLoadValidatorFromCache(payLoadNamespace, version.getMessageVersion(), version.getPayLoadVersion());
 			  validator.validate(new JAXBSource(jaxbData.getJAXBContext(), payLoadObject));
 			}else{
-				if(payLoadObject instanceof GetApprovalRequest){
-					GetApprovalRequest getApprovalRequest = (GetApprovalRequest) payLoadObject;
-					Object requestedPayload = getApprovalRequest.getRequestPayload().getAny();
+				if(payLoadObject instanceof GetApprovalRequest getApprovalRequest){
+                    Object requestedPayload = getApprovalRequest.getRequestPayload().getAny();
 					String requestedPayLoadNamespace = jaxbData.getNamespace(requestedPayload);
 					Validator validator = jaxbData.getPayLoadValidatorFromCache(requestedPayLoadNamespace, version.getMessageVersion(), version.getPayLoadVersion());
 					validator.validate(new JAXBSource(jaxbData.getJAXBContext(), requestedPayload));

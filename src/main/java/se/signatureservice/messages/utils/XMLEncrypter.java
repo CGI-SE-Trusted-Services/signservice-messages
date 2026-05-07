@@ -416,7 +416,8 @@ public class XMLEncrypter {
 	 * @throws MessageProcessingException if internal problems occurred encrypting the message.
 	 */
 	public Document encryptProperties(Properties properties, List<X509Certificate> receipients, boolean useKeyId) throws MessageProcessingException {
-		Document encDocument = null, document = null;
+		final Document encDocument;
+		final Document document;
 		try {
 			ByteArrayOutputStream os = new ByteArrayOutputStream();		
 			properties.storeToXML(os, null, StandardCharsets.UTF_8);
@@ -452,7 +453,7 @@ public class XMLEncrypter {
 	 * @throws MessageContentException if content of document was invalid
 	 */
 	public Properties decryptProperties(Document encDocument) throws NoDecryptionKeyFoundException, MessageProcessingException, MessageContentException {
-		Properties properties = null;
+		final Properties properties;
 		
 		try {
 			Document document = decryptDoc(encDocument, null);
