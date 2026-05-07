@@ -181,7 +181,7 @@ public class SimpleMessageSecurityProvider implements
 		}
 		
 		
-		if(decryptionKeys.size() == 0){
+		if(decryptionKeys.isEmpty()){
 			throw new MessageProcessingException("Error no decryption keys found in decryption keystore: " + decKeystorePath);
 		}
 		

@@ -175,7 +175,7 @@ public class SAMLMetaDataMessageParser extends BaseSAMLMessageParser {
             }
         }
 
-        if(edt.getRoleDescriptorOrIDPSSODescriptorOrSPSSODescriptor().size() == 0 && edt.getAffiliationDescriptor() == null){
+        if(edt.getRoleDescriptorOrIDPSSODescriptorOrSPSSODescriptor().isEmpty() && edt.getAffiliationDescriptor() == null){
             throw new MessageContentException("Error in Entity Descriptor data, at least one descriptor must exist.");
         }
 
@@ -750,7 +750,7 @@ public class SAMLMetaDataMessageParser extends BaseSAMLMessageParser {
      * @throws MessageContentException if no child elements where specified.
      */
     public JAXBElement<UIInfoType> genUIInfo(List<JAXBElement<?>> childElements) throws MessageContentException{
-        if(childElements == null || childElements.size() == 0){
+        if(childElements == null || childElements.isEmpty()){
             throw new MessageContentException("Error constructing UIInfo, at least one child element must exist.");
         }
 
@@ -769,7 +769,7 @@ public class SAMLMetaDataMessageParser extends BaseSAMLMessageParser {
      * @throws MessageContentException if no child elements where specified.
      */
     public JAXBElement<DiscoHintsType> genUIDiscoHints(List<JAXBElement<?>> childElements) throws MessageContentException{
-        if(childElements == null || childElements.size() == 0){
+        if(childElements == null || childElements.isEmpty()){
             throw new MessageContentException("Error constructing DiscoHints, at least one child element must exist.");
         }
         DiscoHintsType discoHintsType = uiOf.createDiscoHintsType();
@@ -1201,7 +1201,7 @@ public class SAMLMetaDataMessageParser extends BaseSAMLMessageParser {
     }
 
     private void checkAtLeastOneInList(List<?> list, String objectType, String fieldName) throws MessageContentException{
-        if(list == null || list.size() == 0){
+        if(list == null || list.isEmpty()){
             throw new MessageContentException("Error constructing meta data " + objectType + ", at least on " + fieldName + " must be specified");
         }
     }
