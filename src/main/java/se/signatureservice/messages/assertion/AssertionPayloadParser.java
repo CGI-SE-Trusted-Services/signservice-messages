@@ -735,7 +735,7 @@ public class AssertionPayloadParser extends BasePayloadParser {
 	 * @throws MessageProcessingException if internal error occurred generating the message.
 	 */
 	private byte[] genAttributeQuery(String subjectId, String attributeName, String tokenType) throws MessageContentException, MessageProcessingException{
-		if(subjectId == null || subjectId.trim().equals("")){
+		if(subjectId == null || subjectId.trim().isEmpty()){
 			throw new MessageContentException("Error subject id cannot be null in attribute query");
 		}
 		AttributeQueryType attributeQueryType = samlpOf.createAttributeQueryType();

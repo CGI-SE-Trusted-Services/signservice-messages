@@ -401,7 +401,7 @@ public class SAMLProtocolMessageParser extends BaseSAMLMessageParser{
     /**
      * AuthNSignature specific signature location finder.
      */
-    private class AuthNSignatureLocationFinder extends SAMLPSignatureLocationFinder{
+    private static class AuthNSignatureLocationFinder extends SAMLPSignatureLocationFinder{
 
         @Override
         public List<QName> getSiblingsBeforeSignature(Element element) throws MessageContentException {

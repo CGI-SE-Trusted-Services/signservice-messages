@@ -206,7 +206,7 @@ public class DefaultCSMessageParser implements CSMessageParser {
 		}
 
 		sourceId = SettingsUtils.getProperty(config, SETTING_SOURCEID, OLD_SETTING_SOURCEID);
-		if(sourceId == null || sourceId.trim().equals("")){
+		if(sourceId == null || sourceId.trim().isEmpty()){
 			throw new MessageProcessingException("Error setting " + SETTING_SOURCEID + " must be set.");
 		}
 		
@@ -430,7 +430,7 @@ public class DefaultCSMessageParser implements CSMessageParser {
     				version = versionNode.getNodeValue();
     			}
     		}  
-    		if(version == null || version.trim().equals("")){
+    		if(version == null || version.trim().isEmpty()){
     			throw new MessageContentException("Error unsupported protocol version when generating CSResponse, version: " + version);
     		}
 
@@ -692,10 +692,10 @@ public class DefaultCSMessageParser implements CSMessageParser {
     		throw new MessageContentException("Error parsing XML data: " + e.getMessage(),e);
     	}
 
-    	if(messageVersion == null || messageVersion.trim().equals("")){
+    	if(messageVersion == null || messageVersion.trim().isEmpty()){
     	  throw new MessageContentException("Error no version attribute found in CS Message.");
     	}
-    	if(payLoadVersion == null || payLoadVersion.trim().equals("")){
+    	if(payLoadVersion == null || payLoadVersion.trim().isEmpty()){
       	  throw new MessageContentException("Error no payload version attribute found in CS Message.");
       	}
     	return new CSMessageVersion(messageVersion, payLoadVersion);
@@ -920,7 +920,7 @@ public class DefaultCSMessageParser implements CSMessageParser {
 	 * @author Philip Vendil
 	 *
 	 */
-	private class JAXBRelatedData{
+	private static class JAXBRelatedData{
 		
 		private JAXBContext jaxbContext = null;
 		private HashMap<String, Validator> payLoadValidatorCache = new HashMap<>();
@@ -1102,7 +1102,7 @@ public class DefaultCSMessageParser implements CSMessageParser {
 	}
 
 
-	public class CSMessageSignatureLocationFinder implements XMLSigner.SignatureLocationFinder {
+	public static class CSMessageSignatureLocationFinder implements XMLSigner.SignatureLocationFinder {
 		@Override
 		public Element[] getSignatureLocations(Document doc) throws MessageContentException {
 			try{

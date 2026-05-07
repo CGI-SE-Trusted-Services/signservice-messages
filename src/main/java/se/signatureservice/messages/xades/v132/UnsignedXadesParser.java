@@ -114,7 +114,7 @@ public class UnsignedXadesParser {
         return schemaFactory.newSchema(sources);
     }
 
-    public class UnsignedXadesParserLSResourceResolver implements LSResourceResolver {
+    public static class UnsignedXadesParserLSResourceResolver implements LSResourceResolver {
 
         public LSInput resolveResource(String type, String namespaceURI,
                                        String publicId, String systemId, String baseURI) {
