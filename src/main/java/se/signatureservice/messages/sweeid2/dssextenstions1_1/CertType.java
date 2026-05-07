@@ -9,7 +9,7 @@ public enum CertType {
     QC("QC"),
     QC_SSD("QC/SSCD");
 
-    private String value;
+    private final String value;
     CertType(String value){
         this.value = value;
     }

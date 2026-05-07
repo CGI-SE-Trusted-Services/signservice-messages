@@ -449,11 +449,11 @@ public class DefaultCSMessageParser implements CSMessageParser {
 			String responseToRequestID = (String) result;
 
 			expr = xpath.compile("//*[local-name()='organisation']/text()");
-			result = expr.evaluate(doc, XPathConstants.STRING);;
+			result = expr.evaluate(doc, XPathConstants.STRING);
 			String organisation = (String) result;
 			
 			expr = xpath.compile("//*[local-name()='name']/text()");
-			result = expr.evaluate(doc, XPathConstants.STRING);;
+			result = expr.evaluate(doc, XPathConstants.STRING);
 			String requestName = (String) result;
 			
 			if(organisation == null || responseToRequestID == null || destinationID == null || requestName==null){

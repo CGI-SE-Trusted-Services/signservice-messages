@@ -35,8 +35,8 @@ public enum EncryptionAlgorithmScheme {
 	RSA_PKCS1_5_WITH_AES256_GCM(XMLCipher.AES_256_GCM, XMLCipher.RSA_v1dot5),
 	RSA_OAEP_WITH_AES256_GCM(XMLCipher.AES_256_GCM, XMLCipher.RSA_OAEP);
 
-	String dataEncryptionAlgorithmURI;
-	String keyEncryptionAlgorithmURI;
+	final String dataEncryptionAlgorithmURI;
+	final String keyEncryptionAlgorithmURI;
 	
 	EncryptionAlgorithmScheme(String dataEncryptionAlgorithmURI,
 	                             String keyEncryptionAlgorithmURI){
