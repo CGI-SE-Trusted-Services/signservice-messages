@@ -12,6 +12,8 @@
  *************************************************************************/
 package se.signatureservice.messages;
 
+import java.io.Serial;
+
 /**
  * Exception thrown when no decryption key could be found when trying to decrypt a message.
  * 
@@ -22,7 +24,8 @@ package se.signatureservice.messages;
 public class NoDecryptionKeyFoundException extends Exception {
 
 
-	private static final long serialVersionUID = 1L;
+	@Serial
+    private static final long serialVersionUID = 1L;
 
 	/**
 	 * Exception thrown when no decryption key could be found when trying to decrypt a message
