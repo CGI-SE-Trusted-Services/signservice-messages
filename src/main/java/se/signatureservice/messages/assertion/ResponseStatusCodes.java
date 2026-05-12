@@ -26,7 +26,7 @@ public enum ResponseStatusCodes {
 	VERSION_MISMATCH("urn:oasis:names:tc:SAML:2.0:status:VersionMismatch");
 	
 	
-	private String uRIValue;
+	final private String uRIValue;
 	private ResponseStatusCodes(String uRIValue){
 		this.uRIValue = uRIValue;
 	}

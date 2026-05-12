@@ -346,7 +346,7 @@ class SAMLMetaDataMessageParserSpec extends CommonSAMLMessageParserSpecification
 				createOrganizationURLs(),null)
 		then:
 		o.extensions == null
-		o.otherAttributes.size() == 0
+		o.otherAttributes.isEmpty()
 		when: "Verify that at least on organsiationName must exist"
 		smdmp.genOrganization(null,null,createOrganizationDisplayNames(),
 				createOrganizationURLs(),null)
@@ -396,9 +396,9 @@ class SAMLMetaDataMessageParserSpec extends CommonSAMLMessageParserSpecification
 		ct.company == null
 		ct.givenName == null
 		ct.surName == null
-		ct.emailAddress.size() == 0
-		ct.telephoneNumber.size() == 0
-		ct.otherAttributes.size() == 0
+		ct.emailAddress.isEmpty()
+		ct.telephoneNumber.isEmpty()
+		ct.otherAttributes.isEmpty()
 	}
 
 	def "Verify genKeyDescriptor() generates a valid key descriptor"(){
@@ -444,7 +444,7 @@ class SAMLMetaDataMessageParserSpec extends CommonSAMLMessageParserSpecification
 		//printXML(etd)
 		xml = slurpXml(etd)
 		then:
-		xml.KeyName.size() == 0
+		xml.KeyName.isEmpty()
 
 	}
 
@@ -529,7 +529,7 @@ class SAMLMetaDataMessageParserSpec extends CommonSAMLMessageParserSpecification
 		//printXML(edd)
 		xml = slurpXml(edd)
 		then:
-		xml.Signature.size() == 0
+		xml.Signature.isEmpty()
 
 		when:
 		smdmp.parseMessage(DEFAULT_CONTEXT,edd,true)
@@ -575,7 +575,7 @@ class SAMLMetaDataMessageParserSpec extends CommonSAMLMessageParserSpecification
 		//printXML(edd)
 		xml = slurpXml(edd)
 		then:
-		xml.Signature.size() == 0
+		xml.Signature.isEmpty()
 
 		when:
 		smdmp.parseMessage(DEFAULT_CONTEXT,edd,true)

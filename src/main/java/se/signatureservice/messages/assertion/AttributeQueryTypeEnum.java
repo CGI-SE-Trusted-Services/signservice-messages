@@ -23,7 +23,7 @@ public enum AttributeQueryTypeEnum {
 	AUTHORIZATION_TICKET(AssertionPayloadParser.ATTRIBUTE_NAME_ROLES),
 	USER_DATA(AssertionPayloadParser.ATTRIBUTE_NAME_USERDATA);
 
-	private String attributeValue;
+	final private String attributeValue;
 	private AttributeQueryTypeEnum(String attributeValue){
 		this.attributeValue = attributeValue;
 	}

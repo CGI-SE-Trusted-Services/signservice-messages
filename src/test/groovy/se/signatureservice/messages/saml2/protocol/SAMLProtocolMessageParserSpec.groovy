@@ -125,7 +125,7 @@ class SAMLProtocolMessageParserSpec extends CommonSAMLMessageParserSpecification
 		//printXML(authNRequest)
 		then:
 		xml.Issuer == "SomeIssuer"
-		xml.Signature.SignedInfo.size() == 0
+		xml.Signature.SignedInfo.isEmpty()
 
 		when:
 		art = spmp.parseMessage(DEFAULT_CONTEXT,authNRequest, false)
@@ -218,8 +218,8 @@ class SAMLProtocolMessageParserSpec extends CommonSAMLMessageParserSpecification
 		xml.Issuer == "SomeIssuer"
 		xml.Signature.SignedInfo.size() == 1
 
-		xml.Assertion[0].Signature.size() == 0
-		xml.Assertion[1].Signature.size() == 0
+		xml.Assertion[0].Signature.isEmpty()
+		xml.Assertion[1].Signature.isEmpty()
 
 		when: "Verify that is is parsable"
 		r = spmp.parseMessage(DEFAULT_CONTEXT,response,true)
@@ -234,7 +234,7 @@ class SAMLProtocolMessageParserSpec extends CommonSAMLMessageParserSpecification
 		xml = slurpXml(response)
 		then:
 		xml.Issuer == "SomeIssuer"
-		xml.Signature.SignedInfo.size() == 0
+		xml.Signature.SignedInfo.isEmpty()
 
 		xml.Assertion[0].Signature.size() == 1
 		xml.Assertion[1].Signature.size() == 1

@@ -335,7 +335,7 @@ class AssertionPayloadParserSpec extends Specification {
 		xml.AttributeStatement.Attribute.size() == 4
 		xml.AttributeStatement.Attribute[1].@Name == AssertionPayloadParser.ATTRIBUTE_NAME_DESTINATIONID
 		xml.AttributeStatement.Attribute[1].AttributeValue == AssertionPayloadParser.ANY_DESTINATION
-		xml.AttributeStatement.EncryptedAttribute.size() == 0
+		xml.AttributeStatement.EncryptedAttribute.isEmpty()
 	}
 
 	

@@ -110,8 +110,8 @@ class CredManagementPayloadParserSpec extends Specification {
 		payloadObject.tokenRequest.previousSerialNumber == "1234"
 		payloadObject.tokenRequest.renewAction == "RENEW"
 		payloadObject.tokenRequest.automationLevel == "AUTOMATIC"
-		payloadObject.fieldValues.size() == 0
-		payloadObject.hardTokenData.size() == 0
+		payloadObject.fieldValues.isEmpty()
+		payloadObject.hardTokenData.isEmpty()
 		
 		when:
 		csMessageParser.sourceId = "SOMEREQUESTER"
@@ -168,7 +168,7 @@ class CredManagementPayloadParserSpec extends Specification {
 		
 		payloadObject.tokenRequest.user == "someuser"
 		payloadObject.credentials.credential[0].status == "100"
-		payloadObject.revokedCredentials.size() == 0
+		payloadObject.revokedCredentials.isEmpty()
 
 		expect:
 		pp.parseMessage(rd.responseData)
@@ -188,7 +188,7 @@ class CredManagementPayloadParserSpec extends Specification {
 		
 		payloadObject.tokenRequest.user == "someuser"
 		payloadObject.credentials.credential[0].status == "100"
-		payloadObject.revokedCredentials.size() == 0
+		payloadObject.revokedCredentials.isEmpty()
 
 		expect:
 		pp.parseMessage(rd.responseData)

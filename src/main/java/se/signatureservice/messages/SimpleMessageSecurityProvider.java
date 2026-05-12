@@ -98,8 +98,8 @@ public class SimpleMessageSecurityProvider implements
 	public static final EncryptionAlgorithmScheme DEFAULT_ENCRYPTION_ALGORITHM_SCHEME = EncryptionAlgorithmScheme.RSA_OAEP_WITH_AES256;
 
 
-	PrivateKey signPrivateKey = null;
-	X509Certificate signCertificate = null;
+	PrivateKey signPrivateKey;
+	X509Certificate signCertificate;
 	
 	Map<String, PrivateKey> decryptionKeys = new HashMap<>();
 	Map<String, X509Certificate[]> decryptionCertificates = new HashMap<>();
@@ -181,7 +181,7 @@ public class SimpleMessageSecurityProvider implements
 		}
 		
 		
-		if(decryptionKeys.size() == 0){
+		if(decryptionKeys.isEmpty()){
 			throw new MessageProcessingException("Error no decryption keys found in decryption keystore: " + decKeystorePath);
 		}
 		
@@ -441,7 +441,7 @@ public class SimpleMessageSecurityProvider implements
 	 */
 	protected KeyStore getDecryptionKeyStore(Properties config) throws MessageProcessingException {
 		String encryptPath = config.getProperty(SETTING_DECRYPTKEYSTORE_PATH);
-		if(encryptPath == null || encryptPath.trim().equals("")){
+		if(encryptPath == null || encryptPath.trim().isEmpty()){
 			return getSigningKeyStore(config);
 		}
 		return getKeyStore(config, SETTING_DECRYPTKEYSTORE_PATH, SETTING_DECRYPTKEYSTORE_PASSWORD);
@@ -458,7 +458,7 @@ public class SimpleMessageSecurityProvider implements
 	 */
 	protected char[] getDecryptionKeyStorePassword(Properties config) throws MessageProcessingException {
 		String encryptPath = config.getProperty(SETTING_DECRYPTKEYSTORE_PATH);
-		if(encryptPath == null || encryptPath.trim().equals("")){
+		if(encryptPath == null || encryptPath.trim().isEmpty()){
 			return SettingsUtils.getRequiredProperty(config, SETTING_SIGNINGKEYSTORE_PASSWORD).toCharArray();
 		}
 		return SettingsUtils.getRequiredProperty(config, SETTING_DECRYPTKEYSTORE_PASSWORD).toCharArray();

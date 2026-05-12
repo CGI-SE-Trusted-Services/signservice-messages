@@ -10,7 +10,7 @@ public enum SignMessageMimeType {
     TEXT("text"),
     MARKDOWN("text/markdown");
 
-    private String mimeType;
+    final private String mimeType;
     SignMessageMimeType(String mimeType){
         this.mimeType = mimeType;
     }
