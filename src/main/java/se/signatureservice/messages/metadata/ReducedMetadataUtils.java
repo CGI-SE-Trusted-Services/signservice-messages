@@ -150,7 +150,7 @@ class ReducedMetadataUtils {
         var list = Optional.ofNullable(roleDescriptorType.getExtensions()).map(ExtensionsType::getAny).orElse(Collections.emptyList());
 
         var uis = list.stream().filter(it -> it instanceof JAXBElement && ((JAXBElement) it).getValue() instanceof UIInfoType)
-                .map(it -> (JAXBElement) it).collect(Collectors.toList());
+                .map(it -> (JAXBElement) it).toList();
 
         for (final JAXBElement element : uis) {
             UIInfoType uiInfo = ((UIInfoType) element.getValue());

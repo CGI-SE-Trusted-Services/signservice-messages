@@ -24,8 +24,8 @@ public enum AssertionTypeEnum {
 	USER_DATA("USER_DATA", UserDataAssertionData.class),
 	APPROVAL_TICKET("APPROVAL_TICKET", ApprovalAssertionData.class);
 
-	private String attributeValue;
-	private Class<?> assertionDataClass;
+	final private String attributeValue;
+	final private Class<?> assertionDataClass;
 	private AssertionTypeEnum(String attributeValue, Class<?> assertionDataClass){
 		this.attributeValue = attributeValue;
 		this.assertionDataClass = assertionDataClass;

@@ -54,10 +54,7 @@ import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Properties;
+import java.util.*;
 
 /**
  * Assertion Payload Parser used to parse and generate Assertion Tickets such as:
@@ -515,7 +512,7 @@ public class AssertionPayloadParser extends BasePayloadParser {
 	 * @return the first assertion type of null if no assertion was found.
 	 */
 	public JAXBElement<AssertionType> getAssertionFromResponseType(ResponseType responseType){
-		if(responseType.getAssertionOrEncryptedAssertion().size() == 0){
+		if(responseType.getAssertionOrEncryptedAssertion().isEmpty()){
 			return null;
 		}
 		return (JAXBElement<AssertionType>) of.createAssertion((AssertionType) responseType.getAssertionOrEncryptedAssertion().get(0));
@@ -735,7 +732,7 @@ public class AssertionPayloadParser extends BasePayloadParser {
 	 * @throws MessageProcessingException if internal error occurred generating the message.
 	 */
 	private byte[] genAttributeQuery(String subjectId, String attributeName, String tokenType) throws MessageContentException, MessageProcessingException{
-		if(subjectId == null || subjectId.trim().equals("")){
+		if(subjectId == null || subjectId.trim().isEmpty()){
 			throw new MessageContentException("Error subject id cannot be null in attribute query");
 		}
 		AttributeQueryType attributeQueryType = samlpOf.createAttributeQueryType();
@@ -935,23 +932,23 @@ public class AssertionPayloadParser extends BasePayloadParser {
 									   String publicId, String systemId, String baseURI) {
 			try {
 				if(systemId != null && systemId.equals("http://www.w3.org/2001/XMLSchema.dtd")){
-					return new XSDLSInput(publicId, systemId, DefaultCSMessageParser.class.getResourceAsStream("/XMLSchema.dtd"));
+					return new XSDLSInput(publicId, systemId, Objects.requireNonNull(DefaultCSMessageParser.class.getResourceAsStream("/XMLSchema.dtd")));
 				}
 				if(systemId != null && systemId.equals("datatypes.dtd")){
-					return new XSDLSInput(publicId, systemId, DefaultCSMessageParser.class.getResourceAsStream("/datatypes.dtd"));
+					return new XSDLSInput(publicId, systemId, Objects.requireNonNull(DefaultCSMessageParser.class.getResourceAsStream("/datatypes.dtd")));
 				}
 				if(namespaceURI != null){
 					if(namespaceURI.equals(DefaultCSMessageParser.XMLDSIG_NAMESPACE)){
-						return new XSDLSInput(publicId, systemId, DefaultCSMessageParser.class.getResourceAsStream(DefaultCSMessageParser.XMLDSIG_XSD_SCHEMA_RESOURCE_LOCATION));
+						return new XSDLSInput(publicId, systemId, Objects.requireNonNull(DefaultCSMessageParser.class.getResourceAsStream(DefaultCSMessageParser.XMLDSIG_XSD_SCHEMA_RESOURCE_LOCATION)));
 					}
 					if(namespaceURI.equals(DefaultCSMessageParser.XMLENC_NAMESPACE)){
-						return new XSDLSInput(publicId, systemId, DefaultCSMessageParser.class.getResourceAsStream(DefaultCSMessageParser.XMLENC_XSD_SCHEMA_RESOURCE_LOCATION));
+						return new XSDLSInput(publicId, systemId, Objects.requireNonNull(DefaultCSMessageParser.class.getResourceAsStream(DefaultCSMessageParser.XMLENC_XSD_SCHEMA_RESOURCE_LOCATION)));
 					}
 					if(namespaceURI.equals(SAMLP_NAMESPACE)){
-						return new XSDLSInput(publicId, systemId, DefaultCSMessageParser.class.getResourceAsStream(SAMLP_XSD_SCHEMA_2_0_RESOURCE_LOCATION));
+						return new XSDLSInput(publicId, systemId, Objects.requireNonNull(DefaultCSMessageParser.class.getResourceAsStream(SAMLP_XSD_SCHEMA_2_0_RESOURCE_LOCATION)));
 					}
 					if(namespaceURI.equals(NAMESPACE)){
-						return new XSDLSInput(publicId, systemId, DefaultCSMessageParser.class.getResourceAsStream(ASSERTION_XSD_SCHEMA_2_0_RESOURCE_LOCATION));
+						return new XSDLSInput(publicId, systemId, Objects.requireNonNull(DefaultCSMessageParser.class.getResourceAsStream(ASSERTION_XSD_SCHEMA_2_0_RESOURCE_LOCATION)));
 					}
 				}
 			} catch (MessageProcessingException e) {

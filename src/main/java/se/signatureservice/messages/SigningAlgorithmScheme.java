@@ -26,8 +26,8 @@ public enum SigningAlgorithmScheme {
 	ECDSAWithSHA256("http://www.w3.org/2001/04/xmlenc#sha256", "http://www.w3.org/2001/04/xmldsig-more#ecdsa-sha256"),
 	ECDSAWithSHA512("http://www.w3.org/2001/04/xmlenc#sha512", "http://www.w3.org/2001/04/xmldsig-more#ecdsa-sha512");
 	
-	String hashAlgorithmURI;
-	String signatureAlgorithmURI;
+	final String hashAlgorithmURI;
+	final String signatureAlgorithmURI;
 	
 	SigningAlgorithmScheme(String hashAlgorithmURI, String signatureAlgorithmURI){
 		this.hashAlgorithmURI = hashAlgorithmURI;

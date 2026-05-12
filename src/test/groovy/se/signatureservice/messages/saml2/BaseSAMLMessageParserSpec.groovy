@@ -330,7 +330,7 @@ class BaseSAMLMessageParserSpec extends CommonSAMLMessageParserSpecification {
 		//printXML(failureMessage)
 		then:
 		xml.Status.StatusCode.@Value == "urn:oasis:names:tc:SAML:2.0:status:Responder"
-		xml.Signature.SignedInfo.size() == 0
+		xml.Signature.SignedInfo.isEmpty()
 
 		when:
 		rt = bsmp.parseMessage(null,failureMessage, false)

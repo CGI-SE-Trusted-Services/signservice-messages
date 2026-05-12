@@ -96,12 +96,11 @@ public class CSMessageVersion {
 		} else if (!messageVersion.equals(other.messageVersion))
 			return false;
 		if (payLoadVersion == null) {
-			if (other.payLoadVersion != null)
-				return false;
-		} else if (!payLoadVersion.equals(other.payLoadVersion))
-			return false;
-		return true;
-	}
+            return other.payLoadVersion == null;
+		} else {
+			return payLoadVersion.equals(other.payLoadVersion);
+		}
+    }
 
 	@Override
 	public String toString() {

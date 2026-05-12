@@ -96,9 +96,9 @@ class CertUtilsSpec extends Specification{
 
 	def "test GetSubjectDNFields"() {
 		expect:
-		CertUtils.getSubjectDNFields((String) null, null).size() == 0
-		CertUtils.getSubjectDNFields((String) null, BCStyle.CN).size() == 0
-		CertUtils.getSubjectDNFields("CN=Test eIDCA,givenNAme=Test, surname=eIDCS, serialNumber=123456,O=Test,c=SE", BCStyle.INITIALS).size() == 0
+		CertUtils.getSubjectDNFields((String) null, null).isEmpty()
+		CertUtils.getSubjectDNFields((String) null, BCStyle.CN).isEmpty()
+		CertUtils.getSubjectDNFields("CN=Test eIDCA,givenNAme=Test, surname=eIDCS, serialNumber=123456,O=Test,c=SE", BCStyle.INITIALS).isEmpty()
 		CertUtils.getSubjectDNFields("CN=Test eIDCA,givenNAme=Test, surname=eIDCS, serialNumber=123456,O=Test,c=SE", BCStyle.CN).size() == 1
 		CertUtils.getSubjectDNFields("CN=Test eIDCA,givenNAme=Test, surname=eIDCS, serialNumber=123456,O=Test,c=SE", BCStyle.CN).get(0) == "Test eIDCA"
 		CertUtils.getSubjectDNFields("CN=Test eIDCA,givenNAme=Test, surname=eIDCS, serialNumber=123456,O=Test,c=SE", BCStyle.C).get(0) == "SE"

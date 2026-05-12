@@ -9,5 +9,5 @@ public enum SigType {
     XML,
     PDF,
     CMS,
-    ASiC;
+    ASiC
 }
