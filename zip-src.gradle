@@ -1,0 +1,33 @@
+tasks.register('zipSrc', Zip) {
+    String projectBaseName = project.name + "-${project.ext.get('shortVersionNumber')}"
+    archiveFileName = projectBaseName + '-src.zip'
+
+    from(projectDir) {
+        include('src/**')
+        include('gradle/**')
+        include('*.gradle')
+        include('README.adoc')
+        include('CHANGELOG.adoc')
+        include('LICENSE.txt')
+        exclude('.gradle/**')
+        into(projectBaseName)
+    }
+    from(projectDir) {
+        include('gradlew')
+        include('gradlew.bat')
+        filePermissions { unix(0755) }
+        into(projectBaseName)
+    }
+    from('build/docs/html5') {
+        into(projectBaseName + '/docs')
+    }
+    from(project.buildDir.name + '/libs/') {
+        include('signservice-messages*.jar')
+        into(projectBaseName)
+    }
+    from(configurations.runtimeClasspath) {
+        exclude('*-sources.jar')
+        exclude('*-javadoc.jar')
+        into(projectBaseName + '/lib')
+    }
+}
