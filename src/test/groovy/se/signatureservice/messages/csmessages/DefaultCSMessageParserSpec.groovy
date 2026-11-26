@@ -49,7 +49,7 @@ import spock.lang.Unroll;
 import static DefaultCSMessageParser.*
 import static se.signatureservice.messages.TestUtils.*
 
-public class DefaultCSMessageParserSpec extends Specification{
+class DefaultCSMessageParserSpec extends Specification{
 	
 	
 	se.signatureservice.messages.sysconfig.jaxb.ObjectFactory sysConfigOf = new se.signatureservice.messages.sysconfig.jaxb.ObjectFactory()
@@ -418,7 +418,7 @@ public class DefaultCSMessageParserSpec extends Specification{
 	
 	def "Verify that verifyCSMessageVersion returns true for supported versions and throws MessageContentException for unsupported versions"(){
 		expect:
-		mp.verifyCSMessageVersion(SUPPORTED_CSMESSAGE_VERSIONS[0]) 
+		mp.verifyCSMessageVersion(DefaultCSMessageParser.SUPPORTED_CSMESSAGE_VERSIONS[0])
 		
 		when:
 		mp.verifyCSMessageVersion("unsupported")
